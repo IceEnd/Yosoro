@@ -1,0 +1,141 @@
+@import "common.scss";
+
+.trash {
+  @include display-flex;
+  flex: 1 1 auto;
+  height: 100%;
+  overflow: hidden;
+  flex-direction: column;
+  background-color: rgba(248,248,248,1);
+  color: rgba(0, 0, 0, 0.5);
+
+  .trash-toolbar {
+    flex: 0 0 3rem;
+    width: 100%;
+    -webkit-app-region: drag;
+    position: relative;
+
+    &:after {
+      content: "";
+      z-index: 999;
+      position: absolute;
+      width: 90%;
+      bottom: 0;
+      left: 5%;
+      height: 1px;
+      background-color: #d9d9d9;
+      box-shadow: 0 1px 10px #d9d9d9;
+    }
+
+    .title {
+      line-height: 3rem;
+      font-size: 1.2rem;
+      // font-weight: normal;
+      width: 80%;
+      margin: 0 auto;
+      text-align: center;
+      @include text-ellipsis;
+      color: rgba(0, 0, 0, 0.7);
+    }
+    .icon {
+      margin-right: .3em;
+      color: #92a3ad;
+    }
+
+    .back {
+      z-index: 999;
+      padding-top: 0.5rem;
+      position: absolute;
+      height: 100%;
+      width: auto;
+      left: 5%;
+      margin-left: 0.5em;
+      top: 0;
+      line-height: 3rem;
+      cursor: pointer;
+
+      .anticon {
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: rgba(0,0,0,0.3);
+        transition: color ease 0.2s;
+        &:hover {
+          color: rgba(0,0,0,0.5);
+        }
+      }
+    }
+  }
+
+  .content {
+    flex: 1 1 auto;
+    padding: 0 5%;
+    overflow-y: auto;
+    position: relative;
+
+    .tips {
+      position: absolute;
+      top: 30%;
+      left: 0;
+      text-align: center;
+      font-size: 1.2rem;
+      width: 100%;
+      height: 2rem;
+      line-height: 2rem;
+      color: cadetblue;
+    }
+
+    .list {
+      @include display-flex;
+      margin: 1.5rem 1rem; 
+      flex-wrap: wrap;
+    }
+
+    .list-item {
+      flex: 0 0 14rem;
+      padding: 1rem 2rem;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color,background-color ease-in-out 0.5s;
+      border-radius: 0.5rem;
+
+      &:hover {
+        background-color: rgba(146, 136, 173, 0.2);
+        border-color: #92a3ad;
+      }
+    }
+
+    .list-item__img {
+      padding: 0.5rem 1rem;
+    }
+    .list-item__option {
+      padding: 0.25em 1rem;
+      text-align: center;
+      cursor: pointer;
+      .list-item__options__item {
+        display: inline-block;
+        line-height: 1.5rem;
+        height: 1.5rem;
+        width: 2.2rem;
+        text-align: center;
+        cursor: pointer;
+        &:hover {
+          .anticon {
+            font-size: 1.2rem;
+          }
+        }
+      }
+      .anticon {
+        font-size: 1rem;
+        margin: 0 0.5em;
+        cursor: pointer;
+        transition: font-size ease 0.2s;
+      }
+    }
+    .list-item__title {
+      margin: 0 1rem;
+      text-align: center;
+      @include text-ellipsis;
+      text-align: center;
+    }
+  }
+}

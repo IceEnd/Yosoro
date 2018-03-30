@@ -57,3 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
+config/devconfig.json
+app/documents
+yosoro-darwin-x64/
+lib/
+.vscode

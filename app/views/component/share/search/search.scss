@@ -1,0 +1,20 @@
+.search-wrapper {
+  font-family: "Monospace Number", "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+
+  .ant-input {
+    height: 1.5rem;
+    font-size: 0.8rem;
+    padding: 0 1rem;
+  }
+
+  .ant-input-prefix {
+    cursor: pointer;
+  }
+}

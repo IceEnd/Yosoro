@@ -1,0 +1,20 @@
+{
+  "name": "yosoro-desktop",
+  "productName": "yosoro",
+  "version": "1.0.0",
+  "description": "Electron application note, based on React, Redux, Webpack, React Hot Loader for rapid application development",
+  "main": "./main.js",
+  "author": {
+    "name": "Alchemy",
+    "email": "min@coolecho.net",
+    "url": "https://github.com/IceEnd"
+  },
+  "scripts": {
+    "electron-rebuild": "node -r babel-register ../internals/scripts/ElectronRebuild.js",
+    "postinstall": "npm run electron-rebuild"
+  },
+  "mac": {
+    "icon": "asstes/icons/osx/app.icns"
+  },
+  "license": "BSD-4"
+}
