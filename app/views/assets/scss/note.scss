@@ -426,8 +426,10 @@
 	}
 
 	.preview-root {
-		flex: 0 0 auto;
-		width: 50%;
+		flex: 1;
+		// flex: 0 0 auto;
+		// width: 50%;
+		width: 0;
 		min-width: 10rem;
 		transition: width ease 0.5s;
 

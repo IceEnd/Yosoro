@@ -179,7 +179,7 @@ export default class Driver extends Component {
               </p>
             </div>
           ) : (
-            <div className={`content ${blur}`}>
+            <div className={`content ${blur}`} id="app_cloud">
               {notes.length === 0 ? (
                 <p className="tips">List is empty.</p>
               ) : (
@@ -205,7 +205,11 @@ export default class Driver extends Component {
                             className="list-item__options__item"
                             onClick={() => this.downloadNote(name)}
                           >
-                            <Tooltip placement="bottom" title="download">
+                            <Tooltip
+                              placement="bottom"
+                              title="download"
+                              getPopupContainer={() => document.getElementById('app_cloud')}
+                            >
                               <Icon type="download" />
                             </Tooltip>
                           </span>
@@ -225,7 +229,7 @@ export default class Driver extends Component {
         {this.renderLoading(status)}
         {this.renderBread('projects', blur, driverName, currentProjectName)}
         {status === 2 ? (
-          <div className={`content ${blur}`}>
+          <div className={`content ${blur}`} id="app_cloud">
             <p className="tips">
               <Icon type="reload" onClick={this.checkOAuth} />
               Fetch data failed.

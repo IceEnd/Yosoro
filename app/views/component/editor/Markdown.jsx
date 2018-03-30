@@ -77,6 +77,9 @@ export default class Markdown extends Component {
     const rootLeft = this.root.offsetLeft;
     const x = e.clientX;
     const editorWidthValue = (x - rootLeft) / width;
+    if (editorWidthValue <= 0.2 || editorWidthValue >= 0.8) {
+      return false;
+    }
     const editorWidth = `${editorWidthValue * 100}%`;
     // this.props.dispatch(appMarkdownAdjust({ editorWidth }));
     this.setState({

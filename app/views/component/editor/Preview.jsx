@@ -8,7 +8,7 @@ export default class Preview extends PureComponent {
   static propTypes = {
     html: PropTypes.string.isRequired,
     editorMode: PropTypes.string.isRequired,
-    editorWidth: PropTypes.string.isRequired,
+    // editorWidth: PropTypes.string.isRequired,
     drag: PropTypes.bool.isRequired,
     editorWidthValue: PropTypes.number.isRequired,
   };
@@ -88,22 +88,22 @@ export default class Preview extends PureComponent {
 
   render() {
     const { bodyWidth } = this.state;
-    const { html, editorMode, drag, editorWidth } = this.props;
+    const { html, editorMode, drag } = this.props;
     let rootClass = '';
-    let rootWidth = `${100 - parseFloat(editorWidth.replace(/%$/, ''))}%`;
+    // let rootWidth = `${100 - parseFloat(editorWidth.replace(/%$/, ''))}%`;
     if (editorMode === 'immersion') {
       rootClass = 'hide';
-      rootWidth = '0';
+      // rootWidth = '0';
     } else if (editorMode === 'preview') {
       rootClass = 'pre-mode';
-      rootWidth = '100%';
+      // rootWidth = '100%';
     }
     // const bodyWidth = this.getBodyWidth();
     return (
       <div
         className={`preview-root ${rootClass} ${drag ? 'drag' : ''}`}
         ref={node => (this.preview = node)}
-        style={{ width: rootWidth }}
+        // style={{ width: rootWidth }}
       >
         <div
           className="preview-body"
