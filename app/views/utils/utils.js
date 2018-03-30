@@ -17,7 +17,7 @@ export function formatDate(date) {
   const minutes = formatNumber(newDate.getMinutes());
   const seconds = formatNumber(newDate.getSeconds());
   return `${year}-${month}-${day}  ${hour}:${minutes}:${seconds}`;
-};
+}
 
 /**
  * @param 将组件state存放至localStroge中

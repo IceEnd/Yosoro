@@ -2,3 +2,4 @@ dist
 node_modules
 Yosoro-darwin-x64
 lib
+app/views/utils/highlight.min.js

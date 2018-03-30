@@ -1,352 +1,352 @@
 @import "color.scss";
 
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
 }
 
 li {
-  list-style-type: none;
+	list-style-type: none;
 }
 
 .anticon {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 html, body, #root {
-  width: 100%;
-  height: 100%;
-  font-size: 16px;
+	width: 100%;
+	height: 100%;
+	font-size: 16px;
 }
 
 html {
-  font-family: 'BlinkMacSystemFont', 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  overflow: hidden;
-  color: $color;
-  background-color: #ffffff;
+	font-family: "BlinkMacSystemFont", "Lucida Grande", "Segoe UI", Ubuntu, Cantarell, sans-serif;
+	font-size: 14px;
+	line-height: 1.5;
+	overflow: hidden;
+	color: $color;
+	background-color: #ffffff;
 }
 
 #root {
-  width: 100%;
-  height: 100%;
-  min-width: 978px;
+	width: 100%;
+	height: 100%;
+	min-width: 978px;
 }
 
 .container {
-  display: flex;
-  width: 100%;
-  height: 100%;
+	display: flex;
+	width: 100%;
+	height: 100%;
 }
 
 .no-select {
-  -webkit-user-select: none;
-  user-select: none;
-  cursor: default;
+	-webkit-user-select: none;
+	user-select: none;
+	cursor: default;
 }
 
 /* 工具栏 */
 .tool-bar {
-  flex: 0 0 5.4rem;
-  width: 5.4rem;
-  height: 100%;
-  -webkit-app-region: drag;
-  overflow: hidden;
+	flex: 0 0 5.4rem;
+	width: 5.4rem;
+	height: 100%;
+	-webkit-app-region: drag;
+	overflow: hidden;
 
-  .app-title-bar {
-    width: 100%;
-    height: 3rem;
-  }
+	.app-title-bar {
+		width: 100%;
+		height: 3rem;
+	}
 
-  .logo {
-    text-align: center;
-    margin-top: 1.6rem;
-    img {
-      width: 3.8rem;
-      height: 3.8rem;
-      border-radius: 50%;
-    }
-  }
+	.logo {
+		text-align: center;
+		margin-top: 1.6rem;
+		img {
+			width: 3.8rem;
+			height: 3.8rem;
+			border-radius: 50%;
+		}
+	}
 
-  .menu-list {
-    margin-top: 3rem;
+	.menu-list {
+		margin-top: 3rem;
 
-    .menu-item {
-      text-align: center;
-      margin-bottom: 1.2rem;
-      cursor: pointer;
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
+		.menu-item {
+			text-align: center;
+			margin-bottom: 1.2rem;
+			cursor: pointer;
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
 
-    .menu-item-radius {
-      border-radius: 50%;
-      height: 3rem;
-      width: 3rem;
-      display: inline-block;
-      line-height: 3rem;
-      transition: background-color,box-shadow .2s ease-in-out;
-    }
+		.menu-item-radius {
+			border-radius: 50%;
+			height: 3rem;
+			width: 3rem;
+			display: inline-block;
+			line-height: 3rem;
+			transition: background-color, box-shadow .2s ease-in-out;
+		}
 
-    .menu-svg {
-      margin-top: .75rem;
-      width: 1.5rem;
-      height: 1.5rem;
-      transition: fill .2s ease-in-out;
-    }
-  }
+		.menu-svg {
+			margin-top: .75rem;
+			width: 1.5rem;
+			height: 1.5rem;
+			transition: fill .2s ease-in-out;
+		}
+	}
 }
 
 .app-lounch-loading {
-  z-index: 9999;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background-color: $navBg;
+	z-index: 9999;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: $navBg;
 
-  .loading-cont {
-    position: relative;
-    width: 30%;
-    height: 30%;
-    top: 35%;
-    left: 35%;
-    fill: none;
-    stroke-width: 1;
-    stroke: aliceblue;
-  }
+	.loading-cont {
+		position: relative;
+		width: 30%;
+		height: 30%;
+		top: 35%;
+		left: 35%;
+		fill: none;
+		stroke-width: 1;
+		stroke: aliceblue;
+	}
 }
 
 .nav {
-  background-color: $navBg;
-  position: relative;
-  padding-top: 8.2rem;
-  width: $navWidth;
-  overflow-x: hidden;
-  overflow-y: auto;
-  
-  border-right: 1px solid $colorBorder;
+	background-color: $navBg;
+	position: relative;
+	padding-top: 8.2rem;
+	width: $navWidth;
+	overflow-x: hidden;
+	overflow-y: auto;
 
-  .nav-header {
-    position: fixed;
-    width: $navWidth;
-    top: 0;
-    left: 0;
-    height: 8.2rem;
-    background-color: $navBg;
-    border-right: 1px solid $colorBorder;
-  }
+	border-right: 1px solid $colorBorder;
 
-  .logo-cont {
-    background-color: $headerBg;
-  }
+	.nav-header {
+		position: fixed;
+		width: $navWidth;
+		top: 0;
+		left: 0;
+		height: 8.2rem;
+		background-color: $navBg;
+		border-right: 1px solid $colorBorder;
+	}
 
-  .server-list-title {
-    color: rgb(214, 216, 218);
-    font-size: 1rem;
-    font-weight: normal;
-  }
+	.logo-cont {
+		background-color: $headerBg;
+	}
 
-  .servers-cont {
-    padding: 0 0.5rem;
-    .server-li {
-      height: 3.6rem;
-      background-color: $headerBg;
-      // border-radius: 0.4rem;
-      // border: 1px solid darkorange;
-      color: aliceblue;
-      line-height: 3.6rem;
-      padding: 0 0.5rem;
-      font-size: 1rem;
-      display: flex;
-      display: -webkit-flex;
+	.server-list-title {
+		color: rgb(214, 216, 218);
+		font-size: 1rem;
+		font-weight: normal;
+	}
 
-      &.cur {
-        background: $navCurBg;
-      }
+	.servers-cont {
+		padding: 0 0.5rem;
+		.server-li {
+			height: 3.6rem;
+			background-color: $headerBg;
+			// border-radius: 0.4rem;
+			// border: 1px solid darkorange;
+			color: aliceblue;
+			line-height: 3.6rem;
+			padding: 0 0.5rem;
+			font-size: 1rem;
+			display: flex;
+			display: -webkit-flex;
 
-      .anticon-desktop {
-        flex: 0 1 20%;
-        line-height: 3.6rem;
-        font-size: 1.4rem;
-      }
+			&.cur {
+				background: $navCurBg;
+			}
 
-      .name {
-        flex: 1 1 45%;
-        text-overflow: ellipsis;
-        white-space:nowrap;
-        overflow:hidden;
-        cursor: pointer;
-      }
+			.anticon-desktop {
+				flex: 0 1 20%;
+				line-height: 3.6rem;
+				font-size: 1.4rem;
+			}
 
-      .setting {
-        flex: 0 1 35%;
-        padding-left: 0.5rem;
-        .anticon {
-          font-size: 1.2rem;
-          margin-right: 0.5rem;
-          &:last-child {
-            margin-right: 0;
-          }
-        }
-      }
+			.name {
+				flex: 1 1 45%;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
+				cursor: pointer;
+			}
 
-      border-bottom: 1px solid grey;
-      &:first-child {
-        border-radius: 0.4rem 0.4rem 0 0;
-      }
-      &:last-child {
-        border-radius: 0 0 0.4rem 0.4rem;
-        border-bottom: none;
-      }
-    }
-  }
+			.setting {
+				flex: 0 1 35%;
+				padding-left: 0.5rem;
+				.anticon {
+					font-size: 1.2rem;
+					margin-right: 0.5rem;
+					&:last-child {
+						margin-right: 0;
+					}
+				}
+			}
+
+			border-bottom: 1px solid grey;
+			&:first-child {
+				border-radius: 0.4rem 0.4rem 0 0;
+			}
+			&:last-child {
+				border-radius: 0 0 0.4rem 0.4rem;
+				border-bottom: 0;
+			}
+		}
+	}
 }
 
 .window {
-  flex: 1;
-  position: relative;
-  background-color: $windowBg;
-  height: 100%;
-  overflow: hidden;
+	flex: 1;
+	position: relative;
+	background-color: $windowBg;
+	height: 100%;
+	overflow: hidden;
 
-  .no-connet-tips {
-    font-size: 1.5rem;
-    text-align: center;
-    margin-top: 35%;
-    color: aliceblue;
-  }
+	.no-connet-tips {
+		font-size: 1.5rem;
+		text-align: center;
+		margin-top: 35%;
+		color: aliceblue;
+	}
 
-  .sub-window {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    visibility: hidden;
+	.sub-window {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 100%;
+		height: 100%;
+		overflow-y: auto;
+		visibility: hidden;
 
-    &.cur {
-      visibility: visible;
-    }
-  }
+		&.cur {
+			visibility: visible;
+		}
+	}
 }
 
 .app-connect-loading {
-  position: absolute;
-  z-index: 999;
-  width: 100%;
-  height: 100%;
-  background-color: #2d313a;
+	position: absolute;
+	z-index: 999;
+	width: 100%;
+	height: 100%;
+	background-color: #2d313a;
 
-  .loading-cont {
-    position: relative;
-    width: 20%;
-    height: 20%;
-    left: 40%;
-    top: 30%;
-  }
+	.loading-cont {
+		position: relative;
+		width: 20%;
+		height: 20%;
+		left: 40%;
+		top: 30%;
+	}
 
-  .connect-loading-cont {
-    fill: none;
-    stroke-width: 1;
-    stroke: $lightColor;
-  }
+	.connect-loading-cont {
+		fill: none;
+		stroke-width: 1;
+		stroke: $lightColor;
+	}
 
-  .loading-tips {
-    margin-bottom: 0;
-    margin-top: 1rem;
-    text-align: center;
-    color: $lightColor;
-  }
+	.loading-tips {
+		margin-bottom: 0;
+		margin-top: 1rem;
+		text-align: center;
+		color: $lightColor;
+	}
 }
 
 /* 图标 */
 .pie-chart-react {
-  width: 100%;
-  height: 100%;
+	width: 100%;
+	height: 100%;
 }
 
 .sub-window {
-  color: $fontColor;
-  padding: 1rem;
+	color: $fontColor;
+	padding: 1rem;
 
-  .error-tip {
-    color: $fontColor;
-    font-size: 1.5rem;
-  }
+	.error-tip {
+		color: $fontColor;
+		font-size: 1.5rem;
+	}
 
-  .name {
-    padding: 0.5rem;
-    color: $fontColor;
-    border-bottom: 1px solid $darkBorder;
+	.name {
+		padding: 0.5rem;
+		color: $fontColor;
+		border-bottom: 1px solid $darkBorder;
 
-    i {
-      font-size: 1rem;
-    }
-  }
+		i {
+			font-size: 1rem;
+		}
+	}
 }
 
 .card {
-  padding: 0.5rem;
-  margin-top: 1rem;
-  border-bottom: 1px solid $darkBorder;
-  .title {
-    font-size: 1.2rem;
-    color: $fontColor;
-  }
-  .card-container {
-    position: relative;
-    &.disk {
-      display: flex;
-      display: -webkit-flex;
-      height: 20rem;
+	padding: 0.5rem;
+	margin-top: 1rem;
+	border-bottom: 1px solid $darkBorder;
+	.title {
+		font-size: 1.2rem;
+		color: $fontColor;
+	}
+	.card-container {
+		position: relative;
+		&.disk {
+			display: flex;
+			display: -webkit-flex;
+			height: 20rem;
 
-      .disk-summary {
-        flex-basis: 40%;
-      }
-      .disk-info {
-        flex-basis: 60%;
-      }
-    }
-    /* nrm card */
-    &.nrm {
-      background-color: $cardBg;
-      padding: 1rem;
-      margin: 0 1rem;
-      border-radius: 0.2rem;
-      color: $lightFontColor;
-      font-weight: lighter;
-      .nrm-ul {
-        margin-bottom: 0;
-      }
-      .nrm-li {
-        height: 2.4rem;
-        line-height: 2.4rem;
-        &.active {
-          color: $fontColor;
-        }
-        .ant-switch {
-          transition-property: background-color,opacity,pointer-events;
-          -webkit-transition-property: background-color,opacity,pointer-events;
-          &:after {
-            transition-property: left,margin-left,box-shadow,background-color,opacity;
-            -webkit-transition-property: left,margin-left,box-shadow,background-color,opacity;
-          }
-        }
-      }
-      .ant-switch {
-        background-color: rgba(0,0,0,1);
-      }
-      .ant-switch.ant-switch-checked {
-        background-color: #1890ff;
-      }
-    }
-  }
+			.disk-summary {
+				flex-basis: 40%;
+			}
+			.disk-info {
+				flex-basis: 60%;
+			}
+		}
+		/* nrm card */
+		&.nrm {
+			background-color: $cardBg;
+			padding: 1rem;
+			margin: 0 1rem;
+			border-radius: 0.2rem;
+			color: $lightFontColor;
+			font-weight: lighter;
+			.nrm-ul {
+				margin-bottom: 0;
+			}
+			.nrm-li {
+				height: 2.4rem;
+				line-height: 2.4rem;
+				&.active {
+					color: $fontColor;
+				}
+				.ant-switch {
+					transition-property: background-color, opacity, pointer-events;
+					-webkit-transition-property: background-color, opacity, pointer-events;
+					&:after {
+						transition-property: left, margin-left, box-shadow, background-color, opacity;
+						-webkit-transition-property: left, margin-left, box-shadow, background-color, opacity;
+					}
+				}
+			}
+			.ant-switch {
+				background-color: rgba(0, 0, 0, 1);
+			}
+			.ant-switch.ant-switch-checked {
+				background-color: #1890ff;
+			}
+		}
+	}
 }
 
 .cursor-pointer {
-  cursor: pointer;
+	cursor: pointer;
 }

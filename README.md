@@ -16,7 +16,7 @@
 
 The latest version of Yosoro for macOS, linux and Windows is avalibale [here](https://github.com/IceEnd/Yosoro/releases).
 
-** macOS 10.9+, Windows 8+ & Linux are supported. **
+**macOS 10.9+, Windows 8+ & Linux are supported.**
 
 ## Features
 

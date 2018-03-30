@@ -1,40 +1,40 @@
-@import 'color.scss';
+@import "color.scss";
 
 .light {
-  .tool-bar {
-    background-image: linear-gradient(to left, rgb(230, 230, 230), rgb(210, 210, 210));
+	.tool-bar {
+		background-image: linear-gradient(to left, rgb(230, 230, 230), rgb(210, 210, 210));
 
-    .menu-list {
-      .menu-svg {
-        fill: #ff9999;
-      }
+		.menu-list {
+			.menu-svg {
+				fill: #ff9999;
+			}
 
-      .menu-item-radius {
-        background-color: #ccffff;
-        opacity: .5;
-      }
-      .menu-item .cur {
-        .menu-item-radius {
-          background-color: #ff9999;
-          box-shadow: 0 0 1.2rem .05rem #ffffff;
-          opacity: 1;
-        }
-        .menu-svg {
-          fill: #ffffff;
-        }
-      }
-    }
-  }
+			.menu-item-radius {
+				background-color: #ccffff;
+				opacity: .5;
+			}
+			.menu-item .cur {
+				.menu-item-radius {
+					background-color: #ff9999;
+					box-shadow: 0 0 1.2rem .05rem #ffffff;
+					opacity: 1;
+				}
+				.menu-svg {
+					fill: #ffffff;
+				}
+			}
+		}
+	}
 
-  .note {
-    .project-list {
-      border-color: $lightBorderBg;
-    }
-  }
+	.note {
+		.project-list {
+			border-color: $lightBorderBg;
+		}
+	}
 }
 
 .dark {
-  .tool-bar {
-    background-color: rgb(38, 38, 38)
-  }
+	.tool-bar {
+		background-color: rgb(38, 38, 38);
+	}
 }

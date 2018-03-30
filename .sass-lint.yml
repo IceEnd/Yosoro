@@ -2,8 +2,7 @@ options:
   merge-default-rules: false
 files:
   include:
-    - 'src/assets/**/*.scss'
-    - 'test/example.scss'
+    - '/app/views/assets/scss/color.scss'
 rules:
   # Extends
   extends-before-declarations: 2
@@ -52,7 +51,7 @@ rules:
 
   # Name Formats
   class-name-format:
-    - 2
+    - 0
     -
       allow-leading-underscore: false
       convention: 'hyphenatedlowercase'
