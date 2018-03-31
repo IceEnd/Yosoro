@@ -804,7 +804,7 @@ function projectReducer(state = {
           name,
           parentsId: newProject.uuid,
           labels: info.labels,
-          descrition: info.description,
+          description: info.description,
           createDate,
           [driverType]: 3,
         };
@@ -832,7 +832,7 @@ function projectReducer(state = {
             name,
             parentsId: targetProject.uuid,
             labels: info.labels,
-            descrition: info.description,
+            description: info.description,
             createDate,
             [driverType]: 3,
           };

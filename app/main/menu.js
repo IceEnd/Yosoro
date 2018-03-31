@@ -1,5 +1,5 @@
 import electron from 'electron';
-import electronOauth2 from 'electron-oauth2';
+import electronOauth2 from './electron-oauth2';
 
 import oauthConfig from './oauthConfig';
 
@@ -21,7 +21,7 @@ function getMemuTemplete(mainWindow) {
     label: 'File',
     submenu: [{
       label: 'New Note',
-      accelerator: 'cmd+N',
+      accelerator: 'CmdOrCtrl+Z',
       role: 'new file',
       click: () => mainWindow.webContents.send('new-file', 1),
     }, {
@@ -33,7 +33,7 @@ function getMemuTemplete(mainWindow) {
       type: 'separator',
     }, {
       label: 'Save',
-      accelerator: 'cmd+S',
+      accelerator: 'CmdOrCtrl+S',
       role: 'save',
       click: () => mainWindow.webContents.send('save-content'),
     }],
@@ -161,7 +161,7 @@ function getMemuTemplete(mainWindow) {
     submenu: [{
       label: 'Learn More',
       click: () => {
-        electron.shell.openExternal('http://electron.atom.io');
+        electron.shell.openExternal('https://github.com/IceEnd/Yosoro');
       },
     }],
   });

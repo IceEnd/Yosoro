@@ -8,15 +8,15 @@ import eventListener from './event';
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
-const Menu = electron.Menu;
-const Tray = electron.Tray;
+// const Menu = electron.Menu;
+// const Tray = electron.Tray;
 const dialog = electron.dialog;
 const shell = electron.shell;
 
 app.setName('Yosoro');
 
 let mainWindow;
-let tray = null;
+// let tray = null;
 
 const dataPath = app.getPath('appData');
 let appDataPath = `${dataPath}/Yosoro`;
@@ -95,13 +95,13 @@ function createWindow() {
   });
 
   // Tray模块
-  const iconPath = path.join(__dirname, './resource/tray-icon.png');
-  tray = new Tray(iconPath);
-  const contextMenu = Menu.buildFromTemplate([{
-    label: 'Tray',
-  }]);
-  tray.setToolTip('This is my yosoyo-dektop.');
-  tray.setContextMenu(contextMenu);
+  // const iconPath = path.join(__dirname, './resource/tray-icon.png');
+  // tray = new Tray(iconPath);
+  // const contextMenu = Menu.buildFromTemplate([{
+  //   label: 'Tray',
+  // }]);
+  // tray.setToolTip('This is my yosoyo-dektop.');
+  // tray.setContextMenu(contextMenu);
 
   const webContents = mainWindow.webContents;
 
@@ -159,9 +159,9 @@ app.on('ready', createWindow);
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (tray) {
-    tray.destroy();
-  }
+  // if (tray) {
+  //   tray.destroy();
+  // }
   if (process.platform !== 'darwin') {
     app.quit();
   }

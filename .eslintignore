@@ -3,3 +3,4 @@ node_modules
 Yosoro-darwin-x64
 lib
 app/views/utils/highlight.min.js
+app/main/electron-oauth2.js

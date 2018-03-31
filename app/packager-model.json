@@ -2,8 +2,12 @@
   "name": "yosoro-desktop",
   "productName": "yosoro",
   "version": "1.0.0",
-  "description": "Electron application note, based on React, Redux, Webpack, React Hot Loader for rapid application development",
+  "description": "Moe Cloud Driver Markdown NoteBook Desktop App, based on React, Redux, Webpack, React Hot Loader for rapid application development",
   "main": "./main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IceEnd/Yosoro.git"
+  },
   "author": {
     "name": "Alchemy",
     "email": "min@coolecho.net",
@@ -15,6 +19,9 @@
   },
   "mac": {
     "icon": "asstes/icons/osx/app.icns"
+  },
+  "win": {
+    "icon": "asstes/icons/win/app.ico"
   },
   "license": "BSD-4"
 }

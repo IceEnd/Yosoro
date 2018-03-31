@@ -62,3 +62,4 @@ app/documents
 yosoro-darwin-x64/
 lib/
 .vscode
+out
