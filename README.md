@@ -29,7 +29,7 @@ The latest version of Yosoro for macOS, linux and Windows is avalibale [here](ht
 
 ### macOS
 
-![screentshot-osx](./screenshot/osx.jpeg)
+![screentshot-osx](./screenshot/osx.png)
 
 ### Windows
 
