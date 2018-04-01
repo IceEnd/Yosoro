@@ -64,6 +64,9 @@ function createWindow() {
     frame: true,
     backgroundColor: 'ransparent',
   };
+  if (process.platform === 'linux') {
+    options.icon = path.join(__dirname, './resource/app.png');
+  }
   mainWindow = new BrowserWindow(options);
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
