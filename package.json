@@ -87,7 +87,7 @@
     "webpack-dev-server": "^2.9.4"
   },
   "author": "Alchemy",
-  "license": "BSD-4",
+  "license": "GPL-3.0",
   "pre-commit": [
     "lint"
   ]

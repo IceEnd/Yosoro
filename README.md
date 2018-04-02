@@ -6,9 +6,8 @@
     <img src="https://img.shields.io/badge/platform-masOS%20%7C%20Linux%20%7C%20Windows-lightgrey.svg" />
   </p>
   <p align="center">
-    <img src="https://img.shields.io/badge/release-1.0.0-blue.svg" />
-    <img src="https://img.shields.io/travis/rust-lang/rust.svg" />
-    <img src="https://img.shields.io/badge/license-BSD--4-blue.svg" />
+    <img src="https://img.shields.io/github/release/iceend/yosoro.svg" />
+    <img src="https://img.shields.io/badge/license-GPL--3.0-blue.svg" />
   </p>
 </p>
 
@@ -41,4 +40,4 @@ The latest version of Yosoro for macOS, linux and Windows is avalibale [here](ht
 
 ## License
 
-BSD-4 © [Alchemy](./LICENSE)
+GPL-3.0 © [Alchemy](./LICENSE)
