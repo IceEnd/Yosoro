@@ -21,13 +21,15 @@ function getMemuTemplete(mainWindow) {
     label: 'File',
     submenu: [{
       label: 'New Note',
-      accelerator: 'CmdOrCtrl+Z',
-      role: 'new file',
+      accelerator: 'CmdOrCtrl+N',
+      enabled: false,
+      // role: 'new file',
       click: () => mainWindow.webContents.send('new-file', 1),
     }, {
       label: 'New Project',
-      asselerator: 'cmd+Shift+N',
-      role: 'New Project',
+      accelerator: 'Shift+CmdOrCtrl+N',
+      enabled: false,
+      // role: 'new project',
       click: () => mainWindow.webContents.send('new-project'),
     }, {
       type: 'separator',
@@ -35,6 +37,7 @@ function getMemuTemplete(mainWindow) {
       label: 'Save',
       accelerator: 'CmdOrCtrl+S',
       role: 'save',
+      enabled: false,
       click: () => mainWindow.webContents.send('save-content'),
     }],
   }, {

@@ -2,7 +2,7 @@
  * @description 主进程事件监听
  */
 
-import { ipcMain, BrowserWindow, app } from 'electron';
+import { ipcMain, BrowserWindow, app, Menu } from 'electron';
 import fs from 'fs';
 import fse from 'fs-extra';
 
@@ -348,6 +348,38 @@ export default function eventListener(menus) {
         success: false,
         error: ex,
       };
+    }
+  });
+
+  // 启用 | 启用 菜单 "new -file"
+  ipcMain.on('file-new-enbaled', (event, args) => {
+    const { flag, type } = args;
+    let index = 0;
+    let saveFlag = false;
+    let itemIndex = 0;
+    if (type === 'new-note') {
+      index = 0;
+      saveFlag = true;
+    } else if (type === 'new-project') {
+      index = 1;
+    } else if (type === 'save') {
+      index = 2;
+    }
+    if (process.platform === 'darwin') {
+      itemIndex = 1;
+    } else {
+      itemIndex = 0;
+    }
+    const menu = Menu.getApplicationMenu();
+    try {
+      if (menu) {
+        menu.items[itemIndex].submenu.items[index].enabled = flag;
+        if (saveFlag) {
+          menu.items[itemIndex].submenu.items[3].enabled = flag;
+        }
+      }
+    } catch (ex) {
+      console.warn(ex);
     }
   });
 }

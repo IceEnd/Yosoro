@@ -45,6 +45,10 @@ export default class Project extends Component {
   }
 
   componentDidMount() {
+    ipcRenderer.send('file-new-enbaled', { // 启用 新建菜单
+      type: 'new-project',
+      flag: true,
+    });
     ipcRenderer.on('new-project', () => {
       this.setState({
         newProject: true,
@@ -100,6 +104,10 @@ export default class Project extends Component {
     ipcRenderer.removeAllListeners('new-project');
     ipcRenderer.removeAllListeners('delete-project');
     ipcRenderer.removeAllListeners('rename-project');
+    ipcRenderer.send('file-new-enbaled', { // 禁用 新建菜单
+      type: 'new-project',
+      flag: false,
+    });
   }
 
   // componentDidUpdate() {

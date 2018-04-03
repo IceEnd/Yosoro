@@ -56,6 +56,10 @@ export default class Files extends Component {
   }
 
   componentDidMount() {
+    ipcRenderer.send('file-new-enbaled', {
+      type: 'new-note',
+      flag: true,
+    });
     ipcRenderer.on('new-file', () => {
       this.setState({
         newFile: true,
@@ -155,6 +159,10 @@ export default class Files extends Component {
     ipcRenderer.removeAllListeners('rename-note');
     ipcRenderer.removeAllListeners('node-add-desc');
     ipcRenderer.removeAllListeners('upload-note-onedriver');
+    ipcRenderer.send('file-new-enbaled', {
+      type: 'new-note',
+      flag: false,
+    });
   }
 
   newItemFocus = () => {
