@@ -1,4 +1,5 @@
 import 'antd/dist/antd.css';
+import 'whatwg-fetch';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -10,6 +11,7 @@ import SVG from '../component/SVG';
 import Note from '../component/note/Note';
 import Trash from '../component/trash/Trash';
 import Cloud from '../component/cloud/Cloud';
+import About from '../component/about/About';
 // import ImageHosting from '../component/imageHosting/ImgaeHosting';
 
 import { appLounch, FETCHING_ONEDRIVER_TOKEN } from '../actions/app';
@@ -200,6 +202,12 @@ class App extends Component {
                 path="/cloud"
                 render={() => (
                   <Cloud driver={driver} dispatch={dispatch} />
+                )}
+              />
+              <Route
+                path="/about"
+                render={() => (
+                  <About app={app} />
                 )}
               />
             </Switch>

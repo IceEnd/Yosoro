@@ -1,5 +1,3 @@
-import 'whatwg-fetch';
-
 export default class OneDriver {
   constructor() {
     this.rootPath = 'https://graph.microsoft.com/v1.0';

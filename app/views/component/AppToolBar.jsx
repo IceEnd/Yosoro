@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   NavLink,
 } from 'react-router-dom';
+import { Tooltip } from 'antd';
 
 import logo from '../assets/images/logo.png';
 
@@ -23,7 +24,11 @@ const AppToolBar = (props) => {
     <div className="tool-bar" id="app_tool_bar">
       <div className="app-title-bar" />
       <div className="logo">
-        <img alt="log" src={logo} />
+        <Tooltip title="About Yosoro" placement="right">
+          <NavLink to="/about">
+            <img alt="log" src={logo} />
+          </NavLink>
+        </Tooltip>
       </div>
       <ul className="menu-list">
         <li className="menu-item">
