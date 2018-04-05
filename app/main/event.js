@@ -5,6 +5,9 @@
 import { ipcMain, BrowserWindow, app, Menu } from 'electron';
 import fs from 'fs';
 import fse from 'fs-extra';
+import Schedule from './schedule';
+
+const schedule = new Schedule();
 
 const dataPath = app.getPath('appData');
 let appDataPath = `${dataPath}/Yosoro`;
@@ -381,5 +384,13 @@ export default function eventListener(menus) {
     } catch (ex) {
       console.warn(ex);
     }
+  });
+
+  ipcMain.on('start-release-schedule', () => {
+    schedule.releaseSchedule();
+  });
+
+  ipcMain.on('stop-release-schedule', () => {
+    schedule.cancelReleases();
   });
 }

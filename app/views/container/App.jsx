@@ -4,21 +4,23 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Router, Route, Switch } from 'react-router-dom';
-import { ipcRenderer } from 'electron';
-import { message } from 'antd';
+import { ipcRenderer, remote } from 'electron';
+import { message, notification } from 'antd';
 import AppToolBar from '../component/AppToolBar';
 import SVG from '../component/SVG';
 import Note from '../component/note/Note';
 import Trash from '../component/trash/Trash';
 import Cloud from '../component/cloud/Cloud';
-import About from '../component/about/About';
+// import About from '../component/about/About';
 // import ImageHosting from '../component/imageHosting/ImgaeHosting';
 
-import { appLounch, FETCHING_ONEDRIVER_TOKEN } from '../actions/app';
+import { appLounch, FETCHING_ONEDRIVER_TOKEN, FETCHING_GITHUB_RELEASES, CLOSE_UPDATE_NOTIFICATION } from '../actions/app';
 import { getProjectList, saveNote } from '../actions/projects';
 
 import '../assets/scss/index.scss';
 import '../assets/scss/themes.scss';
+
+const { shell } = remote;
 
 class App extends Component {
   static displayName = 'App';
@@ -27,6 +29,10 @@ class App extends Component {
     app: PropTypes.shape({
       status: PropTypes.number.isRequired,
       version: PropTypes.string.isRequired,
+      latestVersion: PropTypes.string.isRequired,
+      versionFetchStatus: PropTypes.number.isRequired, // 0: 请求中 1: 请求成功 2: 请求失败
+      showUpdate: PropTypes.bool.isRequired,
+      allowShowUpdate: PropTypes.bool.isRequired,
       settings: PropTypes.shape({
         theme: PropTypes.string.isRequired,
         editorMode: PropTypes.string.isRequired,
@@ -93,11 +99,21 @@ class App extends Component {
       currentProjectName: PropTypes.string.isRequired,
     }).isRequired,
     history: PropTypes.any,
+  };
+
+  constructor() {
+    super();
+    this.state = {
+      updateNotification: false,
+    };
   }
 
   componentDidMount() {
-    this.props.dispatch(appLounch());
-    this.props.dispatch(getProjectList());
+    ipcRenderer.send('start-release-schedule');
+    const { dispatch } = this.props;
+    dispatch(appLounch());
+    dispatch(getProjectList());
+    this.fetchReleases();
     this.listenEvent();
   }
 
@@ -105,13 +121,63 @@ class App extends Component {
     if (this.props.app.oneDriverTokenStatus === 1 && nextProps.app.oneDriverTokenStatus === 3) {
       message.error('One Driver auth failed');
     }
+    if (this.props.app.allowShowUpdate && !nextProps.app.allowShowUpdate) {
+      ipcRenderer.send('stop-release-schedule');
+    }
+  }
+
+  componentDidUpdate() {
+    const { app: { latestVersion, showUpdate, allowShowUpdate } } = this.props;
+    if (allowShowUpdate && showUpdate) {
+      this.updateNotification(latestVersion);
+    }
   }
 
   componentWillUnmount() {
+    if (this.props.app.allowShowUpdate) {
+      ipcRenderer.send('stop-release-schedule');
+    }
     ipcRenderer.removeAllListeners('save-content');
     ipcRenderer.removeAllListeners('onedriver-oauth-reply');
     ipcRenderer.removeAllListeners('start-one-driver-upload-all');
+    ipcRenderer.removeAllListeners('fetch-releases');
   }
+
+  updateNotification = (latestVersion) => {
+    const { updateNotification } = this.state;
+    if (updateNotification) {
+      return false;
+    }
+    const desc = (
+      <div
+        onClick={this.openReleases}
+      >
+        The new version {latestVersion} has been released.
+      </div>
+    );
+    const msg = (
+      <div onClick={this.openReleases}>
+        Update Yosoro
+      </div>
+    );
+    notification.info({
+      message: msg,
+      description: desc,
+      duration: null,
+      className: 'cursor-pointer',
+      onClose: () => {
+        this.props.dispatch({ type: CLOSE_UPDATE_NOTIFICATION });
+        this.setState({
+          updateNotification: false,
+        });
+      },
+    });
+    this.setState({
+      updateNotification: true,
+    });
+  }
+
+  fetchReleases = () => this.props.dispatch({ type: FETCHING_GITHUB_RELEASES });
 
   // 监听
   listenEvent = () => {
@@ -147,11 +213,18 @@ class App extends Component {
         console.warn(args.error);
       }
     });
+    ipcRenderer.on('fetch-releases', () => {
+      this.fetchReleases();
+    });
     // 监听onedriver 同步
     // ipcRenderer.on('start-one-driver-upload-all', () => {
     //   const { app: { oAuthToken: { oneDriver } } } = this.props;
     //   this.props.dispatch({ type: ONEDRIVER_ALL_UPLOAD, tokenInfo: oneDriver });
     // });
+  }
+
+  openReleases = () => {
+    shell.openExternal('https://github.com/IceEnd/Yosoro/releases');
   }
 
   render() {
@@ -202,12 +275,6 @@ class App extends Component {
                 path="/cloud"
                 render={() => (
                   <Cloud driver={driver} dispatch={dispatch} />
-                )}
-              />
-              <Route
-                path="/about"
-                render={() => (
-                  <About app={app} />
                 )}
               />
             </Switch>

@@ -1,7 +1,7 @@
-export default class Common {
+export default class CommonServices {
   constructor() {
     this.apiGitHubRoot = 'https://api.github.com';
-    this.githubRepoAddr = '/IceEnd/Yosoro';
+    this.githubRepoAddr = 'IceEnd/Yosoro';
   }
 
   xhr = (url, method, param) => new Promise((resolve, reject) => {
@@ -35,10 +35,24 @@ export default class Common {
   /**
    * @desc 获取github仓库release列表
    */
-  getRelease = () => {
+  getReleases = () => {
     const { apiGitHubRoot, githubRepoAddr } = this;
-    const url = `${apiGitHubRoot}/repos/${githubRepoAddr}/release`;
+    const url = `${apiGitHubRoot}/repos/${githubRepoAddr}/releases`;
     return this.xhr(url, 'GET');
   }
-}
 
+  getLatestVersion = () => new Promise((resolve, reject) => {
+    this.getReleases()
+      .then((releases) => {
+        if (releases && releases.length > 0) {
+          const latestReleaseName = releases[0].name;
+          resolve(latestReleaseName);
+        } else {
+          throw new Error('Data is invild.');
+        }
+      })
+      .catch((ex) => {
+        reject(ex);
+      });
+  })
+}

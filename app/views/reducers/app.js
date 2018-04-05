@@ -6,18 +6,27 @@ import {
   FETCHING_ONEDRIVER_TOKEN,
   FETCHING_ONEDRIVER_TOKEN_FAILED,
   FETCHING_ONEDRIVER_TOKEN_SUCCESS,
+  FETCHING_GITHUB_RELEASES,
+  FETCHING_GITHUB_RELEASES_FAILED,
+  FETCHING_GITHUB_RELEASES_SUCCESS,
+  CLOSE_UPDATE_NOTIFICATION,
   // ONEDRIVER_ALL_UPLOAD,
   // ONEDRIVER_ALL_UPLOAD_SUCCESS,
   // ONEDRIVER_ALL_UPLOAD_FAILED,
 } from '../actions/app';
 import appInfo from '../../../package.json';
 import { checkDefaults, getAppSettings, setMarkdownSettings, setToken } from '../utils/db/app';
+import { compareVersion } from '../utils/utils';
 
 const assign = Object.assign;
 
 export default function lounchApp(state = {
   status: 0, // 0: app 初始化 1: 初始化成功
   version: '',
+  latestVersion: '',
+  versionFetchStatus: 0, // 0: 请求中 1: 请求成功 2: 请求失败
+  showUpdate: false,
+  allowShowUpdate: true,
   settings: {
     theme: 'light',
     editorMode: 'normal',
@@ -101,6 +110,32 @@ export default function lounchApp(state = {
         oneDriverTokenStatus: 2,
       });
     }
+    case FETCHING_GITHUB_RELEASES:
+      return assign({}, state, {
+        versionFetchStatus: 0,
+        showUpdate: false,
+      });
+    case FETCHING_GITHUB_RELEASES_SUCCESS: {
+      const { latestVersion } = action;
+      const { allowShowUpdate, version } = state;
+      const needUpdate = compareVersion(version, latestVersion);
+      if (allowShowUpdate && needUpdate) {
+        state.showUpdate = true;
+      }
+      return assign({}, state, {
+        latestVersion,
+        versionFetchStatus: 1,
+      });
+    }
+    case FETCHING_GITHUB_RELEASES_FAILED:
+      return assign({}, state, {
+        versionFetchStatus: 2,
+        showUpdate: false,
+      });
+    case CLOSE_UPDATE_NOTIFICATION:
+      return assign({}, state, {
+        allowShowUpdate: false,
+      });
     default:
       return state;
   }

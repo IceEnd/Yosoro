@@ -5,11 +5,16 @@ import {
   FETCHING_ONEDRIVER_TOKEN,
   FETCHING_ONEDRIVER_TOKEN_FAILED,
   FETCHING_ONEDRIVER_TOKEN_SUCCESS,
+  FETCHING_GITHUB_RELEASES,
+  FETCHING_GITHUB_RELEASES_FAILED,
+  FETCHING_GITHUB_RELEASES_SUCCESS,
 } from '../actions/app';
 
 import OneDriver from '../services/OneDriver';
+import CommonServices from '../services/CommonServices';
 
 const oneDriver = new OneDriver();
+const commonServices = new CommonServices();
 
 function* oneDriverToken(action) {
   const { code } = action;
@@ -29,6 +34,20 @@ function* fetchingOneDriverToken() {
   yield takeLatest(FETCHING_ONEDRIVER_TOKEN, oneDriverToken);
 }
 
+function* handleReleaseFetch() {
+  try {
+    const latestVersion = yield call(commonServices.getLatestVersion);
+    yield put({ type: FETCHING_GITHUB_RELEASES_SUCCESS, latestVersion });
+  } catch (ex) {
+    yield put({ type: FETCHING_GITHUB_RELEASES_FAILED, error: ex });
+  }
+}
+
+function* getReleases() {
+  yield takeLatest(FETCHING_GITHUB_RELEASES, handleReleaseFetch);
+}
+
 export default [
   fetchingOneDriverToken,
+  getReleases,
 ];

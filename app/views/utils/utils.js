@@ -45,12 +45,43 @@ export function mergeStateFromStorage(componentName, initState) {
   return Object.assign({}, initState, obj);
 }
 
-// /**
-//  * @description 异步读取文件内容
-//  * @param {String} file - 文件路径
-//  */
-// export function getFileContent(file) {
-//   return Promise((resolve, reject) => {
-//     ipcRenderer.send()
-//   });
-// }
+function formatVersion(string) {
+  const version = string.replace(/\.|v|-beta/ig, '');
+  return parseInt(version, 10);
+}
+
+/**
+ * @desc 比较本地版本号与线上最新版本号
+ * @param {String} localVersion 本地版本
+ * @param {String} latestVersion 线上版本
+ *
+ * @return {Boolean} flag 是否需要更新
+ */
+export function compareVersion(localVersion, latestVersion) {
+  if (localVersion === latestVersion) { // 不需要更新
+    return false;
+  }
+  let localBeta = false;
+  let latestBeta = false;
+  if (/-beta/ig.test(localVersion)) {
+    localBeta = true;
+  }
+  if (/-beta/ig.test(latestVersion)) {
+    latestBeta = true;
+  }
+  const localFormatVersion = formatVersion(localVersion);
+  const latestFormatVersion = formatVersion(latestVersion);
+  if (localFormatVersion === latestFormatVersion && localBeta && !latestBeta) { // 本地是测试版本
+    return true;
+  }
+  if (localFormatVersion === latestFormatVersion && !localBeta && latestBeta) { // 线上是测试版本
+    return false;
+  }
+  if (localFormatVersion >= latestFormatVersion) {
+    return false;
+  }
+  if (localFormatVersion < latestFormatVersion) {
+    return true;
+  }
+  return false;
+}
