@@ -115,6 +115,16 @@ export default class Files extends Component {
     ipcRenderer.on('upload-note-onedriver', () => {
       this.handleUpload();
     });
+    // 收集将要导出的笔记的信息
+    ipcRenderer.on('export-get-note-info', (event, type) => {
+      const { projectName } = this.props;
+      const { name } = this.state.contextNote;
+      ipcRenderer.send('export-note', {
+        projectName,
+        fileName: name,
+        type,
+      });
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -159,6 +169,7 @@ export default class Files extends Component {
     ipcRenderer.removeAllListeners('rename-note');
     ipcRenderer.removeAllListeners('node-add-desc');
     ipcRenderer.removeAllListeners('upload-note-onedriver');
+    ipcRenderer.removeAllListeners('export-get-note-info');
     ipcRenderer.send('file-new-enbaled', {
       type: 'new-note',
       flag: false,

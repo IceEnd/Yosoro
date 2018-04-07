@@ -24,7 +24,7 @@ function getMemuTemplete(mainWindow) {
       accelerator: 'CmdOrCtrl+N',
       enabled: false,
       // role: 'new file',
-      click: () => mainWindow.webContents.send('new-file', 1),
+      click: () => mainWindow.webContents.send('new-file'),
     }, {
       label: 'New Project',
       accelerator: 'Shift+CmdOrCtrl+N',
@@ -321,6 +321,19 @@ export function getExplorerFileItemMenu(mainWindow) {
   menu.append(new MenuItem({
     label: 'Upload to OneDriver',
     click: () => mainWindow.webContents.send('upload-note-onedriver'),
+  }));
+  menu.append(new MenuItem({
+    type: 'separator',
+  }));
+  menu.append(new MenuItem({
+    label: 'Export as',
+    submenu: [{
+      label: 'Markdown',
+      click: () => mainWindow.webContents.send('export-get-note-info', 'md'),
+    }, {
+      label: 'HTML',
+      click: () => mainWindow.webContents.send('export-get-note-info', 'html'),
+    }],
   }));
   return menu;
 }

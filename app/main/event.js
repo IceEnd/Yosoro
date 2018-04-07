@@ -2,10 +2,37 @@
  * @description 主进程事件监听
  */
 
-import { ipcMain, BrowserWindow, app, Menu } from 'electron';
+import { ipcMain, BrowserWindow, app, Menu, dialog } from 'electron';
 import fs from 'fs';
 import fse from 'fs-extra';
+import marked from 'marked';
 import Schedule from './schedule';
+
+const renderer = new marked.Renderer();
+
+renderer.listitem = function (text) {
+  let res = text;
+  if (/^\s*\[[x ]\]\s*/.test(text)) {
+    res = text.replace(/^\s*\[ \]\s*/, '<input class="task-list-item-checkbox" type="checkbox" disabled></input> ').replace(/^\s*\[x\]\s*/, '<input class="task-list-item-checkbox" checked disabled type="checkbox"></input> ');
+    return `<li class="task-list-li">${res}</li>`;
+  }
+  return `<li>${text}</li>`;
+};
+
+marked.setOptions({
+  renderer,
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false,
+  smartLists: true,
+  smartypants: false,
+  highlight: (code) => {
+    const value = require('../views/utils/highlight.min.js').highlightAuto(code).value;
+    return value;
+  },
+});
 
 const schedule = new Schedule();
 
@@ -392,5 +419,44 @@ export default function eventListener(menus) {
 
   ipcMain.on('stop-release-schedule', () => {
     schedule.cancelReleases();
+  });
+
+  ipcMain.on('export-note', (events, args) => {
+    const { projectName, fileName, type, data } = args;
+    const filePath = `${projectsPath}/${projectName}/${fileName}.md`;
+    try {
+      let content;
+      if (data) {
+        content = data;
+      } else {
+        content = fs.readFileSync(filePath, {
+          encoding: 'utf8',
+        });
+      }
+      let title = '';
+      if (type === 'md') {
+        title = 'Export as Markdown';
+      } else if (type === 'html') {
+        title = 'Export as Html';
+        if (!data) {
+          content = marked(content);
+        }
+      }
+      const options = {
+        title,
+        defaultPath: `${app.getPath('desktop')}/${fileName}.${type}`,
+      };
+      dialog.showSaveDialog(options, (filename) => {
+        const extension = `.${type}$`;
+        const reg = new RegExp(extension, 'ig');
+        let file = filename;
+        if (!reg.test(filename)) {
+          file += `.${type}`;
+        }
+        fs.writeFileSync(file, content);
+      });
+    } catch (error) {
+      console.warn(error);
+    }
   });
 }

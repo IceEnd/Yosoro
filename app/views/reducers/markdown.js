@@ -1,4 +1,3 @@
-import marked from 'marked';
 import { ipcRenderer } from 'electron';
 import {
   READ_FILE,
@@ -14,32 +13,7 @@ import {
   // READ_FILE_FARILED,
 } from '../actions/markdown';
 import { updateNoteInfo } from '../utils/db/app';
-
-const renderer = new marked.Renderer();
-
-renderer.listitem = function (text) {
-  let res = text;
-  if (/^\s*\[[x ]\]\s*/.test(text)) {
-    res = text.replace(/^\s*\[ \]\s*/, '<input class="task-list-item-checkbox" type="checkbox" disabled></input> ').replace(/^\s*\[x\]\s*/, '<input class="task-list-item-checkbox" checked disabled type="checkbox"></input> ');
-    return `<li class="task-list-li">${res}</li>`;
-  }
-  return `<li>${text}</li>`;
-};
-
-marked.setOptions({
-  renderer,
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: false,
-  smartLists: true,
-  smartypants: false,
-  highlight: (code) => {
-    const value = require('../utils/highlight.min.js').highlightAuto(code).value;
-    return value;
-  },
-});
+import { markedToHtml } from '../utils/utils';
 
 const assign = Object.assign;
 
@@ -63,7 +37,7 @@ function updateMarkdown(state = initState, action) {
   switch (action.type) {
     case READ_FILE: {
       const info = action.param;
-      const html = marked(info.content);
+      const html = markedToHtml(info.content);
       info.html = html;
       // let uploadStatus = 0;
       // if (info.oneDriver === 2) {
@@ -77,7 +51,7 @@ function updateMarkdown(state = initState, action) {
       });
     }
     case UPDATE_MARKDOWN_HTML: {
-      const html = marked(action.content);
+      const html = markedToHtml(action.content);
       return assign({}, state, {
         content: action.content,
         html,

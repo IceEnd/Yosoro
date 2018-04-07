@@ -1,4 +1,31 @@
 // import { ipcRenderer } from 'electron';
+import marked from 'marked';
+
+const renderer = new marked.Renderer();
+
+renderer.listitem = function (text) {
+  let res = text;
+  if (/^\s*\[[x ]\]\s*/.test(text)) {
+    res = text.replace(/^\s*\[ \]\s*/, '<input class="task-list-item-checkbox" type="checkbox" disabled></input> ').replace(/^\s*\[x\]\s*/, '<input class="task-list-item-checkbox" checked disabled type="checkbox"></input> ');
+    return `<li class="task-list-li">${res}</li>`;
+  }
+  return `<li>${text}</li>`;
+};
+
+marked.setOptions({
+  renderer,
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false,
+  smartLists: true,
+  smartypants: false,
+  highlight: (code) => {
+    const value = require('./highlight.min.js').highlightAuto(code).value;
+    return value;
+  },
+});
 
 function formatNumber(number) {
   if (number < 10) {
@@ -84,4 +111,8 @@ export function compareVersion(localVersion, latestVersion) {
     return true;
   }
   return false;
+}
+
+export function markedToHtml(string) {
+  return marked(string);
 }

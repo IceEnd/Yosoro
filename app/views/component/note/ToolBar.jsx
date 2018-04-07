@@ -1,6 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Tooltip } from 'antd';
+import { ipcRenderer } from 'electron';
+import { Icon, Tooltip, Menu, Dropdown } from 'antd';
 import Search from '../share/search/Search';
 import { searchNotes, clearSearchNotes, UPLOAD_NOTE_ONEDRIVER } from '../../actions/projects';
 import { pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
@@ -112,8 +113,46 @@ export default class Tool extends PureComponent {
     });
   }
 
+  handleExport = ({ key }) => {
+    const { content, name, html } = this.props.markdown;
+    let data;
+    if (key === 'md') {
+      data = content;
+    } else if (key === 'html') {
+      data = html;
+    }
+    ipcRenderer.send('export-note', {
+      content,
+      html,
+      type: key,
+      fileName: name,
+      data,
+    });
+  }
+
   renderIcon = (type, desc) => {
     const { markdown: { uploadStatus } } = this.props;
+    if (type === 'export') {
+      const menu = (
+        <Menu onClick={this.handleExport}>
+          <Menu.Item key="md">Markdown</Menu.Item>
+          <Menu.Item key="html">Html</Menu.Item>
+        </Menu>
+      );
+      return (
+        <Dropdown
+          overlay={menu}
+          placement="bottomCenter"
+        >
+          <span
+            className="tools-item font-icon"
+            onClick={() => this.handleClick(type)}
+          >
+            <Icon type={type} />
+          </span>
+        </Dropdown>
+      );
+    }
     return (
       <span
         className="tools-item font-icon"
@@ -176,6 +215,7 @@ export default class Tool extends PureComponent {
               {this.renderIcon('tag')}
               {this.renderIcon('arrows-alt')} */}
               {/* {this.renderIcon('arrows-alt')} */}
+              {this.renderIcon('export', 'export')}
               {this.renderEditModalIcon()}
             </div>
           </Fragment>
