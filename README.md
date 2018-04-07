@@ -23,6 +23,10 @@ The latest version of Yosoro for macOS, linux and Windows is avalibale [here](ht
 - Support Markdown syntax
 - Delete & Restore
 - Synchronize with Cloud Driver(oneDriver is supported)
+- Note export as markdown or html
+- Update Natification
+
+You can read the [CHANGELOG](./CHANGELOG.md) to get more information.
 
 ## Screenshots
 
