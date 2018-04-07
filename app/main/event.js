@@ -408,6 +408,7 @@ export default function eventListener(menus) {
           menu.items[itemIndex].submenu.items[3].enabled = flag;
         }
       }
+      Menu.setApplicationMenu(menu);
     } catch (ex) {
       console.warn(ex);
     }
