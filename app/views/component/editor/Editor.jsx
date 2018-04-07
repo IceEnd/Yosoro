@@ -137,6 +137,11 @@ export default class Editor extends Component {
     this.props.setPreiewScrollRatio(lines / lineAmount);
   }
 
+  // 全选后windows下无法点击取消全选
+  handleEditorMouseDown = (e) => {
+    e.target.selectionEnd = 0;
+  }
+
   handleMouseDown = () => {
     this.props.setDrag(true);
   }
@@ -181,6 +186,7 @@ export default class Editor extends Component {
             onKeyDown={this.handleKeyDown}
             onScroll={this.handleScroll}
             onClick={this.handleClick}
+            onMouseDown={this.handleEditorMouseDown}
             ref={node => (this.editor = node)}
           />
         </div>
