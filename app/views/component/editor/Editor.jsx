@@ -189,7 +189,7 @@ export default class Editor extends Component {
     return (
       <div
         className={`editor-root ${rootClass} ${noBorder} ${drag ? 'drag' : ''}`}
-        style={{ width }}
+        style={{ flexBasis: width }}
         ref={node => (this.editorRoot = node)}
       >
         <div

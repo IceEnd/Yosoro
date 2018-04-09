@@ -447,10 +447,10 @@
 	.editor-root {
 		position: relative;
 		flex: 0 0 auto;
-		width: 50%;
+		width: 0;
 		border-right: 1px solid #d9d9d9;
 		min-width: 10rem;
-		transition: width ease 0.5s;
+		transition: width, flex-basis ease 0.5s;
 		background-color: rgba(248, 248, 248, 1);
 		overflow: hidden;
 

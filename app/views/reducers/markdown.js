@@ -51,7 +51,7 @@ function updateMarkdown(state = initState, action) {
       });
     }
     case UPDATE_MARKDOWN_HTML: {
-      let hasEdit = false;
+      let hasEdit = true;
       const html = markedToHtml(action.content);
       if (state.uuid !== action.uuid) {
         hasEdit = false;
