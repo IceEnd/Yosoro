@@ -40,7 +40,7 @@ You can read the [CHANGELOG](./CHANGELOG.md) to get more information.
 
 ### linux
 
-![screenshot-linux](https://s1.ax1x.com/2018/04/09/CF9cdO.md.png)
+![screenshot-linux](https://s1.ax1x.com/2018/04/09/CF9cdO.png)
 
 ## License
 
