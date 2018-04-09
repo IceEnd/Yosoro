@@ -1,13 +1,19 @@
 # CHANGELOG
 
+## v1.0.2
+
+### New Features
+
+- Use CodeMirror
+
 ----
 
-## v1.0.0
+## v1.0.1
 
-### New Feature
+### New Features
 
 - Add Update Natification
-- Note export as mardown or html
+- Note export as markdown or html
 - Disable menu items are set in grey
 
 ### Bugfix
@@ -20,7 +26,7 @@
 
 ## v1.0.0
 
-### Feature
+### Features
 
 - Create notebook & Write note
 - Support Markdown syntax

@@ -32,15 +32,15 @@ You can read the [CHANGELOG](./CHANGELOG.md) to get more information.
 
 ### macOS
 
-![screenshot-osx](./screenshot/osx.png)
+![screenshot-osx](https://s1.ax1x.com/2018/04/09/CFSAfA.png)
 
 ### Windows
 
-![screenshot-windows](./screenshot/win.png)
+![screenshot-windows](https://s1.ax1x.com/2018/04/09/CF96eK.png)
 
 ### linux
 
-![screenshot-linux](./screenshot/linux.png)
+![screenshot-linux](https://s1.ax1x.com/2018/04/09/CF9cdO.md.png)
 
 ## License
 
