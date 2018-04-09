@@ -121,7 +121,8 @@ export default class Editor extends Component {
     });
     this.codeMirror.on('change', (cm) => {
       const content = cm.getValue();
-      this.props.dispatch(updateMarkdownHtml(content, -1));
+      const { uuid } = this.props;
+      this.props.dispatch(updateMarkdownHtml(content, uuid, -1));
     });
     this.codeMirror.on('scroll', this.handleScroll);
     this.codeMirror.on('keydown', this.handleKeyDown);
@@ -156,11 +157,6 @@ export default class Editor extends Component {
     });
     const ratio = this.getRatio(cm);
     this.props.setPreiewScrollRatio(ratio);
-  }
-
-  // 全选后windows下无法点击取消全选
-  handleEditorMouseDown = (e) => {
-    e.target.selectionEnd = 0;
   }
 
   handleMouseDown = () => {

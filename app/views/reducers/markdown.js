@@ -51,12 +51,16 @@ function updateMarkdown(state = initState, action) {
       });
     }
     case UPDATE_MARKDOWN_HTML: {
+      let hasEdit = false;
       const html = markedToHtml(action.content);
+      if (state.uuid !== action.uuid) {
+        hasEdit = false;
+      }
       return assign({}, state, {
         content: action.content,
         html,
         start: action.start,
-        hasEdit: true,
+        hasEdit,
       });
     }
     case BEFORE_SWITCH_SAVE: { // 切换笔记前保存当前笔记

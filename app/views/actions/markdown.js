@@ -9,10 +9,11 @@ export function readFile(param) {
 
 export const UPDATE_MARKDOWN_HTML = 'UPDATE_MARKDOWN_HTML';
 
-export function updateMarkdownHtml(content, start) {
+export function updateMarkdownHtml(content, uuid, start) {
   return {
     type: UPDATE_MARKDOWN_HTML,
     content,
+    uuid,
     start,
   };
 }
