@@ -1,7 +1,7 @@
 <p align="center">
   <img src="./app/views/assets/images/logo.png" width="200"/>
   <h3 align="center">Yosoro</h3>
-  <p align="center">Moe Cloud Driver Markdown NoteBook Desktop App</p>
+  <p align="center">Beautiful Cloud Driver Markdown NoteBook Desktop App</p>
   <p align="center">
     <img src="https://img.shields.io/badge/platform-masOS%20%7C%20Linux%20%7C%20Windows-lightgrey.svg" />
   </p>

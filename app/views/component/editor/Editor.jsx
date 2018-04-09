@@ -1,5 +1,9 @@
+import 'codemirror/lib/codemirror.css';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import CodeMirror from 'codemirror';
+import 'codemirror/addon/fold/markdown-fold';
+import 'codemirror/mode/markdown/markdown';
 import { updateMarkdownHtml } from '../../actions/markdown';
 // import { appMarkdownAdjust } from '../../actions/app';
 
@@ -7,6 +11,7 @@ export default class Editor extends Component {
   static displayName = 'MarkdownEditor';
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    uuid: PropTypes.string.isRequired,
     defaultContent: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
     editorWidth: PropTypes.string.isRequired,
@@ -19,6 +24,7 @@ export default class Editor extends Component {
 
   constructor(props) {
     super(props);
+    this.codeMirror = null;
     const textWidth = this.getTextWidth(props);
     this.state = {
       content: props.defaultContent,
@@ -30,6 +36,7 @@ export default class Editor extends Component {
   componentDidMount() {
     this.noteRoot = document.getElementById('note_root_cont');
     window.addEventListener('resize', this.onWindowResize);
+    this.setCodeMirror();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -38,6 +45,9 @@ export default class Editor extends Component {
       content: nextProps.defaultContent,
       textWidth,
     });
+    if (this.props.uuid !== nextProps.uuid) {
+      this.codeMirror.setValue(nextProps.defaultContent);
+    }
   }
 
   componentDidUpdate() {
@@ -50,6 +60,7 @@ export default class Editor extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onWindowResize);
+    this.deleteCodeMirror();
   }
 
   onWindowResize = () => {
@@ -92,7 +103,34 @@ export default class Editor extends Component {
     return '100%';
   }
 
-  handleScroll = () => {
+  getRatio = (cm) => {
+    const currentLine = cm.getCursor().line;
+    const lines = cm.lineCount();
+    return currentLine / lines;
+  }
+
+  setCodeMirror = () => {
+    this.codeMirror = CodeMirror(this.container, {
+      value: this.state.content,
+      mode: 'markdown',
+      lineNumbers: true,
+      lineWrapping: true,
+      // extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
+      foldGutter: true,
+      gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+    });
+    this.codeMirror.on('change', (cm) => {
+      const content = cm.getValue();
+      this.props.dispatch(updateMarkdownHtml(content, -1));
+    });
+    this.codeMirror.on('scroll', this.handleScroll);
+    this.codeMirror.on('keydown', this.handleKeyDown);
+    this.codeMirror.on('focus', this.handleFocus);
+  }
+
+  deleteCodeMirror = () => {this.codeMirror = null;}
+
+  handleScroll = (cm) => {
     const { listenScroll } = this.state;
     if (!listenScroll) {
       this.setState({
@@ -100,41 +138,24 @@ export default class Editor extends Component {
       });
       return false;
     }
-    const heigth = this.editor.scrollHeight;
-    const ratio = this.editor.scrollTop / heigth;
+    const element = cm.getScrollerElement();
+    const heigth = element.scrollHeight;
+    const ratio = element.scrollTop / heigth;
     this.props.setPreiewScrollRatio(ratio);
   }
 
-  handleChange = (e) => {
-    const content = e.target.value;
-    this.props.dispatch(updateMarkdownHtml(content, -1));
+  handleFocus = (cm) => {
+    const currentLine = cm.getCursor().line;
+    const lines = cm.lineCount();
+    this.props.setPreiewScrollRatio(currentLine / lines);
   }
 
-  handleClick = (e) => {
-    const { content } = this.state;
-    const start = e.target.selectionStart;
-    const lines = content.substr(0, start).split('\n').length - 1;
-    const lineAmount = content.split('\n').length;
-    this.props.setPreiewScrollRatio(lines / lineAmount);
-  }
-
-  handleKeyDown = (e) => {
-    if (e.keyCode === 9) { // 制表符
-      e.preventDefault();
-      const val = e.target.value;
-      const start = e.target.selectionStart;
-      const end = e.target.selectionEnd;
-      const content = `${val.substring(0, start)}\t${val.substring(end)}`;
-      this.props.dispatch(updateMarkdownHtml(content, start));
-    }
+  handleKeyDown = (cm) => {
     this.setState({
       listenScroll: false,
     });
-    const { content } = this.state;
-    const start = e.target.selectionStart;
-    const lines = content.substr(0, start).split('\n').length - 1;
-    const lineAmount = content.split('\n').length;
-    this.props.setPreiewScrollRatio(lines / lineAmount);
+    const ratio = this.getRatio(cm);
+    this.props.setPreiewScrollRatio(ratio);
   }
 
   // 全选后windows下无法点击取消全选
@@ -151,7 +172,7 @@ export default class Editor extends Component {
   }
 
   render() {
-    const { content, textWidth } = this.state;
+    const { textWidth } = this.state;
     const { editorWidth, editorMode, drag } = this.props;
     let width = editorWidth;
     let rootClass = '';
@@ -177,19 +198,8 @@ export default class Editor extends Component {
       >
         <div
           style={{ width: textWidth, height: '100%' }}
-        >
-          <textarea
-            className="text"
-            placeholder="write something..."
-            value={content}
-            onChange={this.handleChange}
-            onKeyDown={this.handleKeyDown}
-            onScroll={this.handleScroll}
-            onClick={this.handleClick}
-            onMouseDown={this.handleEditorMouseDown}
-            ref={node => (this.editor = node)}
-          />
-        </div>
+          ref={node => (this.container = node)}
+        />
         { split ? (
           <span
             className="resize-right"

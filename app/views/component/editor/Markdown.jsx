@@ -109,7 +109,7 @@ export default class Markdown extends Component {
   }
 
   render() {
-    const { markdown: { content, status, html, start }, dispatch, editorMode } = this.props;
+    const { markdown: { content, status, html, start, uuid }, dispatch, editorMode } = this.props;
     const { editorWidth, drag, editorWidthValue } = this.state;
     if (status === 0) {
       return null;
@@ -125,6 +125,7 @@ export default class Markdown extends Component {
           ref={node => (this.root = node)}
         >
           <Editor
+            uuid={uuid}
             setDrag={this.setDrag}
             defaultContent={content}
             dispatch={dispatch}

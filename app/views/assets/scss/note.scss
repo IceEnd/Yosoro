@@ -473,6 +473,7 @@
 		}
 
 		.resize-right {
+      z-index: 9999;
 			position: absolute;
 			width: 1rem;
 			height: 100%;
@@ -515,7 +516,11 @@
 				-webkit-box-shadow: none;
 				box-shadow: none;
 			}
-		}
+    }
+
+    .CodeMirror {
+      height: 100%;
+    }
 	}
 }
 
