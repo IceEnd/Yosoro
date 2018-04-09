@@ -454,6 +454,10 @@
 		background-color: rgba(248, 248, 248, 1);
 		overflow: hidden;
 
+		.CodeMirror {
+			background-color: #f8f8f8;
+		}
+
 		&.drag {
 			// transition: width ease 0s;
 			transition: width, flex, flex-basis ease 0s;
