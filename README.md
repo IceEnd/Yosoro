@@ -28,6 +28,16 @@ The latest version of Yosoro for macOS, linux and Windows is avalibale [here](ht
 
 You can read the [CHANGELOG](./CHANGELOG.md) to get more information.
 
+## Demo
+
+### Writing Notes
+
+![write](https://s1.ax1x.com/2018/04/10/CFjzuT.gif)
+
+### File Syncing
+
+![sync](https://s1.ax1x.com/2018/04/10/CFvA81.gif)
+
 ## Screenshots
 
 ### macOS
