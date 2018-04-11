@@ -112,7 +112,7 @@ export default class Files extends Component {
         }
       });
     });
-    ipcRenderer.on('upload-note-onedriver', () => {
+    ipcRenderer.on('upload-note-onedrive', () => {
       this.handleUpload();
     });
     // 收集将要导出的笔记的信息
@@ -168,7 +168,7 @@ export default class Files extends Component {
     ipcRenderer.removeAllListeners('delete-note');
     ipcRenderer.removeAllListeners('rename-note');
     ipcRenderer.removeAllListeners('node-add-desc');
-    ipcRenderer.removeAllListeners('upload-note-onedriver');
+    ipcRenderer.removeAllListeners('upload-note-onedrive');
     ipcRenderer.removeAllListeners('export-get-note-info');
     ipcRenderer.send('file-new-enbaled', {
       type: 'new-note',

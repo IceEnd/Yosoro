@@ -10,7 +10,7 @@ import {
   DRIVE_DOWNLOAD_NOTE_SUCCESS,
   DRIVE_DOWNLOAD_NOTE_FAILED,
   DRIVE_DELETE_NOTE,
-  DRIVRE_DELETE_NOTE_SUCCESS,
+  DRIVE_DELETE_NOTE_SUCCESS,
   DRIVE_DELETE_NOTE_FAILED,
 } from '../actions/drive';
 
@@ -72,7 +72,7 @@ function updateDriver(state = {
       return assign({}, state, {
         status: 0,
       });
-    case DRIVRE_DELETE_NOTE_SUCCESS:
+    case DRIVE_DELETE_NOTE_SUCCESS:
     case DRIVE_DELETE_NOTE_FAILED:
       return assign({}, state, {
         status: 1,

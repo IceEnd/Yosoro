@@ -203,7 +203,7 @@ class App extends Component {
       }
     });
     // 监听oneDriver 返回token
-    ipcRenderer.on('onedriver-oauth-code-reply', (event, args) => {
+    ipcRenderer.on('onedrive-oauth-code-reply', (event, args) => {
       if (args.success) {
         this.props.dispatch({
           type: FETCHING_ONEDRIVE_TOKEN,
