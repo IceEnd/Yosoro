@@ -59,6 +59,11 @@ export default class Project extends Component {
     ipcRenderer.on('delete-project', () => { // 删除项目
       const { dispatch, currentUuid, projectName } = this.props;
       const { uuid, name } = this.state.contextProject;
+      if (uuid === currentUuid) {
+        dispatch(beforeSwitchSave(projectName));
+        dispatch(clearMarkdown());
+        dispatch(clearWorkspace());
+      }
       const data = ipcRenderer.sendSync('move-project-to-trash', {
         name,
       });
@@ -67,11 +72,6 @@ export default class Project extends Component {
         return false;
       }
       // const newfolder = data.folder;
-      if (uuid === currentUuid) {
-        dispatch(beforeSwitchSave(projectName));
-        dispatch(clearMarkdown());
-        dispatch(clearWorkspace());
-      }
       dispatch(trashBack());
       dispatch(deleteProject(uuid, projectName));
     });
@@ -202,6 +202,15 @@ export default class Project extends Component {
   }
 
   createProject = (name) => {
+    const arr = this.props.projects.filter(item => item.name === name);
+    if (arr.length !== 0) {
+      message.error('Name repeat.');
+      this.setState({
+        newProject: false,
+        newProjectTitle: 'New Project',
+      });
+      return false;
+    }
     const folderData = ipcRenderer.sendSync('create-project', name); // 创建文件夹
     if (!folderData.success) {
       const error = folderData.error;

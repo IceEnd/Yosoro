@@ -287,18 +287,22 @@ export default class Files extends Component {
    */
   createFile = () => {
     const name = this.state.newFileTitle || 'New Note';
-    const { parentsId, projectName } = this.props;
+    const { parentsId, projectName, notes } = this.props;
+    const arr = notes.filter(item => item.name === name);
+    if (arr.length !== 0) {
+      message.error('File is exists.');
+      this.setState({
+        newFile: false,
+        newFileTitle: 'New Note',
+      });
+      return false;
+    }
     const fileData = ipcRenderer.sendSync('create-file', {
       name,
       projectName,
     });
     if (!fileData.success) {
-      const error = fileData.error;
-      if (error.errno === -10000) {
-        message.error('File is exists.');
-      } else {
-        message.error('Create file failed.');
-      }
+      message.error('Create file failed.');
       this.setState({
         newFile: false,
         newFileTitle: 'New Note',

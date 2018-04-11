@@ -76,9 +76,10 @@ export default function eventListener(menus) {
   ipcMain.on('create-project', (event, args) => {
     const name = args;
     const folder = `${projectsPath}/${name}`;
-    // const folder = path.join(__dirname, `../documents/projects/${name}`);
     try {
-      // createInitWorkSpace();
+      if (fs.existsSync(folder)) {
+        fse.removeSync(folder);
+      }
       fs.mkdirSync(folder);
       event.returnValue = {
         folder,
@@ -94,8 +95,6 @@ export default function eventListener(menus) {
 
   ipcMain.on('rename-project', (event, args) => {
     const { oldName, newName } = args;
-    // const oldfolder = path.join(__dirname, `../documents/projects/${oldName}`);
-    // const newfolder = path.join(__dirname, `../documents/projects/${newName}`);
     const oldfolder = `${projectsPath}/${oldName}`;
     const newfolder = `${projectsPath}/${newName}`;
     const oldTrashFolder = `${trashPath}/${oldName}`;
@@ -131,9 +130,11 @@ export default function eventListener(menus) {
           const fileName = files[i];
           fse.moveSync(`${oldPath}/${fileName}`, `${newPath}/${fileName}`, { overwrite: true });
         }
-        fs.rmdirSync(oldPath);
       } else {
         fse.moveSync(oldPath, newPath, { overwrite: true });
+      }
+      if (fs.existsSync(oldPath)) {
+        fs.rmdirSync(oldPath);
       }
       event.returnValue = {
         success: true,
@@ -152,21 +153,11 @@ export default function eventListener(menus) {
     const { name, projectName } = args;
     const file = `${projectsPath}/${projectName}/${name}.md`;
     try {
-      const exists = fs.existsSync(file);
-      if (exists) { // 文件存在
-        event.returnValue = {
-          success: false,
-          error: {
-            errno: -10000,
-          },
-        };
-      } else {
-        fs.writeFileSync(file, '');
-        event.returnValue = {
-          file,
-          success: true,
-        };
-      }
+      fs.writeFileSync(file, '');
+      event.returnValue = {
+        file,
+        success: true,
+      };
     } catch (ex) {
       event.returnValue = {
         success: false,
@@ -178,8 +169,6 @@ export default function eventListener(menus) {
   // 重命名笔记标题
   ipcMain.on('rename-note', (event, args) => {
     const { oldName, newName, projectName } = args;
-    // const oldPath = `${folder}/${oldName}.md`;
-    // const newPath = `${folder}/${newName}.md`;
     const oldPath = `${projectsPath}/${projectName}/${oldName}.md`;
     const newPath = `${projectsPath}/${projectName}/${newName}.md`;
     try {
@@ -257,9 +246,6 @@ export default function eventListener(menus) {
   // 将笔记移动到废纸篓中
   ipcMain.on('move-file-to-trash', (event, args) => {
     const { name, projectName } = args;
-    // const oldPath = `${folder}/${name}.md`;
-    // const newPath = path.join(__dirname, `../documents/trash/${projectName}/${name}.md`);
-    // const newfolder = path.join(__dirname, `../documents/trash/${projectName}`);
     const oldPath = `${projectsPath}/${projectName}/${name}.md`;
     const newPath = `${trashPath}/${projectName}/${name}.md`;
     const newfolder = `${trashPath}/${projectName}`;

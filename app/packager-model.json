@@ -1,7 +1,7 @@
 {
   "name": "yosoro-desktop",
   "productName": "yosoro",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Beautiful Cloud Driver Markdown NoteBook Desktop App, based on React, Redux, Webpack, React Hot Loader for rapid application development",
   "main": "./main.js",
   "repository": {
@@ -14,8 +14,16 @@
     "url": "https://github.com/IceEnd"
   },
   "scripts": {
-    "electron-rebuild": "node -r babel-register ../internals/scripts/ElectronRebuild.js",
-    "postinstall": "npm run electron-rebuild"
+    "dev:electron-main": "cross-env NODE_ENV='development' electron -r babel-register ./app/main/",
+    "dev:electron-render": "cross-env NODE_ENV='development' webpack-dev-server --config config/webpack.config.babel.js --no-info --colors --inline",
+    "build:web": "cross-env NODE_ENV='production' gulp --gulpfile config/gulp.babel.js --cwd . --mode web",
+    "build:electron": "cross-env NODE_ENV='production' gulp --gulpfile config/gulp.babel.js --cwd . --mode electron",
+    "build:all": "cross-env NODE_ENV='production' gulp --gulpfile config/gulp.babel.js --cwd . --mode all",
+    "packager:mac": "electron-packager ./lib Yosoro --overwrite --platform=darwin --arch=x64 --out=out --icon=assets/icons/osx/app.icns",
+    "packager:win": "electron-packager ./lib Yosoro --overwrite --platform=win32 --arch=ia32 --out=out --icon=D:assets/icons/win/app.ico",
+    "packager:linux": "electron-packager ./lib Yosoro --overwrite --platform=linux --arch=x64 --out=out",
+    "lint": "concurrently \"eslint app config --ext .js,.jsx\" \"sass-lint -v -q\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "mac": {
     "icon": "asstes/icons/osx/app.icns"
@@ -23,5 +31,5 @@
   "win": {
     "icon": "asstes/icons/win/app.ico"
   },
-  "license": "BSD-4"
+  "license": "GPL-3.0"
 }
