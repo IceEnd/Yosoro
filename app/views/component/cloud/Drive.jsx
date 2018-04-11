@@ -1,15 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Spin, Breadcrumb, message, Icon, Tooltip } from 'antd';
-import { DRIVER_FETCHING_PROJECTS, DRIVER_FETCHING_NOTES, DRIVER_BACK_ROOT, DRIVER_DOWNLOAD_NOTE } from '../../actions/driver';
+import { Spin, Breadcrumb, message, Icon, Tooltip, Modal } from 'antd';
+import { DRIVE_FETCHING_PROJECTS, DRIVE_FETCHING_NOTES, DRIVE_BACK_ROOT, DRIVE_DOWNLOAD_NOTE } from '../../actions/drive';
 import { getTokens } from '../../utils/db/app';
 
-export default class Driver extends Component {
-  static displayName = 'CloudDriver';
+const confirm = Modal.confirm;
+
+export default class Drive extends Component {
+  static displayName = 'CloudDrive';
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     match: PropTypes.any.isRequired,
-    driver: PropTypes.shape({
+    drive: PropTypes.shape({
       status: PropTypes.number.isRequired,
       projects: PropTypes.array.isRequired,
       notes: PropTypes.array.isRequired,
@@ -22,7 +24,7 @@ export default class Driver extends Component {
     this.state = {
       show: false,
       hasAuth: false,
-      driverName: '',
+      driveName: '',
       loadingText: 'Loading',
     };
   }
@@ -36,20 +38,21 @@ export default class Driver extends Component {
     hasAuth: flag,
   });
 
-  setDriverName = name => this.setState({
-    driverName: name,
+  setDriveName = name => this.setState({
+    driveName: name,
   });
 
   checkOAuth = () => {
-    const driver = this.props.match.params.driver;
-    const { dispatch, driver: { currentProjectName } } = this.props;
+    let drive = this.props.match.params.drive;
+    const { dispatch, drive: { currentProjectName } } = this.props;
     const oAuth = getTokens();
     let auth;
-    if (driver === 'onedriver') {
+    if (drive === 'onedrive') {
+      drive = 'onedriver';
       auth = oAuth.oneDriver;
-      this.setDriverName('One Driver');
+      this.setDriveName('One Drive');
     } else {
-      message.error('Not support this cloud driver');
+      message.error('Not support this cloud drive');
       return false;
     }
     if (auth.token && auth.refreshToken) { // 已经授权
@@ -59,14 +62,14 @@ export default class Driver extends Component {
       });
       if (currentProjectName) {
         this.props.dispatch({
-          type: DRIVER_FETCHING_NOTES,
+          type: DRIVE_FETCHING_NOTES,
           folder: currentProjectName,
-          driverName: driver,
+          driveName: drive,
         });
       } else {
         dispatch({
-          type: DRIVER_FETCHING_PROJECTS,
-          driverName: driver,
+          type: DRIVE_FETCHING_PROJECTS,
+          driveName: drive,
         });
       }
     } else {
@@ -78,56 +81,85 @@ export default class Driver extends Component {
     this.setState({
       loadingText: 'Loading...',
     });
+    let driveName = this.props.match.params.drive;
+    if (driveName === 'onedrive') {
+      driveName = 'onedriver';
+    }
     this.props.dispatch({
-      type: DRIVER_FETCHING_NOTES,
+      type: DRIVE_FETCHING_NOTES,
       folder,
-      driverName: this.props.match.params.driver,
+      driveName,
     });
   }
 
   backRoot = () => {
     this.props.dispatch({
-      type: DRIVER_BACK_ROOT,
+      type: DRIVE_BACK_ROOT,
     });
   }
 
   // 下载单个笔记
   downloadNote = (name) => {
-    const { driver: { currentProjectName } } = this.props;
+    const { drive: { currentProjectName } } = this.props;
     this.setState({
       loadingText: 'Downloading...',
     });
+    let driveName = this.props.match.params.drive;
+    if (driveName === 'onedrive') {
+      driveName = 'onedriver';
+    }
     this.props.dispatch({
-      type: DRIVER_DOWNLOAD_NOTE,
+      type: DRIVE_DOWNLOAD_NOTE,
       folder: currentProjectName,
       name,
-      driverName: this.props.match.params.driver,
+      driveName,
     });
   }
 
-  renderBread = (type, blur, driverName, currentProjectName) => {
+  // 打开删除笔记
+  openDelete = (e, name) => {
+    e.stopPropagation();
+    confirm({
+      title: `Remove "${name.replace(/.md$/ig, '')}"?`,
+      content: 'Unrestoreable after deleting.',
+      onOk: () => {
+      },
+    });
+  }
+
+  renderBread = (type, blur, driveName, currentProjectName) => {
     if (type === 'notes') {
       return (
         <div className={`bread-bar ${blur}`}>
-          <Breadcrumb>
-            <Breadcrumb.Item>{driverName}</Breadcrumb.Item>
-            <Breadcrumb.Item
-              className="cursor-pointer"
-              onClick={this.backRoot}
-            >
-              Yosoro
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>{currentProjectName}</Breadcrumb.Item>
-          </Breadcrumb>
+          <div className="bread-container">
+            <Breadcrumb>
+              <Breadcrumb.Item>{driveName}</Breadcrumb.Item>
+              <Breadcrumb.Item
+                className="cursor-pointer"
+                onClick={this.backRoot}
+              >
+                Yosoro
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>{currentProjectName}</Breadcrumb.Item>
+            </Breadcrumb>
+            <div className="tools">
+              <Icon type="reload" onClick={this.checkOAuth} />
+            </div>
+          </div>
         </div>
       );
     }
     return (
       <div className={`bread-bar ${blur}`}>
-        <Breadcrumb>
-          <Breadcrumb.Item>{driverName}</Breadcrumb.Item>
-          <Breadcrumb.Item>Yosoro</Breadcrumb.Item>
-        </Breadcrumb>
+        <div className="bread-container">
+          <Breadcrumb>
+            <Breadcrumb.Item>{driveName}</Breadcrumb.Item>
+            <Breadcrumb.Item>Yosoro</Breadcrumb.Item>
+          </Breadcrumb>
+          <div className="tools">
+            <Icon type="reload" onClick={this.checkOAuth} />
+          </div>
+        </div>
       </div>
     );
   };
@@ -145,7 +177,7 @@ export default class Driver extends Component {
   }
 
   render() {
-    const { show, hasAuth, driverName } = this.state;
+    const { show, hasAuth, driveName } = this.state;
     const notebookHtml = '<use class="trash-notebook-use" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_notebook" />';
     const noteHtml = '<use class="trash-notebook-use" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_note" />';
     if (!show) {
@@ -161,7 +193,7 @@ export default class Driver extends Component {
         </div>
       );
     }
-    const { driver: { projects, notes, status, currentProjectName } } = this.props;
+    const { drive: { projects, notes, status, currentProjectName } } = this.props;
     let blur = '';
     if (status === 0) {
       blur = 'blur';
@@ -170,7 +202,7 @@ export default class Driver extends Component {
       return (
         <Fragment>
           {this.renderLoading(status)}
-          {this.renderBread('notes', blur, driverName, currentProjectName)}
+          {this.renderBread('notes', blur, driveName, currentProjectName)}
           {status === 2 ? (
             <div className={`content ${blur}`}>
               <p className="tips">
@@ -213,6 +245,14 @@ export default class Driver extends Component {
                               <Icon type="download" />
                             </Tooltip>
                           </span>
+                          <span
+                            className="list-item__options__item"
+                            onClick={e => this.openDelete(e, name, id)}
+                          >
+                            <Tooltip placement="bottom" title="delete note">
+                              <Icon type="delete" />
+                            </Tooltip>
+                          </span>
                         </div>
                       </li>
                     );
@@ -227,7 +267,7 @@ export default class Driver extends Component {
     return (
       <Fragment>
         {this.renderLoading(status)}
-        {this.renderBread('projects', blur, driverName, currentProjectName)}
+        {this.renderBread('projects', blur, driveName, currentProjectName)}
         {status === 2 ? (
           <div className={`content ${blur}`} id="app_cloud">
             <p className="tips">

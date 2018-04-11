@@ -4,14 +4,14 @@ import app from './app';
 import projects from './projects';
 import markdown from './markdown';
 import note from './note';
-import driver from './driver';
+import drive from './drive';
 
 const rootReducer = combineReducers({
   app,
   projects,
   markdown,
   note,
-  driver,
+  drive,
   routing: routerReducer,
 });
 

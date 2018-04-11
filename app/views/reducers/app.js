@@ -3,16 +3,16 @@ import {
   APP_ADJUST_MARKDOWN,
   APP_SWITCH_EDIT_MODE,
   APP_SET_TOKEN,
-  FETCHING_ONEDRIVER_TOKEN,
-  FETCHING_ONEDRIVER_TOKEN_FAILED,
-  FETCHING_ONEDRIVER_TOKEN_SUCCESS,
+  FETCHING_ONEDRIVE_TOKEN,
+  FETCHING_ONEDRIVE_TOKEN_FAILED,
+  FETCHING_ONEDRIVE_TOKEN_SUCCESS,
   FETCHING_GITHUB_RELEASES,
   FETCHING_GITHUB_RELEASES_FAILED,
   FETCHING_GITHUB_RELEASES_SUCCESS,
   CLOSE_UPDATE_NOTIFICATION,
-  // ONEDRIVER_ALL_UPLOAD,
-  // ONEDRIVER_ALL_UPLOAD_SUCCESS,
-  // ONEDRIVER_ALL_UPLOAD_FAILED,
+  // ONEDRIVE_ALL_UPLOAD,
+  // ONEDRIVE_ALL_UPLOAD_SUCCESS,
+  // ONEDRIVE_ALL_UPLOAD_FAILED,
 } from '../actions/app';
 import appInfo from '../../../package.json';
 import { checkDefaults, getAppSettings, setMarkdownSettings, setToken } from '../utils/db/app';
@@ -33,10 +33,10 @@ export default function lounchApp(state = {
     markdownSettings: {
       editorWidth: 0.5,
     },
-    defaultDriver: 'oneDriver',
+    defaultDrive: 'oneDrive',
   },
   first: false,
-  oneDriverTokenStatus: 0, // 0 未请求 1 请求中 2 成功 3 失败
+  oneDriveTokenStatus: 0, // 0 未请求 1 请求中 2 成功 3 失败
 }, action) {
   switch (action.type) {
     case APP_LOUNCH: {
@@ -45,8 +45,11 @@ export default function lounchApp(state = {
         state.first = true;
       }
       const settings = getAppSettings();
-      if (typeof settings.defaultDriver === 'undefined') {
-        settings.defaultDriver = 'oneDriver';
+      if (typeof settings.defaultDrive === 'undefined') {
+        settings.defaultDrive = 'oneDrive';
+      }
+      if (settings.defaultDrive === 'oneDriver') {
+        settings.defaultDrive = 'oneDrive';
       }
       const app = {
         status: 1,
@@ -95,19 +98,19 @@ export default function lounchApp(state = {
       setToken(name, token);
       return assign({}, state);
     }
-    case FETCHING_ONEDRIVER_TOKEN:
+    case FETCHING_ONEDRIVE_TOKEN:
       return assign({}, state, {
-        oneDriverTokenStatus: 1,
+        oneDriveTokenStatus: 1,
       });
-    case FETCHING_ONEDRIVER_TOKEN_FAILED:
+    case FETCHING_ONEDRIVE_TOKEN_FAILED:
       return assign({}, state, {
-        oneDriverTokenStatus: 3,
+        oneDriveTokenStatus: 3,
       });
-    case FETCHING_ONEDRIVER_TOKEN_SUCCESS: {
+    case FETCHING_ONEDRIVE_TOKEN_SUCCESS: {
       const { token, refreshToken, expiresDate } = action;
-      setToken('oneDriver', token, refreshToken, expiresDate);
+      setToken('oneDrive', token, refreshToken, expiresDate);
       return assign({}, state, {
-        oneDriverTokenStatus: 2,
+        oneDriveTokenStatus: 2,
       });
     }
     case FETCHING_GITHUB_RELEASES:

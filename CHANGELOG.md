@@ -31,4 +31,4 @@
 - Create notebook & Write note
 - Support Markdown syntax
 - Delete & Restore
-- Synchronize with Cloud Driver(oneDriver is supported)
+- Synchronize with Cloud Drive(oneDrive is supported)

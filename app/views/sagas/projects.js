@@ -2,9 +2,9 @@ import { put, call, takeLatest } from 'redux-saga/effects';
 import { ipcRenderer } from 'electron';
 import { messgae } from 'antd';
 import {
-  UPLOAD_NOTE_ONEDRIVER,
-  UPLOAD_NOTE_ONEDRIVER_SUCCESS,
-  UPLOAD_NOTE_ONEDRIVER_FAILED,
+  UPLOAD_NOTE_ONEDRIVE,
+  UPLOAD_NOTE_ONEDRIVE_SUCCESS,
+  UPLOAD_NOTE_ONEDRIVE_FAILED,
 } from '../actions/projects';
 import {
   // MARKDOWN_UPLOADING,
@@ -12,11 +12,11 @@ import {
   MARKDWON_UPLADING_FAILED,
 } from '../actions/markdown';
 import * as db from '../utils/db/app';
-import OneDriver from '../services/OneDriver';
+import OneDrive from '../services/OneDrive';
 
-const oneDriver = new OneDriver();
+const oneDrive = new OneDrive();
 
-function* oneDriverUpload(action) {
+function* oneDriveUpload(action) {
   const { param, toolbar } = action;
   const { uuid, name, projectName, projectUuid } = param;
   let content;
@@ -53,22 +53,22 @@ function* oneDriverUpload(action) {
     const { oneDriver: { token, refreshToken, expiresDate } } = tokens;
     let currentToken = token;
     if (Date.parse(new Date()) > expiresDate) { // token过期刷新token
-      const refreshData = yield call(oneDriver.refreshToken, refreshToken);
+      const refreshData = yield call(oneDrive.refreshToken, refreshToken);
       const newToken = refreshData.access_token;
       const newRefreshToken = refreshData.refresh_token;
       const newExpiresDate = Date.parse(new Date()) + (refreshData.expires_in * 1000);
       currentToken = newToken;
-      db.setToken('oneDriver', newToken, newRefreshToken, newExpiresDate);
+      db.setToken('oneDrive', newToken, newRefreshToken, newExpiresDate);
     }
     // 上传文件
-    yield call(oneDriver.uploadSingleFile, currentToken, `/drive/special/approot:/${projectName}/${name}.md:/content`, content);
+    yield call(oneDrive.uploadSingleFile, currentToken, `/drive/special/approot:/${projectName}/${name}.md:/content`, content);
     // 上传文件信息
-    yield call(oneDriver.uploadSingleFile, currentToken, `/drive/special/approot:/${projectName}/${name}.json:/content`, JSON.stringify({
+    yield call(oneDrive.uploadSingleFile, currentToken, `/drive/special/approot:/${projectName}/${name}.json:/content`, JSON.stringify({
       description,
       labels,
     }));
     yield put({
-      type: UPLOAD_NOTE_ONEDRIVER_SUCCESS,
+      type: UPLOAD_NOTE_ONEDRIVE_SUCCESS,
       param: {
         uuid,
         projectUuid,
@@ -83,7 +83,7 @@ function* oneDriverUpload(action) {
     messgae.error('Upload failed.');
     console.error(ex);
     yield put({
-      type: UPLOAD_NOTE_ONEDRIVER_FAILED,
+      type: UPLOAD_NOTE_ONEDRIVE_FAILED,
       param: {
         uuid,
         projectUuid,
@@ -98,10 +98,10 @@ function* oneDriverUpload(action) {
   }
 }
 
-function* noteToOneDriver() {
-  yield takeLatest(UPLOAD_NOTE_ONEDRIVER, oneDriverUpload);
+function* noteToOneDrive() {
+  yield takeLatest(UPLOAD_NOTE_ONEDRIVE, oneDriveUpload);
 }
 
 export default [
-  noteToOneDriver,
+  noteToOneDrive,
 ];

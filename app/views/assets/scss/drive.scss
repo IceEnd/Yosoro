@@ -91,17 +91,32 @@
 	.bread-bar {
 		flex: 0 0 3rem;
 
-		.ant-breadcrumb {
+		.bread-container {
+			position: relative;
 			width: 90%;
 			margin: 0 auto;
 			height: 3rem;
 			line-height: 3rem;
 		}
+		.ant-breadcrumb {
+			height: 3rem;
+			line-height: 3rem;
+		}
+
+		.tools {
+			position: absolute;
+			z-index: 999;
+			height: 3rem;
+			line-height: 3rem;
+			top: 0;
+			right: 1rem;
+			font-size: 1.8rem;
+		}
 	}
 
 	.blur {
-		filter: blur(2px);
-		-webkit-filter: blur(2px);
+		filter: blur(1rem);
+		-webkit-filter: blur(1rem);
 	}
 
 	.content {

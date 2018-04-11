@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input, message, Icon } from 'antd';
 import { ipcRenderer } from 'electron';
-import { createFile, renameNote, deletNote, updateNoteDesc, trashBack, updateNoteUploadStatus, UPLOAD_NOTE_ONEDRIVER } from '../../actions/projects';
+import { createFile, renameNote, deletNote, updateNoteDesc, trashBack, updateNoteUploadStatus, UPLOAD_NOTE_ONEDRIVE } from '../../actions/projects';
 import { formatDate, pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
 import { readFile, beforeSwitchSave, saveContentToTrashFile, updateCurrentTitle, clearMarkdown, MARKDOWN_UPLOADING } from '../../actions/markdown';
 import { switchFile, clearNote } from '../../actions/note';
 import { getNote } from '../../utils/db/app';
 
-import oneDriverLogo from '../../assets/images/onedriver.png';
+import oneDriveLogo from '../../assets/images/onedrive.png';
 
 export default class Files extends Component {
   static displayName = 'NoteExplorerFiles';
@@ -200,7 +200,7 @@ export default class Files extends Component {
       type: MARKDOWN_UPLOADING,
     });
     dispatch({
-      type: UPLOAD_NOTE_ONEDRIVER,
+      type: UPLOAD_NOTE_ONEDRIVE,
       param: {
         uuid,
         name,
@@ -454,7 +454,7 @@ export default class Files extends Component {
     }
     return (
       <span className={`clouds-item ${classname}`}>
-        <img src={oneDriverLogo} alt="logo" className="cloud-logo" />
+        <img src={oneDriveLogo} alt="logo" className="cloud-logo" />
         {status === 2 ? (
           <Icon type="loading" />
         ) : null}

@@ -14,7 +14,7 @@ import Cloud from '../component/cloud/Cloud';
 // import About from '../component/about/About';
 // import ImageHosting from '../component/imageHosting/ImgaeHosting';
 
-import { appLounch, FETCHING_ONEDRIVER_TOKEN, FETCHING_GITHUB_RELEASES, CLOSE_UPDATE_NOTIFICATION } from '../actions/app';
+import { appLounch, FETCHING_ONEDRIVE_TOKEN, FETCHING_GITHUB_RELEASES, CLOSE_UPDATE_NOTIFICATION } from '../actions/app';
 import { getProjectList, saveNote } from '../actions/projects';
 
 import '../assets/scss/index.scss';
@@ -39,9 +39,9 @@ class App extends Component {
         markdownSettings: PropTypes.shape({
           editorWidth: PropTypes.number.isRequired,
         }).isRequired,
-        defaultDriver: PropTypes.string.isRequired,
+        defaultDrive: PropTypes.string.isRequired,
       }).isRequired,
-      oneDriverTokenStatus: PropTypes.number.isRequired,
+      oneDriveTokenStatus: PropTypes.number.isRequired,
     }),
     projectsData: PropTypes.shape({
       projects: PropTypes.arrayOf(PropTypes.shape({
@@ -92,7 +92,7 @@ class App extends Component {
       projectName: PropTypes.string.isRequired,
       fileUuid: PropTypes.string.isRequired,
     }).isRequired,
-    driver: PropTypes.shape({
+    drive: PropTypes.shape({
       status: PropTypes.number.isRequired,
       projects: PropTypes.array.isRequired,
       notes: PropTypes.array.isRequired,
@@ -118,7 +118,7 @@ class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.app.oneDriverTokenStatus === 1 && nextProps.app.oneDriverTokenStatus === 3) {
+    if (this.props.app.oneDriveTokenStatus === 1 && nextProps.app.oneDriveTokenStatus === 3) {
       message.error('One Driver auth failed');
     }
     if (this.props.app.allowShowUpdate && !nextProps.app.allowShowUpdate) {
@@ -206,7 +206,7 @@ class App extends Component {
     ipcRenderer.on('onedriver-oauth-code-reply', (event, args) => {
       if (args.success) {
         this.props.dispatch({
-          type: FETCHING_ONEDRIVER_TOKEN,
+          type: FETCHING_ONEDRIVE_TOKEN,
           code: args.code,
         });
       } else {
@@ -228,7 +228,7 @@ class App extends Component {
   }
 
   render() {
-    const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash }, markdown, note, driver } = this.props;
+    const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash }, markdown, note, drive } = this.props;
     const { settings } = app;
     const { theme } = settings;
     const { dispatch, history } = this.props;
@@ -237,7 +237,7 @@ class App extends Component {
         <SVG />
         <Router history={history}>
           <div className={`container ${theme}`}>
-            <AppToolBar defaultDriver={app.settings.defaultDriver} />
+            <AppToolBar defaultDrive={app.settings.defaultDrive} />
             <Switch>
               <Route
                 path="/note"
@@ -274,7 +274,7 @@ class App extends Component {
               <Route
                 path="/cloud"
                 render={() => (
-                  <Cloud driver={driver} dispatch={dispatch} />
+                  <Cloud drive={drive} dispatch={dispatch} />
                 )}
               />
             </Switch>
@@ -286,13 +286,13 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  const { app, projects, markdown, note, driver } = state;
+  const { app, projects, markdown, note, drive } = state;
   return {
     app,
     projectsData: projects,
     markdown,
     note,
-    driver,
+    drive,
   };
 }
 

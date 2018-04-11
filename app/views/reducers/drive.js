@@ -1,15 +1,18 @@
 import {
-  DRIVER_FETCHING_PROJECTS,
-  DRIVER_FETCHING_PROJECRS_FAILED,
-  DRIVER_FETCHING_PROJECRS_SUCCESS,
-  DRIVER_FETCHING_NOTES,
-  DRIVER_FETCHING_NOTES_SUCCESS,
-  DRIVER_FETCHING_NOTES_FAILED,
-  DRIVER_BACK_ROOT,
-  DRIVER_DOWNLOAD_NOTE,
-  DRIVER_DOWNLOAD_NOTE_SUCCESS,
-  DRIVER_DOWNLOAD_NOTE_FAILED,
-} from '../actions/driver';
+  DRIVE_FETCHING_PROJECTS,
+  DRIVE_FETCHING_PROJECRS_FAILED,
+  DRIVE_FETCHING_PROJECRS_SUCCESS,
+  DRIVE_FETCHING_NOTES,
+  DRIVE_FETCHING_NOTES_SUCCESS,
+  DRIVE_FETCHING_NOTES_FAILED,
+  DRIVE_BACK_ROOT,
+  DRIVE_DOWNLOAD_NOTE,
+  DRIVE_DOWNLOAD_NOTE_SUCCESS,
+  DRIVE_DOWNLOAD_NOTE_FAILED,
+  DRIVE_DELETE_NOTE,
+  DRIVRE_DELETE_NOTE_SUCCESS,
+  DRIVE_DELETE_NOTE_FAILED,
+} from '../actions/drive';
 
 const assign = Object.assign;
 
@@ -20,48 +23,57 @@ function updateDriver(state = {
   currentProjectName: '',
 }, action) {
   switch (action.type) {
-    case DRIVER_FETCHING_PROJECTS:
+    case DRIVE_FETCHING_PROJECTS:
       return assign({}, state, {
         status: 0,
       });
-    case DRIVER_FETCHING_PROJECRS_SUCCESS: {
+    case DRIVE_FETCHING_PROJECRS_SUCCESS: {
       const { list } = action;
       state.projects = list;
       state.notes = [];
       state.status = 1;
       return assign({}, state);
     }
-    case DRIVER_FETCHING_PROJECRS_FAILED:
+    case DRIVE_FETCHING_PROJECRS_FAILED:
       return assign({}, state, {
         status: 2,
       });
-    case DRIVER_FETCHING_NOTES:
+    case DRIVE_FETCHING_NOTES:
       return assign({}, state, {
         status: 0,
         currentProjectName: action.folder,
       });
-    case DRIVER_FETCHING_NOTES_SUCCESS: {
+    case DRIVE_FETCHING_NOTES_SUCCESS: {
       const { list } = action;
       state.notes = list;
       state.status = 1;
       return assign({}, state);
     }
-    case DRIVER_FETCHING_NOTES_FAILED:
+    case DRIVE_FETCHING_NOTES_FAILED:
       return assign({}, state, {
         status: 2,
       });
-    case DRIVER_BACK_ROOT:
+    case DRIVE_BACK_ROOT:
       return assign({}, state, {
         currentProjectName: '',
         notes: [],
         state: 1,
       });
-    case DRIVER_DOWNLOAD_NOTE:
+    case DRIVE_DOWNLOAD_NOTE:
       return assign({}, state, {
         status: 0,
       });
-    case DRIVER_DOWNLOAD_NOTE_SUCCESS:
-    case DRIVER_DOWNLOAD_NOTE_FAILED:
+    case DRIVE_DOWNLOAD_NOTE_SUCCESS:
+    case DRIVE_DOWNLOAD_NOTE_FAILED:
+      return assign({}, state, {
+        status: 1,
+      });
+    case DRIVE_DELETE_NOTE:
+      return assign({}, state, {
+        status: 0,
+      });
+    case DRIVRE_DELETE_NOTE_SUCCESS:
+    case DRIVE_DELETE_NOTE_FAILED:
       return assign({}, state, {
         status: 1,
       });
