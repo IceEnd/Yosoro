@@ -2,7 +2,7 @@
   "name": "yosoro-desktop",
   "productName": "yosoro",
   "version": "1.0.2",
-  "description": "Beautiful Cloud Driver Markdown NoteBook Desktop App, based on React, Redux, Webpack, React Hot Loader for rapid application development",
+  "description": "Beautiful Cloud Drive Markdown NoteBook Desktop App, based on React, Redux, Webpack, React Hot Loader for rapid application development",
   "main": "app/renderer/index.js",
   "scripts": {
     "dev:electron-main": "cross-env NODE_ENV='development' electron -r babel-register ./app/main/",

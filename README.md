@@ -1,7 +1,7 @@
 <p align="center">
   <img src="./app/views/assets/images/logo.png" width="200"/>
   <h3 align="center">Yosoro</h3>
-  <p align="center">Beautiful Cloud Driver Markdown NoteBook Desktop App</p>
+  <p align="center">Beautiful Cloud Drive Markdown NoteBook Desktop App</p>
   <p align="center">
     <img src="https://img.shields.io/badge/platform-masOS%20%7C%20Linux%20%7C%20Windows-lightgrey.svg" />
   </p>
@@ -22,7 +22,7 @@ The latest version of Yosoro for macOS, linux and Windows is avalibale [here](ht
 - Create notebook & Write note
 - Support Markdown syntax
 - Delete & Restore
-- Synchronize with Cloud Driver(oneDriver is supported)
+- Synchronize with Cloud Drive(oneDrive is supported)
 - Note export as markdown or html
 - Update Natification
 

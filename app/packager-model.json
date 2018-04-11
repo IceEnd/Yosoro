@@ -23,5 +23,5 @@
   "win": {
     "icon": "asstes/icons/win/app.ico"
   },
-  "license": "BSD-4"
+  "license": "GPL-3.0"
 }
