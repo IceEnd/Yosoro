@@ -1,7 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Spin, Breadcrumb, message, Icon, Tooltip, Modal } from 'antd';
-import { DRIVE_FETCHING_PROJECTS, DRIVE_FETCHING_NOTES, DRIVE_BACK_ROOT, DRIVE_DOWNLOAD_NOTE } from '../../actions/drive';
+import {
+  DRIVE_FETCHING_PROJECTS,
+  DRIVE_FETCHING_NOTES,
+  DRIVE_BACK_ROOT,
+  DRIVE_DOWNLOAD_NOTE,
+  DRIVE_DELETE_ITEM,
+} from '../../actions/drive';
 import { getTokens } from '../../utils/db/app';
 
 const confirm = Modal.confirm;
@@ -117,13 +123,33 @@ export default class Drive extends Component {
   }
 
   // 打开删除笔记
-  openDelete = (e, name) => {
+  openDelete = (e, name, id, parentReference) => {
     e.stopPropagation();
     confirm({
       title: `Remove "${name.replace(/.md$/ig, '')}"?`,
       content: 'Unrestoreable after deleting.',
       onOk: () => {
+        this.deleteItem(name, id, parentReference);
       },
+    });
+  }
+
+  // 删除单个item
+  deleteItem = (name, id, parentReference) => {
+    this.setState({
+      loadingText: 'Deleting...',
+    });
+    let driveName = this.props.match.params.drive;
+    if (driveName === 'onedrive') {
+      driveName = 'onedriver';
+    }
+    const { notes } = this.props.drive;
+    // 搜索匹配.json文件
+    this.props.dispatch({
+      type: DRIVE_DELETE_ITEM,
+      itemId: id,
+      parentReference,
+      driveName,
     });
   }
 
@@ -247,7 +273,7 @@ export default class Drive extends Component {
                           </span>
                           <span
                             className="list-item__options__item"
-                            onClick={e => this.openDelete(e, name, id)}
+                            onClick={e => this.openDelete(e, name, id, item.parentReference)}
                           >
                             <Tooltip placement="bottom" title="delete note">
                               <Icon type="delete" />

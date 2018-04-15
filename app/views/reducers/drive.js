@@ -9,9 +9,9 @@ import {
   DRIVE_DOWNLOAD_NOTE,
   DRIVE_DOWNLOAD_NOTE_SUCCESS,
   DRIVE_DOWNLOAD_NOTE_FAILED,
-  DRIVE_DELETE_NOTE,
-  DRIVE_DELETE_NOTE_SUCCESS,
-  DRIVE_DELETE_NOTE_FAILED,
+  DRIVE_DELETE_ITEM,
+  DRIVE_DELETE_ITEM_SUCCESS,
+  DRIVE_DELETE_ITEM_FAILED,
 } from '../actions/drive';
 
 const assign = Object.assign;
@@ -64,16 +64,22 @@ function updateDriver(state = {
         status: 0,
       });
     case DRIVE_DOWNLOAD_NOTE_SUCCESS:
-    case DRIVE_DOWNLOAD_NOTE_FAILED:
       return assign({}, state, {
         status: 1,
       });
-    case DRIVE_DELETE_NOTE:
+    case DRIVE_DOWNLOAD_NOTE_FAILED:
+      return assign({}, state, {
+        status: 2,
+      });
+    case DRIVE_DELETE_ITEM:
       return assign({}, state, {
         status: 0,
       });
-    case DRIVE_DELETE_NOTE_SUCCESS:
-    case DRIVE_DELETE_NOTE_FAILED:
+    case DRIVE_DELETE_ITEM_SUCCESS:
+      return assign({}, state, {
+        status: 1,
+      });
+    case DRIVE_DELETE_ITEM_FAILED:
       return assign({}, state, {
         status: 1,
       });

@@ -34,7 +34,8 @@ export default class OneDrive {
         body,
       })
         .then((response) => {
-          if (response.status === 200 || response.status === 201) {
+          const { status } = response;
+          if (status === 200 || status === 201) {
             if (responseType === 'json') {
               return response.json();
             }
@@ -42,6 +43,10 @@ export default class OneDrive {
               return response.text();
             }
             return response;
+          } else if (status === 204) {
+            return {
+              success: true,
+            };
           }
           throw new Error('Fetching Failed.');
         })
@@ -111,5 +116,5 @@ export default class OneDrive {
 
   uploadSingleFile = (token, url, filePath) => this.xhr(url, 'PUT', token, filePath);
 
-  deleteItem = (token, url) => this.xhr(url, 'DELETE');
+  deleteItem = (token, url) => this.xhr(url, 'DELETE', token);
 }

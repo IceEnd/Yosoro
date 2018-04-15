@@ -10,12 +10,30 @@ import {
   DRIVE_DOWNLOAD_NOTE,
   DRIVE_DOWNLOAD_NOTE_SUCCESS,
   DRIVE_DOWNLOAD_NOTE_FAILED,
+  DRIVE_DELETE_ITEM,
+  DRIVE_DELETE_ITEM_SUCCESS,
+  DRIVE_DELETE_ITEM_FAILED,
 } from '../actions/drive';
 import { SAVE_NOTE_FROM_DRIVE } from '../actions/projects';
 import * as db from '../utils/db/app';
 import OneDrive from '../services/OneDrive';
 
 const oneDrive = new OneDrive();
+
+function getDrive(driveName) {
+  switch (driveName) {
+    case 'onedriver':
+      return {
+        cloudDrive: oneDrive,
+        driveType: 'oneDriver',
+      };
+    default:
+      return {
+        cloudDrive: oneDrive,
+        driveType: 'oneDriver',
+      };
+  }
+}
 
 function* getToken(cloudDrive, driveType) {
   const tokens = db.getTokens();
@@ -136,8 +154,38 @@ function* handleDownloadNote() {
   yield takeLatest(DRIVE_DOWNLOAD_NOTE, downloadNote);
 }
 
+
+function* deleteItem(action) {
+  const { itemId, parentReference, driveName } = action;
+  const { cloudDrive, driveType } = getDrive(driveName);
+  try {
+    let url = '';
+    if (parentReference && parentReference.driveId) {
+      url = `/drives/${encodeURIComponent(parentReference.driveId)}/items/${encodeURIComponent(itemId)}`;
+    } else {
+      url = `/me/drive/items/${itemId}`;
+    }
+    const token = yield call(getToken, cloudDrive, driveType);
+    yield call(cloudDrive.deleteItem, token, url);
+    debugger;
+    yield put({
+      type: DRIVE_DELETE_ITEM_SUCCESS,
+    });
+  } catch (ex) {
+    message.error('delete failed');
+    yield put({
+      type: DRIVE_DELETE_ITEM_FAILED,
+    });
+  }
+}
+
+function* handleDeleteItem() {
+  yield takeLatest(DRIVE_DELETE_ITEM, deleteItem);
+}
+
 export default [
   fetchProjectList,
   fetchNotesList,
   handleDownloadNote,
+  handleDeleteItem,
 ];
