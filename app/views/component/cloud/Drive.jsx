@@ -123,19 +123,22 @@ export default class Drive extends Component {
   }
 
   // 打开删除笔记
-  openDelete = (e, name, id, parentReference) => {
+  openDelete = (e, type, name, id, parentReference) => {
     e.stopPropagation();
     confirm({
       title: `Remove "${name.replace(/.md$/ig, '')}"?`,
       content: 'Unrestoreable after deleting.',
       onOk: () => {
-        this.deleteItem(name, id, parentReference);
+        this.deleteItem(type, name, id, parentReference);
       },
     });
   }
 
-  // 删除单个item
-  deleteItem = (name, id, parentReference) => {
+  /**
+   * @desc 删除单个Item
+   * @param {String} type 'note' or 'project'
+   */
+  deleteItem = (type, name, id, parentReference) => {
     this.setState({
       loadingText: 'Deleting...',
     });
@@ -143,13 +146,26 @@ export default class Drive extends Component {
     if (driveName === 'onedrive') {
       driveName = 'onedriver';
     }
-    const { notes } = this.props.drive;
-    // 搜索匹配.json文件
+    let jsonItemId;
+    if (type === 'note') {
+      // 搜索匹配.json文件
+      const { notes } = this.props.drive;
+      const jsonName = `${name.replace(/.md$/ig, '')}.json`;
+      const nl = notes.length;
+      for (let i = 0; i < nl; i++) {
+        if (notes[i].name === jsonName) {
+          jsonItemId = notes[i].id;
+          break;
+        }
+      }
+    }
     this.props.dispatch({
       type: DRIVE_DELETE_ITEM,
       itemId: id,
       parentReference,
       driveName,
+      jsonItemId,
+      deleteType: type,
     });
   }
 
@@ -273,7 +289,7 @@ export default class Drive extends Component {
                           </span>
                           <span
                             className="list-item__options__item"
-                            onClick={e => this.openDelete(e, name, id, item.parentReference)}
+                            onClick={e => this.openDelete(e, 'note', name, id, item.parentReference)}
                           >
                             <Tooltip placement="bottom" title="delete note">
                               <Icon type="delete" />

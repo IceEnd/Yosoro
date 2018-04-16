@@ -75,10 +75,21 @@ function updateDriver(state = {
       return assign({}, state, {
         status: 0,
       });
-    case DRIVE_DELETE_ITEM_SUCCESS:
-      return assign({}, state, {
-        status: 1,
-      });
+    case DRIVE_DELETE_ITEM_SUCCESS: {
+      const { deleteType, itemId, jsonId } = action;
+      if (deleteType === 'note') {
+        const notes = state.notes;
+        let dn = false;
+        let dj = false;
+        for (let i = 0; i < notes.length; i++) {
+          if (notes[i].id === itemId) {
+          }
+        }
+      } else if (deleteType === 'project') {
+      }
+      state.status = 1;
+      return assign({}, state);
+    }
     case DRIVE_DELETE_ITEM_FAILED:
       return assign({}, state, {
         status: 1,

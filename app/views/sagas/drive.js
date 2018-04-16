@@ -156,17 +156,30 @@ function* handleDownloadNote() {
 
 
 function* deleteItem(action) {
-  const { itemId, parentReference, driveName } = action;
+  const { itemId, parentReference, driveName, jsonItemId, deleteType } = action;
   const { cloudDrive, driveType } = getDrive(driveName);
   try {
     let url = '';
+    let jsonUrl = '';
     if (parentReference && parentReference.driveId) {
       url = `/drives/${encodeURIComponent(parentReference.driveId)}/items/${encodeURIComponent(itemId)}`;
+      if (deleteType === 'note') {
+        jsonUrl = `/drives/${encodeURIComponent(parentReference.driveId)}/items/${encodeURIComponent(jsonItemId)}`;
+      }
     } else {
       url = `/me/drive/items/${itemId}`;
+      if (deleteType === 'note') {
+        jsonUrl = `/me/drive/items/${encodeURIComponent(jsonItemId)}`;
+      }
     }
     const token = yield call(getToken, cloudDrive, driveType);
-    yield call(cloudDrive.deleteItem, token, url);
+    const deleteItemPromise = cloudDrive.deleteItem(token, url);
+    const deleteJsonPromise = cloudDrive.deleteItem(token, jsonUrl);
+    const queue = [deleteItemPromise];
+    if (deleteType === 'note') {
+      queue.push(deleteJsonPromise);
+    }
+    yield Promise.all(queue);
     debugger;
     yield put({
       type: DRIVE_DELETE_ITEM_SUCCESS,
