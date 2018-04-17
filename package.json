@@ -90,5 +90,7 @@
   },
   "author": "Alchemy",
   "license": "GPL-3.0",
-  "pre-commit": []
+  "pre-commit": [
+    "lint"
+  ]
 }

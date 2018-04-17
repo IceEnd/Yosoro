@@ -13,7 +13,6 @@ import {
   DRIVE_DELETE_ITEM_SUCCESS,
   DRIVE_DELETE_ITEM_FAILED,
 } from '../actions/drive';
-import Item from 'antd/lib/list/Item';
 
 const assign = Object.assign;
 

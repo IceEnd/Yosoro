@@ -125,9 +125,9 @@ function* downloadNote(action) {
   const infoName = `${name.replace(/.md$/ig, '')}.json`;
   try {
     const token = yield call(getToken, cloudDrive, driveType);
-    const contentPromise = cloudDrive.getNoteContent(token, folder, name);
-    const infoPromise = cloudDrive.getNoteContent(token, folder, infoName);
-    const data = yield Promise.all([contentPromise, infoPromise]);
+    const contentPromise = call(cloudDrive.getNoteContent, token, folder, name);
+    const infoPromise = call(cloudDrive.getNoteContent, token, folder, infoName);
+    const data = yield all([contentPromise, infoPromise]);
     const content = data[0];
     const info = JSON.parse(data[1]);
     yield put({
