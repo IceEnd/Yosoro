@@ -13,6 +13,7 @@ import {
   DRIVE_DELETE_ITEM_SUCCESS,
   DRIVE_DELETE_ITEM_FAILED,
 } from '../actions/drive';
+import Item from 'antd/lib/list/Item';
 
 const assign = Object.assign;
 
@@ -76,16 +77,13 @@ function updateDriver(state = {
         status: 0,
       });
     case DRIVE_DELETE_ITEM_SUCCESS: {
-      const { deleteType, itemId, jsonId } = action;
+      const { deleteType, itemId, jsonItemId } = action;
       if (deleteType === 'note') {
-        const notes = state.notes;
-        let dn = false;
-        let dj = false;
-        for (let i = 0; i < notes.length; i++) {
-          if (notes[i].id === itemId) {
-          }
-        }
+        const notes = state.notes.filter(item => item.id !== itemId && item.id !== jsonItemId);
+        state.notes = notes;
       } else if (deleteType === 'project') {
+        const projects = state.projects.filter(item => item.id !== itemId);
+        state.projects = projects;
       }
       state.status = 1;
       return assign({}, state);

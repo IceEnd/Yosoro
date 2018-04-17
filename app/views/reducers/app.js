@@ -108,7 +108,7 @@ export default function lounchApp(state = {
       });
     case FETCHING_ONEDRIVE_TOKEN_SUCCESS: {
       const { token, refreshToken, expiresDate } = action;
-      setToken('oneDrive', token, refreshToken, expiresDate);
+      setToken('oneDriver', token, refreshToken, expiresDate);
       return assign({}, state, {
         oneDriveTokenStatus: 2,
       });

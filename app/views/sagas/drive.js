@@ -1,4 +1,4 @@
-import { takeLatest, call, put } from 'redux-saga/effects';
+import { takeLatest, call, put, all } from 'redux-saga/effects';
 import { message } from 'antd';
 import {
   DRIVE_FETCHING_PROJECTS,
@@ -173,16 +173,18 @@ function* deleteItem(action) {
       }
     }
     const token = yield call(getToken, cloudDrive, driveType);
-    const deleteItemPromise = cloudDrive.deleteItem(token, url);
-    const deleteJsonPromise = cloudDrive.deleteItem(token, jsonUrl);
+    const deleteItemPromise = call(cloudDrive.deleteItem, token, url);
+    const deleteJsonPromise = call(cloudDrive.deleteItem, token, jsonUrl);
     const queue = [deleteItemPromise];
     if (deleteType === 'note') {
       queue.push(deleteJsonPromise);
     }
-    yield Promise.all(queue);
-    debugger;
+    yield all(queue);
     yield put({
       type: DRIVE_DELETE_ITEM_SUCCESS,
+      deleteType,
+      itemId,
+      jsonItemId,
     });
   } catch (ex) {
     message.error('delete failed');
