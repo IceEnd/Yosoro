@@ -71,9 +71,14 @@ export default class Project extends Component {
         message.error('Delete failed.');
         return false;
       }
+      if (data.code === 0) { // 删除成功
+        dispatch(trashBack());
+        dispatch(deleteProject(uuid, false));
+      } else if (data.code === 1) { // 不存在对应文件夹，仅仅移除文件夹
+        message.error('Notebook does not exist.');
+        dispatch(deleteProject(uuid, true));
+      }
       // const newfolder = data.folder;
-      dispatch(trashBack());
-      dispatch(deleteProject(uuid, projectName));
     });
     ipcRenderer.on('rename-project', () => {
       this.setState({

@@ -105,7 +105,7 @@ function projectReducer(state = {
       return assign({}, state);
     }
     case DELETE_PROJECT: { // 删除项目
-      const { uuid } = action;
+      const { uuid, onlyDelete } = action;
       deleteProject(uuid);
       const { hash, trashHash } = state;
       const project = state.projects[hash[uuid]];
@@ -117,6 +117,9 @@ function projectReducer(state = {
       }
       // delete hash[uuid];
       state.hash = newHash;
+      if (onlyDelete) { // 仅仅删除
+        return assign({}, state);
+      }
       if (typeof trashHash[uuid] === 'undefined') {
         const { trashProjects } = state;
         let tIndex = 0;

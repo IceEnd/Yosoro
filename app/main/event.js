@@ -123,23 +123,31 @@ export default function eventListener(menus) {
     const oldPath = `${projectsPath}/${name}`;
     const newPath = `${trashPath}/${name}`;
     try {
-      if (fs.existsSync(newPath)) {
-        const files = fs.readdirSync(oldPath);
-        const fl = files.length;
-        for (let i = 0; i < fl; i++) {
-          const fileName = files[i];
-          fse.moveSync(`${oldPath}/${fileName}`, `${newPath}/${fileName}`, { overwrite: true });
-        }
+      if (!fs.existsSync(oldPath)) { // 不存在对应文件夹
+        event.returnValue = {
+          success: true,
+          code: 1,
+        };
       } else {
-        fse.moveSync(oldPath, newPath, { overwrite: true });
+        if (fs.existsSync(newPath)) {
+          const files = fs.readdirSync(oldPath);
+          const fl = files.length;
+          for (let i = 0; i < fl; i++) {
+            const fileName = files[i];
+            fse.moveSync(`${oldPath}/${fileName}`, `${newPath}/${fileName}`, { overwrite: true });
+          }
+        } else {
+          fse.moveSync(oldPath, newPath, { overwrite: true });
+        }
+        if (fs.existsSync(oldPath)) {
+          fs.rmdirSync(oldPath);
+        }
+        event.returnValue = {
+          success: true,
+          folder: newPath,
+          code: 0,
+        };
       }
-      if (fs.existsSync(oldPath)) {
-        fs.rmdirSync(oldPath);
-      }
-      event.returnValue = {
-        success: true,
-        folder: newPath,
-      };
     } catch (ex) {
       event.returnValue = {
         success: false,

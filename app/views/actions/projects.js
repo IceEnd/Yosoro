@@ -28,10 +28,11 @@ export function createFile(param) {
 
 export const DELETE_PROJECT = 'DELETE_PROJECT';
 
-export function deleteProject(uuid) {
+export function deleteProject(uuid, onlyDelete) {
   return {
     type: DELETE_PROJECT,
     uuid,
+    onlyDelete,
   };
 }
 
