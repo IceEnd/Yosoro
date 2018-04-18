@@ -248,7 +248,7 @@ function projectReducer(state = {
       return assign({}, state);
     }
     case DELETE_NOTE: {
-      const { uuid, parentsId, noteName, projectName } = action;
+      const { uuid, parentsId, noteName, projectName, onlyDelete } = action;
       deleteNote(uuid);
       const pi = state.hash[parentsId];
       const notes = [...[], ...state.projects[pi].notes];
@@ -265,6 +265,9 @@ function projectReducer(state = {
       }
       notes.splice(ni, 1);
       state.projects[pi].notes = notes;
+      if (onlyDelete) {
+        return assign({}, state);
+      }
       const project = assign({}, state.projects[state.hash[parentsId]]);
       if (typeof state.trashHash[parentsId] === 'undefined') { // 废纸篓中不存在对应项目
         const { trashProjects, trashHash } = state;

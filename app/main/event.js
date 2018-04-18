@@ -258,17 +258,26 @@ export default function eventListener(menus) {
     const newPath = `${trashPath}/${projectName}/${name}.md`;
     const newfolder = `${trashPath}/${projectName}`;
     try {
-      if (!fs.existsSync(newfolder)) {
-        fs.mkdirSync(newfolder);
+      if (!fs.existsSync(oldPath)) {
+        event.returnValue = {
+          success: true,
+          folder: newPath,
+          code: 1,
+        };
+      } else {
+        if (!fs.existsSync(newfolder)) {
+          fs.mkdirSync(newfolder);
+        }
+        fse.moveSync(oldPath, newPath, { overwrite: true });
+        if (fs.existsSync(oldPath)) {
+          fs.unlinkSync(oldPath);
+        }
+        event.returnValue = {
+          success: true,
+          folder: newPath,
+          code: 0,
+        };
       }
-      fse.moveSync(oldPath, newPath, { overwrite: true });
-      if (fs.existsSync(oldPath)) {
-        fs.unlinkSync(oldPath);
-      }
-      event.returnValue = {
-        success: true,
-        folder: newPath,
-      };
     } catch (ex) {
       event.returnValue = {
         success: false,
@@ -282,10 +291,18 @@ export default function eventListener(menus) {
     const { projectName, name } = args;
     const filePath = `${trashPath}/${projectName}/${name}.md`;
     try {
-      fs.unlinkSync(filePath);
-      event.returnValue = {
-        success: true,
-      };
+      if (!fs.existsSync(filePath)) {
+        event.returnValue = {
+          success: true,
+          code: 1,
+        };
+      } else {
+        fs.unlinkSync(filePath);
+        event.returnValue = {
+          success: true,
+          code: 0,
+        };
+      }
     } catch (ex) {
       event.returnValue = {
         success: false,
@@ -299,10 +316,17 @@ export default function eventListener(menus) {
     const { name } = args;
     const folder = `${trashPath}/${name}`;
     try {
-      fse.removeSync(folder);
-      event.returnValue = {
-        success: true,
-      };
+      if (!fs.existsSync(folder)) {
+        event.returnValue = {
+          success: true,
+          code: 1,
+        };
+      } else {
+        fse.removeSync(folder);
+        event.returnValue = {
+          success: true,
+        };
+      }
     } catch (ex) {
       event.returnValue = {
         success: false,

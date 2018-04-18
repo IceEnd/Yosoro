@@ -75,13 +75,14 @@ export function renameNote(uuid, name, parentsId) {
 
 export const DELETE_NOTE = 'DELETE_NOTE';
 
-export function deletNote(uuid, parentsId, name, projectName) {
+export function deletNote(uuid, parentsId, name, projectName, onlyDelete = false) {
   return {
     type: DELETE_NOTE,
     uuid,
     parentsId,
     noteName: name,
     projectName,
+    onlyDelete,
   };
 }
 

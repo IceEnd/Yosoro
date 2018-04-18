@@ -78,12 +78,21 @@ export default class Files extends Component {
         message.error('Delete note failed.');
         return false;
       }
-      dispatch(deletNote(uuid, parentsId, name, projectName));
-      dispatch(trashBack());
-      if (uuid === currentUuid) {
-        dispatch(saveContentToTrashFile(projectName));
-        dispatch(clearMarkdown());
-        dispatch(clearNote());
+      if (data.code === 0) {
+        dispatch(deletNote(uuid, parentsId, name, projectName, false));
+        dispatch(trashBack());
+        if (uuid === currentUuid) {
+          dispatch(saveContentToTrashFile(projectName));
+          dispatch(clearMarkdown());
+          dispatch(clearNote());
+        }
+      } else if (data.code === 1) { // 笔记已经不存在了
+        message.error('Note does not exist.');
+        dispatch(deletNote(uuid, parentsId, name, projectName, true));
+        if (uuid === currentUuid) {
+          dispatch(clearMarkdown());
+          dispatch(clearNote());
+        }
       }
     });
     ipcRenderer.on('rename-note', () => {
@@ -184,11 +193,11 @@ export default class Files extends Component {
 
   // 上传文件
   handleUpload = () => {
-    const { contextNote: { uuid, name, oneDriver } } = this.state;
+    const { contextNote: { uuid, name } } = this.state;
     const { parentsId, projectName, dispatch } = this.props;
-    if (oneDriver === 2) {
-      return false;
-    }
+    // if (oneDriver === 2) {
+    //   return false;
+    // }
     // let toolbar = false;
     // if (currentUuid === uuid) {
     //   toolbar = true;
