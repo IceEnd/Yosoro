@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v1.0.3
+
+### New Features
+
+- Delete notes or notebooks on oneDrive.
+- Optimize user operation.
+
+Date: 2018.04.19 21:57:00
+
+----
 ## v1.0.2
 
 ### New Features
