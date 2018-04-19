@@ -116,3 +116,33 @@ export function compareVersion(localVersion, latestVersion) {
 export function markedToHtml(string) {
   return marked(string);
 }
+
+
+/**
+ * @desc 函数节流 返回函数连续调用时，fun 执行频率限定为 次/wait
+ *
+ * @param {function} func 需要执行的函数
+ * @param {number} wait 执行间隔，单位是毫秒（ms），默认100
+ *
+ * @return {function} 返回一个“节流”函数
+ */
+export function throttle(func, wait = 100) {
+  let timer = null;
+  let previous; // 上次执行时间
+  return function (...args) { // 闭包
+    const context = this;
+    const currentArgs = args;
+    const now = +new Date();
+
+    if (previous && now < previous + wait) {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        previous = now;
+        func.apply(context, currentArgs);
+      }, wait);
+    } else {
+      previous = now;
+      func.apply(context, currentArgs);
+    }
+  };
+}

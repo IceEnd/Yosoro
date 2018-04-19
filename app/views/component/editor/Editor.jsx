@@ -5,6 +5,7 @@ import CodeMirror from 'codemirror';
 import 'codemirror/addon/fold/markdown-fold';
 import 'codemirror/mode/markdown/markdown';
 import { updateMarkdownHtml } from '../../actions/markdown';
+import { throttle } from '../../utils/utils';
 // import { appMarkdownAdjust } from '../../actions/app';
 
 export default class Editor extends Component {
@@ -35,7 +36,7 @@ export default class Editor extends Component {
 
   componentDidMount() {
     this.noteRoot = document.getElementById('note_root_cont');
-    window.addEventListener('resize', this.onWindowResize);
+    window.addEventListener('resize', throttle(this.onWindowResize, 60));
     this.setCodeMirror();
   }
 
@@ -59,7 +60,7 @@ export default class Editor extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.onWindowResize);
+    window.removeEventListener('resize', throttle(this.onWindowResize, 60));
     this.deleteCodeMirror();
   }
 
