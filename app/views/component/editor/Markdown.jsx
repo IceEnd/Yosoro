@@ -82,11 +82,12 @@ export default class Markdown extends Component {
   }
 
   handleMouseMove = (e) => {
-    // e.stopPropagation();
+    e.stopPropagation();
     e.persist();
     if (!this.state.drag) {
       return false;
     }
+    e.preventDefault();
     this.setDragWidth(e);
   }
 
