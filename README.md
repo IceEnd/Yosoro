@@ -7,7 +7,7 @@
   </p>
   <p align="center">
     <img src="https://img.shields.io/github/release/iceend/yosoro.svg" />
-    <img src="https://img.shields.io/badge/license-GPL--3.0-blue.svg" />
+    <img src="https://img.shields.io/github/license/IceEnd/Yosoro.svg" />
   </p>
 </p>
 

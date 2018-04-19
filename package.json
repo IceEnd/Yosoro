@@ -62,7 +62,7 @@
     "devtron": "^1.4.0",
     "electron": "^1.8.4",
     "electron-packager": "^9.1.0",
-    "electron-watch": "^1.0.2",
+    "electron-watch": "^1.0.5",
     "eslint": "^4.10.0",
     "eslint-config-alchemy": "^0.1.10",
     "eslint-plugin-import": "2.7.0",
