@@ -1,4 +1,4 @@
-export default class OneDriver {
+export default class OneDrive {
   constructor() {
     this.rootPath = 'https://graph.microsoft.com/v1.0';
   }
@@ -34,7 +34,8 @@ export default class OneDriver {
         body,
       })
         .then((response) => {
-          if (response.status === 200 || response.status === 201) {
+          const { status } = response;
+          if (status === 200 || status === 201) {
             if (responseType === 'json') {
               return response.json();
             }
@@ -42,6 +43,10 @@ export default class OneDriver {
               return response.text();
             }
             return response;
+          } else if (status === 204) {
+            return {
+              success: true,
+            };
           }
           throw new Error('Fetching Failed.');
         })
@@ -96,13 +101,13 @@ export default class OneDriver {
     );
   }
 
-  getAppRoot = token => this.xhr('/drive/special/approot', 'get', token);
+  getAppRoot = token => this.xhr('/drive/special/approot', 'GET', token);
 
   // 列出应用文件夹子项
-  getAppRootChildren = token => this.xhr('/drive/special/approot/children', 'get', token);
+  getAppRootChildren = token => this.xhr('/drive/special/approot/children', 'GET', token);
 
   // 列出应用文件夹子项
-  getProjects = token => this.xhr('/drive/special/approot/children', 'get', token);
+  getProjects = token => this.xhr('/drive/special/approot/children', 'GET', token);
 
   // 列出文件夹下所有笔记
   getNotes = (token, folder) => this.xhr(`/drive/special/approot:/${folder}:/children`, 'GET', token);
@@ -110,4 +115,6 @@ export default class OneDriver {
   getNoteContent = (token, folder, name) => this.xhr(`/drive/special/approot:/${folder}/${name}:/content`, 'GET', token, null, 'text');
 
   uploadSingleFile = (token, url, filePath) => this.xhr(url, 'PUT', token, filePath);
+
+  deleteItem = (token, url) => this.xhr(url, 'DELETE', token);
 }

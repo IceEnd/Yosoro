@@ -1,7 +1,7 @@
 {
   "name": "yosoro-desktop",
   "productName": "yosoro",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Beautiful Cloud Drive Markdown NoteBook Desktop App, based on React, Redux, Webpack, React Hot Loader for rapid application development",
   "main": "app/renderer/index.js",
   "scripts": {

@@ -72,21 +72,21 @@ function getMemuTemplete(mainWindow) {
   }, {
     label: 'Auth',
     submenu: [{
-      label: 'One Driver',
+      label: 'One Drive',
       click: async (menuItem, browserWindow) => {
-        const oneDriverOAuth = electronOauth2(oauthConfig.oneDriver, windowParams);
+        const oneDriveOAuth = electronOauth2(oauthConfig.oneDrive, windowParams);
         try {
-          const code = await Promise.resolve(oneDriverOAuth.getAuthorizationCode({
+          const code = await Promise.resolve(oneDriveOAuth.getAuthorizationCode({
             // accessType: 'authorization_code',
             response_type: 'code',
             scope: 'user.read files.read files.read.all files.readwrite.all sites.read.all Files.ReadWrite.AppFolder offline_access',
           }));
-          browserWindow.webContents.send('onedriver-oauth-code-reply', {
+          browserWindow.webContents.send('onedrive-oauth-code-reply', {
             code,
             success: true,
           });
         } catch (ex) {
-          browserWindow.webContents.send('onedriver-oauth-code-reply', {
+          browserWindow.webContents.send('onedrive-oauth-code-reply', {
             success: false,
             error: ex,
           });
@@ -319,8 +319,8 @@ export function getExplorerFileItemMenu(mainWindow) {
     type: 'separator',
   }));
   menu.append(new MenuItem({
-    label: 'Upload to OneDriver',
-    click: () => mainWindow.webContents.send('upload-note-onedriver'),
+    label: 'Upload to OneDrive',
+    click: () => mainWindow.webContents.send('upload-note-onedrive'),
   }));
   menu.append(new MenuItem({
     type: 'separator',

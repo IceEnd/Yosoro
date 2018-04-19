@@ -18,7 +18,7 @@ const AppToolBar = (props) => {
   const pencilHtml = '<use class="menu-svg-use use-pencil" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_pencil" />';
   const noteHtml = '<use class="menu-svg-use use-img" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_cloud" />';
   const trashHtml = '<use class="menu-svg-use use-trash" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_trash" />';
-  const defaultDriver = props.defaultDriver.toLowerCase();
+  const defaultDriver = props.defaultDrive.toLowerCase();
   return (
     <div className="tool-bar" id="app_tool_bar">
       <div className="app-title-bar" />
@@ -58,7 +58,7 @@ const AppToolBar = (props) => {
 
 AppToolBar.displayName = 'AppToolBar';
 AppToolBar.propTypes = {
-  defaultDriver: PropTypes.string.isRequired,
+  defaultDrive: PropTypes.string.isRequired,
 };
 
 export default AppToolBar;

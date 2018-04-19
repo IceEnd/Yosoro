@@ -28,10 +28,11 @@ export function createFile(param) {
 
 export const DELETE_PROJECT = 'DELETE_PROJECT';
 
-export function deleteProject(uuid) {
+export function deleteProject(uuid, onlyDelete) {
   return {
     type: DELETE_PROJECT,
     uuid,
+    onlyDelete,
   };
 }
 
@@ -74,13 +75,14 @@ export function renameNote(uuid, name, parentsId) {
 
 export const DELETE_NOTE = 'DELETE_NOTE';
 
-export function deletNote(uuid, parentsId, name, projectName) {
+export function deletNote(uuid, parentsId, name, projectName, onlyDelete = false) {
   return {
     type: DELETE_NOTE,
     uuid,
     parentsId,
     noteName: name,
     projectName,
+    onlyDelete,
   };
 }
 
@@ -187,9 +189,9 @@ export function saveNote(parentsId, uuid) {
   };
 }
 
-export const UPLOAD_NOTE_ONEDRIVER = 'UPLOAD_NOTE_ONEDRIVER';
-export const UPLOAD_NOTE_ONEDRIVER_SUCCESS = 'UPLOAD_NOTE_ONEDRIVER_SUCCESS';
-export const UPLOAD_NOTE_ONEDRIVER_FAILED = 'UPLOAD_NOTE_ONEDRIVER_FAILED';
+export const UPLOAD_NOTE_ONEDRIVE = 'UPLOAD_NOTE_ONEDRIVE';
+export const UPLOAD_NOTE_ONEDRIVE_SUCCESS = 'UPLOAD_NOTE_ONEDRIVE_SUCCESS';
+export const UPLOAD_NOTE_ONEDRIVE_FAILED = 'UPLOAD_NOTE_ONEDRIVE_FAILED';
 
 export const UPDATE_NOTE_UPLOAD_STATUS = 'UPDATE_NOTE_UPLOAD_STATUS';
 export function updateNoteUploadStatus(parentsId, uuid, status) {
@@ -201,4 +203,4 @@ export function updateNoteUploadStatus(parentsId, uuid, status) {
   };
 }
 
-export const SAVE_NOTE_FROM_DRIVER = 'SAVE_NOTE_FROM_DRIVER';
+export const SAVE_NOTE_FROM_DRIVE = 'SAVE_NOTE_FROM_DRIVE';

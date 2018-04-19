@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input, message, Icon } from 'antd';
 import { ipcRenderer } from 'electron';
-import { createFile, renameNote, deletNote, updateNoteDesc, trashBack, updateNoteUploadStatus, UPLOAD_NOTE_ONEDRIVER } from '../../actions/projects';
+import { createFile, renameNote, deletNote, updateNoteDesc, trashBack, updateNoteUploadStatus, UPLOAD_NOTE_ONEDRIVE } from '../../actions/projects';
 import { formatDate, pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
 import { readFile, beforeSwitchSave, saveContentToTrashFile, updateCurrentTitle, clearMarkdown, MARKDOWN_UPLOADING } from '../../actions/markdown';
 import { switchFile, clearNote } from '../../actions/note';
 import { getNote } from '../../utils/db/app';
 
-import oneDriverLogo from '../../assets/images/onedriver.png';
+import oneDriveLogo from '../../assets/images/onedrive.png';
 
 export default class Files extends Component {
   static displayName = 'NoteExplorerFiles';
@@ -78,12 +78,21 @@ export default class Files extends Component {
         message.error('Delete note failed.');
         return false;
       }
-      dispatch(deletNote(uuid, parentsId, name, projectName));
-      dispatch(trashBack());
-      if (uuid === currentUuid) {
-        dispatch(saveContentToTrashFile(projectName));
-        dispatch(clearMarkdown());
-        dispatch(clearNote());
+      if (data.code === 0) {
+        dispatch(deletNote(uuid, parentsId, name, projectName, false));
+        dispatch(trashBack());
+        if (uuid === currentUuid) {
+          dispatch(saveContentToTrashFile(projectName));
+          dispatch(clearMarkdown());
+          dispatch(clearNote());
+        }
+      } else if (data.code === 1) { // 笔记已经不存在了
+        message.error('Note does not exist.');
+        dispatch(deletNote(uuid, parentsId, name, projectName, true));
+        if (uuid === currentUuid) {
+          dispatch(clearMarkdown());
+          dispatch(clearNote());
+        }
       }
     });
     ipcRenderer.on('rename-note', () => {
@@ -112,7 +121,7 @@ export default class Files extends Component {
         }
       });
     });
-    ipcRenderer.on('upload-note-onedriver', () => {
+    ipcRenderer.on('upload-note-onedrive', () => {
       this.handleUpload();
     });
     // 收集将要导出的笔记的信息
@@ -168,7 +177,7 @@ export default class Files extends Component {
     ipcRenderer.removeAllListeners('delete-note');
     ipcRenderer.removeAllListeners('rename-note');
     ipcRenderer.removeAllListeners('node-add-desc');
-    ipcRenderer.removeAllListeners('upload-note-onedriver');
+    ipcRenderer.removeAllListeners('upload-note-onedrive');
     ipcRenderer.removeAllListeners('export-get-note-info');
     ipcRenderer.send('file-new-enbaled', {
       type: 'new-note',
@@ -184,11 +193,11 @@ export default class Files extends Component {
 
   // 上传文件
   handleUpload = () => {
-    const { contextNote: { uuid, name, oneDriver } } = this.state;
+    const { contextNote: { uuid, name } } = this.state;
     const { parentsId, projectName, dispatch } = this.props;
-    if (oneDriver === 2) {
-      return false;
-    }
+    // if (oneDriver === 2) {
+    //   return false;
+    // }
     // let toolbar = false;
     // if (currentUuid === uuid) {
     //   toolbar = true;
@@ -200,7 +209,7 @@ export default class Files extends Component {
       type: MARKDOWN_UPLOADING,
     });
     dispatch({
-      type: UPLOAD_NOTE_ONEDRIVER,
+      type: UPLOAD_NOTE_ONEDRIVE,
       param: {
         uuid,
         name,
@@ -287,18 +296,22 @@ export default class Files extends Component {
    */
   createFile = () => {
     const name = this.state.newFileTitle || 'New Note';
-    const { parentsId, projectName } = this.props;
+    const { parentsId, projectName, notes } = this.props;
+    const arr = notes.filter(item => item.name === name);
+    if (arr.length !== 0) {
+      message.error('File is exists.');
+      this.setState({
+        newFile: false,
+        newFileTitle: 'New Note',
+      });
+      return false;
+    }
     const fileData = ipcRenderer.sendSync('create-file', {
       name,
       projectName,
     });
     if (!fileData.success) {
-      const error = fileData.error;
-      if (error.errno === -10000) {
-        message.error('File is exists.');
-      } else {
-        message.error('Create file failed.');
-      }
+      message.error('Create file failed.');
       this.setState({
         newFile: false,
         newFileTitle: 'New Note',
@@ -450,7 +463,7 @@ export default class Files extends Component {
     }
     return (
       <span className={`clouds-item ${classname}`}>
-        <img src={oneDriverLogo} alt="logo" className="cloud-logo" />
+        <img src={oneDriveLogo} alt="logo" className="cloud-logo" />
         {status === 2 ? (
           <Icon type="loading" />
         ) : null}

@@ -59,6 +59,11 @@ export default class Project extends Component {
     ipcRenderer.on('delete-project', () => { // 删除项目
       const { dispatch, currentUuid, projectName } = this.props;
       const { uuid, name } = this.state.contextProject;
+      if (uuid === currentUuid) {
+        dispatch(beforeSwitchSave(projectName));
+        dispatch(clearMarkdown());
+        dispatch(clearWorkspace());
+      }
       const data = ipcRenderer.sendSync('move-project-to-trash', {
         name,
       });
@@ -66,14 +71,14 @@ export default class Project extends Component {
         message.error('Delete failed.');
         return false;
       }
-      // const newfolder = data.folder;
-      if (uuid === currentUuid) {
-        dispatch(beforeSwitchSave(projectName));
-        dispatch(clearMarkdown());
-        dispatch(clearWorkspace());
+      if (data.code === 0) { // 删除成功
+        dispatch(trashBack());
+        dispatch(deleteProject(uuid, false));
+      } else if (data.code === 1) { // 不存在对应文件夹，仅仅移除文件夹
+        message.error('Notebook does not exist.');
+        dispatch(deleteProject(uuid, true));
       }
-      dispatch(trashBack());
-      dispatch(deleteProject(uuid, projectName));
+      // const newfolder = data.folder;
     });
     ipcRenderer.on('rename-project', () => {
       this.setState({
@@ -202,6 +207,15 @@ export default class Project extends Component {
   }
 
   createProject = (name) => {
+    const arr = this.props.projects.filter(item => item.name === name);
+    if (arr.length !== 0) {
+      message.error('Name repeat.');
+      this.setState({
+        newProject: false,
+        newProjectTitle: 'New Project',
+      });
+      return false;
+    }
     const folderData = ipcRenderer.sendSync('create-project', name); // 创建文件夹
     if (!folderData.success) {
       const error = folderData.error;

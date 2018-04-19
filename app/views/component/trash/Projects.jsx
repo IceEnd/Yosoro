@@ -80,6 +80,9 @@ export default class Projects extends Component {
       message.error('Deleting notebook failed');
       return false;
     }
+    if (data.code === 1) { // 笔记本不存在
+      message.error('Notebook done note exist');
+    }
     this.props.dispatch(permantRemoveNotebook(uuid));
   }
 

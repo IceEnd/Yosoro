@@ -1,29 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch, NavLink } from 'react-router-dom';
-import Driver from './Driver';
+import Drive from './Drive';
 
-import '../../assets/scss/driver.scss';
+import '../../assets/scss/drive.scss';
 
-import oneDriverLogo from '../../assets/images/onedriver.png';
+import oneDriveLogo from '../../assets/images/onedrive.png';
 
 const Cloud = props => (
   <div className="cloud">
     <div className="cloud-bar">
       <div className="cloud-bar-content">
-        <span className="label">Cloud Driver:</span>
-        <NavLink to="/cloud/onedriver" activeClassName="cur" className="cloud-item">
+        <span className="label">Cloud Drive:</span>
+        <NavLink to="/cloud/onedrive" activeClassName="cur" className="cloud-item">
           <span className="logo">
-            <img alt="onedriver" src={oneDriverLogo} />
+            <img alt="onedrive" src={oneDriveLogo} />
           </span>
         </NavLink>
       </div>
     </div>
     <Switch>
       <Route
-        path="/cloud/:driver"
+        path="/cloud/:drive"
         render={routeProps => (
-          <Driver driver={props.driver} {...routeProps} dispatch={props.dispatch} />
+          <Drive drive={props.drive} {...routeProps} dispatch={props.dispatch} />
         )}
       />
     </Switch>
@@ -33,7 +33,7 @@ const Cloud = props => (
 Cloud.displayName = 'Cloud';
 Cloud.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  driver: PropTypes.shape({
+  drive: PropTypes.shape({
     status: PropTypes.number.isRequired,
     projects: PropTypes.array.isRequired,
     notes: PropTypes.array.isRequired,

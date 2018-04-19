@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import { Icon, Tooltip, Menu, Dropdown } from 'antd';
 import Search from '../share/search/Search';
-import { searchNotes, clearSearchNotes, UPLOAD_NOTE_ONEDRIVER } from '../../actions/projects';
+import { searchNotes, clearSearchNotes, UPLOAD_NOTE_ONEDRIVE } from '../../actions/projects';
 import { pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
 import { appSwitchEditMode } from '../../actions/app';
 import { clearWorkspace } from '../../actions/note';
@@ -101,7 +101,7 @@ export default class Tool extends PureComponent {
       type: MARKDOWN_UPLOADING,
     });
     this.props.dispatch({
-      type: UPLOAD_NOTE_ONEDRIVER,
+      type: UPLOAD_NOTE_ONEDRIVE,
       param: {
         uuid,
         name,

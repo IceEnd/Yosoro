@@ -94,6 +94,9 @@ export default class Projects extends Component {
       message.error(`Deleting "${name}" failed`);
       return false;
     }
+    if (data.code === 1) {
+      message.error('Note does not exist');
+    }
     dispatch(permantRemoveNote(projectUuid, uuid));
   }
 

@@ -18,11 +18,11 @@ import {
   TRASH_CHOOSE_PROJECT,
   TRASH_BACK_ROOT,
   SAVE_NOTE_ON_KEYDOWN,
-  UPLOAD_NOTE_ONEDRIVER,
-  UPLOAD_NOTE_ONEDRIVER_SUCCESS,
-  UPLOAD_NOTE_ONEDRIVER_FAILED,
+  UPLOAD_NOTE_ONEDRIVE,
+  UPLOAD_NOTE_ONEDRIVE_SUCCESS,
+  UPLOAD_NOTE_ONEDRIVE_FAILED,
   UPDATE_NOTE_UPLOAD_STATUS,
-  SAVE_NOTE_FROM_DRIVER,
+  SAVE_NOTE_FROM_DRIVE,
 } from '../actions/projects';
 import {
   getProjectList,
@@ -105,7 +105,7 @@ function projectReducer(state = {
       return assign({}, state);
     }
     case DELETE_PROJECT: { // 删除项目
-      const { uuid } = action;
+      const { uuid, onlyDelete } = action;
       deleteProject(uuid);
       const { hash, trashHash } = state;
       const project = state.projects[hash[uuid]];
@@ -117,6 +117,9 @@ function projectReducer(state = {
       }
       // delete hash[uuid];
       state.hash = newHash;
+      if (onlyDelete) { // 仅仅删除
+        return assign({}, state);
+      }
       if (typeof trashHash[uuid] === 'undefined') {
         const { trashProjects } = state;
         let tIndex = 0;
@@ -245,7 +248,7 @@ function projectReducer(state = {
       return assign({}, state);
     }
     case DELETE_NOTE: {
-      const { uuid, parentsId, noteName, projectName } = action;
+      const { uuid, parentsId, noteName, projectName, onlyDelete } = action;
       deleteNote(uuid);
       const pi = state.hash[parentsId];
       const notes = [...[], ...state.projects[pi].notes];
@@ -262,6 +265,9 @@ function projectReducer(state = {
       }
       notes.splice(ni, 1);
       state.projects[pi].notes = notes;
+      if (onlyDelete) {
+        return assign({}, state);
+      }
       const project = assign({}, state.projects[state.hash[parentsId]]);
       if (typeof state.trashHash[parentsId] === 'undefined') { // 废纸篓中不存在对应项目
         const { trashProjects, trashHash } = state;
@@ -735,7 +741,7 @@ function projectReducer(state = {
       updateNoteInfo(uuid, param);
       return assign({}, state);
     }
-    case UPLOAD_NOTE_ONEDRIVER: {
+    case UPLOAD_NOTE_ONEDRIVE: {
       const { param: { uuid, projectUuid } } = action;
       const notes = state.projects[state.hash[projectUuid]].notes.map((note) => {
         if (note.uuid === uuid) {
@@ -747,7 +753,7 @@ function projectReducer(state = {
       dbUpdateNote({ uuid }, { oneDriver: 2 });
       return assign({}, state);
     }
-    case UPLOAD_NOTE_ONEDRIVER_SUCCESS: { // 单个笔记上传成功
+    case UPLOAD_NOTE_ONEDRIVE_SUCCESS: { // 单个笔记上传成功
       const { param: { uuid, projectUuid } } = action;
       const notes = state.projects[state.hash[projectUuid]].notes.map((note) => {
         if (note.uuid === uuid) {
@@ -759,7 +765,7 @@ function projectReducer(state = {
       dbUpdateNote({ uuid }, { oneDriver: 3 });
       return assign({}, state);
     }
-    case UPLOAD_NOTE_ONEDRIVER_FAILED: {
+    case UPLOAD_NOTE_ONEDRIVE_FAILED: {
       const { param: { uuid, projectUuid } } = action;
       const notes = state.projects[state.hash[projectUuid]].notes.map((note) => {
         if (note.uuid === uuid) {
@@ -782,8 +788,8 @@ function projectReducer(state = {
       state.projects[state.hash[parentsId]].notes = notes;
       return assign({}, state);
     }
-    case SAVE_NOTE_FROM_DRIVER: { // 保存从云端下载的笔记
-      const { folder, name, content, info, driverType } = action;
+    case SAVE_NOTE_FROM_DRIVE: { // 保存从云端下载的笔记
+      const { folder, name, content, info, driveType } = action;
       const { projects } = state;
       let needCreateProject = true;
       let targetProject;
@@ -806,7 +812,7 @@ function projectReducer(state = {
           labels: info.labels,
           description: info.description,
           createDate,
-          [driverType]: 3,
+          [driveType]: 3,
         };
         const file = createFile(fileInfo);
         newProject.notes = [file];
@@ -834,7 +840,7 @@ function projectReducer(state = {
             labels: info.labels,
             description: info.description,
             createDate,
-            [driverType]: 3,
+            [driveType]: 3,
           };
           const file = createFile(fileInfo);
           targetProject.notes.unshift(file);

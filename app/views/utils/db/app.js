@@ -19,10 +19,10 @@ export function setDefaults() {
     markdownSettings: {
       editorWidth: 0.5,
     },
-    defaultDriver: 'oneDriver',
+    defaultDriver: 'oneDrive',
   });
   db.set(OAUTHTOKEN, {
-    oneDriver: '',
+    oneDrive: '',
   });
   db.set(PROJECTS, []);
   db.set(FILES, []);
@@ -59,6 +59,7 @@ export function checkDefaults() {
       markdownSettings: {
         editorWidth: 0.5,
       },
+      defaultDrive: 'oneDrive',
     });
   }
   return projects && settings && notes && oauth;
