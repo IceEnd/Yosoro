@@ -65,7 +65,7 @@ function createWindow() {
   if (process.platform === 'linux') {
     options.icon = path.join(__dirname, './resource/app.png');
   }
-  if (process.platform === 'drawin') {
+  if (process.platform === 'darwin') {
     options.transparent = true;
     options.frame = true;
     options.titleBarStyle = 'hiddenInset';

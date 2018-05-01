@@ -233,12 +233,12 @@ class App extends Component {
     const { settings, platform } = app;
     const { theme } = settings;
     const { dispatch, history } = this.props;
-    const notDrawin = platform === 'drawin' ? '' : 'not-drawin';
+    const notDarwin = platform === 'darwin' ? '' : 'not-darwin';
     return (
       <Fragment>
         <SVG />
         <Router history={history}>
-          <div className={`container ${notDrawin} ${theme}`}>
+          <div className={`container ${notDarwin} ${theme}`}>
             <AppToolBar defaultDrive={app.settings.defaultDrive} />
             <Switch>
               <Route
