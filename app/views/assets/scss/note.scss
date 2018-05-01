@@ -134,7 +134,7 @@
 			position: relative;
 			flex: 1 1 auto;
 			overflow: auto;
-			padding: 0.2rem;
+			padding: 0 0.2rem;
 
 			.new-project {
 				input {
@@ -245,7 +245,7 @@
 			position: relative;
 			flex: 1 1 auto;
 			overflow: auto;
-			padding: 0.2rem;
+			padding: 0 0.3rem;
 		}
 
 		.file-list__item {
@@ -332,7 +332,7 @@
 			}
 
 			&:hover {
-				background-color: $noteLiHoverBg;
+				background-color: $fileLiHoverBg;
 				.file-list__item__name {
 					h3 {
 						color: $noteLiActiveColor;
@@ -366,7 +366,7 @@
 				}
 			}
 			&.cur {
-				background-color: $noteLiActiveBg;
+				background-color: $fileLiActiveBg;
 				.file-list__item__name {
 					h3 {
 						color: $noteLiActiveColor;
