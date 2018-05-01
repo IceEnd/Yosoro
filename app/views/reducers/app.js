@@ -1,3 +1,4 @@
+import { remote } from 'electron';
 import {
   APP_LOUNCH,
   APP_ADJUST_MARKDOWN,
@@ -37,6 +38,7 @@ export default function lounchApp(state = {
   },
   first: false,
   oneDriveTokenStatus: 0, // 0 未请求 1 请求中 2 成功 3 失败
+  platform: '',
 }, action) {
   switch (action.type) {
     case APP_LOUNCH: {
@@ -51,10 +53,12 @@ export default function lounchApp(state = {
       if (settings.defaultDrive === 'oneDriver') {
         settings.defaultDrive = 'oneDrive';
       }
+      const platform = remote.getGlobal('process').platform;
       const app = {
         status: 1,
         version: appInfo.version,
         settings,
+        platform,
       };
       return assign({}, state, app);
     }

@@ -42,6 +42,7 @@ class App extends Component {
         defaultDrive: PropTypes.string.isRequired,
       }).isRequired,
       oneDriveTokenStatus: PropTypes.number.isRequired,
+      platform: PropTypes.string.isRequired,
     }),
     projectsData: PropTypes.shape({
       projects: PropTypes.arrayOf(PropTypes.shape({
@@ -229,14 +230,15 @@ class App extends Component {
 
   render() {
     const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash }, markdown, note, drive } = this.props;
-    const { settings } = app;
+    const { settings, platform } = app;
     const { theme } = settings;
     const { dispatch, history } = this.props;
+    const notDrawin = platform === 'drawin' ? '' : 'not-drawin';
     return (
       <Fragment>
         <SVG />
         <Router history={history}>
-          <div className={`container ${theme}`}>
+          <div className={`container ${notDrawin} ${theme}`}>
             <AppToolBar defaultDrive={app.settings.defaultDrive} />
             <Switch>
               <Route

@@ -60,13 +60,15 @@ function createWindow() {
     height: 786,
     minWidth: 1200,
     minHeight: 600,
-    titleBarStyle: 'hiddenInset',
-    frame: true,
-    // backgroundColor: 'transparent',
-    transparent: true,
+    titleBarStyle: 'default',
   };
   if (process.platform === 'linux') {
     options.icon = path.join(__dirname, './resource/app.png');
+  }
+  if (process.platform === 'drawin') {
+    options.transparent = true;
+    options.frame = true;
+    options.titleBarStyle = 'hiddenInset';
   }
   mainWindow = new BrowserWindow(options);
   mainWindow.once('ready-to-show', () => {
