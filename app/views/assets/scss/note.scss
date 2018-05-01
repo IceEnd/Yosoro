@@ -542,6 +542,14 @@
 
 		.CodeMirror {
 			background-color: #fcfdfe;
+
+			.CodeMirror-gutters {
+				background-color: #fcfdfe;
+				border-right: none;
+			}
+			.CodeMirror-linenumber {
+				color: rgba($color: #999, $alpha: 0.5)
+			}
 		}
 
 		&.drag {
