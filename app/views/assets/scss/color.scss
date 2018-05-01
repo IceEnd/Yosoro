@@ -1,12 +1,27 @@
+$htmlBg: rgba(255, 255, 255, 0);
+
 $navWidth: 260px;
 
 $cardBg: #1b1d24;
 
 $loadingBg: #2c3e50;
 $color: hsl(0, 0%, 22%);
-$navBg: #25292f;
+
+// $navBg: #25292f;
+$navBg: rgba(244, 244, 244, 0.7);
+
+$rootBg: rgba(244, 244, 244, 0.9);
+
+$noteLiActiveBg: rgba($color: #2e80fe, $alpha: 0.8);
+
+$noteLiHoverBg: rgba($color: #2e80fe, $alpha: 0.7);
+
+$noteLiActiveColor: #f7f8f9;
+
+$noteTitleColor: #7f7a78;
+
 $headerBg: #0c0c0c;
-$serverLiBg: #22262c;
+
 $colorBorder: #0c0c0c;
 $windowBg: #2d313a;
 

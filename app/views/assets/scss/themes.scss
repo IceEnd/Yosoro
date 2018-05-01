@@ -2,7 +2,13 @@
 
 .light {
 	.tool-bar {
-		background-image: linear-gradient(to left, rgb(230, 230, 230), rgb(210, 210, 210));
+		// background-image: linear-gradient(to left, rgb(230, 230, 230), rgb(210, 210, 210));
+		background-color: $navBg;
+
+		.tool-bar-bg {
+			background-color: $navBg;
+			// background: url("../images/blur.svg#blur");
+		}
 
 		.menu-list {
 			.menu-svg {

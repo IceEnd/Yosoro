@@ -3,6 +3,7 @@
 //	 display: -webkit-flex;
 // }
 @import "common.scss";
+@import "color.scss";
 
 @keyframes fade-in {
 	0% {
@@ -33,6 +34,7 @@
 	display: flex;
 	display: -webkit-flex;
 	flex-direction: column;
+	background-color: $rootBg;
 
 	.note-toolbar {
 		flex: 0 0 3rem;
@@ -60,7 +62,7 @@
 			@include text-ellipsis;
 			line-height: 3rem;
 			font-size: 1.2rem;
-			color: rgb(240, 161, 75);
+			color: $noteTitleColor;
 			margin: 0;
 		}
 
@@ -132,6 +134,7 @@
 			position: relative;
 			flex: 1 1 auto;
 			overflow: auto;
+			padding: 0.2rem;
 
 			.new-project {
 				input {
@@ -140,21 +143,44 @@
 			}
 
 			.project-list__li {
-				background-color: #ffffff;
+				background-color: transparent;
 				padding: 0 0.4rem;
 				border-bottom: 0;
-				// border-bottom: 1px solid transparent;
 				transition: all linear 0.2s;
+				border-radius: 0.5rem;
 
 				&:hover {
-					background-color: rgba(255, 204, 204, 0.2);
+					background-color: $noteLiHoverBg;
+					.project-list__item {
+						color: $noteLiActiveColor;
+						border-bottom: 1px solid transparent;
+
+						.project-list__item__name {
+							h3 {
+								color: $noteLiActiveColor;
+							}
+							input {
+								color: $noteLiActiveColor;
+							}
+						}
+					}
 				}
 				&.cur {
-					background-color: rgba(255, 204, 204, 0.5);
-					// border-bottom: 1px solid rgba(173,173,173,0.5);
-					// .project-list__item {
-					//	 border-bottom: none;
-					// }
+					background-color: $noteLiActiveBg;
+
+					.project-list__item {
+						color: $noteLiActiveColor;
+						border-bottom: 1px solid transparent;
+
+						.project-list__item__name {
+							h3 {
+								color: $noteLiActiveColor;
+							}
+							input {
+								color: $noteLiActiveColor;
+							}
+						}
+					}
 				}
 
 				&:last-child {
@@ -167,8 +193,7 @@
 			.project-list__item {
 				@include display-flex;
 				@include project-item;
-				// border-bottom: 1px solid rgba(173,173,173,0.5);
-				border-bottom: 1px solid rgba(255, 204, 204, 0.5);
+				border-bottom: 1px solid rgba(255, 204, 204, 1);
 
 				.project-list__item__icon {
 					flex: 0 0 2rem;
@@ -194,7 +219,6 @@
 						@include normal-ipt;
 						background-color: inherit;
 						border: 1px solid transparent;
-						// font-weight: bold;
 
 						&.edit {
 							border: 1px solid #d9d9d9;
@@ -221,11 +245,13 @@
 			position: relative;
 			flex: 1 1 auto;
 			overflow: auto;
+			padding: 0.2rem;
 		}
 
 		.file-list__item {
 			height: 6.6rem;
 			position: relative;
+			border-radius: 0.5rem;
 
 			.clouds {
 				position: absolute;
@@ -244,7 +270,6 @@
 					border-radius: 50%;
 					background-color: rgba(222, 184, 135, 0.5);
 					text-align: center;
-					// border: 1px solid #ff9999;
 					opacity: 0.5;
 					position: relative;
 					box-shadow: 2px 2px 1rem rgba(0, 0, 0, 0.5);
@@ -254,9 +279,9 @@
 						right: 0;
 						content: "";
 						position: absolute;
-						width: 0.55rem;
-						height: 0.55rem;
-						border-radius: 50%;
+						width: 0.6rem;
+						height: 0.6rem;
+						border-radius: 0.6rem;
 					}
 
 					&.fail {
@@ -307,10 +332,72 @@
 			}
 
 			&:hover {
-				background-color: rgba(255, 204, 204, 0.2);
+				background-color: $noteLiHoverBg;
+				.file-list__item__name {
+					h3 {
+						color: $noteLiActiveColor;
+					}
+					.ant-input {
+						color: $noteLiActiveColor;
+					}
+				}
+				.file-list__item__info__desc {
+					p {
+						color: $noteLiActiveColor;
+					}
+					.ant-input {
+						color: $noteLiActiveColor;
+					}
+				}
+				.clouds {
+					.clouds-item {
+						background-color: #f7f8f9;
+						&.need-upload {
+							&:after {
+								background-color: #73b916;
+							}
+						}
+					}
+				}
+				.file-list__item__icon {
+					svg {
+						fill: $noteLiActiveColor;
+					}
+				}
 			}
 			&.cur {
-				background-color: rgba(255, 204, 204, 0.5);
+				background-color: $noteLiActiveBg;
+				.file-list__item__name {
+					h3 {
+						color: $noteLiActiveColor;
+					}
+					.ant-input {
+						color: $noteLiActiveColor;
+					}
+				}
+				.file-list__item__info__desc {
+					p {
+						color: $noteLiActiveColor;
+					}
+					.ant-input {
+						color: $noteLiActiveColor;
+					}
+				}
+				.clouds {
+					.clouds-item {
+						background-color: #f7f8f9;
+						&.need-upload {
+							&:after {
+								background-color: #73b916;
+							}
+						}
+					}
+				}
+				.file-list__item__icon {
+					svg {
+						fill: $noteLiActiveColor;
+					}
+				}
 			}
 
 			.file-list__item__root {
@@ -419,10 +506,9 @@
 	.markdown-content {
 		flex: 1 1 auto;
 		@include display-flex;
-		border-top: 1px solid #d9d9d9;
+		// border-top: 1px solid #d9d9d9;
 		overflow: hidden;
 		position: relative;
-		// background-color: rgba(248,248,248,1);
 	}
 
 	.preview-root {
@@ -455,7 +541,7 @@
 		overflow: hidden;
 
 		.CodeMirror {
-			background-color: #f8f8f8;
+			background-color: #fcfdfe;
 		}
 
 		&.drag {

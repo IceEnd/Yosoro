@@ -56,13 +56,14 @@ function createWindow() {
   // Create the browser window.
   const options = {
     title: 'Yosoro',
-    width: 1180,
+    width: 1200,
     height: 786,
-    minWidth: 1180,
+    minWidth: 1200,
     minHeight: 600,
     titleBarStyle: 'hiddenInset',
     frame: true,
-    backgroundColor: 'ransparent',
+    // backgroundColor: 'transparent',
+    transparent: true,
   };
   if (process.platform === 'linux') {
     options.icon = path.join(__dirname, './resource/app.png');

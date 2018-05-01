@@ -5,12 +5,13 @@
 
 	&.pre-mode {
 		margin: 0 auto;
-		background-color: #ffffff;
+		// background-color: #ffffff;
+		background-color: inherit;
 
 		.preview-body {
 			width: 70%;
 			margin: 2rem auto;
-			background-color: rgba(248, 248, 248, 1);
+			// background-color: rgba(248, 248, 248, 1);
 			padding: 2rem;
 			border-radius: 1rem;
 		}
