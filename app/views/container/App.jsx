@@ -233,7 +233,7 @@ class App extends Component {
     const { settings, platform } = app;
     const { theme } = settings;
     const { dispatch, history } = this.props;
-    const notDarwin = platform === 'darwin' ? '' : 'not-darwin';
+    const notDarwin = platform === 'darwin' ? 'darwin' : 'not-darwin';
     return (
       <Fragment>
         <SVG />

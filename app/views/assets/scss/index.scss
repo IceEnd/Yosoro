@@ -53,6 +53,17 @@ html {
 	width: 100%;
 	height: 100%;
 	position: relative;
+
+	&.darwin:before {
+		content: "";
+		position: absolute;
+		z-index: -1;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		background-color: rgba($color: #ffffff, $alpha: 0.5);
+	}
 }
 
 .no-select {
@@ -157,131 +168,6 @@ html {
 	.logo-cont {
 		background-color: $headerBg;
 	}
-
-	.server-list-title {
-		color: rgb(214, 216, 218);
-		font-size: 1rem;
-		font-weight: normal;
-	}
-
-	.servers-cont {
-		padding: 0 0.5rem;
-		.server-li {
-			height: 3.6rem;
-			background-color: $headerBg;
-			// border-radius: 0.4rem;
-			// border: 1px solid darkorange;
-			color: aliceblue;
-			line-height: 3.6rem;
-			padding: 0 0.5rem;
-			font-size: 1rem;
-			display: flex;
-			display: -webkit-flex;
-
-			&.cur {
-				background: $navCurBg;
-			}
-
-			.anticon-desktop {
-				flex: 0 1 20%;
-				line-height: 3.6rem;
-				font-size: 1.4rem;
-			}
-
-			.name {
-				flex: 1 1 45%;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-				overflow: hidden;
-				cursor: pointer;
-			}
-
-			.setting {
-				flex: 0 1 35%;
-				padding-left: 0.5rem;
-				.anticon {
-					font-size: 1.2rem;
-					margin-right: 0.5rem;
-					&:last-child {
-						margin-right: 0;
-					}
-				}
-			}
-
-			border-bottom: 1px solid grey;
-			&:first-child {
-				border-radius: 0.4rem 0.4rem 0 0;
-			}
-			&:last-child {
-				border-radius: 0 0 0.4rem 0.4rem;
-				border-bottom: 0;
-			}
-		}
-	}
-}
-
-.window {
-	flex: 1;
-	position: relative;
-	background-color: $windowBg;
-	height: 100%;
-	overflow: hidden;
-
-	.no-connet-tips {
-		font-size: 1.5rem;
-		text-align: center;
-		margin-top: 35%;
-		color: aliceblue;
-	}
-
-	.sub-window {
-		position: absolute;
-		top: 0;
-		right: 0;
-		width: 100%;
-		height: 100%;
-		overflow-y: auto;
-		visibility: hidden;
-
-		&.cur {
-			visibility: visible;
-		}
-	}
-}
-
-.app-connect-loading {
-	position: absolute;
-	z-index: 999;
-	width: 100%;
-	height: 100%;
-	background-color: #2d313a;
-
-	.loading-cont {
-		position: relative;
-		width: 20%;
-		height: 20%;
-		left: 40%;
-		top: 30%;
-	}
-
-	.connect-loading-cont {
-		fill: none;
-		stroke-width: 1;
-		stroke: $lightColor;
-	}
-
-	.loading-tips {
-		margin-bottom: 0;
-		margin-top: 1rem;
-		text-align: center;
-		color: $lightColor;
-	}
-}
-
-/* 图标 */
-.pie-chart-react {
-	width: 100%;
-	height: 100%;
 }
 
 .sub-window {
