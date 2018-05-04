@@ -540,8 +540,13 @@
 		background-color: rgba(248, 248, 248, 1);
 		overflow: hidden;
 
+		.code-container {
+			background-color: #fcfdfe;
+		}
+
 		.CodeMirror {
 			background-color: #fcfdfe;
+			height: 100%;
 
 			.CodeMirror-gutters {
 				background-color: #fcfdfe;
@@ -614,10 +619,6 @@
 				-webkit-box-shadow: none;
 				box-shadow: none;
 			}
-    }
-
-    .CodeMirror {
-      height: 100%;
     }
 	}
 }

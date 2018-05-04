@@ -119,9 +119,9 @@ class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.app.oneDriveTokenStatus === 1 && nextProps.app.oneDriveTokenStatus === 3) {
-      message.error('One Driver auth failed');
-    }
+    // if (this.props.app.oneDriveTokenStatus === 1 && nextProps.app.oneDriveTokenStatus === 3) {
+    //   message.error('One Driver auth failed');
+    // }
     if (this.props.app.allowShowUpdate && !nextProps.app.allowShowUpdate) {
       ipcRenderer.send('stop-release-schedule');
     }

@@ -194,6 +194,7 @@ export default class Editor extends Component {
         ref={node => (this.editorRoot = node)}
       >
         <div
+          className="code-container"
           style={{ width: textWidth, height: '100%' }}
           ref={node => (this.container = node)}
         />

@@ -23,9 +23,10 @@ function* oneDriveToken(action) {
     const token = data.access_token;
     const refreshToken = data.refresh_token;
     const expiresDate = Date.parse(new Date()) + (data.expires_in * 1000);
+    message.success('Authorized success.');
     yield put({ type: FETCHING_ONEDRIVE_TOKEN_SUCCESS, token, refreshToken, expiresDate });
   } catch (ex) {
-    message.error('Auth failed');
+    message.error('Authorization failed, please try again.');
     yield put({ type: FETCHING_ONEDRIVE_TOKEN_FAILED, error: ex });
   }
 }

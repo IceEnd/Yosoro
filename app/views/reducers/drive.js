@@ -64,12 +64,9 @@ function updateDriver(state = {
         status: 0,
       });
     case DRIVE_DOWNLOAD_NOTE_SUCCESS:
-      return assign({}, state, {
-        status: 1,
-      });
     case DRIVE_DOWNLOAD_NOTE_FAILED:
       return assign({}, state, {
-        status: 2,
+        status: 1,
       });
     case DRIVE_DELETE_ITEM:
       return assign({}, state, {
