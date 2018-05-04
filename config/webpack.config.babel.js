@@ -52,7 +52,7 @@ export default {
               presets: [
                 ['env', {
                   targets: {
-                    browsers: ['last 2 versions', 'chrome >= 61'],
+                    browsers: ['last 2 versions', 'chrome >= 59'],
                   },
                   loose: true,
                 }],
