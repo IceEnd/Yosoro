@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import CodeMirror from 'codemirror';
 import 'codemirror/addon/fold/markdown-fold';
 import 'codemirror/mode/markdown/markdown';
+import ReactResizeDetector from 'react-resize-detector';
 import { updateMarkdownHtml } from '../../actions/markdown';
-import { throttle } from '../../utils/utils';
-// import { appMarkdownAdjust } from '../../actions/app';
+import { throttle, debounce } from '../../utils/utils';
 
 export default class Editor extends Component {
   static displayName = 'MarkdownEditor';
@@ -23,13 +23,19 @@ export default class Editor extends Component {
     setPreiewScrollRatio: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
+  static getDerivedStateFromProps(nextProps) {
+    return {
+      content: nextProps.defaultContent,
+    };
+  }
+
+  constructor() {
+    super();
     this.codeMirror = null;
-    const textWidth = this.getTextWidth(props);
+    this.containerResize = debounce(() => {
+      this.codeMirror.refresh();
+    }, 100);
     this.state = {
-      content: props.defaultContent,
-      textWidth,
       listenScroll: true,
     };
   }
@@ -37,25 +43,18 @@ export default class Editor extends Component {
   componentDidMount() {
     this.noteRoot = document.getElementById('note_root_cont');
     window.addEventListener('resize', throttle(this.onWindowResize, 60));
+    this.container.addEventListener('resize', this.handleContainerResize);
     this.setCodeMirror();
   }
 
-  componentWillReceiveProps(nextProps) {
-    const textWidth = this.getTextWidth(nextProps);
-    this.setState({
-      content: nextProps.defaultContent,
-      textWidth,
-    });
-    if (this.props.uuid !== nextProps.uuid) {
-      this.codeMirror.setValue(nextProps.defaultContent);
-    }
-  }
-
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { start } = this.props;
     if (start !== -1) {
       this.editor.selectionStart = start + 1;
       this.editor.selectionEnd = start + 1;
+    }
+    if (prevProps.uuid !== this.props.uuid) {
+      this.codeMirror.setValue(this.props.defaultContent);
     }
   }
 
@@ -67,24 +66,21 @@ export default class Editor extends Component {
   onWindowResize = () => {
     const { editorMode } = this.props;
     if (editorMode === 'edit') {
-      const textWidth = this.getTextWidth();
+      const { editorWidthValue } = this.props;
+      const textWidth = this.getTextWidth(editorMode, editorWidthValue);
       this.setState({
         textWidth,
       });
     }
   }
 
-  getTextWidth = (props) => {
-    let editorMode;
-    let editorWidthValue;
-    if (props) {
-      editorMode = props.editorMode;
-      editorWidthValue = props.editorWidthValue;
-    } else {
-      editorMode = this.props.editorMode;
-      editorWidthValue = this.props.editorWidthValue;
-    }
-    // const { editorMode, editorWidthValue } = this.props;
+  getRatio = (cm) => {
+    const currentLine = cm.getCursor().line;
+    const lines = cm.lineCount();
+    return currentLine / lines;
+  }
+
+  getTextWidth = (editorMode, editorWidthValue) => {
     if (editorMode === 'normal' || editorMode === 'immersion') {
       return '100%';
     }
@@ -102,12 +98,6 @@ export default class Editor extends Component {
       return res;
     }
     return '100%';
-  }
-
-  getRatio = (cm) => {
-    const currentLine = cm.getCursor().line;
-    const lines = cm.lineCount();
-    return currentLine / lines;
   }
 
   setCodeMirror = () => {
@@ -128,6 +118,15 @@ export default class Editor extends Component {
     this.codeMirror.on('scroll', this.handleScroll);
     this.codeMirror.on('keydown', this.handleKeyDown);
     this.codeMirror.on('focus', this.handleFocus);
+  }
+
+  updateCode = () => {
+    const { editorMode, editorWidthValue, defaultContent } = this.props;
+    const textWidth = this.getTextWidth(editorMode, editorWidthValue);
+    this.setState({
+      content: defaultContent,
+      textWidth,
+    });
   }
 
   deleteCodeMirror = () => {this.codeMirror = null;}
@@ -168,8 +167,12 @@ export default class Editor extends Component {
     this.props.setDrag(false);
   }
 
+  handleCodeMirrorResize = () => {
+    this.containerResize();
+  }
+
   render() {
-    const { textWidth } = this.state;
+    // const { textWidth } = this.state;
     const { editorWidth, editorMode, drag } = this.props;
     let width = editorWidth;
     let rootClass = '';
@@ -186,13 +189,14 @@ export default class Editor extends Component {
       noBorder = 'no-border';
       rootClass = 'immersion-mode';
     }
-    // const textWidth = this.getTextWidth();
+    const textWidth = this.getTextWidth(editorWidth, editorMode);
     return (
       <div
         className={`editor-root ${rootClass} ${noBorder} ${drag ? 'drag' : ''}`}
         style={{ flexBasis: width }}
         ref={node => (this.editorRoot = node)}
       >
+        <ReactResizeDetector handleWidth onResize={this.handleCodeMirrorResize} />
         <div
           className="code-container"
           style={{ width: textWidth, height: '100%' }}

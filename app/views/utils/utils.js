@@ -121,10 +121,10 @@ export function markedToHtml(string) {
 /**
  * @desc 函数节流 返回函数连续调用时，fun 执行频率限定为 次/wait
  *
- * @param {function} func 需要执行的函数
- * @param {number} wait 执行间隔，单位是毫秒（ms），默认100
+ * @param {Function} func 需要执行的函数
+ * @param {Number} wait 执行间隔，单位是毫秒（ms），默认100
  *
- * @return {function} 返回一个“节流”函数
+ * @return {Function} 返回一个“节流”函数
  */
 export function throttle(func, wait = 100) {
   let timer = null;
@@ -144,5 +144,24 @@ export function throttle(func, wait = 100) {
       previous = now;
       func.apply(context, currentArgs);
     }
+  };
+}
+
+/**
+ * @desc 函数防抖
+ * @param {Function} fn 需要执行的函数
+ * @param {Number} delay 执行间隔，单位是毫秒（ms），默认100
+ *
+ * @return {Function}
+ */
+export function debounce(fn, delay = 100) {
+  let timer;
+  return function (...args) {
+    const context = this;
+    const currentArgs = args;
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn.apply(context, currentArgs);
+    }, delay);
   };
 }
