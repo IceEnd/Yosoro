@@ -32,11 +32,11 @@ You can read the [CHANGELOG](./CHANGELOG.md) to get more information.
 
 ### Write Notes
 
-![write](http://obukb5fdy.bkt.clouddn.com/yosoro/notebook.gif)
+![write](https://t1.picb.cc/uploads/2018/05/13/2vBxK7.gif)
 
 ### File Syncing
 
-![sync](http://obukb5fdy.bkt.clouddn.com/yosoro/sync.gif)
+![sync](https://t1.picb.cc/uploads/2018/05/13/2vBRbs.gif)
 
 ## Screenshots
 
