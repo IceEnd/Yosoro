@@ -46,7 +46,7 @@ You can read the [CHANGELOG](./CHANGELOG.md) to get more information.
 
 ### Windows
 
-![screenshot-windows](https://s1.ax1x.com/2018/04/09/CF96eK.png)
+![screenshot-windows](https://s1.ax1x.com/2018/05/13/CDZC5t.png)
 
 ### linux
 
