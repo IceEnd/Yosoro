@@ -846,7 +846,7 @@ function projectReducer(state = {
           targetProject.notes.unshift(file);
           state.projects[targetProjectIndex] = targetProject;
         } else { // 不需要创建笔记
-          const newNote = assign({}, targetNote, ...info);
+          const newNote = assign({}, targetNote, ...info, { [driveType]: 3 });
           state.projects[targetProjectIndex].notes[targetNoteIndex] = newNote;
         }
       }

@@ -141,7 +141,7 @@ export default class Files extends Component {
       const { dispatch, projectName } = this.props;
       const item = nextProps.notes[0];
       dispatch(beforeSwitchSave(projectName));
-      dispatch(switchFile(item.uuid));
+      dispatch(switchFile(item.uuid, item.name));
       const data = ipcRenderer.sendSync('read-file', {
         projectName,
         fileName: item.name,
@@ -408,7 +408,7 @@ export default class Files extends Component {
         dispatch(updateNoteUploadStatus(parentsId, currentUuid, 1));
       }
     }
-    dispatch(switchFile(item.uuid));
+    dispatch(switchFile(item.uuid, item.name));
     const data = ipcRenderer.sendSync('read-file', {
       projectName,
       fileName: item.name,

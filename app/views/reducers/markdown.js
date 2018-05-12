@@ -9,6 +9,7 @@ import {
   MARKDOWN_UPLOADING,
   MARKDWON_UPLADING_SUCCESS,
   MARKDWON_UPLADING_FAILED,
+  JUST_UPDATE_MARKDWON_HTML,
   // READ_FILE_SUCCESS,
   // READ_FILE_FARILED,
 } from '../actions/markdown';
@@ -48,6 +49,14 @@ function updateMarkdown(state = initState, action) {
         start: -1,
         hasEdit: false,
         uploadStatus: 0,
+      });
+    }
+    case JUST_UPDATE_MARKDWON_HTML: {
+      const { content } = action;
+      const html = markedToHtml(action.content);
+      return assign({}, state, {
+        content,
+        html,
       });
     }
     case UPDATE_MARKDOWN_HTML: {

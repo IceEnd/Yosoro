@@ -12,6 +12,7 @@ export default function updateNote(state = {
   projectUuid: '-1',
   projectName: '',
   fileUuid: '-1',
+  fileName: '',
 }, action) {
   switch (action.type) {
     case SWITCH_PROJECT: {
@@ -24,16 +25,19 @@ export default function updateNote(state = {
     case SWITCH_FILE:
       return assign({}, state, {
         fileUuid: action.uuid,
+        fileName: action.fileName,
       });
     case CLEAR_NOTE:
       return assign({}, state, {
         fileUuid: '-1',
+        fileName: '',
       });
     case CLEAR_NOTE_WORKSCAPE:
       return assign({}, {
         projectUuid: '-1',
         projectName: '',
         fileUuid: '-1',
+        fileName: '',
       });
     case UPDATE_NOTE_PROJECTNAME: {
       const { name } = action;

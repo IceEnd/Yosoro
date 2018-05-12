@@ -23,7 +23,12 @@ const Cloud = props => (
       <Route
         path="/cloud/:drive"
         render={routeProps => (
-          <Drive drive={props.drive} {...routeProps} dispatch={props.dispatch} />
+          <Drive
+            drive={props.drive}
+            {...routeProps}
+            dispatch={props.dispatch}
+            note={props.note}
+          />
         )}
       />
     </Switch>
@@ -38,6 +43,12 @@ Cloud.propTypes = {
     projects: PropTypes.array.isRequired,
     notes: PropTypes.array.isRequired,
     currentProjectName: PropTypes.string.isRequired,
+  }).isRequired,
+  note: PropTypes.shape({
+    projectUuid: PropTypes.string.isRequired,
+    projectName: PropTypes.string.isRequired,
+    fileUuid: PropTypes.string.isRequired,
+    fileName: PropTypes.string.isRequired,
   }).isRequired,
 };
 

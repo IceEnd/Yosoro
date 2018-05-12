@@ -30,19 +30,19 @@ You can read the [CHANGELOG](./CHANGELOG.md) to get more information.
 
 ## Demo
 
-### Writing Notes
+### Write Notes
 
-![write](https://s1.ax1x.com/2018/04/10/CFjzuT.gif)
+![write](http://obukb5fdy.bkt.clouddn.com/yosoro/notebook.gif)
 
 ### File Syncing
 
-![sync](https://s1.ax1x.com/2018/04/10/CFvA81.gif)
+![sync](http://obukb5fdy.bkt.clouddn.com/yosoro/sync.gif)
 
 ## Screenshots
 
 ### macOS
 
-![screenshot-osx](https://s1.ax1x.com/2018/04/09/CFSAfA.png)
+![screenshot-osx](https://s1.ax1x.com/2018/05/13/CDVMcD.png)
 
 ### Windows
 

@@ -70,7 +70,7 @@ function getMemuTemplete(mainWindow) {
       role: 'selectall',
     }],
   }, {
-    label: 'Auth',
+    label: 'Authorize',
     submenu: [{
       label: 'One Drive',
       click: async (menuItem, browserWindow) => {
@@ -140,21 +140,6 @@ function getMemuTemplete(mainWindow) {
             focusedWindow.toggleDevTools();
           }
         },
-      }, {
-        type: 'separator',
-      }, {
-        label: 'App Menu Demo',
-        click: (item, focusedWindow) => {
-          if (focusedWindow) {
-            const options = {
-              type: 'info',
-              title: 'Application Menu Demo',
-              buttons: ['Ok'],
-              message: 'This demo is for the Menu section, showing how to create a clickable menu item in the application menu.',
-            };
-            electron.dialog.showMessageBox(focusedWindow, options);
-          }
-        },
       }],
     });
   }
@@ -164,7 +149,7 @@ function getMemuTemplete(mainWindow) {
     submenu: [{
       label: 'Learn More',
       click: () => {
-        electron.shell.openExternal('https://github.com/IceEnd/Yosoro');
+        electron.shell.openExternal('https://yosoro.coolecho.net');
       },
     }],
   });
@@ -177,6 +162,13 @@ function getMemuTemplete(mainWindow) {
       submenu: [{
         label: `About ${name}`,
         role: 'about',
+      }, {
+        type: 'separator',
+      }, {
+        label: 'Website',
+        click: () => {
+          electron.shell.openExternal('https://yosoro.coolecho.net');
+        },
       }, {
         type: 'separator',
       }, {

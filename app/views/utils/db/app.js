@@ -123,7 +123,7 @@ export function getProjectList() {
   for (let i = 0; i < nLength; i++) {
     const { parentsId } = notes[i];
     if (notes[i].status === 1) {
-      projects[hash[parentsId]].notes.push(notes[i]);
+      projects[hash[parentsId]].notes.unshift(notes[i]);
     } else {
       if (typeof trashHash[parentsId] === 'undefined') {
         trashHash[parentsId] = trashProjects.length;
@@ -131,7 +131,7 @@ export function getProjectList() {
         p.notes = [];
         trashProjects.push(p);
       }
-      trashProjects[trashHash[parentsId]].notes.push(notes[i]);
+      trashProjects[trashHash[parentsId]].notes.unshift(notes[i]);
     }
   }
   return {

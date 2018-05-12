@@ -23,6 +23,12 @@ export default class Drive extends Component {
       notes: PropTypes.array.isRequired,
       currentProjectName: PropTypes.string.isRequired,
     }).isRequired,
+    note: PropTypes.shape({
+      projectUuid: PropTypes.string.isRequired,
+      projectName: PropTypes.string.isRequired,
+      fileUuid: PropTypes.string.isRequired,
+      fileName: PropTypes.string.isRequired,
+    }).isRequired,
   }
 
   constructor() {
@@ -111,7 +117,7 @@ export default class Drive extends Component {
 
   // 下载单个笔记
   downloadNote = (name) => {
-    const { drive: { currentProjectName } } = this.props;
+    const { drive: { currentProjectName }, note } = this.props;
     this.setState({
       loadingText: 'Downloading...',
     });
@@ -119,11 +125,16 @@ export default class Drive extends Component {
     if (driveName === 'onedrive') {
       driveName = 'onedriver';
     }
+    let needUpdateEditor = false;
+    if (note.projectUuid !== '-1' && note.fileUuid !== '-1' && note.projectName === currentProjectName && `${note.fileName}.md` === name) {
+      needUpdateEditor = true;
+    }
     this.props.dispatch({
       type: DRIVE_DOWNLOAD_NOTE,
       folder: currentProjectName,
       name,
       driveName,
+      needUpdateEditor,
     });
   }
 

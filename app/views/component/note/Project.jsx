@@ -203,7 +203,7 @@ export default class Project extends Component {
     }
     dispatch(switchProject(uuid, name));
     dispatch(clearMarkdown());
-    dispatch(switchFile('-1')); // 清空选中笔记
+    dispatch(switchFile('-1', '')); // 清空选中笔记
   }
 
   createProject = (name) => {

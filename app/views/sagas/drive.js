@@ -15,6 +15,7 @@ import {
   DRIVE_DELETE_ITEM_FAILED,
 } from '../actions/drive';
 import { SAVE_NOTE_FROM_DRIVE } from '../actions/projects';
+import { JUST_UPDATE_MARKDWON_HTML } from '../actions/markdown';
 import * as db from '../utils/db/app';
 import OneDrive from '../services/OneDrive';
 
@@ -115,7 +116,7 @@ function* fetchNotesList() {
 }
 
 function* downloadNote(action) {
-  const { folder, name, driveName } = action;
+  const { folder, name, driveName, needUpdateEditor } = action;
   let cloudDrive;
   let driveType;
   if (driveName === 'onedriver') {
@@ -141,6 +142,12 @@ function* downloadNote(action) {
     yield put({
       type: DRIVE_DOWNLOAD_NOTE_SUCCESS,
     });
+    if (needUpdateEditor) { // 需要更新MarkDown编辑器
+      yield put({
+        type: JUST_UPDATE_MARKDWON_HTML,
+        content,
+      });
+    }
   } catch (ex) {
     message.error('Download note failed');
     console.warn(ex);

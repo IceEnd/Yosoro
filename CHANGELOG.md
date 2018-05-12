@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v1.0.4
+
+### New Features
+
+- Optimize application colors.
+
+### BugFix
+
+- Fix bugs when downloading notes.
+
+### Others
+
+- Optimize application operations.
+
 ## v1.0.3
 
 ### New Features

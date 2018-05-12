@@ -92,6 +92,7 @@ class App extends Component {
       projectUuid: PropTypes.string.isRequired,
       projectName: PropTypes.string.isRequired,
       fileUuid: PropTypes.string.isRequired,
+      fileName: PropTypes.string.isRequired,
     }).isRequired,
     drive: PropTypes.shape({
       status: PropTypes.number.isRequired,
@@ -276,7 +277,11 @@ class App extends Component {
               <Route
                 path="/cloud"
                 render={() => (
-                  <Cloud drive={drive} dispatch={dispatch} />
+                  <Cloud
+                    drive={drive}
+                    dispatch={dispatch}
+                    note={note}
+                  />
                 )}
               />
             </Switch>

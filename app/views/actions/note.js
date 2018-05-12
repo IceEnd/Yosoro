@@ -11,10 +11,11 @@ export function switchProject(uuid, name) {
 
 export const SWITCH_FILE = 'SWITCH_NOTE';
 
-export function switchFile(uuid) {
+export function switchFile(uuid, fileName) {
   return {
     type: SWITCH_FILE,
     uuid,
+    fileName,
   };
 }
 
