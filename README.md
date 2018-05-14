@@ -22,9 +22,9 @@ The latest version of Yosoro for macOS, linux and Windows is avalibale [here](ht
 - Create notebook & Write note
 - Support Markdown syntax
 - Delete & Restore
-- Synchronize with Cloud Drive(oneDrive is supported)
+- Synchronize with Cloud Drive(OneDrive is supported)
 - Note export as markdown or html
-- Update Natification
+- Update Notification
 
 You can read the [CHANGELOG](./CHANGELOG.md) to get more information.
 
