@@ -15,7 +15,7 @@
     "packager:win:64": "electron-packager ./lib Yosoro --overwrite --platform=win32 --arch=x64 --out=out --icon=assets/icons/win/app.ico",
     "packager:linux": "electron-packager ./lib Yosoro --overwrite --platform=linux --arch=x64 --out=out",
     "lint": "concurrently \"eslint app config --ext .js,.jsx\" \"sass-lint -v -q\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run lint"
   },
   "repository": {
     "type": "git",
