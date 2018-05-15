@@ -148,11 +148,13 @@ function createWindow() {
   // 配置插件
   if (process.env.NODE_ENV === 'development') {
     require('devtron').install();
+    /* eslint-disable import/no-unresolved */
     const CONFIG = require('../../config/devconfig.json');
     const extensions = CONFIG.extensions;
     for (let i = 0; i < extensions.length; i++) {
       BrowserWindow.addDevToolsExtension(extensions[i]);
     }
+    /* eslint-enable */
   }
 }
 
