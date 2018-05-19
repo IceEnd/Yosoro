@@ -58,8 +58,6 @@ typings/
 .env
 
 config/devconfig.json
-app/documents
 yosoro-darwin-x64/
 lib/
-.vscode
-out
+out/

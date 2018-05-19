@@ -1,6 +1,5 @@
 import path from 'path';
 import webpack from 'webpack';
-// import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 export default {
   target: 'electron-renderer',
@@ -11,7 +10,6 @@ export default {
   entry: [
     'whatwg-fetch',
     'react-hot-loader/patch',
-    // 'webpack-dev-server/client?http://localhost:3000/',
     'webpack/hot/only-dev-server',
     path.resolve(__dirname, '../app/views/index.jsx'),
   ],
@@ -74,10 +72,6 @@ export default {
       {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
-        // use: ExtractTextPlugin.extract({
-        //   fallback: 'style-loader',
-        //   use: 'css-loader',
-        // }),
       },
       {
         test: /\.(png|jpg|jpeg|gif)$/,
@@ -93,15 +87,11 @@ export default {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
+  optimization: {
+    occurrenceOrder: true,
+  },
   plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false,
-    //   },
-    // }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    // new ExtractTextPlugin('styles.css'),
   ],
 };

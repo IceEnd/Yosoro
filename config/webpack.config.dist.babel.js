@@ -1,9 +1,13 @@
 import path from 'path';
-import webpack from 'webpack';
+// import webpack from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import AssetsPluginInstance from 'assets-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+
+
+process.traceDeprecation = true;
 
 export default {
+  mode: 'production',
   target: 'electron-renderer',
   devtool: 'source-map',
   entry: {
@@ -46,7 +50,10 @@ export default {
         // use: ['style-loader', 'css-loader'],
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: ['css-loader'],
+          use: [{
+            loader: 'css-loader',
+            options: { minimize: true },
+          }],
         }),
       },
       {
@@ -54,7 +61,16 @@ export default {
         // use: ['style-loader', 'css-loader', 'sass-loader'],
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: ['css-loader', 'sass-loader'],
+          // use: ['css-loader', 'sass-loader'],
+          use: [
+            {
+              loader: 'css-loader',
+              options: { minimize: true },
+            },
+            {
+              loader: 'sass-loader',
+            },
+          ],
         }),
       },
       {
@@ -70,35 +86,36 @@ export default {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
-  plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
+  optimization: {
+    minimize: true,
+    occurrenceOrder: true,
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          name: 'vendor',
+          test: /react|react-dom|prop-types|antd|whatwg-fetch/,
+          chunks: 'initial',
+          enforce: true,
+        },
       },
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      path: path.join(__dirname, '../lib'),
-    }),
-    new webpack.NoEmitOnErrorsPlugin(),
+    },
+  },
+  plugins: [
     new ExtractTextPlugin({
-      filename: '../lib/[name]_[chunkhash].css',
+      filename: 'css/[name]_[chunkhash].css',
       allChunks: true,
     }),
-    new webpack.EnvironmentPlugin({
-      NODE_ENV: 'production',
-      DEBUG_PROD: 'false',
-    }),
-    // new webpack.DefinePlugin({
-    //   'process.env': {
-    //     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-    //   },
-    // }),
-    new AssetsPluginInstance({
-      filename: 'assets-map.json',
-      path: path.join(__dirname, '../lib'),
-      prettyPrint: true,
+    // 生成html
+    new HtmlWebpackPlugin({
+      filename: path.resolve(__dirname, '../lib/index.html'),
+      template: path.resolve(__dirname, '../index.html'),
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true,
+      },
+      chunksSortMode: 'dependency',
     }),
   ],
 };

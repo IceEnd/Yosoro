@@ -1,10 +1,7 @@
 import path from 'path';
-import fs from 'fs';
-import htmlreplace from 'gulp-html-replace';
 import gulp from 'gulp';
 import gutil from 'gulp-util';
 import del from 'del';
-import cleanCSS from 'gulp-clean-css';
 import rename from 'gulp-rename';
 import webpack from 'webpack';
 import webpackWeb from './webpack.config.dist.babel';
@@ -12,9 +9,11 @@ import webpackElectron from './webpack.config.electron.babel';
 
 gulp.task('clean:web', () => {
   del.sync([
-    path.join(__dirname, '../lib/index*'),
+    path.join(__dirname, '../lib/css/**'),
     path.join(__dirname, '../lib/vendor*'),
-    path.join(__dirname, '../lib/assets-map.json'),
+    path.join(__dirname, '../lib/index.html'),
+    path.join(__dirname, '../lib/index*'),
+    path.join(__dirname, '../lib/images/**'),
   ]);
 });
 
@@ -69,27 +68,28 @@ gulp.task('electron:resource', () => {
     .pipe(gulp.dest(path.join(__dirname, '../lib/assets')));
 });
 
-gulp.task('css:clean', ['webpack:web'], () =>
-  gulp.src(path.join(__dirname, './lib/*.css'))
-    .pipe(cleanCSS())
-    .pipe(gulp.dest(path.join(__dirname, './lib')))
-);
+// gulp.task('css:clean', ['webpack:web'], () =>
+//   gulp.src(path.join(__dirname, './lib/css/*.css'))
+//     .pipe(cleanCSS())
+//     .pipe(gulp.dest(path.join(__dirname, './lib/css')))
+// );
 
-/**
- * @description 定义打包渲染进程任务，同时设置index.html
- */
-gulp.task('build:web', ['css:clean'], () => {
-  const fileContent = fs.readFileSync(path.join(__dirname, '../lib/assets-map.json'));
-  const assetsJson = JSON.parse(fileContent);
-  const cssName = /index_\S*css$/ig.exec(assetsJson.index.css)[0];
-  gulp.src(path.join(__dirname, '../app/main/index.html'))
-    .pipe(htmlreplace({
-      js: [`./${assetsJson.vendor.js}`, `./${assetsJson.index.js}`],
-      css: [`./${cssName}`],
-    }))
-    .pipe(gulp.dest(path.join(__dirname, '../lib')));
-});
+// gulp.task('build:web', ['css:clean'], () => {
+//   const fileContent = fs.readFileSync(path.join(__dirname, '../lib/assets-map.json'));
+//   const assetsJson = JSON.parse(fileContent);
+//   const cssName = /index_\S*css$/ig.exec(assetsJson.index.css)[0];
+//   gulp.src(path.join(__dirname, '../app/main/index.html'))
+//     .pipe(htmlreplace({
+//       js: [`./${assetsJson.vendor.js}`, `./${assetsJson.index.js}`],
+//       css: [`./${cssName}`],
+//     }))
+//     .pipe(gulp.dest(path.join(__dirname, '../lib')));
+// });
 
+// 渲染进程打包
+gulp.task('build:web', ['webpack:web']);
+
+// 主进程打包任务
 gulp.task('build:electron', ['webpack:electron', 'electron:resource']);
 
 const index = process.argv.findIndex(value => value === '--mode');
