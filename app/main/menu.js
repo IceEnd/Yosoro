@@ -1,5 +1,5 @@
 import electron from 'electron';
-import electronOauth2 from './electron-oauth2';
+import Oauth2 from './Oauth2';
 
 import oauthConfig from './oauthConfig';
 
@@ -74,7 +74,7 @@ function getMemuTemplete(mainWindow) {
     submenu: [{
       label: 'One Drive',
       click: async (menuItem, browserWindow) => {
-        const oneDriveOAuth = electronOauth2(oauthConfig.oneDrive, windowParams);
+        const oneDriveOAuth = new Oauth2(oauthConfig.oneDrive, windowParams);
         try {
           const code = await Promise.resolve(oneDriveOAuth.getAuthorizationCode({
             // accessType: 'authorization_code',
