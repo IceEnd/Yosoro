@@ -12,7 +12,7 @@ export default {
   devtool: 'source-map',
   entry: {
     index: path.join(__dirname, '../app/views/index.jsx'),
-    vendor: ['react', 'react-dom', 'prop-types', 'antd', 'whatwg-fetch'],
+    vendor: ['react', 'react-dom', 'redux', 'redux-saga', 'redux-logger', 'markdown-pdf', 'history', 'prop-types', 'antd', 'whatwg-fetch'],
   },
   output: {
     filename: '[name]_[hash].js',
@@ -37,7 +37,10 @@ export default {
                 ['react'],
                 ['stage-0'],
               ],
-              plugins: ['transform-object-assign'],
+              plugins: [
+                'transform-decorators-legacy',
+                'transform-object-assign',
+              ],
               cacheDirectory: true,
             },
           },
@@ -108,7 +111,7 @@ export default {
     // 生成html
     new HtmlWebpackPlugin({
       filename: path.resolve(__dirname, '../lib/index.html'),
-      template: path.resolve(__dirname, '../index.html'),
+      template: path.resolve(__dirname, '../templete/index.html'),
       inject: true,
       minify: {
         removeComments: true,

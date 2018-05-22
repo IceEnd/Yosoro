@@ -137,6 +137,7 @@ export default class Tool extends PureComponent {
         <Menu onClick={this.handleExport}>
           <Menu.Item key="md">Markdown</Menu.Item>
           <Menu.Item key="html">Html</Menu.Item>
+          <Menu.Item key="pdf">PDF</Menu.Item>
         </Menu>
       );
       return (

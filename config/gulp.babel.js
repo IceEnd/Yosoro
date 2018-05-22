@@ -59,7 +59,7 @@ gulp.task('webpack:electron', ['clean:electron'], (cb) => {
 gulp.task('electron:resource', () => {
   gulp.src(path.join(__dirname, '../app/main/resource/**'))
     .pipe(gulp.dest(path.join(__dirname, '../lib/resource')));
-  gulp.src(path.join(__dirname, '../app/packager-model.json'))
+  gulp.src(path.join(__dirname, '../templete/packager-model.json'))
     .pipe(rename('package.json'))
     .pipe(gulp.dest(path.join(__dirname, '../lib')));
   gulp.src(path.join(__dirname, '../LICENSE'))

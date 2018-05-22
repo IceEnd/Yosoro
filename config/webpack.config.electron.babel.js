@@ -33,7 +33,7 @@ export default {
               presets: [
                 ['env', {
                   targets: {
-                    electron: '1',
+                    electron: '2',
                   },
                 }],
               ],

@@ -80,6 +80,7 @@ NoteWorkspace.propTypes = {
     projectUuid: PropTypes.string.isRequired,
     projectName: PropTypes.string.isRequired,
     fileUuid: PropTypes.string.isRequired,
+    exportStatus: PropTypes.number.isRequired,
   }).isRequired,
   markdownSettings: PropTypes.shape({
     editorWidth: PropTypes.number.isRequired,

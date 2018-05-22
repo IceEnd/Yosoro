@@ -93,6 +93,7 @@ class App extends Component {
       projectName: PropTypes.string.isRequired,
       fileUuid: PropTypes.string.isRequired,
       fileName: PropTypes.string.isRequired,
+      exportStatus: PropTypes.number.isRequired,
     }).isRequired,
     drive: PropTypes.shape({
       status: PropTypes.number.isRequired,

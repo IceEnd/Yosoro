@@ -57,7 +57,10 @@ export default {
                 ['react'],
                 ['stage-0'],
               ],
-              plugins: ['transform-object-assign'],
+              plugins: [
+                'transform-decorators-legacy',
+                'transform-object-assign',
+              ],
               cacheDirectory: true,
             },
           },

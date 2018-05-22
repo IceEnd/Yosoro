@@ -13,6 +13,7 @@ export default function updateNote(state = {
   projectName: '',
   fileUuid: '-1',
   fileName: '',
+  exportStatus: 0, // 0: wait 1: pending 2:success 3: failed
 }, action) {
   switch (action.type) {
     case SWITCH_PROJECT: {
