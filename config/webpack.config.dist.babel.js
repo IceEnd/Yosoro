@@ -30,7 +30,7 @@ export default {
               presets: [
                 ['env', {
                   targets: {
-                    browsers: ['last 2 versions', 'chrome >= 59'],
+                    browsers: ['last 2 versions'],
                   },
                   loose: true,
                 }],
@@ -39,7 +39,7 @@ export default {
               ],
               plugins: [
                 'transform-decorators-legacy',
-                'transform-object-assign',
+                'transform-async-to-generator',
               ],
               cacheDirectory: true,
             },
