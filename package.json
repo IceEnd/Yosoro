@@ -5,13 +5,11 @@
   "description": "Beautiful Cloud Drive Markdown NoteBook Desktop App, based on React, Redux, Webpack, React Hot Loader for rapid application development",
   "main": "app/renderer/index.js",
   "scripts": {
-    "dev:electron-main": "cross-env NODE_ENV='development' electron -r babel-register ./app/main/",
-    "dev:electron-render": "cross-env NODE_ENV='development' webpack-dev-server --config config/webpack.config.babel.js --no-info --colors --inline --mode development --progress",
-    "webpack:web": "webpack --config config/webpack.config.dist.babel.js",
-    "webpack:electron": "webpack --config config/webpack.config.electron.babel.js",
-    "build:web": "cross-env NODE_ENV='production' gulp --gulpfile config/gulp.babel.js --cwd . --mode web",
-    "build:electron": "cross-env NODE_ENV='production' gulp --gulpfile config/gulp.babel.js --cwd . --mode electron",
-    "build:all": "cross-env NODE_ENV='production' gulp --gulpfile config/gulp.babel.js --cwd . --mode all",
+    "dev:main": "cross-env NODE_ENV='development' BABEL_ENV=main electron -r babel-register ./app/main/",
+    "dev:renderer": "cross-env NODE_ENV='development' BABEL_ENV=renderer webpack-dev-server --config config/webpack.config.renderer.dev.babel.js --no-info --colors --inline --mode development --progress",
+    "build:renderer": "cross-env NODE_ENV='production' BABEL_ENV=renderer gulp --gulpfile config/gulp.babel.js --cwd . --mode renderer",
+    "build:main": "cross-env NODE_ENV='production' BABEL_ENV=main gulp --gulpfile config/gulp.babel.js --cwd . --mode main",
+    "build:all": "npm run build:renderer && npm run build:main",
     "packager:mac": "electron-packager ./lib Yosoro --overwrite --platform=darwin --arch=x64 --out=out --icon=assets/icons/osx/app.icns",
     "packager:win": "electron-packager ./lib Yosoro --overwrite --platform=win32 --arch=ia32 --out=out --icon=assets/icons/win/app.ico",
     "packager:win:64": "electron-packager ./lib Yosoro --overwrite --platform=win32 --arch=x64 --out=out --icon=assets/icons/win/app.ico",
@@ -61,6 +59,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-hmre": "^1.1.1",
+    "babel-preset-react-optimize": "^1.0.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
     "babel-runtime": "^6.26.0",
@@ -94,7 +93,8 @@
     "webpack": "^4.8.3",
     "webpack-bundle-analyzer": "^2.9.2",
     "webpack-cli": "^2.1.3",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-dev-server": "^3.1.4",
+    "webpack-merge": "^4.1.2"
   },
   "resolutions": {
     "natives": "1.1.3"

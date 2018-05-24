@@ -4,7 +4,7 @@ import gutil from 'gulp-util';
 import del from 'del';
 import rename from 'gulp-rename';
 import webpack from 'webpack';
-import webpackWeb from './webpack.config.dist.babel';
+import webpackWeb from './webpack.config.renderer.prod.babel';
 import webpackElectron from './webpack.config.electron.babel';
 
 gulp.task('clean:web', () => {
@@ -68,24 +68,6 @@ gulp.task('electron:resource', () => {
     .pipe(gulp.dest(path.join(__dirname, '../lib/assets')));
 });
 
-// gulp.task('css:clean', ['webpack:web'], () =>
-//   gulp.src(path.join(__dirname, './lib/css/*.css'))
-//     .pipe(cleanCSS())
-//     .pipe(gulp.dest(path.join(__dirname, './lib/css')))
-// );
-
-// gulp.task('build:web', ['css:clean'], () => {
-//   const fileContent = fs.readFileSync(path.join(__dirname, '../lib/assets-map.json'));
-//   const assetsJson = JSON.parse(fileContent);
-//   const cssName = /index_\S*css$/ig.exec(assetsJson.index.css)[0];
-//   gulp.src(path.join(__dirname, '../app/main/index.html'))
-//     .pipe(htmlreplace({
-//       js: [`./${assetsJson.vendor.js}`, `./${assetsJson.index.js}`],
-//       css: [`./${cssName}`],
-//     }))
-//     .pipe(gulp.dest(path.join(__dirname, '../lib')));
-// });
-
 // 渲染进程打包
 gulp.task('build:web', ['webpack:web']);
 
@@ -95,21 +77,18 @@ gulp.task('build:electron', ['webpack:electron', 'electron:resource']);
 const index = process.argv.findIndex(value => value === '--mode');
 let taskArr = ['clean', 'webpack:web'];
 if (index === -1) {
-  taskArr = ['clean', 'build:web', 'build:electron'];
+  taskArr = ['clean', 'build:web'];
 } else {
   const mode = process.argv[index + 1];
   switch (mode) {
-    case 'all':
-      taskArr = ['build:web', 'build:electron'];
-      break;
-    case 'web':
+    case 'renderer':
       taskArr = ['build:web'];
       break;
-    case 'electron':
+    case 'main':
       taskArr = ['build:electron'];
       break;
     default:
-      taskArr = ['build:web', 'build:electron'];
+      taskArr = ['build:web'];
       break;
   }
 }

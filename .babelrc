@@ -1,15 +1,29 @@
 {
-  "presets": [
-    ["env", {
-      "targets": {
-        "node": "8"
-      }
-    }],
-    "stage-0",
-    "react"
-  ],
-  "plugins": [
-    "transform-decorators-legacy",
-    "transform-runtime"
-  ]
+  "env": {
+    "main": {
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": 8
+          }
+        }]
+      ]
+    },
+    "renderer": {
+      "presets": [
+        ["env", {
+          "loose": true
+        }],
+        "react",
+        "react-optimize",
+        "stage-0"
+      ],
+      "plugins": [
+        "transform-decorators-legacy",
+        "transform-async-to-generator",
+        "transform-class-properties",
+        "transform-runtime"
+      ]
+    }
+  }
 }

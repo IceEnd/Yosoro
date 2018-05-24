@@ -47,7 +47,7 @@ export default class Preview extends PureComponent {
     }
   }
 
-  getBodyWidth= (props) => {
+  getBodyWidth = (props) => {
     let editorMode;
     let editorWidthValue;
     if (props) {
@@ -80,8 +80,8 @@ export default class Preview extends PureComponent {
     return '100%';
   }
 
-  setScrollRatio = (radio) => {
-    const height = this.prevewBody.offsetHeight;
+  setScrollRatio(radio) {
+    const height = this.previewBody.offsetHeight;
     const scrollTop = height * radio;
     this.preview.scrollTop = scrollTop;
   }
@@ -109,7 +109,7 @@ export default class Preview extends PureComponent {
           className="preview-body"
           dangerouslySetInnerHTML={{ __html: html }}
           style={{ width: bodyWidth }}
-          ref={node => (this.prevewBody = node)}
+          ref={node => (this.previewBody = node)}
         />
       </div>
     );

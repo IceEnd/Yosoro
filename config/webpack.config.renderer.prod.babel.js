@@ -1,14 +1,14 @@
 import path from 'path';
-// import webpack from 'webpack';
+import merge from 'webpack-merge';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import baseConfig from './webpack.config.base.babel';
 
 
 process.traceDeprecation = true;
 
-export default {
+export default merge.smart(baseConfig, {
   mode: 'production',
-  target: 'electron-renderer',
   devtool: 'source-map',
   entry: {
     index: path.join(__dirname, '../app/views/index.jsx'),
@@ -23,24 +23,9 @@ export default {
       {
         test: /\.(js|jsx)$/,
         use: [
-          'babel-loader',
           {
             loader: 'babel-loader',
             options: {
-              presets: [
-                ['env', {
-                  targets: {
-                    browsers: ['last 2 versions'],
-                  },
-                  loose: true,
-                }],
-                ['react'],
-                ['stage-0'],
-              ],
-              plugins: [
-                'transform-decorators-legacy',
-                'transform-async-to-generator',
-              ],
               cacheDirectory: true,
             },
           },
@@ -50,7 +35,6 @@ export default {
       },
       {
         test: /\.css$/,
-        // use: ['style-loader', 'css-loader'],
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [{
@@ -61,7 +45,6 @@ export default {
       },
       {
         test: /\.scss$/,
-        // use: ['style-loader', 'css-loader', 'sass-loader'],
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           // use: ['css-loader', 'sass-loader'],
@@ -76,18 +59,7 @@ export default {
           ],
         }),
       },
-      {
-        test: /\.(png|jpg|jpeg|gif)$/,
-        loader: 'url-loader?limit=10000&name=images/[name].[ext]',
-      },
-      {
-        test: /\.(eot|woff2|woff|ttf|svg)$/,
-        loader: 'url-loader?name=fonts/[name].[ext]',
-      },
     ],
-  },
-  resolve: {
-    extensions: ['.js', '.jsx'],
   },
   optimization: {
     minimize: true,
@@ -121,4 +93,4 @@ export default {
       chunksSortMode: 'dependency',
     }),
   ],
-};
+});

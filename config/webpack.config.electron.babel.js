@@ -13,7 +13,6 @@ export default {
   ],
   entry: {
     main: [
-      'babel-polyfill',
       path.join(__dirname, '../app/main/index.js'),
     ],
   },
@@ -27,18 +26,6 @@ export default {
         test: /\.js$/,
         use: [
           'babel-loader',
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                ['env', {
-                  targets: {
-                    electron: '2',
-                  },
-                }],
-              ],
-            },
-          },
         ],
         exclude: /node_modules/,
         include: path.resolve(__dirname, '../'),
