@@ -8,9 +8,13 @@ export default class NoteItem extends PureComponent {
     type: PropTypes.oneOf(['notebook', 'note']).isRequired,
     className: PropTypes.string.isRequired,
     item: PropTypes.object.isRequired,
+    isCloud: false, // 是否来自Cloud
+    title: PropTypes.string,
     hasRestore: PropTypes.bool.isRequired, // 是否有还原按钮
     restoreFn: PropTypes.func.isRequired, // 复原按钮事件
     hasLogin: PropTypes.bool.isRequired, // 是否有进入按钮
+    hasDownload: PropTypes.bool.isRequired, // 是否有下载按钮
+    downloadFn: PropTypes.func.isRequired, // 下载按钮事件
     hasRemove: PropTypes.bool.isRequired, // 是否有删除按钮
     removeFn: PropTypes.func.isRequired, // 删除按钮事件
     itemClick: PropTypes.func.isRequired,
@@ -19,21 +23,34 @@ export default class NoteItem extends PureComponent {
     className: 'list-item',
     hasRestore: false,
     hasLogin: false,
+    hasDownload: false,
     hasRemove: false,
+    isCloud: false,
     itemClick: () => {},
   };
 
-  getSvgHtml = () => `<use class="trash-notebook-use" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_${this.props.type}" />'`;
+  getSvgHtml() {
+    return `<use class="trash-notebook-use" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_${this.props.type}" />'`;
+  }
 
-  renderRestore = () => {
-    const { hasRestore, restoreFn, item } = this.props;
+  handleRemove = (e, item) => {
+    const { isCloud, type } = this.props;
+    if (isCloud) {
+      this.props.removeFn(e, type, item.name, item.id, item.parentReference);
+    } else {
+      this.props.removeFn(e, item.uuid, item.name);
+    }
+  }
+
+  renderRestore() {
+    const { hasRestore, restoreFn, item, type } = this.props;
     if (hasRestore) {
       return (
         <span
           className="list-item__options__item"
           onClick={e => restoreFn(e, item.uuid, item.name)}
         >
-          <Tooltip placement="bottom" title="restore notebook">
+          <Tooltip placement="bottom" title={`restore ${type}`}>
             <Icon type="export" />
           </Tooltip>
         </span>
@@ -42,15 +59,36 @@ export default class NoteItem extends PureComponent {
     return null;
   }
 
-  renderRemove = () => {
-    const { hasRemove, removeFn, item } = this.props;
+  renderDownload() {
+    const { hasDownload, downloadFn, item, type } = this.props;
+    if (hasDownload) {
+      return (
+        <span
+          className="list-item__options__item"
+          onClick={() => downloadFn(item.name)}
+        >
+          <Tooltip
+            placement="bottom"
+            title={`download ${type}`}
+            getPopupContainer={() => document.getElementById('app_cloud')}
+          >
+            <Icon type="download" />
+          </Tooltip>
+        </span>
+      );
+    }
+    return null;
+  }
+
+  renderRemove() {
+    const { hasRemove, item, type } = this.props;
     if (hasRemove) {
       return (
         <span
           className="list-item__options__item"
-          onClick={e => removeFn(e, item.uuid, item.name)}
+          onClick={e => this.handleRemove(e, item)}
         >
-          <Tooltip placement="bottom" title="delete notebook">
+          <Tooltip placement="bottom" title={`delete ${type}`}>
             <Icon type="delete" />
           </Tooltip>
         </span>
@@ -59,11 +97,12 @@ export default class NoteItem extends PureComponent {
     return null;
   }
 
-  renderLogin = () => {
+  renderLogin() {
     if (this.props.hasLogin) {
+      const { type } = this.props;
       return (
         <span className="list-item__options__item">
-          <Tooltip placement="bottom" title="open notebook">
+          <Tooltip placement="bottom" title={`open ${type}`}>
             <Icon type="login" />
           </Tooltip>
         </span>
@@ -73,7 +112,7 @@ export default class NoteItem extends PureComponent {
   }
 
   render() {
-    const { className, itemClick, item } = this.props;
+    const { className, itemClick, item, title } = this.props;
     return (
       <li
         className={className}
@@ -83,10 +122,13 @@ export default class NoteItem extends PureComponent {
         <div className="list-item__img">
           <svg className="menu-svg" viewBox="0 0 59 59" dangerouslySetInnerHTML={{ __html: this.getSvgHtml() }} />
         </div>
-        <h3 className="list-item__title">{item.name}</h3>
+        <h3 className="list-item__title">
+          {title || item.name}
+        </h3>
         <div className="list-item__option">
           {this.renderRestore()}
           {this.renderLogin()}
+          {this.renderDownload()}
           {this.renderRemove()}
         </div>
       </li>

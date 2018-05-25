@@ -8,7 +8,7 @@ export default class Schedule {
 
   releaseSchedule() {
     // 每隔1小时检查更新
-    this.releaseJob = schedule.scheduleJob('*/1 * * *', () => {
+    this.releaseJob = schedule.scheduleJob('*/2 * * *', () => {
       try {
         BrowserWindow.getAllWindows()[0].webContents.send('fetch-releases');
       } catch (ex) {

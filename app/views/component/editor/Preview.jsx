@@ -27,10 +27,12 @@ export default class Preview extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const bodyWidth = this.getBodyWidth(nextProps);
-    this.setState({
-      bodyWidth,
-    });
+    if (this.props.editorMode !== nextProps.editorMode || this.props.editorWidthValue !== nextProps.editorWidthValue) {
+      const bodyWidth = this.getBodyWidth(nextProps);
+      this.setState({
+        bodyWidth,
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -47,9 +49,10 @@ export default class Preview extends PureComponent {
     }
   }
 
-  getBodyWidth = (props) => {
+  getBodyWidth(props) {
     let editorMode;
     let editorWidthValue;
+    // const { editorMode, editorWidthValue } = props;
     if (props) {
       editorMode = props.editorMode;
       editorWidthValue = props.editorWidthValue;
@@ -63,6 +66,9 @@ export default class Preview extends PureComponent {
     }
     if (editorMode === 'preview') {
       return '70%';
+    }
+    if (!this.preview || !this.noteRoot) {
+      return '100%';
     }
     if (this.preview) {
       let parentWidth;
@@ -98,7 +104,6 @@ export default class Preview extends PureComponent {
       rootClass = 'pre-mode';
       // rootWidth = '100%';
     }
-    // const bodyWidth = this.getBodyWidth();
     return (
       <div
         className={`preview-root ${rootClass} ${drag ? 'drag' : ''}`}

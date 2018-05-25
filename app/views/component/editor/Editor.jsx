@@ -80,7 +80,7 @@ export default class Editor extends Component {
     return currentLine / lines;
   }
 
-  getTextWidth = (editorMode, editorWidthValue) => {
+  getTextWidth(editorMode, editorWidthValue) {
     if (editorMode === 'normal' || editorMode === 'immersion') {
       return '100%';
     }
@@ -173,7 +173,7 @@ export default class Editor extends Component {
 
   render() {
     // const { textWidth } = this.state;
-    const { editorWidth, editorMode, drag } = this.props;
+    const { editorWidth, editorMode, editorWidthValue, drag } = this.props;
     let width = editorWidth;
     let rootClass = '';
     let split = true;
@@ -189,7 +189,7 @@ export default class Editor extends Component {
       noBorder = 'no-border';
       rootClass = 'immersion-mode';
     }
-    const textWidth = this.getTextWidth(editorWidth, editorMode);
+    const textWidth = this.getTextWidth(editorMode, editorWidthValue);
     return (
       <div
         className={`editor-root ${rootClass} ${noBorder} ${drag ? 'drag' : ''}`}

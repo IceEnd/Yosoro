@@ -104,22 +104,22 @@ export default function HOCListFactory(listType) {
         this.props.dispatch(permantRemoveNotebook(uuid));
       }
 
-        // 永久删除笔记
-        removeNote = (uuid, name) => {
-          const { trash: { projectUuid, projectName }, dispatch } = this.props;
-          const data = ipcRenderer.sendSync('permanent-remove-note', {
-            projectName,
-            name,
-          });
-          if (!data.success) {
-            message.error(`Deleting "${name}" failed`);
-            return false;
-          }
-          if (data.code === 1) {
-            message.error('Note does not exist');
-          }
-          dispatch(permantRemoveNote(projectUuid, uuid));
+      // 永久删除笔记
+      removeNote = (uuid, name) => {
+        const { trash: { projectUuid, projectName }, dispatch } = this.props;
+        const data = ipcRenderer.sendSync('permanent-remove-note', {
+          projectName,
+          name,
+        });
+        if (!data.success) {
+          message.error(`Deleting "${name}" failed`);
+          return false;
         }
+        if (data.code === 1) {
+          message.error('Note does not exist');
+        }
+        dispatch(permantRemoveNote(projectUuid, uuid));
+      }
 
       // 完全删除项目确认框
       openRemove = (e, uuid, name) => {

@@ -47,7 +47,7 @@ createInitWorkSpace();
 if (process.env.NODE_ENV === 'development') {
   require('electron-watch')(
     __dirname,
-    'dev:electron-main',
+    'dev:main',
     path.join(__dirname, './'),
   );
 }

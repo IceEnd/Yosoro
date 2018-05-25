@@ -264,3 +264,13 @@ export function debounce(fn, delay = 100) {
     }, delay);
   };
 }
+
+/**
+ * @desc 获取组件displayName
+ * @param {React.Component} WrappedComponent React组件
+ */
+export function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName ||
+         WrappedComponent.name ||
+         'Component';
+}

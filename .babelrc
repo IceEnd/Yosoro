@@ -19,10 +19,7 @@
         "stage-0"
       ],
       "plugins": [
-        "transform-decorators-legacy",
-        "transform-async-to-generator",
-        "transform-class-properties",
-        "transform-runtime"
+        "transform-decorators-legacy"
       ]
     }
   }
