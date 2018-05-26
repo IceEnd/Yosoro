@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Spin, Breadcrumb, message, Icon, Modal } from 'antd';
+import autobind from 'autobind-decorator';
 import Notebooks from './Notebooks';
 import Notes from './Notes';
 import {
@@ -33,14 +34,19 @@ export default class Drive extends Component {
     }).isRequired,
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       show: false,
       hasAuth: false,
       driveName: '',
       loadingText: 'Loading',
     };
+    // this.chooseProject = this.chooseProject.bind(this);
+    // this.handleRefresh = this.handleRefresh.bind(this);
+    // this.downloadNote = this.downloadNote.bind(this);
+    // this.openDelete = this.openDelete.bind(this);
+    // this.backRoot = this.backRoot.bind(this);
   }
 
   componentDidMount() {
@@ -100,11 +106,13 @@ export default class Drive extends Component {
     }
   }
 
-  handleRefresh = () => {
+  @autobind
+  handleRefresh() {
     this.checkOAuth();
   }
 
-  chooseProject = (folder) => {
+  @autobind
+  chooseProject(folder) {
     this.setState({
       loadingText: 'Loading...',
     });
@@ -119,7 +127,8 @@ export default class Drive extends Component {
     });
   }
 
-  backRoot = () => {
+  @autobind
+  backRoot() {
     const { drive: { currentProjectName } } = this.props;
     if (currentProjectName) {
       this.props.dispatch({
@@ -131,7 +140,8 @@ export default class Drive extends Component {
   }
 
   // 下载单个笔记
-  downloadNote = (name) => {
+  @autobind
+  downloadNote(name) {
     const { drive: { currentProjectName }, note } = this.props;
     this.setState({
       loadingText: 'Downloading...',
@@ -153,8 +163,9 @@ export default class Drive extends Component {
     });
   }
 
-  // 打开删除笔记
-  openDelete = (e, type, name, id, parentReference) => {
+  // 打开删除笔记提示框
+  @autobind
+  openDelete(e, type, name, id, parentReference) {
     e.stopPropagation();
     confirm({
       title: `Remove "${name.replace(/.md$/ig, '')}"?`,

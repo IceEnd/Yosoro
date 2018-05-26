@@ -6,7 +6,7 @@ import { ipcMain, BrowserWindow, app, Menu, dialog } from 'electron';
 import fs from 'fs';
 import fse from 'fs-extra';
 import marked from 'marked';
-import Schedule from './schedule';
+import schedule from './schedule';
 
 const renderer = new marked.Renderer();
 
@@ -33,8 +33,6 @@ marked.setOptions({
     return value;
   },
 });
-
-const schedule = new Schedule();
 
 const dataPath = app.getPath('appData');
 let appDataPath = `${dataPath}/Yosoro`;
@@ -466,13 +464,15 @@ export default function eventListener(menus) {
         defaultPath: `${app.getPath('desktop')}/${fileName}.${type}`,
       };
       dialog.showSaveDialog(options, (filename) => {
-        const extension = `.${type}$`;
-        const reg = new RegExp(extension, 'ig');
-        let file = filename;
-        if (!reg.test(filename)) {
-          file += `.${type}`;
+        if (typeof filename === 'string') {
+          const extension = `.${type}$`;
+          const reg = new RegExp(extension, 'ig');
+          let file = filename;
+          if (!reg.test(filename)) {
+            file += `.${type}`;
+          }
+          fs.writeFileSync(file, content);
         }
-        fs.writeFileSync(file, content);
       });
     } catch (error) {
       console.warn(error);

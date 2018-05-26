@@ -24,7 +24,7 @@ export default class ImageHosting extends Component {
     }).isRequired,
   }
 
-  getNotes = () => {
+  getNotes() {
     const { trash: { projectUuid }, projects } = this.props;
     let notes;
     const length = projects.length;

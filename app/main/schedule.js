@@ -1,14 +1,15 @@
 import { BrowserWindow } from 'electron';
 import schedule from 'node-schedule';
 
-export default class Schedule {
+export class Schedule {
   constructor() {
     this.releaseJob = null;
   }
 
   releaseSchedule() {
     // 每隔1小时检查更新
-    this.releaseJob = schedule.scheduleJob('*/2 * * *', () => {
+    this.releaseJob = schedule.scheduleJob('*/1 * * *', () => {
+      // '*/2 * * *'
       try {
         BrowserWindow.getAllWindows()[0].webContents.send('fetch-releases');
       } catch (ex) {
@@ -24,3 +25,5 @@ export default class Schedule {
     }
   }
 }
+
+export default new Schedule();

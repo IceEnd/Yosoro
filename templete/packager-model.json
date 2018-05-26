@@ -1,7 +1,7 @@
 {
   "name": "yosoro-desktop",
   "productName": "Yosoro",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Beautiful Cloud Drive Markdown NoteBook Desktop App, based on React, Redux, Webpack, React Hot Loader for rapid application development",
   "main": "./main.js",
   "repository": {
@@ -14,16 +14,17 @@
     "url": "https://github.com/IceEnd"
   },
   "scripts": {
-    "dev:electron-main": "cross-env NODE_ENV='development' electron -r babel-register ./app/main/",
-    "dev:electron-render": "cross-env NODE_ENV='development' webpack-dev-server --config config/webpack.config.babel.js --no-info --colors --inline",
-    "build:web": "cross-env NODE_ENV='production' gulp --gulpfile config/gulp.babel.js --cwd . --mode web",
-    "build:electron": "cross-env NODE_ENV='production' gulp --gulpfile config/gulp.babel.js --cwd . --mode electron",
-    "build:all": "cross-env NODE_ENV='production' gulp --gulpfile config/gulp.babel.js --cwd . --mode all",
+    "dev:main": "cross-env NODE_ENV='development' BABEL_ENV=main electron -r babel-register ./app/main/",
+    "dev:renderer": "cross-env NODE_ENV='development' BABEL_ENV=renderer webpack-dev-server --config config/webpack.config.renderer.dev.babel.js --no-info --colors --inline --mode development --progress",
+    "build:renderer": "cross-env NODE_ENV='production' BABEL_ENV=renderer gulp --gulpfile config/gulp.babel.js --cwd . --mode renderer",
+    "build:main": "cross-env NODE_ENV='production' BABEL_ENV=main gulp --gulpfile config/gulp.babel.js --cwd . --mode main",
+    "build:all": "npm run build:renderer && npm run build:main",
     "packager:mac": "electron-packager ./lib Yosoro --overwrite --platform=darwin --arch=x64 --out=out --icon=assets/icons/osx/app.icns",
-    "packager:win": "electron-packager ./lib Yosoro --overwrite --platform=win32 --arch=ia32 --out=out --icon=D:assets/icons/win/app.ico",
+    "packager:win": "electron-packager ./lib Yosoro --overwrite --platform=win32 --arch=ia32 --out=out --icon=assets/icons/win/app.ico",
+    "packager:win:64": "electron-packager ./lib Yosoro --overwrite --platform=win32 --arch=x64 --out=out --icon=assets/icons/win/app.ico",
     "packager:linux": "electron-packager ./lib Yosoro --overwrite --platform=linux --arch=x64 --out=out",
     "lint": "concurrently \"eslint app config --ext .js,.jsx\" \"sass-lint -v -q\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run lint"
   },
   "mac": {
     "icon": "asstes/icons/osx/app.icns"

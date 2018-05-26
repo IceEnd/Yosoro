@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import autobind from 'autobind-decorator';
 import Editor from './Editor';
 import Preview from './Preview';
 import { pushStateToStorage, mergeStateFromStorage, throttle } from '../../utils/utils';
@@ -65,13 +66,14 @@ export default class Markdown extends Component {
     pushStateToStorage('markdownState', this.state);
   }
 
-  // setWidth = (markdownWidth) => {
+  // setWidth(markdownWidth) {
   //   this.setState({
   //     markdownWidth,
   //   });
   // }
 
-  setDrag = (drag) => {
+  @autobind
+  setDrag(drag) {
     this.setState({
       drag,
     });
@@ -81,7 +83,8 @@ export default class Markdown extends Component {
     this.preview.setScrollRatio(ratio);
   }
 
-  handleMouseMove = (e) => {
+  @autobind
+  handleMouseMove(e) {
     e.stopPropagation();
     e.persist();
     if (!this.state.drag) {
@@ -91,7 +94,8 @@ export default class Markdown extends Component {
     this.setDragWidth(e);
   }
 
-  handleMouseUp = (e) => {
+  @autobind
+  handleMouseUp(e) {
     e.preventDefault();
     e.stopPropagation();
     if (this.state.drag) {
@@ -101,7 +105,8 @@ export default class Markdown extends Component {
     }
   }
 
-  handMouseLeave = (e) => {
+  @autobind
+  handMouseLeave(e) {
     e.preventDefault();
     e.stopPropagation();
     if (this.state.drag) {

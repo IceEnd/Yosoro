@@ -4,6 +4,7 @@ import url from 'url';
 import fs from 'fs';
 import { setMenu, getExplorerMenuItem, getExplorerFileMenuItem, getExplorerProjectItemMenu, getExplorerFileItemMenu } from './menu';
 import eventListener from './event';
+import schedule from './schedule';
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -187,4 +188,9 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+app.on('before-quit', () => {
+  // 推出应用关闭定时器
+  schedule.cancelReleases();
 });

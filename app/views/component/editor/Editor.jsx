@@ -1,6 +1,7 @@
 import 'codemirror/lib/codemirror.css';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import autobind from 'autobind-decorator';
 import CodeMirror from 'codemirror';
 import 'codemirror/addon/fold/markdown-fold';
 import 'codemirror/mode/markdown/markdown';
@@ -159,15 +160,18 @@ export default class Editor extends Component {
     this.props.setPreiewScrollRatio(ratio);
   }
 
-  handleMouseDown = () => {
+  @autobind
+  handleMouseDown() {
     this.props.setDrag(true);
   }
 
-  handleMouseUp = () => {
+  @autobind
+  handleMouseUp() {
     this.props.setDrag(false);
   }
 
-  handleCodeMirrorResize = () => {
+  @autobind
+  handleCodeMirrorResize() {
     this.containerResize();
   }
 

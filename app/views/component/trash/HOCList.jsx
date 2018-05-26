@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, message } from 'antd';
 import { ipcRenderer } from 'electron';
+import autobind from 'autobind-decorator';
 import { permantRemoveNote, restoreNote, permantRemoveNotebook, chooseTrashProject, restoreNotebook } from '../../actions/projects';
 
 const confirm = Modal.confirm;
@@ -32,19 +33,20 @@ export default function HOCListFactory(listType) {
         };
       }
 
-      setTarget = (name, uuid) => {
+      setTarget(name, uuid) {
         this.setState({
           name,
           uuid,
         });
       }
 
-      handleGoIn = (uuid, name) => {
+      @autobind
+      handleGoIn(uuid, name) {
         this.props.dispatch(chooseTrashProject(uuid, name));
       }
 
       // 还原项目
-      restoreProject = (uuid, name) => {
+      restoreProject(uuid, name) {
         const data = ipcRenderer.sendSync('restore-notebook', {
           name,
         });
@@ -56,7 +58,7 @@ export default function HOCListFactory(listType) {
       }
 
       // 还原笔记
-      restoreNote = (uuid, name) => {
+      restoreNote(uuid, name) {
         const { trash: { projectUuid, projectName }, dispatch } = this.props;
         const data = ipcRenderer.sendSync('restore-note', {
           projectName,
@@ -70,7 +72,8 @@ export default function HOCListFactory(listType) {
       }
 
       // 打开还原项目弹框
-      openRestore = (e, uuid, name) => {
+      @autobind
+      openRestore(e, uuid, name) {
         e.stopPropagation();
         this.setTarget(name, uuid);
         confirm({
@@ -90,7 +93,7 @@ export default function HOCListFactory(listType) {
       }
 
       // 永久删除笔记本
-      removeNotebook = (uuid, name) => {
+      removeNotebook(uuid, name) {
         const data = ipcRenderer.sendSync('permanent-remove-notebook', {
           name,
         });
@@ -105,7 +108,7 @@ export default function HOCListFactory(listType) {
       }
 
       // 永久删除笔记
-      removeNote = (uuid, name) => {
+      removeNote(uuid, name) {
         const { trash: { projectUuid, projectName }, dispatch } = this.props;
         const data = ipcRenderer.sendSync('permanent-remove-note', {
           projectName,
@@ -122,7 +125,8 @@ export default function HOCListFactory(listType) {
       }
 
       // 完全删除项目确认框
-      openRemove = (e, uuid, name) => {
+      @autobind
+      openRemove(e, uuid, name) {
         e.stopPropagation();
         this.setTarget(name, uuid, 'delete');
         confirm({

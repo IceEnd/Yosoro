@@ -12,6 +12,9 @@
     "renderer": {
       "presets": [
         ["env", {
+          "targets": {
+            "chrome": 59
+          },
           "loose": true
         }],
         "react",
@@ -19,7 +22,8 @@
         "stage-0"
       ],
       "plugins": [
-        "transform-decorators-legacy"
+        "transform-decorators-legacy",
+        "transform-async-to-generator"
       ]
     }
   }
