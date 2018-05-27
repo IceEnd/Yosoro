@@ -4,17 +4,14 @@ import schedule from 'node-schedule';
 export class Schedule {
   constructor() {
     this.releaseJob = null;
-    this.releaseSeed = 0;
   }
 
   releaseSchedule() {
-    if (this.releaseSeed >= 1) {
+    if (this.releaseJob) {
       return false;
     }
-    this.releaseSeed += 1;
     // 每隔1小时检查更新
-    const minutes = (new Date()).getMinutes();
-    this.releaseJob = schedule.scheduleJob(`${minutes} * * * *`, () => {
+    this.releaseJob = schedule.scheduleJob('0 * * * *', () => {
       try {
         BrowserWindow.getAllWindows()[0].webContents.send('fetch-releases');
       } catch (ex) {
