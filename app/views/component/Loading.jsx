@@ -1,13 +1,16 @@
 import React from 'react';
+import SVGIcon from './share/SVGIcon';
 
-const Loading = () => {
-  const loading = '<use class="app-loading-svg" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#app_loading" />';
-  return (
-    <div className="app-lounch-loading">
-      <svg className="loading-cont" viewBox="0 0 57 57" dangerouslySetInnerHTML={{ __html: loading }} />
-    </div>
-  );
-};
+const Loading = () => (
+  <div className="app-lounch-loading">
+    <SVGIcon
+      className="loading-cont"
+      viewBox="0 0 57 57"
+      id="#app_loading"
+      useClassName="app-loading-svg"
+    />
+  </div>
+);
 
 Loading.displayName = 'AppLoading';
 

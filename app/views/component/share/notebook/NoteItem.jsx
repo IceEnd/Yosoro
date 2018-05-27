@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Tooltip } from 'antd';
+import SVGIcon from '../SVGIcon';
 
 export default class NoteItem extends PureComponent {
   static displayName = 'NoteItem';
@@ -29,8 +30,9 @@ export default class NoteItem extends PureComponent {
     itemClick: () => {},
   };
 
-  getSvgHtml() {
-    return `<use class="trash-notebook-use" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_${this.props.type}" />'`;
+  getUseId() {
+    const { type } = this.props;
+    return `#icon_svg_${type}`;
   }
 
   handleRemove = (e, item) => {
@@ -120,7 +122,12 @@ export default class NoteItem extends PureComponent {
         role="presentation"
       >
         <div className="list-item__img">
-          <svg className="menu-svg" viewBox="0 0 59 59" dangerouslySetInnerHTML={{ __html: this.getSvgHtml() }} />
+          <SVGIcon
+            className="menu-svg"
+            viewBox="0 0 59 59"
+            id={this.getUseId()}
+            useClassName="trash-notebook-use"
+          />
         </div>
         <h3 className="list-item__title">
           {title || item.name}

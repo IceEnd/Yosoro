@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import { Icon, Tooltip, Menu, Dropdown } from 'antd';
 import Search from '../share/search/Search';
+import SVGIcon from '../share/SVGIcon';
+
 import { searchNotes, clearSearchNotes, UPLOAD_NOTE_ONEDRIVE } from '../../actions/projects';
 import { pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
 import { appSwitchEditMode } from '../../actions/app';
@@ -175,7 +177,6 @@ export default class Tool extends PureComponent {
 
   renderEditModalIcon = () => {
     const { editorMode } = this.props;
-    const iconHtml = `<use class="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_${editorMode}_mode" />`;
     return (
       <span
         className="tools-item"
@@ -185,7 +186,11 @@ export default class Tool extends PureComponent {
           placement="bottom"
           title={editorMode}
         >
-          <svg className="tools-item-svg" viewBox="0 0 640 640" dangerouslySetInnerHTML={{ __html: iconHtml }} />
+          <SVGIcon
+            className="tools-item-svg"
+            viewBox="0 0 640 640"
+            id={`#icon_svg_${editorMode}_mode`}
+          />
         </Tooltip>
       </span>
     );

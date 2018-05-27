@@ -44,8 +44,6 @@ import {
 
 const assign = Object.assign;
 
-// const assign = Object.assign;
-
 function projectReducer(state = {
   projects: [],
   trashProjects: [],

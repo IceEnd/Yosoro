@@ -55,7 +55,9 @@ export default class Editor extends Component {
       this.editor.selectionEnd = start + 1;
     }
     if (prevProps.uuid !== this.props.uuid) {
+      this.removeChangeEvent(); // 取消change事件
       this.codeMirror.setValue(this.props.defaultContent);
+      this.addChangeEvent(); // 重新绑定change事件
     }
   }
 
@@ -111,14 +113,29 @@ export default class Editor extends Component {
       foldGutter: true,
       gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
     });
-    this.codeMirror.on('change', (cm) => {
-      const content = cm.getValue();
-      const { uuid } = this.props;
-      this.props.dispatch(updateMarkdownHtml(content, uuid, -1));
-    });
+    this.addChangeEvent();
+    // this.codeMirror.on('change', this.handleChange);
     this.codeMirror.on('scroll', this.handleScroll);
     this.codeMirror.on('keydown', this.handleKeyDown);
     this.codeMirror.on('focus', this.handleFocus);
+  }
+
+  removeChangeEvent() {
+    if (this.codeMirror) {
+      this.codeMirror.off('change', this.handleChange);
+    }
+  }
+
+  addChangeEvent() {
+    if (this.codeMirror) {
+      this.codeMirror.on('change', this.handleChange);
+    }
+  }
+
+  handleChange = (cm) => {
+    const content = cm.getValue();
+    const { uuid } = this.props;
+    this.props.dispatch(updateMarkdownHtml(content, uuid, -1));
   }
 
   updateCode = () => {
