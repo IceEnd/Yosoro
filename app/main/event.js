@@ -6,6 +6,7 @@ import { ipcMain, BrowserWindow, app, Menu, dialog } from 'electron';
 import fs from 'fs';
 import fse from 'fs-extra';
 import marked from 'marked';
+import markdownpdf from 'markdown-pdf';
 import schedule from './schedule';
 
 const renderer = new marked.Renderer();
@@ -458,6 +459,11 @@ export default function eventListener(menus) {
         if (!data) {
           content = marked(content);
         }
+      } else if (type === 'pdf') {
+        title = 'Export as PDF';
+        if (!data) {
+          content = marked(content);
+        }
       }
       const options = {
         title,
@@ -471,7 +477,11 @@ export default function eventListener(menus) {
           if (!reg.test(filename)) {
             file += `.${type}`;
           }
-          fs.writeFileSync(file, content);
+          if (type === 'pdf') {
+            markdownpdf().from.string(content).to(file);
+          } else {
+            fs.writeFileSync(file, content);
+          }
         }
       });
     } catch (error) {

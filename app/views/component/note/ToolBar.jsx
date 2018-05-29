@@ -116,11 +116,13 @@ export default class Tool extends PureComponent {
   }
 
   handleExport = ({ key }) => {
-    const { content, name, html } = this.props.markdown;
+    const { markdown: { content, name, html }, note: { projectName } } = this.props;
     let data;
     if (key === 'md') {
       data = content;
     } else if (key === 'html') {
+      data = html;
+    } else if (key === 'pdf') {
       data = html;
     }
     ipcRenderer.send('export-note', {
@@ -128,6 +130,7 @@ export default class Tool extends PureComponent {
       html,
       type: key,
       fileName: name,
+      projectName,
       data,
     });
   }
