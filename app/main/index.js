@@ -152,8 +152,8 @@ function createWindow() {
     /* eslint-disable import/no-unresolved */
     const CONFIG = require('../../config/devconfig.json');
     const extensions = CONFIG.extensions;
-    for (let i = 0; i < extensions.length; i++) {
-      BrowserWindow.addDevToolsExtension(extensions[i]);
+    for (const ex of extensions) {
+      BrowserWindow.addDevToolsExtension(ex);
     }
     /* eslint-enable */
   }

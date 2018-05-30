@@ -5,6 +5,7 @@ import projects from './projects';
 import markdown from './markdown';
 import note from './note';
 import drive from './drive';
+import exportQueue from './exportQueue';
 
 const rootReducer = combineReducers({
   app,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   markdown,
   note,
   drive,
+  exportQueue,
   routing: routerReducer,
 });
 

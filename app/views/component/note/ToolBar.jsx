@@ -1,6 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
+import classname from 'classname';
 import { Icon, Tooltip, Menu, Dropdown } from 'antd';
 import Search from '../share/search/Search';
 import SVGIcon from '../share/SVGIcon';
@@ -34,6 +35,11 @@ export default class Tool extends PureComponent {
     }).isRequired,
     editorMode: PropTypes.string.isRequired,
     searchStatus: PropTypes.number.isRequired,
+    blur: PropTypes.bool.isRequired,
+  };
+
+  static defaultProps = {
+    blur: false,
   };
 
   constructor() {
@@ -201,9 +207,12 @@ export default class Tool extends PureComponent {
 
   render() {
     const { searchStatus } = this.state;
-    const { markdown: { name, status } } = this.props;
+    const { markdown: { name, status }, blur } = this.props;
+    const classStr = classname('note-toolbar', {
+      'note-blur': blur,
+    });
     return (
-      <div className="note-toolbar">
+      <div className={classStr}>
         <div className="search-root">
           <Search
             searchStatus={searchStatus}

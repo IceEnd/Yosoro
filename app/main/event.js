@@ -478,7 +478,11 @@ export default function eventListener(menus) {
             file += `.${type}`;
           }
           if (type === 'pdf') {
-            markdownpdf().from.string(content).to(file);
+            const webContents = BrowserWindow.getAllWindows()[0].webContents;
+            webContents.send('async-export-file');
+            markdownpdf().from.string(content).to(file, () => {
+              webContents.send('async-export-file-complete');
+            });
           } else {
             fs.writeFileSync(file, content);
           }

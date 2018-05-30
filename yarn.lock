@@ -1981,6 +1981,10 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
+classname@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/classname/-/classname-0.0.0.tgz#43d171b484e354c7a293a5b78004df6852db20d6"
+
 classnames@2.x, classnames@^2.2.0, classnames@^2.2.1, classnames@^2.2.3, classnames@^2.2.5, classnames@~2.2.0:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
@@ -3174,9 +3178,9 @@ escope@^3.6.0:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-eslint-config-alchemy@^0.1.10:
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/eslint-config-alchemy/-/eslint-config-alchemy-0.1.11.tgz#73cda0814c4e10f56437151e9df266f29bdd876c"
+eslint-config-alchemy@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/eslint-config-alchemy/-/eslint-config-alchemy-0.1.13.tgz#0cd198ac52555e175f43d8806882d6276dac78a4"
 
 eslint-import-resolver-node@^0.3.1:
   version "0.3.2"
@@ -4554,12 +4558,6 @@ html-minifier@^3.2.3:
     param-case "2.1.x"
     relateurl "0.2.x"
     uglify-js "3.3.x"
-
-html-pdf@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/html-pdf/-/html-pdf-2.2.0.tgz#4bcf91c24cb560e47aa3facfd033e0e1bf241b91"
-  optionalDependencies:
-    phantomjs-prebuilt "^2.1.4"
 
 html-webpack-plugin@^3.2.0:
   version "3.2.0"
@@ -6862,7 +6860,7 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
 
-phantomjs-prebuilt@^2.1.3, phantomjs-prebuilt@^2.1.4:
+phantomjs-prebuilt@^2.1.3:
   version "2.1.16"
   resolved "https://registry.yarnpkg.com/phantomjs-prebuilt/-/phantomjs-prebuilt-2.1.16.tgz#efd212a4a3966d3647684ea8ba788549be2aefef"
   dependencies:

@@ -1,29 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classname from 'classname';
 import Explorer from './Explorer';
 import Markdown from '../editor/Markdown';
 import ToolBar from './ToolBar';
+import Loading from '../share/Loading';
 
 import '../../assets/scss/note.scss';
 
 const NoteWorkspace = (props) => {
-  const { projects, markdown, dispatch, note, markdownSettings, editorMode, searchStatus, searchResult } = props;
+  const { projects, markdown, dispatch, note, markdownSettings, editorMode, searchStatus, searchResult, exportQueue: { status: exportStatus } } = props;
   let projectData;
   if (searchStatus === 0) {
     projectData = projects;
   } else if (searchStatus === 1) {
     projectData = searchResult;
   }
+  const blur = exportStatus === 1;
+  const contClass = classname('note-root-cont', {
+    'note-blur': blur,
+  });
   return (
     <div className="note-root">
+      {blur ? (
+        <Loading tip="Exporting..." />
+      ) : null}
       <ToolBar
         markdown={markdown}
         editorMode={editorMode}
         dispatch={dispatch}
         searchStatus={searchStatus}
         note={note}
+        blur={blur}
       />
-      <div className="note-root-cont" id="note_root_cont">
+      <div className={contClass} id="note_root_cont">
         <Explorer
           projects={projectData}
           dispatch={dispatch}
@@ -86,6 +96,9 @@ NoteWorkspace.propTypes = {
     editorWidth: PropTypes.number.isRequired,
   }).isRequired,
   editorMode: PropTypes.string.isRequired,
+  exportQueue: PropTypes.shape({
+    status: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default NoteWorkspace;

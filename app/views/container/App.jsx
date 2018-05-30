@@ -16,6 +16,7 @@ import Cloud from '../component/cloud/Cloud';
 
 import { appLounch, FETCHING_ONEDRIVE_TOKEN, FETCHING_GITHUB_RELEASES, CLOSE_UPDATE_NOTIFICATION } from '../actions/app';
 import { getProjectList, saveNote } from '../actions/projects';
+import { EXPORT_INIT_QUEUE, EXPORT_COMPOLETE } from '../actions/exportQueue';
 
 import '../assets/scss/index.scss';
 import '../assets/scss/themes.scss';
@@ -101,6 +102,10 @@ class App extends Component {
       notes: PropTypes.array.isRequired,
       currentProjectName: PropTypes.string.isRequired,
     }).isRequired,
+    // 文件导出队列
+    exportQueue: PropTypes.shape({
+      status: PropTypes.number.isRequired,
+    }).isRequired,
     history: PropTypes.any,
   };
 
@@ -144,6 +149,8 @@ class App extends Component {
     ipcRenderer.removeAllListeners('onedriver-oauth-reply');
     ipcRenderer.removeAllListeners('start-one-driver-upload-all');
     ipcRenderer.removeAllListeners('fetch-releases');
+    ipcRenderer.removeAllListeners('async-export-file');
+    ipcRenderer.removeAllListeners('async-export-file-complete');
   }
 
   updateNotification = (latestVersion) => {
@@ -219,6 +226,18 @@ class App extends Component {
     ipcRenderer.on('fetch-releases', () => {
       this.fetchReleases();
     });
+    // 异步导出文件
+    ipcRenderer.on('async-export-file', () => {
+      this.props.dispatch({
+        type: EXPORT_INIT_QUEUE,
+      });
+    });
+    // 异步导出文件完成
+    ipcRenderer.on('async-export-file-complete', () => {
+      this.props.dispatch({
+        type: EXPORT_COMPOLETE,
+      });
+    });
     // 监听onedriver 同步
     // ipcRenderer.on('start-one-driver-upload-all', () => {
     //   const { app: { oAuthToken: { oneDriver } } } = this.props;
@@ -231,7 +250,7 @@ class App extends Component {
   }
 
   render() {
-    const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash }, markdown, note, drive } = this.props;
+    const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash }, markdown, note, drive, exportQueue } = this.props;
     const { settings, platform } = app;
     const { theme } = settings;
     const { dispatch, history } = this.props;
@@ -243,6 +262,7 @@ class App extends Component {
           <div className={`container ${notDarwin} ${theme}`}>
             <AppToolBar defaultDrive={app.settings.defaultDrive} />
             <Switch>
+              {/* 笔记部分 */}
               <Route
                 path="/note"
                 exact
@@ -256,9 +276,11 @@ class App extends Component {
                     note={note}
                     markdownSettings={app.settings.markdownSettings}
                     editorMode={app.settings.editorMode}
+                    exportQueue={exportQueue}
                   />
                 )}
               />
+              {/* 回收站 */}
               <Route
                 path="/trash"
                 render={() => (
@@ -275,6 +297,7 @@ class App extends Component {
                   <ImageHosting dispatch={dispatch} />
                 )}
               /> */}
+              {/* cloud dirve */}
               <Route
                 path="/cloud"
                 render={() => (
@@ -294,13 +317,14 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  const { app, projects, markdown, note, drive } = state;
+  const { app, projects, markdown, note, drive, exportQueue } = state;
   return {
     app,
     projectsData: projects,
     markdown,
     note,
     drive,
+    exportQueue,
   };
 }
 
