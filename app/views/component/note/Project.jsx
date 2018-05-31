@@ -94,9 +94,9 @@ export default class Project extends Component {
     });
     // 需要异步处理
     ipcRenderer.on('export-get-notebook-info', (event, type) => {
-      const { name: noteBook } = this.state.contextProject;
+      const { name: notebook } = this.state.contextProject;
       ipcRenderer.send('export-notebook', {
-        noteBook,
+        notebook,
         type,
       });
     });

@@ -6,8 +6,9 @@ import { ipcMain, BrowserWindow, app, Menu, dialog } from 'electron';
 import fs from 'fs';
 import fse from 'fs-extra';
 import marked from 'marked';
-import markdownpdf from 'markdown-pdf';
+import html2pdf from 'html-pdf';
 import schedule from './schedule';
+import pdfAddStyle from './pdfStyle';
 
 const renderer = new marked.Renderer();
 
@@ -477,10 +478,14 @@ export function eventListener(menus) {
           if (!reg.test(filename)) {
             file += `.${type}`;
           }
-          if (type === 'pdf') {
+          if (type === 'pdf' && content) {
             event.sender.send('async-export-file');
-            markdownpdf().from.string(content).to(file, () => {
+            content = pdfAddStyle(content);
+            html2pdf.create(content).toFile(file, (err) => {
               event.sender.send('async-export-file-complete');
+              if (err) {
+                throw err;
+              }
             });
           } else {
             fs.writeFileSync(file, content);
@@ -489,6 +494,60 @@ export function eventListener(menus) {
       });
     } catch (error) {
       console.warn(error);
+    }
+  });
+
+  /**
+   * 导出笔记本
+   * 暂时只遍历一层目录
+   */
+  ipcMain.on('export-notebook', async (event, args) => {
+    const { notebook, type } = args;
+    try {
+      event.sender.send('async-export-file');
+      const folderPath = `${projectsPath}/${notebook}`;
+      const exportPath = `${app.getPath('desktop')}/${notebook}`;
+      if (!fs.existsSync(exportPath)) {
+        fs.mkdirSync(exportPath);
+      }
+      if (type === 'md') {
+        fse.copySync(folderPath, exportPath);
+      } else {
+        const promiseArr = [];
+        const notes = fs.readdirSync(folderPath);
+        for (const note of notes) {
+          let content = fs.readFileSync(`${folderPath}/${note}`, {
+            encoding: 'utf8',
+          });
+          content = marked(content);
+          const name = note.replace(/\.md/ig, '');
+          if (type === 'pdf' && content) {
+            promiseArr.push(new Promise((resolve) => {
+              content = pdfAddStyle(content);
+              html2pdf.create(content).toFile(`${exportPath}/${name}.${type}`, (err) => {
+                if (err) {
+                  console.warn(err);
+                }
+                resolve('done');
+              });
+            }));
+          } else if (type === 'html') {
+            promiseArr.push(new Promise((resolve) => {
+              fs.writeFile(`${exportPath}/${name}.${type}`, content, (err) => {
+                if (err) {
+                  console.warn(err);
+                }
+                resolve('done');
+              });
+            }));
+          }
+        }
+        await Promise.all(promiseArr);
+      }
+      event.sender.send('async-export-file-complete');
+    } catch (ex) {
+      console.warn(ex);
+      event.sender.send('async-export-file-complete');
     }
   });
 }
@@ -517,6 +576,7 @@ export function removeEventListeners() {
     'file-new-enbaled',
     'start-release-schedule',
     'export-note',
+    'export-notebook',
   ];
   for (const listener of listeners) {
     ipcMain.removeAllListeners(listener);
