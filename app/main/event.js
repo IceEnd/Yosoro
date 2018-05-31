@@ -7,7 +7,7 @@ import fs from 'fs';
 import fse from 'fs-extra';
 import { markedToHtml } from '../views/utils/utils';
 import schedule from './schedule';
-import PDF from './PDF';
+import PDF from './pdf';
 
 const dataPath = app.getPath('appData');
 let appDataPath = `${dataPath}/Yosoro`;
