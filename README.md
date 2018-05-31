@@ -53,6 +53,38 @@ You can read the [CHANGELOG](./CHANGELOG.md) to get more information.
 
 ![screenshot-linux](https://s1.ax1x.com/2018/05/13/CDZF8f.png)
 
+## Quick Start
+
+### Install
+
+```shell
+yarn
+```
+
+### Run Main Process
+
+```shell
+npm run dev:main
+```
+
+### Run Renderer Process
+
+```shell
+npm run dev:renderer
+```
+
+### Build
+
+```shell
+npm run build:all|main|renderer
+```
+
+### Package
+
+```
+npm run packager:mac|win|win:64|linux
+```
+
 ## License
 
 GPL-3.0 © [Alchemy](./LICENSE)

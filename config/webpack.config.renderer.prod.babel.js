@@ -12,7 +12,7 @@ export default merge.smart(baseConfig, {
   devtool: 'source-map',
   entry: {
     index: path.join(__dirname, '../app/views/index.jsx'),
-    vendor: ['react', 'react-dom', 'redux', 'redux-saga', 'redux-logger', 'markdown-pdf', 'history', 'prop-types', 'antd', 'whatwg-fetch'],
+    vendor: ['react', 'react-dom', 'redux', 'redux-saga', 'redux-logger', 'history', 'prop-types', 'antd', 'whatwg-fetch'],
   },
   output: {
     filename: '[name]_[hash].js',
@@ -68,7 +68,7 @@ export default merge.smart(baseConfig, {
       cacheGroups: {
         commons: {
           name: 'vendor',
-          test: /react|react-dom|prop-types|antd|whatwg-fetch/,
+          test: /react|react-dom|redux|redux-saga|redux-logger|history|prop-types|antd|whatwg-fetch/,
           chunks: 'initial',
           enforce: true,
         },

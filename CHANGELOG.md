@@ -4,7 +4,8 @@
 
 ### new Features
 
-- Export notebook (`.md`, `.html`, `.pdf`)
+- Export note as `markdown`, `html`, `pdf`
+- Export notebook
 
 ### Bugfix
 

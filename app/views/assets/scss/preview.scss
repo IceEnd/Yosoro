@@ -40,20 +40,9 @@
 	ul {
 		li {
 			position: relative;
-			list-style-type: none;
-			padding-left: 1rem;
-			&:before {
-				content: "";
-				font-size: 1.2rem;
-				position: absolute;
-				height: 0.4rem;
-				width: 0.4rem;
-				left: 0;
-				top: 0;
-				background-color: black;
-				border-radius: 100%;
-				margin-top: 0.6em;
-			}
+			list-style-type: disc;
+			list-style-position: inside;
+			padding-left: 0.2em;
 		}
 	}
 
@@ -69,6 +58,7 @@
 		}
 	}
 	.task-list-li {
+		list-style-type: none;
 		padding-left: 0.2rem;
 		&:before {
 			display: none;
