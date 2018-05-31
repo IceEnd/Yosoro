@@ -8,7 +8,7 @@ import fse from 'fs-extra';
 import marked from 'marked';
 import html2pdf from 'html-pdf';
 import schedule from './schedule';
-import pdfAddStyle from './pdfStyle';
+import pdfAddStyle from './pdf';
 
 const renderer = new marked.Renderer();
 
@@ -481,12 +481,19 @@ export function eventListener(menus) {
           if (type === 'pdf' && content) {
             event.sender.send('async-export-file');
             content = pdfAddStyle(content);
-            html2pdf.create(content).toFile(file, (err) => {
-              event.sender.send('async-export-file-complete');
-              if (err) {
-                throw err;
-              }
-            });
+            const windowToPDF = new BrowserWindow({ show: false });
+            const tempPath = `${app.getPath('temp')}/yosoro_pdf.html`;
+            fs.writeFileSync(tempPath, content);
+            windowToPDF.loadURL(`file://${tempPath}`);
+            setTimeout(() => {
+              windowToPDF.webContents.printToPDF({}, (err, pdfData) => {
+                if (err) {
+                  throw err;
+                }
+                fs.writeFileSync(file, pdfData);
+                event.sender.send('async-export-file-complete');
+              });
+            }, 1000);
           } else {
             fs.writeFileSync(file, content);
           }
