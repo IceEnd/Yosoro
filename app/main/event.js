@@ -44,7 +44,7 @@ const documentsPath = `${appDataPath}/documents`;
 const projectsPath = `${documentsPath}/projects`;
 const trashPath = `${documentsPath}/trash`;
 
-export default function eventListener(menus) {
+export function eventListener(menus) {
   const { explorerMenu, exploereFileMenu, projectItemMenu,
     fileItemMenu } = menus;
 
@@ -439,7 +439,7 @@ export default function eventListener(menus) {
     schedule.cancelReleases();
   });
 
-  ipcMain.on('export-note', (events, args) => {
+  ipcMain.on('export-note', (event, args) => {
     const { projectName, fileName, type, data } = args;
     const filePath = `${projectsPath}/${projectName}/${fileName}.md`;
     try {
@@ -478,10 +478,9 @@ export default function eventListener(menus) {
             file += `.${type}`;
           }
           if (type === 'pdf') {
-            const webContents = BrowserWindow.getAllWindows()[0].webContents;
-            webContents.send('async-export-file');
+            event.sender.send('async-export-file');
             markdownpdf().from.string(content).to(file, () => {
-              webContents.send('async-export-file-complete');
+              event.sender.send('async-export-file-complete');
             });
           } else {
             fs.writeFileSync(file, content);
@@ -492,4 +491,34 @@ export default function eventListener(menus) {
       console.warn(error);
     }
   });
+}
+
+export function removeEventListeners() {
+  const listeners = [
+    'show-context-menu-explorer',
+    'show-context-menu-project-item',
+    'show-context-menu-explorer-file',
+    'show-context-menu-file-item',
+    'show-context-menu-file-item',
+    'create-project',
+    'rename-project',
+    'move-project-to-trash',
+    'create-file',
+    'rename-note',
+    'read-file',
+    'save-content-to-file',
+    'save-content-to-trash-file',
+    'move-file-to-trash',
+    'permanent-remove-note',
+    'permanent-remove-notebook',
+    'restore-note',
+    'restore-notebook',
+    'save-upload-info-data',
+    'file-new-enbaled',
+    'start-release-schedule',
+    'export-note',
+  ];
+  for (const listener of listeners) {
+    ipcMain.removeAllListeners(listener);
+  }
 }

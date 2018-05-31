@@ -3,15 +3,15 @@ import path from 'path';
 import url from 'url';
 import fs from 'fs';
 import { setMenu, getExplorerMenuItem, getExplorerFileMenuItem, getExplorerProjectItemMenu, getExplorerFileItemMenu } from './menu';
-import eventListener from './event';
+import { removeEventListeners, eventListener } from './event';
 import schedule from './schedule';
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
-const ipcMain = electron.ipcMain;
+// const ipcMain = electron.ipcMain;
 // const Menu = electron.Menu;
 // const Tray = electron.Tray;
-const dialog = electron.dialog;
+// const dialog = electron.dialog;
 const shell = electron.shell;
 
 app.setName('Yosoro');
@@ -120,30 +120,7 @@ function createWindow() {
   // Emitted when the window is closed.
   mainWindow.on('close', () => {
     mainWindow = null;
-    ipcMain.removeAllListeners('show-context-menu-explorer');
-    ipcMain.removeAllListeners('show-context-menu-project-item');
-    ipcMain.removeAllListeners('show-context-menu-explorer-file');
-    ipcMain.removeAllListeners('show-context-menu-file-item');
-  });
-
-  // 监听 新建 消息
-  ipcMain.on('new-file', (event) => {
-    event.sender.send('new-file');
-  });
-
-  // 监听新建项目指令
-  ipcMain.on('new-project', (event) => {
-    event.sender.send('new-project');
-  });
-
-  ipcMain.on('open-file-dialog', (event) => {
-    dialog.showOpenDialog({
-      properties: ['openFile', 'openDirectory'],
-    }, (files) => {
-      if (files) {
-        event.sender.send('selected-directory', files);
-      }
-    });
+    removeEventListeners();
   });
 
   // 配置插件
