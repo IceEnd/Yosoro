@@ -10,6 +10,9 @@
     <img src="https://travis-ci.org/IceEnd/Yosoro.svg?branch=master">
     <img src="https://img.shields.io/github/license/IceEnd/Yosoro.svg" />
   </p>
+  <p align="center">
+    <img src="https://img.shields.io/github/downloads/IceEnd/Yosoro/total.svg">
+  </p>
 </p>
 
 ## Download
