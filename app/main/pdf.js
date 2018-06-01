@@ -2,9 +2,6 @@ import { BrowserWindow, app } from 'electron';
 import fs from 'fs';
 import { markedToHtml } from '../views/utils/utils';
 
-
-// const style = '<html><head></head><body><div class="preview-body">';
-
 export function getContent(file) {
   let content = fs.readFileSync(file, {
     encoding: 'utf8',
@@ -33,6 +30,29 @@ export default class PDF {
     this.initPDFQueue();
   }
 
+  static printPDF(win, file, tempFile, resolve) {
+    win.webContents.printToPDF({
+      pageSize: 'A4',
+      printBackground: true,
+    }, (err, pdfData) => {
+      win.removeAllListeners('did-finish-load');
+      win.removeAllListeners('did-fail-load');
+      win.close(); // 销毁window
+      if (err) {
+        throw err;
+      }
+      fs.writeFileSync(file, pdfData);
+      if (fs.existsSync(tempFile)) {
+        fs.unlinkSync(tempFile);
+      }
+      resolve('done');
+    });
+  }
+
+  static getHtml(filePath) {
+    return getContent(filePath);
+  }
+
   // 初始化PDF生成队列
   initPDFQueue() {
     this.seed = 0;
@@ -54,28 +74,29 @@ export default class PDF {
         file = exportPath;
       }
       const filePath = `${folderPath}/${note}`;
-      const content = getContent(filePath);
+      const content = PDF.getHtml(filePath);
       const tempFile = `${tempPath}/yosoro_pdf_${seed}.html`;
       fs.writeFileSync(tempFile, content); // 写入临时html文件
       let windowToPDF = new BrowserWindow({ show: false });
       windowToPDF.loadURL(`file://${tempFile}`);
-      setTimeout(() => {
-        windowToPDF.webContents.printToPDF({
-          pageSize: 'A4',
-          printBackground: true,
-        }, (err, pdfData) => {
-          windowToPDF.destroy(); // 销毁window
-          windowToPDF = null;
-          if (err) {
-            throw err;
-          }
-          fs.writeFileSync(file, pdfData);
-          if (fs.existsSync(tempFile)) {
-            fs.unlinkSync(tempFile);
-          }
-          resolve('done');
-        });
-      }, 1000);
+      let timer = setTimeout(() => {
+        console.warn('waiting time over');
+        PDF.printPDF(windowToPDF, file, tempFile, resolve);
+      }, 5000);
+      windowToPDF.webContents.once('did-finish-load', () => {
+        clearTimeout(timer);
+        timer = null;
+        PDF.printPDF(windowToPDF, file, tempFile, resolve);
+      });
+      windowToPDF.webContents.once('did-fail-load', () => {
+        clearTimeout(timer);
+        timer = null;
+        windowToPDF.removeAllListeners('did-finish-load');
+        windowToPDF.removeAllListeners('did-fail-load');
+        windowToPDF.destroy();
+        windowToPDF = null;
+        resolve('fail');
+      });
     });
   }
 
