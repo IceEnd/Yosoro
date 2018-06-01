@@ -27,7 +27,7 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 - Support Markdown syntax
 - Delete & Restore
 - Synchronize with Cloud Drive(OneDrive is supported)
-- Note export as markdown or html
+- Export notes as markdown or html or pdf
 - Update Notification
 
 You can read the [CHANGELOG](./CHANGELOG.md) to get more information.
