@@ -1,6 +1,7 @@
 import 'codemirror/lib/codemirror.css';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import autobind from 'autobind-decorator';
 import CodeMirror from 'codemirror';
 import 'codemirror/addon/fold/markdown-fold';
 import 'codemirror/mode/markdown/markdown';
@@ -54,7 +55,9 @@ export default class Editor extends Component {
       this.editor.selectionEnd = start + 1;
     }
     if (prevProps.uuid !== this.props.uuid) {
+      this.removeChangeEvent(); // 取消change事件
       this.codeMirror.setValue(this.props.defaultContent);
+      this.addChangeEvent(); // 重新绑定change事件
     }
   }
 
@@ -80,7 +83,7 @@ export default class Editor extends Component {
     return currentLine / lines;
   }
 
-  getTextWidth = (editorMode, editorWidthValue) => {
+  getTextWidth(editorMode, editorWidthValue) {
     if (editorMode === 'normal' || editorMode === 'immersion') {
       return '100%';
     }
@@ -110,14 +113,29 @@ export default class Editor extends Component {
       foldGutter: true,
       gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
     });
-    this.codeMirror.on('change', (cm) => {
-      const content = cm.getValue();
-      const { uuid } = this.props;
-      this.props.dispatch(updateMarkdownHtml(content, uuid, -1));
-    });
+    this.addChangeEvent();
+    // this.codeMirror.on('change', this.handleChange);
     this.codeMirror.on('scroll', this.handleScroll);
     this.codeMirror.on('keydown', this.handleKeyDown);
     this.codeMirror.on('focus', this.handleFocus);
+  }
+
+  removeChangeEvent() {
+    if (this.codeMirror) {
+      this.codeMirror.off('change', this.handleChange);
+    }
+  }
+
+  addChangeEvent() {
+    if (this.codeMirror) {
+      this.codeMirror.on('change', this.handleChange);
+    }
+  }
+
+  handleChange = (cm) => {
+    const content = cm.getValue();
+    const { uuid } = this.props;
+    this.props.dispatch(updateMarkdownHtml(content, uuid, -1));
   }
 
   updateCode = () => {
@@ -159,21 +177,24 @@ export default class Editor extends Component {
     this.props.setPreiewScrollRatio(ratio);
   }
 
-  handleMouseDown = () => {
+  @autobind
+  handleMouseDown() {
     this.props.setDrag(true);
   }
 
-  handleMouseUp = () => {
+  @autobind
+  handleMouseUp() {
     this.props.setDrag(false);
   }
 
-  handleCodeMirrorResize = () => {
+  @autobind
+  handleCodeMirrorResize() {
     this.containerResize();
   }
 
   render() {
     // const { textWidth } = this.state;
-    const { editorWidth, editorMode, drag } = this.props;
+    const { editorWidth, editorMode, editorWidthValue, drag } = this.props;
     let width = editorWidth;
     let rootClass = '';
     let split = true;
@@ -189,7 +210,7 @@ export default class Editor extends Component {
       noBorder = 'no-border';
       rootClass = 'immersion-mode';
     }
-    const textWidth = this.getTextWidth(editorWidth, editorMode);
+    const textWidth = this.getTextWidth(editorMode, editorWidthValue);
     return (
       <div
         className={`editor-root ${rootClass} ${noBorder} ${drag ? 'drag' : ''}`}

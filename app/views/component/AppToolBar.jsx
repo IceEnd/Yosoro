@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   NavLink,
 } from 'react-router-dom';
+import SVGIcon from './share/SVGIcon';
 
 import logo from '../assets/images/logo.png';
 
@@ -15,9 +16,6 @@ const cloudActive = (match, location) => {
 };
 
 const AppToolBar = (props) => {
-  const pencilHtml = '<use class="menu-svg-use use-pencil" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_pencil" />';
-  const noteHtml = '<use class="menu-svg-use use-img" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_cloud" />';
-  const trashHtml = '<use class="menu-svg-use use-trash" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_trash" />';
   const defaultDriver = props.defaultDrive.toLowerCase();
   return (
     <div className="tool-bar" id="app_tool_bar">
@@ -29,7 +27,12 @@ const AppToolBar = (props) => {
         <li className="menu-item">
           <NavLink to="/note" activeClassName="cur">
             <span className="menu-item-radius">
-              <svg className="menu-svg" viewBox="0 0 485.219 485.22" dangerouslySetInnerHTML={{ __html: pencilHtml }} />
+              <SVGIcon
+                className="menu-svg"
+                id="#icon_svg_pencil"
+                viewBox="0 0 485.219 485.22"
+                useClassName="menu-svg-use use-pencil"
+              />
             </span>
           </NavLink>
         </li>
@@ -40,14 +43,24 @@ const AppToolBar = (props) => {
             isActive={cloudActive}
           >
             <span className="menu-item-radius">
-              <svg className="menu-svg" viewBox="0 0 548.176 548.176" dangerouslySetInnerHTML={{ __html: noteHtml }} />
+              <SVGIcon
+                className="menu-svg"
+                viewBox="0 0 548.176 548.176"
+                id="#icon_svg_cloud"
+                useClassName="menu-svg-use use-img"
+              />
             </span>
           </NavLink>
         </li>
         <li className="menu-item">
           <NavLink to="/trash" activeClassName="cur">
             <span className="menu-item-radius">
-              <svg className="menu-svg" viewBox="0 0 268.476 268.476" dangerouslySetInnerHTML={{ __html: trashHtml }} />
+              <SVGIcon
+                className="menu-svg"
+                viewBox="0 0 268.476 268.476"
+                id="#icon_svg_trash"
+                useClassName="menu-svg-use use-trash"
+              />
             </span>
           </NavLink>
         </li>

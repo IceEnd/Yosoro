@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input, message, Icon } from 'antd';
 import { ipcRenderer } from 'electron';
+import SVGIcon from '../share/SVGIcon';
+
 import { createFile, renameNote, deletNote, updateNoteDesc, trashBack, updateNoteUploadStatus, UPLOAD_NOTE_ONEDRIVE } from '../../actions/projects';
 import { formatDate, pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
 import { readFile, beforeSwitchSave, saveContentToTrashFile, updateCurrentTitle, clearMarkdown, MARKDOWN_UPLOADING } from '../../actions/markdown';
@@ -473,13 +475,17 @@ export default class Files extends Component {
 
   // 渲染新建文件
   renderNewFile() {
-    const iconHtml = '<use class="icon-use" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_markdown" />';
     const { newFileTitle } = this.state;
     return (
       <div className="file-list__item new">
         <div className="file-list__item__root">
           <span className="file-list__item__icon">
-            <svg className="file-list__item__icon__svg" version="1.1" viewBox="0 0 48 48" dangerouslySetInnerHTML={{ __html: iconHtml }} />
+            <SVGIcon
+              className="file-list__item__icon__svg"
+              viewBox="0 0 48 48"
+              id="#icon_svg_markdown"
+              useClassName="icon-use"
+            />
           </span>
           <span className="file-list__item__name">
             <Input
@@ -502,7 +508,6 @@ export default class Files extends Component {
   render() {
     const { notes, currentUuid, editorMode } = this.props;
     const { newFile, rename, desc } = this.state;
-    const iconHtml = '<use class="icon-use" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_markdown" />';
     let rootClass = '';
     if (editorMode !== 'normal') {
       rootClass = 'hide';
@@ -551,7 +556,12 @@ export default class Files extends Component {
               >
                 <div className="file-list__item__root">
                   <span className="file-list__item__icon">
-                    <svg className="file-list__item__icon__svg" version="1.1" viewBox="0 0 48 48" dangerouslySetInnerHTML={{ __html: iconHtml }} />
+                    <SVGIcon
+                      className="file-list__item__icon__svg"
+                      viewBox="0 0 48 48"
+                      id="#icon_svg_markdown"
+                      useClassName="icon-us"
+                    />
                   </span>
                   <span className="file-list__item__name">
                     {disabled ? (

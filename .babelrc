@@ -1,11 +1,30 @@
 {
-  "presets": [
-    ["env", {
-      "targets": {
-        "node": "8"
-      }
-    }],
-    "stage-0",
-    "react"
-  ]
+  "env": {
+    "main": {
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": 8
+          }
+        }]
+      ]
+    },
+    "renderer": {
+      "presets": [
+        ["env", {
+          "targets": {
+            "chrome": 59
+          },
+          "loose": true
+        }],
+        "react",
+        "react-optimize",
+        "stage-0"
+      ],
+      "plugins": [
+        "transform-decorators-legacy",
+        "transform-async-to-generator"
+      ]
+    }
+  }
 }

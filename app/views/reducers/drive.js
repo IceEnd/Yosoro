@@ -77,7 +77,7 @@ function updateDriver(state = {
       if (deleteType === 'note') {
         const notes = state.notes.filter(item => item.id !== itemId && item.id !== jsonItemId);
         state.notes = notes;
-      } else if (deleteType === 'project') {
+      } else if (deleteType === 'notebook') {
         const projects = state.projects.filter(item => item.id !== itemId);
         state.projects = projects;
       }

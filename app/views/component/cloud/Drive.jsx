@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Spin, Breadcrumb, message, Icon, Tooltip, Modal } from 'antd';
+import { Spin, Breadcrumb, message, Icon, Modal } from 'antd';
+import autobind from 'autobind-decorator';
+import Notebooks from './Notebooks';
+import Notes from './Notes';
 import {
   DRIVE_FETCHING_PROJECTS,
   DRIVE_FETCHING_NOTES,
@@ -31,35 +34,44 @@ export default class Drive extends Component {
     }).isRequired,
   }
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       show: false,
       hasAuth: false,
       driveName: '',
       loadingText: 'Loading',
     };
+    // this.chooseProject = this.chooseProject.bind(this);
+    // this.handleRefresh = this.handleRefresh.bind(this);
+    // this.downloadNote = this.downloadNote.bind(this);
+    // this.openDelete = this.openDelete.bind(this);
+    // this.backRoot = this.backRoot.bind(this);
   }
 
   componentDidMount() {
     this.checkOAuth();
   }
 
-  getValidNotes = () => {
+  getValidNotes() {
     const { notes } = this.props.drive;
     return notes.filter(note => /.md$/ig.test(note.name));
   }
 
-  setAutuStatus = flag => this.setState({
-    show: true,
-    hasAuth: flag,
-  });
+  setAutuStatus(flag) {
+    this.setState({
+      show: true,
+      hasAuth: flag,
+    });
+  }
 
-  setDriveName = name => this.setState({
-    driveName: name,
-  });
+  setDriveName(name) {
+    this.setState({
+      driveName: name,
+    });
+  }
 
-  checkOAuth = () => {
+  checkOAuth() {
     let drive = this.props.match.params.drive;
     const { dispatch, drive: { currentProjectName } } = this.props;
     const oAuth = getTokens();
@@ -94,7 +106,13 @@ export default class Drive extends Component {
     }
   }
 
-  chooseProject = (folder) => {
+  @autobind
+  handleRefresh() {
+    this.checkOAuth();
+  }
+
+  @autobind
+  chooseProject(folder) {
     this.setState({
       loadingText: 'Loading...',
     });
@@ -109,14 +127,21 @@ export default class Drive extends Component {
     });
   }
 
-  backRoot = () => {
-    this.props.dispatch({
-      type: DRIVE_BACK_ROOT,
-    });
+  @autobind
+  backRoot() {
+    const { drive: { currentProjectName } } = this.props;
+    if (currentProjectName) {
+      this.props.dispatch({
+        type: DRIVE_BACK_ROOT,
+      });
+    } else {
+      this.handleRefresh();
+    }
   }
 
   // 下载单个笔记
-  downloadNote = (name) => {
+  @autobind
+  downloadNote(name) {
     const { drive: { currentProjectName }, note } = this.props;
     this.setState({
       loadingText: 'Downloading...',
@@ -138,8 +163,9 @@ export default class Drive extends Component {
     });
   }
 
-  // 打开删除笔记
-  openDelete = (e, type, name, id, parentReference) => {
+  // 打开删除笔记提示框
+  @autobind
+  openDelete(e, type, name, id, parentReference) {
     e.stopPropagation();
     confirm({
       title: `Remove "${name.replace(/.md$/ig, '')}"?`,
@@ -154,7 +180,7 @@ export default class Drive extends Component {
    * @desc 删除单个Item
    * @param {String} type 'note' or 'project'
    */
-  deleteItem = (type, name, id, parentReference) => {
+  deleteItem(type, name, id, parentReference) {
     this.setState({
       loadingText: 'Deleting...',
     });
@@ -185,44 +211,82 @@ export default class Drive extends Component {
     });
   }
 
-  renderBread = (type, blur, driveName, currentProjectName) => {
-    if (type === 'notes') {
+  renerList(status, driveName, currentProjectName, blur) {
+    if (status === 2) {
       return (
-        <div className={`bread-bar ${blur}`}>
-          <div className="bread-container">
-            <Breadcrumb>
-              <Breadcrumb.Item>{driveName}</Breadcrumb.Item>
-              <Breadcrumb.Item
-                className="cursor-pointer"
-                onClick={this.backRoot}
-              >
-                Yosoro
-              </Breadcrumb.Item>
-              <Breadcrumb.Item>{currentProjectName}</Breadcrumb.Item>
-            </Breadcrumb>
-            <div className="tools">
-              <Icon type="reload" onClick={this.checkOAuth} />
-            </div>
-          </div>
+        <div className={`content ${blur}`} id="app_cloud">
+          <p className="tips">
+            <Icon type="reload" onClick={this.handleRefresh} />
+            Fetch data failed.
+          </p>
         </div>
       );
     }
+    if (currentProjectName) {
+      return this.renderNotes(status, driveName, currentProjectName, blur);
+    }
+    return this.renderProject(status, driveName, currentProjectName, blur);
+  }
+
+  /**
+   * @param {Number} status 请求状态
+   * @param {String} driveName 驱动名称
+   * @param {String} currentProjectName
+   * @param {String} blur
+   */
+  renderNotes(status, driveName, currentProjectName, blur) {
+    const notes = this.getValidNotes();
+    return (
+      <div className={`content ${blur}`} id="app_cloud">
+        <Notes
+          notes={notes}
+          downloadNote={this.downloadNote}
+          openRemove={this.openDelete}
+        />
+      </div>
+    );
+  }
+
+  renderProject(status, driveName, currentProjectName, blur) {
+    const { drive: { projects } } = this.props;
+    return (
+      <div className={`content ${blur}`}>
+        <Notebooks
+          projects={projects}
+          chooseProject={this.chooseProject}
+          openRemove={this.openDelete}
+        />
+      </div>
+    );
+  }
+
+  renderBread(blur, driveName, currentProjectName) {
     return (
       <div className={`bread-bar ${blur}`}>
         <div className="bread-container">
           <Breadcrumb>
             <Breadcrumb.Item>{driveName}</Breadcrumb.Item>
-            <Breadcrumb.Item>Yosoro</Breadcrumb.Item>
+            <Breadcrumb.Item
+              className="cursor-pointer"
+              onClick={this.backRoot}
+            >
+              Yosoro
+            </Breadcrumb.Item>
+            {currentProjectName ? (
+              <Breadcrumb.Item>
+                {currentProjectName}
+              </Breadcrumb.Item>
+            ) : null}
           </Breadcrumb>
           <div className="tools">
-            <Icon type="reload" onClick={this.checkOAuth} />
+            <Icon type="reload" onClick={this.handleRefresh} />
           </div>
         </div>
       </div>
     );
-  };
+  }
 
-  renderLoading = (status) => {
+  renderLoading(status) {
     const { loadingText } = this.state;
     if (status === 0) {
       return (
@@ -234,137 +298,6 @@ export default class Drive extends Component {
     return null;
   }
 
-  /**
-   * @param {Number} status 请求状态
-   * @param {String} driveName 驱动名称
-   * @param {String} currentProjectName
-   * @param {String} blur
-   */
-  renderNotes = (status, driveName, currentProjectName, blur) => {
-    const notes = this.getValidNotes();
-    const noteHtml = '<use class="trash-notebook-use" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_note" />';
-    return (
-      <Fragment>
-        {this.renderLoading(status)}
-        {this.renderBread('notes', blur, driveName, currentProjectName)}
-        {status === 2 ? (
-          <div className={`content ${blur}`}>
-            <p className="tips">
-              <Icon type="reload" onClick={this.checkOAuth} />
-              Fetch data failed.
-            </p>
-          </div>
-        ) : (
-          <div className={`content ${blur}`} id="app_cloud">
-            {notes.length === 0 ? (
-              <p className="tips">List is empty.</p>
-            ) : (
-              <ul className="list">
-                {notes.map((item) => {
-                  const { name, id } = item;
-                  let showName = '';
-                  if (!/.md$/ig.test(name)) {
-                    return null;
-                  }
-                  showName = name.replace(/.md$/ig, '');
-                  return (
-                    <li
-                      className="list-item"
-                      key={id}
-                    >
-                      <div className="list-item__img">
-                        <svg className="menu-svg" viewBox="0 0 59 59" dangerouslySetInnerHTML={{ __html: noteHtml }} />
-                      </div>
-                      <h3 className="list-item__title">{showName}</h3>
-                      <div className="list-item__option">
-                        <span
-                          className="list-item__options__item"
-                          onClick={() => this.downloadNote(name)}
-                        >
-                          <Tooltip
-                            placement="bottom"
-                            title="download"
-                            getPopupContainer={() => document.getElementById('app_cloud')}
-                          >
-                            <Icon type="download" />
-                          </Tooltip>
-                        </span>
-                        <span
-                          className="list-item__options__item"
-                          onClick={e => this.openDelete(e, 'note', name, id, item.parentReference)}
-                        >
-                          <Tooltip placement="bottom" title="delete note">
-                            <Icon type="delete" />
-                          </Tooltip>
-                        </span>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </div>
-        )}
-      </Fragment>
-    );
-  }
-
-  renderProject = (status, driveName, currentProjectName, blur) => {
-    const { projects } = this.props.drive;
-    const notebookHtml = '<use class="trash-notebook-use" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_notebook" />';
-    return (
-      <Fragment>
-        {this.renderLoading(status)}
-        {this.renderBread('projects', blur, driveName, currentProjectName)}
-        {status === 2 ? (
-          <div className={`content ${blur}`} id="app_cloud">
-            <p className="tips">
-              <Icon type="reload" onClick={this.checkOAuth} />
-              Fetch data failed.
-            </p>
-          </div>
-        ) : (
-          <div className={`content ${blur}`}>
-            {projects.length === 0 ? (
-              <p className="tips">List is empty.</p>
-            ) : (
-              <ul className="list">
-                {projects.map((item) => {
-                  if (typeof item.folder === 'undefined') {
-                    return null;
-                  }
-                  return (
-                    <li
-                      className="list-item"
-                      key={item.id}
-                      onClick={() => this.chooseProject(item.name)}
-                      role="presentation"
-                    >
-                      <div className="list-item__img">
-                        <svg className="menu-svg" viewBox="0 0 59 59" dangerouslySetInnerHTML={{ __html: notebookHtml }} />
-                      </div>
-                      <h3 className="list-item__title">{item.name}</h3>
-                      <div className="list-item__option">
-                        <span
-                          className="list-item__options__item"
-                          onClick={e => this.openDelete(e, 'project', name, item.id, item.parentReference)}
-                        >
-                          <Tooltip placement="bottom" title="delete notebook">
-                            <Icon type="delete" />
-                          </Tooltip>
-                        </span>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </div>
-        )}
-      </Fragment>
-    );
-  }
-
   render() {
     const { show, hasAuth, driveName } = this.state;
     if (!show) {
@@ -374,7 +307,7 @@ export default class Drive extends Component {
       return (
         <div className="content">
           <p className="tips">
-            <Icon type="reload" onClick={this.checkOAuth} />
+            <Icon type="reload" onClick={this.handleRefresh} />
             Yosoro need to be authorized.
           </p>
         </div>
@@ -385,9 +318,12 @@ export default class Drive extends Component {
     if (status === 0) {
       blur = 'blur';
     }
-    if (currentProjectName) {
-      return this.renderNotes(status, driveName, currentProjectName, blur);
-    }
-    return this.renderProject(status, driveName, currentProjectName, blur);
+    return (
+      <Fragment>
+        {this.renderLoading(status)}
+        {this.renderBread(blur, driveName, currentProjectName)}
+        {this.renerList(status, driveName, currentProjectName, blur)}
+      </Fragment>
+    );
   }
 }

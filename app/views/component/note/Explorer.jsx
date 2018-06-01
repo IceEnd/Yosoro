@@ -37,7 +37,7 @@ export default class Explorer extends Component {
     pushStateToStorage('noteExplorerState', this.state);
   }
 
-  getNotes = () => {
+  getNotes() {
     const { note: { projectUuid } } = this.props;
     const { projects } = this.props;
     let notes = [];

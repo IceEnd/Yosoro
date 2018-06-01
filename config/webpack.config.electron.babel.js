@@ -3,10 +3,9 @@
  */
 import path from 'path';
 // import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import UglifyJSPlugin from 'uglifyjs-webpack-plugin';
-import webpack from 'webpack';
 
 export default {
+  mode: 'production',
   target: 'electron-main',
   devtool: 'source-map',
   externals: [
@@ -14,7 +13,6 @@ export default {
   ],
   entry: {
     main: [
-      'babel-polyfill',
       path.join(__dirname, '../app/main/index.js'),
     ],
   },
@@ -28,18 +26,6 @@ export default {
         test: /\.js$/,
         use: [
           'babel-loader',
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                ['env', {
-                  targets: {
-                    electron: '1',
-                  },
-                }],
-              ],
-            },
-          },
         ],
         exclude: /node_modules/,
         include: path.resolve(__dirname, '../'),
@@ -49,28 +35,10 @@ export default {
   resolve: {
     extensions: ['.js', '.json'],
   },
-  plugins: [
-    new UglifyJSPlugin({
-      parallel: true,
-      sourceMap: true,
-    }),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false,
-    //   },
-    // }),
-    // new webpack.NoEmitOnErrorsPlugin(),
-    // new webpack.DefinePlugin({
-    //   'process.env': {
-    //     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-    //   },
-    // }),
-    new webpack.EnvironmentPlugin({
-      NODE_ENV: 'production',
-      DEBUG_PROD: 'false',
-    }),
-    // new BundleAnalyzerPlugin(),
-  ],
+  optimization: {
+    minimize: true,
+  },
+  plugins: [],
   node: {
     global: true,
     process: true,

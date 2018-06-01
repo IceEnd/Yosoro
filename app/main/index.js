@@ -3,14 +3,15 @@ import path from 'path';
 import url from 'url';
 import fs from 'fs';
 import { setMenu, getExplorerMenuItem, getExplorerFileMenuItem, getExplorerProjectItemMenu, getExplorerFileItemMenu } from './menu';
-import eventListener from './event';
+import { removeEventListeners, eventListener } from './event';
+import schedule from './schedule';
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
-const ipcMain = electron.ipcMain;
+// const ipcMain = electron.ipcMain;
 // const Menu = electron.Menu;
 // const Tray = electron.Tray;
-const dialog = electron.dialog;
+// const dialog = electron.dialog;
 const shell = electron.shell;
 
 app.setName('Yosoro');
@@ -47,7 +48,7 @@ createInitWorkSpace();
 if (process.env.NODE_ENV === 'development') {
   require('electron-watch')(
     __dirname,
-    'dev:electron-main',
+    'dev:main',
     path.join(__dirname, './'),
   );
 }
@@ -119,30 +120,7 @@ function createWindow() {
   // Emitted when the window is closed.
   mainWindow.on('close', () => {
     mainWindow = null;
-    ipcMain.removeAllListeners('show-context-menu-explorer');
-    ipcMain.removeAllListeners('show-context-menu-project-item');
-    ipcMain.removeAllListeners('show-context-menu-explorer-file');
-    ipcMain.removeAllListeners('show-context-menu-file-item');
-  });
-
-  // 监听 新建 消息
-  ipcMain.on('new-file', (event) => {
-    event.sender.send('new-file');
-  });
-
-  // 监听新建项目指令
-  ipcMain.on('new-project', (event) => {
-    event.sender.send('new-project');
-  });
-
-  ipcMain.on('open-file-dialog', (event) => {
-    dialog.showOpenDialog({
-      properties: ['openFile', 'openDirectory'],
-    }, (files) => {
-      if (files) {
-        event.sender.send('selected-directory', files);
-      }
-    });
+    removeEventListeners();
   });
 
   // 配置插件
@@ -151,8 +129,8 @@ function createWindow() {
     /* eslint-disable import/no-unresolved */
     const CONFIG = require('../../config/devconfig.json');
     const extensions = CONFIG.extensions;
-    for (let i = 0; i < extensions.length; i++) {
-      BrowserWindow.addDevToolsExtension(extensions[i]);
+    for (const ex of extensions) {
+      BrowserWindow.addDevToolsExtension(ex);
     }
     /* eslint-enable */
   }
@@ -187,4 +165,9 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+app.on('before-quit', () => {
+  // 推出应用关闭定时器
+  schedule.cancelReleases();
 });

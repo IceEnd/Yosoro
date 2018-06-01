@@ -44,8 +44,6 @@ import {
 
 const assign = Object.assign;
 
-// const assign = Object.assign;
-
 function projectReducer(state = {
   projects: [],
   trashProjects: [],
@@ -846,7 +844,7 @@ function projectReducer(state = {
           targetProject.notes.unshift(file);
           state.projects[targetProjectIndex] = targetProject;
         } else { // 不需要创建笔记
-          const newNote = assign({}, targetNote, ...info, { [driveType]: 3 });
+          const newNote = assign({}, targetNote, info, { [driveType]: 3 });
           state.projects[targetProjectIndex].notes[targetNoteIndex] = newNote;
         }
       }

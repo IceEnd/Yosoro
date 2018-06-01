@@ -1,5 +1,5 @@
 import electron from 'electron';
-import electronOauth2 from './electron-oauth2';
+import Oauth2 from './Oauth2';
 
 import oauthConfig from './oauthConfig';
 
@@ -70,11 +70,11 @@ function getMemuTemplete(mainWindow) {
       role: 'selectall',
     }],
   }, {
-    label: 'Authorize',
+    label: 'Sync',
     submenu: [{
       label: 'One Drive',
       click: async (menuItem, browserWindow) => {
-        const oneDriveOAuth = electronOauth2(oauthConfig.oneDrive, windowParams);
+        const oneDriveOAuth = new Oauth2(oauthConfig.oneDrive, windowParams);
         try {
           const code = await Promise.resolve(oneDriveOAuth.getAuthorizationCode({
             // accessType: 'authorization_code',
@@ -260,6 +260,22 @@ export function getExplorerProjectItemMenu(mainWindow) {
     label: 'New Notebook',
     click: () => mainWindow.webContents.send('new-project'),
   }));
+  menu.append(new MenuItem({
+    type: 'separator',
+  }));
+  menu.append(new MenuItem({
+    label: 'Export as',
+    submenu: [{
+      label: 'Markdown',
+      click: () => mainWindow.webContents.send('export-get-notebook-info', 'md'),
+    }, {
+      label: 'HTML',
+      click: () => mainWindow.webContents.send('export-get-notebook-info', 'html'),
+    }, {
+      label: 'PDF',
+      click: () => mainWindow.webContents.send('export-get-notebook-info', 'pdf'),
+    }],
+  }));
   return menu;
 }
 
@@ -325,6 +341,9 @@ export function getExplorerFileItemMenu(mainWindow) {
     }, {
       label: 'HTML',
       click: () => mainWindow.webContents.send('export-get-note-info', 'html'),
+    }, {
+      label: 'PDF',
+      click: () => mainWindow.webContents.send('export-get-note-info', 'pdf'),
     }],
   }));
   return menu;

@@ -35,17 +35,23 @@ export default class CommonServices {
   /**
    * @desc 获取github仓库release列表
    */
-  getReleases = () => {
+  getReleases() {
     const { apiGitHubRoot, githubRepoAddr } = this;
     const url = `${apiGitHubRoot}/repos/${githubRepoAddr}/releases`;
     return this.xhr(url, 'GET');
   }
 
+  getLatestRelease() {
+    const { apiGitHubRoot, githubRepoAddr } = this;
+    const url = `${apiGitHubRoot}/repos/${githubRepoAddr}/releases/latest`;
+    return this.xhr(url, 'GET');
+  }
+
   getLatestVersion = () => new Promise((resolve, reject) => {
-    this.getReleases()
-      .then((releases) => {
-        if (releases && releases.length > 0) {
-          const latestReleaseName = releases[0].name;
+    this.getLatestRelease()
+      .then((release) => {
+        if (release) {
+          const latestReleaseName = release.name;
           resolve(latestReleaseName);
         } else {
           throw new Error('Data is invild.');

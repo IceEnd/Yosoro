@@ -27,6 +27,12 @@
 	}
 }
 
+.note-blur {
+	filter: blur(0.7px);
+	-webkit-filter: blur(0.7px);
+	opacity: 0.8;
+}
+
 .note-root {
 	flex: 1 1 auto;
 	height: 100%;
@@ -35,6 +41,7 @@
 	display: -webkit-flex;
 	flex-direction: column;
 	background-color: $rootBg;
+	position: relative;
 
 	.note-toolbar {
 		flex: 0 0 3rem;

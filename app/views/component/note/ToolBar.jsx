@@ -1,8 +1,11 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
+import classname from 'classname';
 import { Icon, Tooltip, Menu, Dropdown } from 'antd';
 import Search from '../share/search/Search';
+import SVGIcon from '../share/SVGIcon';
+
 import { searchNotes, clearSearchNotes, UPLOAD_NOTE_ONEDRIVE } from '../../actions/projects';
 import { pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
 import { appSwitchEditMode } from '../../actions/app';
@@ -32,6 +35,11 @@ export default class Tool extends PureComponent {
     }).isRequired,
     editorMode: PropTypes.string.isRequired,
     searchStatus: PropTypes.number.isRequired,
+    blur: PropTypes.bool.isRequired,
+  };
+
+  static defaultProps = {
+    blur: false,
   };
 
   constructor() {
@@ -114,11 +122,13 @@ export default class Tool extends PureComponent {
   }
 
   handleExport = ({ key }) => {
-    const { content, name, html } = this.props.markdown;
+    const { markdown: { content, name, html }, note: { projectName } } = this.props;
     let data;
     if (key === 'md') {
       data = content;
     } else if (key === 'html') {
+      data = html;
+    } else if (key === 'pdf') {
       data = html;
     }
     ipcRenderer.send('export-note', {
@@ -126,6 +136,7 @@ export default class Tool extends PureComponent {
       html,
       type: key,
       fileName: name,
+      projectName,
       data,
     });
   }
@@ -137,6 +148,7 @@ export default class Tool extends PureComponent {
         <Menu onClick={this.handleExport}>
           <Menu.Item key="md">Markdown</Menu.Item>
           <Menu.Item key="html">Html</Menu.Item>
+          <Menu.Item key="pdf">PDF</Menu.Item>
         </Menu>
       );
       return (
@@ -174,7 +186,6 @@ export default class Tool extends PureComponent {
 
   renderEditModalIcon = () => {
     const { editorMode } = this.props;
-    const iconHtml = `<use class="" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_svg_${editorMode}_mode" />`;
     return (
       <span
         className="tools-item"
@@ -184,7 +195,11 @@ export default class Tool extends PureComponent {
           placement="bottom"
           title={editorMode}
         >
-          <svg className="tools-item-svg" viewBox="0 0 640 640" dangerouslySetInnerHTML={{ __html: iconHtml }} />
+          <SVGIcon
+            className="tools-item-svg"
+            viewBox="0 0 640 640"
+            id={`#icon_svg_${editorMode}_mode`}
+          />
         </Tooltip>
       </span>
     );
@@ -192,9 +207,12 @@ export default class Tool extends PureComponent {
 
   render() {
     const { searchStatus } = this.state;
-    const { markdown: { name, status } } = this.props;
+    const { markdown: { name, status }, blur } = this.props;
+    const classStr = classname('note-toolbar', {
+      'note-blur': blur,
+    });
     return (
-      <div className="note-toolbar">
+      <div className={classStr}>
         <div className="search-root">
           <Search
             searchStatus={searchStatus}

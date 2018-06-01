@@ -193,3 +193,14 @@ html {
 .cursor-pointer {
 	cursor: pointer;
 }
+
+// 公用的loading样式
+.loading-default {
+	position: absolute;
+	z-index: 999;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	padding-top: 30%;
+	background-color: rgba($color: #ffffff, $alpha: 0.7);
+}

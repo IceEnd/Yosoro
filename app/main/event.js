@@ -2,39 +2,12 @@
  * @description 主进程事件监听
  */
 
-import { ipcMain, BrowserWindow, app, Menu, dialog } from 'electron';
+import { ipcMain, BrowserWindow, app, Menu, dialog, shell } from 'electron';
 import fs from 'fs';
 import fse from 'fs-extra';
-import marked from 'marked';
-import Schedule from './schedule';
-
-const renderer = new marked.Renderer();
-
-renderer.listitem = function (text) {
-  let res = text;
-  if (/^\s*\[[x ]\]\s*/.test(text)) {
-    res = text.replace(/^\s*\[ \]\s*/, '<input class="task-list-item-checkbox" type="checkbox" disabled></input> ').replace(/^\s*\[x\]\s*/, '<input class="task-list-item-checkbox" checked disabled type="checkbox"></input> ');
-    return `<li class="task-list-li">${res}</li>`;
-  }
-  return `<li>${text}</li>`;
-};
-
-marked.setOptions({
-  renderer,
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: false,
-  smartLists: true,
-  smartypants: false,
-  highlight: (code) => {
-    const value = require('../views/utils/highlight.min.js').highlightAuto(code).value;
-    return value;
-  },
-});
-
-const schedule = new Schedule();
+import { markedToHtml } from '../views/utils/utils';
+import schedule from './schedule';
+import PDF from './pdf';
 
 const dataPath = app.getPath('appData');
 let appDataPath = `${dataPath}/Yosoro`;
@@ -45,7 +18,7 @@ const documentsPath = `${appDataPath}/documents`;
 const projectsPath = `${documentsPath}/projects`;
 const trashPath = `${documentsPath}/trash`;
 
-export default function eventListener(menus) {
+export function eventListener(menus) {
   const { explorerMenu, exploereFileMenu, projectItemMenu,
     fileItemMenu } = menus;
 
@@ -440,8 +413,9 @@ export default function eventListener(menus) {
     schedule.cancelReleases();
   });
 
-  ipcMain.on('export-note', (events, args) => {
+  ipcMain.on('export-note', (event, args) => {
     const { projectName, fileName, type, data } = args;
+    const folderPath = `${projectsPath}/${projectName}`;
     const filePath = `${projectsPath}/${projectName}/${fileName}.md`;
     try {
       let content;
@@ -458,24 +432,113 @@ export default function eventListener(menus) {
       } else if (type === 'html') {
         title = 'Export as Html';
         if (!data) {
-          content = marked(content);
+          content = markedToHtml(content, false);
         }
+      } else if (type === 'pdf') {
+        title = 'Export as PDF';
       }
       const options = {
         title,
         defaultPath: `${app.getPath('desktop')}/${fileName}.${type}`,
       };
-      dialog.showSaveDialog(options, (filename) => {
-        const extension = `.${type}$`;
-        const reg = new RegExp(extension, 'ig');
-        let file = filename;
-        if (!reg.test(filename)) {
-          file += `.${type}`;
+      dialog.showSaveDialog(options, async (fname) => {
+        if (typeof fname === 'string') {
+          const extension = `.${type}$`;
+          const reg = new RegExp(extension, 'ig');
+          let file = fname;
+          if (!reg.test(fname)) {
+            file += `.${type}`;
+          }
+          if (type === 'pdf') {
+            event.sender.send('async-export-file');
+            const pdf = new PDF([`${fileName}.md`], folderPath, file, false);
+            await pdf.start();
+            event.sender.send('async-export-file-complete');
+          } else {
+            fs.writeFileSync(file, content);
+          }
         }
-        fs.writeFileSync(file, content);
       });
     } catch (error) {
       console.warn(error);
     }
   });
+
+  /**
+   * 导出笔记本
+   * 暂时只遍历一层目录
+   */
+  ipcMain.on('export-notebook', async (event, args) => {
+    const { notebook, type } = args;
+    try {
+      event.sender.send('async-export-file');
+      const folderPath = `${projectsPath}/${notebook}`;
+      const exportPath = `${app.getPath('desktop')}/${notebook}`;
+      if (!fs.existsSync(exportPath)) {
+        fs.mkdirSync(exportPath);
+      }
+      if (type === 'md') {
+        fse.copySync(folderPath, exportPath);
+      } else if (type === 'pdf') {
+        const notes = fs.readdirSync(folderPath);
+        const pdf = new PDF(notes, folderPath, exportPath);
+        await pdf.start();
+      } else {
+        const promiseArr = [];
+        const notes = fs.readdirSync(folderPath);
+        for (const note of notes) {
+          let content = fs.readFileSync(`${folderPath}/${note}`, {
+            encoding: 'utf8',
+          });
+          content = markedToHtml(content, false);
+          const name = note.replace(/\.md/ig, '');
+          promiseArr.push(new Promise((resolve) => {
+            fs.writeFile(`${exportPath}/${name}.${type}`, content, (err) => {
+              if (err) {
+                console.warn(err);
+              }
+              resolve('done');
+            });
+          }));
+        }
+        await Promise.all(promiseArr);
+      }
+      event.sender.send('async-export-file-complete');
+      shell.openExternal(`file://${exportPath}`);
+    } catch (ex) {
+      console.warn(ex);
+      event.sender.send('async-export-file-complete');
+    }
+  });
+}
+
+export function removeEventListeners() {
+  const listeners = [
+    'show-context-menu-explorer',
+    'show-context-menu-project-item',
+    'show-context-menu-explorer-file',
+    'show-context-menu-file-item',
+    'show-context-menu-file-item',
+    'create-project',
+    'rename-project',
+    'move-project-to-trash',
+    'create-file',
+    'rename-note',
+    'read-file',
+    'save-content-to-file',
+    'save-content-to-trash-file',
+    'move-file-to-trash',
+    'permanent-remove-note',
+    'permanent-remove-notebook',
+    'restore-note',
+    'restore-notebook',
+    'save-upload-info-data',
+    'file-new-enbaled',
+    'start-release-schedule',
+    'export-note',
+    'export-notebook',
+  ];
+  for (const listener of listeners) {
+    ipcMain.removeAllListeners(listener);
+  }
 }
