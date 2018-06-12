@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classname from 'classname';
+import classnames from 'classnames';
 import Explorer from './Explorer';
 import Markdown from '../editor/Markdown';
 import ToolBar from './ToolBar';
@@ -17,7 +17,7 @@ const NoteWorkspace = (props) => {
     projectData = searchResult;
   }
   const blur = exportStatus === 1;
-  const contClass = classname('note-root-cont', {
+  const contClass = classnames('note-root-cont', {
     'note-blur': blur,
   });
   return (

@@ -64,6 +64,12 @@ You can read the [CHANGELOG](./CHANGELOG.md) to get more information.
 yarn
 ```
 
+### Dev Tools Extension
+
+```shell
+cp ./config/devconfig.example.json ./config/devconfig.json
+```
+
 ### Run Main Process
 
 ```shell

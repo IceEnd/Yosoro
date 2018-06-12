@@ -2,7 +2,7 @@ options:
   merge-default-rules: false
 files:
   include:
-    - '/app/views/assets/scss/color.scss'
+    - '/app/views/assets/scss/**/*.scss'
 rules:
   # Extends
   extends-before-declarations: 2
@@ -17,7 +17,7 @@ rules:
   one-declaration-per-line: 2
   single-line-per-selector: 0
 
-  # Disallows
+  # Disallow
   no-color-keywords: 0
   no-color-literals: 0
   no-css-comments: 0

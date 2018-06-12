@@ -7,9 +7,19 @@ import baseConfig from './webpack.config.base.babel';
 
 process.traceDeprecation = true;
 
+const extractTextConf = (loaders = []) => ExtractTextPlugin.extract({
+  fallback: 'style-loader',
+  use: [
+    {
+      loader: 'css-loader',
+      options: { minimize: true },
+    },
+    ...loaders,
+  ],
+});
+
 export default merge.smart(baseConfig, {
   mode: 'production',
-  devtool: 'source-map',
   entry: {
     index: path.join(__dirname, '../app/views/index.jsx'),
     vendor: ['react', 'react-dom', 'redux', 'redux-saga', 'redux-logger', 'history', 'prop-types', 'antd', 'whatwg-fetch'],
@@ -35,29 +45,11 @@ export default merge.smart(baseConfig, {
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [{
-            loader: 'css-loader',
-            options: { minimize: true },
-          }],
-        }),
+        use: extractTextConf(),
       },
       {
         test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          // use: ['css-loader', 'sass-loader'],
-          use: [
-            {
-              loader: 'css-loader',
-              options: { minimize: true },
-            },
-            {
-              loader: 'sass-loader',
-            },
-          ],
-        }),
+        use: extractTextConf(['sass-loader']),
       },
     ],
   },

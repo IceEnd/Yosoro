@@ -52,13 +52,8 @@ export default merge.smart(baseConfig, {
     publicPath: 'http://localhost:3000/static/',
     port: 3000,
     compress: true,
-    headers: { 'Access-Control-Allow-Origin': '*' },
-    stats: {
-      colors: true, // Nice colored output
-      progress: true,
-      inline: true,
-      noInfo: true,
-    },
+    noInfo: true,
+    inline: true,
     historyApiFallback: {
       verbose: true,
       disableDotRule: false,

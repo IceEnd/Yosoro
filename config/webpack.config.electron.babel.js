@@ -7,7 +7,6 @@ import path from 'path';
 export default {
   mode: 'production',
   target: 'electron-main',
-  devtool: 'source-map',
   externals: [
     'fsevents',
   ],

@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
-import classname from 'classname';
+import classnames from 'classnames';
 import { Icon, Tooltip, Menu, Dropdown } from 'antd';
 import Search from '../share/search/Search';
 import SVGIcon from '../share/SVGIcon';
@@ -208,7 +208,7 @@ export default class Tool extends PureComponent {
   render() {
     const { searchStatus } = this.state;
     const { markdown: { name, status }, blur } = this.props;
-    const classStr = classname('note-toolbar', {
+    const classStr = classnames('note-toolbar', {
       'note-blur': blur,
     });
     return (
