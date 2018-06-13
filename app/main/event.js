@@ -5,6 +5,8 @@
 import { ipcMain, BrowserWindow, app, Menu, dialog, shell } from 'electron';
 import fs from 'fs';
 import fse from 'fs-extra';
+import path from 'path';
+import url from 'url';
 import { markedToHtml } from '../views/utils/utils';
 import schedule from './schedule';
 import PDF from './pdf';
@@ -509,6 +511,13 @@ export function eventListener(menus) {
       console.warn(ex);
       event.sender.send('async-export-file-complete');
     }
+  });
+
+  ipcMain.on('get-webview-path', (event) => {
+    event.returnValue = url.format({
+      pathname: path.join(__dirname, './webview.html'),
+      protocol: 'file:',
+    });
   });
 }
 

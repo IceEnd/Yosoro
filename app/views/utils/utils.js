@@ -211,9 +211,9 @@ export function compareVersion(localVersion, latestVersion) {
  */
 export function markedToHtml(string, xssWhite = true) {
   const html = marked(string);
-  if (xssWhite) {
-    return htmlXss.process(html);
-  }
+  // if (xssWhite) {
+  //   return htmlXss.process(html);
+  // }
   return html;
   // return marked(string);
 }
@@ -275,4 +275,14 @@ export function getDisplayName(WrappedComponent) {
   return WrappedComponent.displayName ||
          WrappedComponent.name ||
          'Component';
+}
+
+/**
+ * @description 获取预览插入js路径
+ */
+export function getWebviewPreJSPath() {
+  if (process.env.NODE_ENV === 'development') {
+    return '../webview/webview-pre.js';
+  }
+  return '';
 }

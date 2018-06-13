@@ -1,7 +1,16 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import autobind from 'autobind-decorator';
+import { ipcRenderer } from 'electron';
+import { getWebviewPreJSPath } from '../../utils/utils';
 
 import '../../assets/scss/preview.scss';
+
+const isDEV = process.env.NODE_ENV === 'development';
+
+const preJSPath = getWebviewPreJSPath();
+
+const webviewPath = ipcRenderer.sendSync('get-webview-path');
 
 export default class Preview extends PureComponent {
   static displayName = 'MarkdownPreview';
@@ -24,6 +33,17 @@ export default class Preview extends PureComponent {
   componentDidMount() {
     this.noteRoot = document.getElementById('note_root_cont');
     window.addEventListener('resize', this.onWindowResize);
+    this.webview.addEventListener('ipc-message', (event) => {
+      const channel = event.channel;
+      const { html } = this.props;
+      switch (channel) {
+        case 'wv-first-loaded':
+          this.webview.send('wv-render-html', html);
+          break;
+        default:
+          break;
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,6 +53,11 @@ export default class Preview extends PureComponent {
         bodyWidth,
       });
     }
+  }
+
+  componentDidUpdate() {
+    const { html } = this.props;
+    this.webview.send('wv-render-html', html);
   }
 
   componentWillUnmount() {
@@ -92,30 +117,49 @@ export default class Preview extends PureComponent {
     this.preview.scrollTop = scrollTop;
   }
 
+  @autobind
+  openWVDevTools() {
+    if (this.webview) {
+      this.webview.openDevTools();
+    }
+  }
+
   render() {
     const { bodyWidth } = this.state;
-    const { html, editorMode, drag } = this.props;
+    const { editorMode, drag } = this.props;
     let rootClass = '';
-    // let rootWidth = `${100 - parseFloat(editorWidth.replace(/%$/, ''))}%`;
     if (editorMode === 'immersion') {
       rootClass = 'hide';
-      // rootWidth = '0';
     } else if (editorMode === 'preview') {
       rootClass = 'pre-mode';
-      // rootWidth = '100%';
     }
     return (
       <div
         className={`preview-root ${rootClass} ${drag ? 'drag' : ''}`}
         ref={node => (this.preview = node)}
-        // style={{ width: rootWidth }}
       >
+        {isDEV ? (
+          <span
+            className="wv-dev-tools"
+            onClick={this.openWVDevTools}
+          >
+            devtools
+          </span>
+        ) : null}
         <div
           className="preview-body"
-          dangerouslySetInnerHTML={{ __html: html }}
           style={{ width: bodyWidth }}
           ref={node => (this.previewBody = node)}
-        />
+        >
+          <webview
+            id="webview"
+            className="preview-webview"
+            disableguestresize="true"
+            src={webviewPath}
+            preload={preJSPath}
+            ref={node => (this.webview = node)}
+          />
+        </div>
       </div>
     );
   }

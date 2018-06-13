@@ -9,15 +9,22 @@ export default merge.smart(baseConfig, {
     fs: 'empty',
   },
   context: path.resolve(__dirname, '../app/views'),
-  entry: [
-    'whatwg-fetch',
-    'react-hot-loader/patch',
-    'webpack/hot/only-dev-server',
-    path.resolve(__dirname, '../app/views/index.jsx'),
-  ],
+  entry: {
+    'js/bundle': [
+      'whatwg-fetch',
+      'react-hot-loader/patch',
+      'webpack/hot/only-dev-server',
+      path.resolve(__dirname, '../app/views/index.jsx'),
+    ],
+    'webview/webview-pre': [
+      'webpack/hot/only-dev-server',
+      path.resolve(__dirname, '../app/webview/webview-pre.js'),
+    ],
+  },
   output: {
     path: path.resolve(__dirname, '../build/'),
-    filename: 'js/bundle.js',
+    filename: '[name].js',
+    chunkFilename: '[name].js',
     publicPath: 'http://localhost:3000/static/',
   },
   module: {
