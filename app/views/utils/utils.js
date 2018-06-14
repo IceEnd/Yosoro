@@ -1,93 +1,4 @@
 import marked from 'marked';
-import xss from 'xss';
-
-const defalutProps = [
-  'style',
-  'title',
-  'accesskey',
-  'hidden',
-  'translate',
-  'draggable',
-  'dropzone',
-  'dir',
-  'contenteditable',
-  'contextmenu',
-  'class',
-];
-const whiteList = {
-  a: [...defalutProps, 'target', 'href', 'title', 'align', 'width', 'height'],
-  abbr: ['title'],
-  address: ['width', 'height'],
-  area: ['shape', 'coords', 'href', 'alt'],
-  article: ['width', 'height'],
-  aside: ['width', 'height'],
-  audio: ['autoplay', 'controls', 'loop', 'preload', 'src'],
-  b: [],
-  bdi: ['dir'],
-  bdo: ['dir'],
-  big: [],
-  blockquote: ['cite'],
-  br: [],
-  caption: [],
-  center: [],
-  cite: [],
-  code: [],
-  col: ['align', 'valign', 'span', 'width'],
-  colgroup: ['align', 'valign', 'span', 'width'],
-  dd: [],
-  del: ['datetime'],
-  details: ['open'],
-  div: [...defalutProps, 'align'],
-  dl: [],
-  dt: [],
-  em: [],
-  font: ['color', 'size', 'face'],
-  footer: [...defalutProps, 'align'],
-  h1: [...defalutProps, 'align'],
-  h2: [...defalutProps, 'align'],
-  h3: [...defalutProps, 'align'],
-  h4: [...defalutProps, 'align'],
-  h5: [...defalutProps, 'align'],
-  h6: [...defalutProps, 'align'],
-  header: [...defalutProps, 'align'],
-  hr: [],
-  i: [],
-  img: ['src', 'alt', 'title', 'width', 'height'],
-  ins: ['datetime'],
-  li: [...defalutProps, 'align'],
-  mark: [],
-  nav: [...defalutProps, 'align'],
-  ol: [...defalutProps, 'align'],
-  p: [...defalutProps, 'align'],
-  pre: [],
-  s: [],
-  section: [...defalutProps, 'align'],
-  small: [],
-  span: ['width', 'height'],
-  sub: [],
-  sup: [],
-  strong: [],
-  table: ['width', 'border', 'align', 'valign'],
-  tbody: ['align', 'valign'],
-  td: ['width', 'rowspan', 'colspan', 'align', 'valign'],
-  tfoot: ['align', 'valign'],
-  th: ['width', 'rowspan', 'colspan', 'align', 'valign'],
-  thead: ['align', 'valign'],
-  tr: ['rowspan', 'align', 'valign'],
-  tt: [],
-  u: [],
-  ul: [...defalutProps, 'align'],
-  video: ['autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width'],
-  input: ['class', 'checked', 'disabled', 'type'],
-};
-
-const htmlXss = new xss.FilterXSS({
-  whiteList,
-  css: false, // 不实用css过滤器
-  allowCommentTag: false,
-  stripIgnoreTagBody: false,
-  stripIgnoreTag: false,
-});
 
 const renderer = new marked.Renderer();
 
@@ -209,13 +120,8 @@ export function compareVersion(localVersion, latestVersion) {
  * @param {boolean} [xssWhite=false] 是否阻止xss
  * @returns html
  */
-export function markedToHtml(string, xssWhite = false) {
-  const html = marked(string);
-  if (xssWhite) {
-    return htmlXss.process(html);
-  }
-  return html;
-  // return marked(string);
+export function markedToHtml(string) {
+  return marked(string);
 }
 
 
