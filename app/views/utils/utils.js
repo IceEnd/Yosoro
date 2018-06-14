@@ -209,11 +209,11 @@ export function compareVersion(localVersion, latestVersion) {
  * @param {boolean} [xssWhite=false] 是否阻止xss
  * @returns html
  */
-export function markedToHtml(string, xssWhite = true) {
+export function markedToHtml(string, xssWhite = false) {
   const html = marked(string);
-  // if (xssWhite) {
-  //   return htmlXss.process(html);
-  // }
+  if (xssWhite) {
+    return htmlXss.process(html);
+  }
   return html;
   // return marked(string);
 }

@@ -519,36 +519,36 @@
 	}
 
 	.preview-root {
-    position: relative;
+		position: relative;
 		flex: 1;
 		width: 0;
 		min-width: 10rem;
-    transition: width ease 0.5s;
+		transition: width ease 0.5s;
 
-    .preview-webview {
-      width: 100%;
-      height: 100%;
-      outline: 0;
-      overflow: auto;
-      display: inline-flex !important;
-    }
+		.preview-webview {
+			width: 100%;
+			height: 100%;
+			outline: 0;
+			overflow: auto;
+			display: inline-flex !important;
+		}
 
-    .wv-dev-tools {
-      position: absolute;
-      top: 20%;
-      right: .5rem;
-      font-size: 0.7rem;
-      padding: 0.3rem;
-      background-color: #999;
-      color: #ffffff;
-      opacity: .3;
-      border-radius: 3px;
-      cursor: pointer;
+		.wv-dev-tools {
+			position: absolute;
+			top: 20%;
+			right: .5rem;
+			font-size: 0.7rem;
+			padding: 0.3rem;
+			background-color: #999;
+			color: #ffffff;
+			opacity: .3;
+			border-radius: 3px;
+			cursor: pointer;
 
-      &:hover {
-        background-color: #83cc0e;
-      }
-    }
+			&:hover {
+				background-color: #83cc0e;
+			}
+		}
 
 		&.drag {
 			transition: width ease 0s;
@@ -581,10 +581,10 @@
 
 			.CodeMirror-gutters {
 				background-color: #fcfdfe;
-				border-right: none;
+				border-right: 0;
 			}
 			.CodeMirror-linenumber {
-				color: rgba($color: #999, $alpha: 0.5)
+				color: rgba($color: #999, $alpha: 0.5);
 			}
 		}
 
@@ -607,7 +607,7 @@
 		}
 
 		.resize-right {
-      z-index: 9999;
+			z-index: 9999;
 			position: absolute;
 			width: 1rem;
 			height: 100%;

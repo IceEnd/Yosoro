@@ -1,11 +1,11 @@
 @import "color.scss";
 
 .light {
-  &.not-darwin {
-    .tool-bar {
-      background-image: linear-gradient(to left, rgb(230, 230, 230), rgb(210, 210, 210));
-    }
-  }
+	&.not-darwin {
+		.tool-bar {
+			background-image: linear-gradient(to left, rgb(230, 230, 230), rgb(210, 210, 210));
+		}
+	}
 	.tool-bar {
 		background-color: $navBg;
 

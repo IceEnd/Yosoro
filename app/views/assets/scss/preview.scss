@@ -1,26 +1,25 @@
 .preview-root {
-  background-color: #fcfdfe;
+	background-color: #fcfdfe;
 	overflow-y: scroll;
 	position: relative;
 
 	&.pre-mode {
 		margin: 0 auto;
-		// background-color: #ffffff;
 		background-color: inherit;
 
 		.preview-body {
-			width: 70%;
-			margin: 2rem auto;
-			// background-color: rgba(248, 248, 248, 1);
-			padding: 2rem;
-			border-radius: 1rem;
+			width: 100%;
+			padding: 0;
+			// margin: 2rem auto;
+			// padding: 2rem;
+			// border-radius: 1rem;
 		}
 	}
 }
 
 .preview-body {
-  width: 100%;
-  height: 100%;
+	width: 100%;
+	height: 100%;
 	overflow-x: hidden;
 	box-sizing: border-box;
 	padding: 0.5rem;

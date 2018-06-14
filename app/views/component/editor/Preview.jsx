@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import { ipcRenderer } from 'electron';
+import classNames from 'classnames';
 import { getWebviewPreJSPath } from '../../utils/utils';
 
 import '../../assets/scss/preview.scss';
@@ -33,17 +34,7 @@ export default class Preview extends PureComponent {
   componentDidMount() {
     this.noteRoot = document.getElementById('note_root_cont');
     window.addEventListener('resize', this.onWindowResize);
-    this.webview.addEventListener('ipc-message', (event) => {
-      const channel = event.channel;
-      const { html } = this.props;
-      switch (channel) {
-        case 'wv-first-loaded':
-          this.webview.send('wv-render-html', html);
-          break;
-        default:
-          break;
-      }
-    });
+    this.webview.addEventListener('ipc-message', this.onWVMessage);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -56,12 +47,16 @@ export default class Preview extends PureComponent {
   }
 
   componentDidUpdate() {
-    const { html } = this.props;
-    this.webview.send('wv-render-html', html);
+    const { html, editorMode } = this.props;
+    this.webview.send('wv-render-html', {
+      html,
+      editorMode,
+    });
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onWindowResize);
+    this.webview.removeEventListener('ipc-message', this.onWVMessage);
   }
 
   onWindowResize = () => {
@@ -74,10 +69,25 @@ export default class Preview extends PureComponent {
     }
   }
 
+  @autobind
+  onWVMessage(event) {
+    const channel = event.channel;
+    const { html, editorMode } = this.props;
+    switch (channel) {
+      case 'wv-first-loaded':
+        this.webview.send('wv-render-html', {
+          html,
+          editorMode,
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
   getBodyWidth(props) {
     let editorMode;
     let editorWidthValue;
-    // const { editorMode, editorWidthValue } = props;
     if (props) {
       editorMode = props.editorMode;
       editorWidthValue = props.editorWidthValue;
@@ -85,12 +95,11 @@ export default class Preview extends PureComponent {
       editorMode = this.props.editorMode;
       editorWidthValue = this.props.editorWidthValue;
     }
-    // const { editorMode, editorWidthValue } = this.props;
     if (editorMode === 'normal') {
       return '100%';
     }
     if (editorMode === 'preview') {
-      return '70%';
+      return '100%';
     }
     if (!this.preview || !this.noteRoot) {
       return '100%';
@@ -112,9 +121,10 @@ export default class Preview extends PureComponent {
   }
 
   setScrollRatio(radio) {
-    const height = this.previewBody.offsetHeight;
-    const scrollTop = height * radio;
-    this.preview.scrollTop = scrollTop;
+    // const height = this.previewBody.offsetHeight;
+    // const scrollTop = height * radio;
+    // this.preview.scrollTop = scrollTop;
+    this.webview.send('wv-scroll', radio);
   }
 
   @autobind
@@ -127,15 +137,21 @@ export default class Preview extends PureComponent {
   render() {
     const { bodyWidth } = this.state;
     const { editorMode, drag } = this.props;
-    let rootClass = '';
-    if (editorMode === 'immersion') {
-      rootClass = 'hide';
-    } else if (editorMode === 'preview') {
-      rootClass = 'pre-mode';
-    }
+    const rootClass = classNames(
+      'preview-root',
+      {
+        hide: editorMode === 'immersion',
+      },
+      {
+        'pre-mode': editorMode === 'preview',
+      },
+      {
+        drag,
+      }
+    );
     return (
       <div
-        className={`preview-root ${rootClass} ${drag ? 'drag' : ''}`}
+        className={rootClass}
         ref={node => (this.preview = node)}
       >
         {isDEV ? (
@@ -154,7 +170,9 @@ export default class Preview extends PureComponent {
           <webview
             id="webview"
             className="preview-webview"
-            disableguestresize="true"
+            autoresize="on"
+            disableblinkfeatures="Auxclick"
+            webpreferences="nodeIntegration=no,nodeIntegrationInWorker=no,contextIsolation=yes"
             src={webviewPath}
             preload={preJSPath}
             ref={node => (this.webview = node)}

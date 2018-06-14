@@ -38,7 +38,7 @@ function updateMarkdown(state = initState, action) {
   switch (action.type) {
     case READ_FILE: {
       const info = action.param;
-      const html = markedToHtml(info.content, true);
+      const html = markedToHtml(info.content);
       info.html = html;
       // let uploadStatus = 0;
       // if (info.oneDriver === 2) {
@@ -53,7 +53,7 @@ function updateMarkdown(state = initState, action) {
     }
     case JUST_UPDATE_MARKDWON_HTML: {
       const { content } = action;
-      const html = markedToHtml(action.content, true);
+      const html = markedToHtml(action.content);
       return assign({}, state, {
         content,
         html,
@@ -61,7 +61,7 @@ function updateMarkdown(state = initState, action) {
     }
     case UPDATE_MARKDOWN_HTML: {
       let hasEdit = true;
-      const html = markedToHtml(action.content, true);
+      const html = markedToHtml(action.content);
       if (state.uuid !== action.uuid) {
         hasEdit = false;
       }

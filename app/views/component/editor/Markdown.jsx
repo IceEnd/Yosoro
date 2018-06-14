@@ -6,6 +6,8 @@ import Preview from './Preview';
 import { pushStateToStorage, mergeStateFromStorage, throttle } from '../../utils/utils';
 // import { appMarkdownAdjust } from '../../actions/app';
 
+let appToolWidth = null;
+
 export default class Markdown extends Component {
   static displayName = 'Markdown';
   static propTypes = {
@@ -32,15 +34,17 @@ export default class Markdown extends Component {
     super(props);
     const { markdownSettings } = props;
     this.setDragWidth = throttle((e) => {
+      if (!appToolWidth) {
+        appToolWidth = document.getElementById('app_tool_bar').offsetWidth;
+      }
       const width = this.root.offsetWidth;
-      const rootLeft = this.root.offsetLeft;
+      const rootLeft = this.root.offsetLeft + appToolWidth;
       const x = e.clientX;
       const editorWidthValue = (x - rootLeft) / width;
       if (editorWidthValue <= 0.2 || editorWidthValue >= 0.8) {
         return false;
       }
       const editorWidth = `${editorWidthValue * 100}%`;
-      // this.props.dispatch(appMarkdownAdjust({ editorWidth }));
       this.setState({
         editorWidth,
         editorWidthValue,
