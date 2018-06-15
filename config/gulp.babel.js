@@ -11,9 +11,10 @@ gulp.task('clean:web', () => {
   del.sync([
     path.join(__dirname, '../lib/css/**'),
     path.join(__dirname, '../lib/vendor*'),
-    path.join(__dirname, '../lib/index.html'),
+    path.join(__dirname, '../lib/*.html'),
     path.join(__dirname, '../lib/index*'),
     path.join(__dirname, '../lib/images/**'),
+    path.join(__dirname, '../lib/webview/**'),
   ]);
 });
 

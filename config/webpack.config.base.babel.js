@@ -1,3 +1,5 @@
+import path from 'path';
+
 export default {
   target: 'electron-renderer',
   module: {
@@ -14,5 +16,12 @@ export default {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
+    module: ['node_modules', 'app'],
+    alias: {
+      Components: path.resolve(__dirname, '../app/views/component/'),
+      Utils: path.resolve(__dirname, '../app/views/utils/'),
+      Actions: path.resolve(__dirname, '../app/views/actions/'),
+      Services: path.resolve(__dirname, '../app/views/services/'),
+    },
   },
 };

@@ -515,7 +515,7 @@ export function eventListener(menus) {
 
   ipcMain.on('get-webview-path', (event) => {
     event.returnValue = url.format({
-      pathname: path.join(__dirname, './webview.html'),
+      pathname: path.join(__dirname, './webview/webview.html'),
       protocol: 'file:',
     });
   });

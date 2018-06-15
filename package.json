@@ -71,6 +71,7 @@
     "electron-watch": "^1.0.5",
     "eslint": "^4.10.0",
     "eslint-config-alchemy": "^0.1.13",
+    "eslint-import-resolver-webpack": "^0.10.0",
     "eslint-plugin-import": "2.7.0",
     "eslint-plugin-jsx-a11y": "6.0.2",
     "eslint-plugin-react": "7.1.0",

@@ -4,7 +4,6 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import baseConfig from './webpack.config.base.babel';
 
-
 process.traceDeprecation = true;
 
 const extractTextConf = (loaders = []) => ExtractTextPlugin.extract({
@@ -23,9 +22,13 @@ export default merge.smart(baseConfig, {
   entry: {
     index: path.join(__dirname, '../app/views/index.jsx'),
     vendor: ['react', 'react-dom', 'redux', 'redux-saga', 'redux-logger', 'history', 'prop-types', 'antd', 'whatwg-fetch'],
+    'webview/webview-pre': [
+      'webpack/hot/only-dev-server',
+      path.resolve(__dirname, '../app/webview/webview-pre.js'),
+    ],
   },
   output: {
-    filename: '[name]_[hash].js',
+    filename: '[name].js',
     path: path.resolve(__dirname, '../lib'),
   },
   module: {
@@ -69,7 +72,7 @@ export default merge.smart(baseConfig, {
   },
   plugins: [
     new ExtractTextPlugin({
-      filename: 'css/[name]_[chunkhash].css',
+      filename: 'css/[name].css',
       allChunks: true,
     }),
     // 生成html
@@ -83,6 +86,18 @@ export default merge.smart(baseConfig, {
         removeAttributeQuotes: true,
       },
       chunksSortMode: 'dependency',
+    }),
+    // webview html
+    new HtmlWebpackPlugin({
+      filename: path.resolve(__dirname, '../lib/webview/webview.html'),
+      template: path.resolve(__dirname, '../app/main/webview/webview.html'),
+      inject: false,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true,
+        minifyCSS: true,
+      },
     }),
   ],
 });
