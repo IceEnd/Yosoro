@@ -53,6 +53,12 @@ if (process.env.NODE_ENV === 'development') {
   );
 }
 
+if (process.platform === 'win32' || process.platform === 'darwin') {
+  require('update-electron-app')({
+    updateInterval: '5 minutes',
+  });
+}
+
 function createWindow() {
   // Create the browser window.
   const options = {

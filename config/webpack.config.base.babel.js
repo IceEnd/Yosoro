@@ -16,7 +16,7 @@ export default {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.json'],
-    module: ['node_modules', 'app'],
+    modules: ['node_modules', 'app'],
     alias: {
       Components: path.resolve(__dirname, '../app/views/component/'),
       Utils: path.resolve(__dirname, '../app/views/utils/'),

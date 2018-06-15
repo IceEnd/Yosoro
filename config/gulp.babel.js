@@ -2,7 +2,6 @@ import path from 'path';
 import gulp from 'gulp';
 import gutil from 'gulp-util';
 import del from 'del';
-import rename from 'gulp-rename';
 import webpack from 'webpack';
 import webpackWeb from './webpack.config.renderer.prod.babel';
 import webpackElectron from './webpack.config.electron.babel';
@@ -60,8 +59,7 @@ gulp.task('webpack:electron', ['clean:electron'], (cb) => {
 gulp.task('electron:resource', () => {
   gulp.src(path.join(__dirname, '../app/main/resource/**'))
     .pipe(gulp.dest(path.join(__dirname, '../lib/resource')));
-  gulp.src(path.join(__dirname, '../templete/packager-model.json'))
-    .pipe(rename('package.json'))
+  gulp.src(path.join(__dirname, '../app/main/packager.json'))
     .pipe(gulp.dest(path.join(__dirname, '../lib')));
   gulp.src(path.join(__dirname, '../LICENSE'))
     .pipe(gulp.dest(path.join(__dirname, '../lib')));

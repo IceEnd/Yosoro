@@ -1,7 +1,7 @@
 {
   "name": "yosoro-desktop",
   "productName": "Yosoro",
-  "version": "1.0.5",
+  "version": "1.0.4",
   "description": "Beautiful Cloud Drive Markdown NoteBook Desktop App, based on React, Redux, Webpack, React Hot Loader for rapid application development",
   "main": "app/renderer/index.js",
   "scripts": {
@@ -22,6 +22,13 @@
     "url": "https://github.com/IceEnd/Yosoro.git"
   },
   "browserslist": "electron 2.0",
+  "build": {
+    "publish": [{
+      "provider": "github",
+      "owner": "IceEnd",
+      "repo": "Yosoro"
+    }]
+  },
   "dependencies": {
     "antd": "^3.5.2",
     "autobind-decorator": "^2.1.0",
@@ -67,7 +74,9 @@
     "del": "^3.0.0",
     "devtron": "^1.4.0",
     "electron": "^2.0.1",
+    "electron-builder": "^20.15.1",
     "electron-packager": "^9.1.0",
+    "electron-updater": "^2.21.10",
     "electron-watch": "^1.0.5",
     "eslint": "^4.10.0",
     "eslint-config-alchemy": "^0.1.13",
@@ -78,7 +87,6 @@
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.5",
     "gulp": "3.9.1",
-    "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.8",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.7.2",
@@ -96,5 +104,7 @@
   },
   "author": "Alchemy",
   "license": "GPL-3.0",
-  "pre-commit": ["lint"]
+  "pre-commit": [
+    "lint"
+  ]
 }

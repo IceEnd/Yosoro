@@ -26,6 +26,21 @@
     "lint": "concurrently \"eslint app config --ext .js,.jsx\" \"sass-lint -v -q\"",
     "test": "npm run lint"
   },
+  "build": {
+    "publish": [{
+      "provider": "github",
+      "owner": "IceEnd",
+      "repo": "Yosoro"
+    }],
+    "mac": {
+      "appId": "com.github.iceend.yosoro",
+      "category": "Productivity",
+      "target": [
+        "zip",
+        "dmg"
+      ]
+    }
+  },
   "mac": {
     "icon": "asstes/icons/osx/app.icns"
   },

@@ -21,3 +21,4 @@ rules:
     - 'allow':
       - 'warn'
       - 'error'
+  import/no-extraneous-dependencies: 0
