@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, remote } from 'electron';
 import classNames from 'classnames';
 import { getWebviewPreJSPath } from '../../utils/utils';
 
@@ -74,12 +74,23 @@ export default class Preview extends PureComponent {
     const channel = event.channel;
     const { html, editorMode } = this.props;
     switch (channel) {
-      case 'wv-first-loaded':
+      case 'wv-first-loaded': {
         this.webview.send('wv-render-html', {
           html,
           editorMode,
         });
         break;
+      }
+      case 'did-click-link': {
+        let href = '';
+        if (event.args && event.args.length) {
+          href = event.args[0];
+        }
+        if (/^https?:\/\//i.test(href)) {
+          remote.shell.openExternal(href);
+        }
+        break;
+      }
       default:
         break;
     }
@@ -172,7 +183,6 @@ export default class Preview extends PureComponent {
             className="preview-webview"
             autoresize="on"
             disableblinkfeatures="Auxclick"
-            webpreferences="nodeIntegration=no,nodeIntegrationInWorker=no,contextIsolation=yes"
             src={webviewPath}
             preload={preJSPath}
             ref={node => (this.webview = node)}

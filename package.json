@@ -1,16 +1,18 @@
 {
   "name": "yosoro-desktop",
   "productName": "Yosoro",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "Beautiful Cloud Drive Markdown NoteBook Desktop App, based on React, Redux, Webpack, React Hot Loader for rapid application development",
-  "main": "app/renderer/index.js",
+  "main": "./app/main/index.js",
   "scripts": {
     "dev:main": "cross-env NODE_ENV='development' BABEL_ENV=main electron -r babel-register ./app/main/",
     "dev:renderer": "cross-env NODE_ENV='development' BABEL_ENV=renderer webpack-dev-server --config config/webpack.config.renderer.dev.babel.js --colors --progress",
     "build:renderer": "cross-env NODE_ENV='production' BABEL_ENV=renderer gulp --gulpfile config/gulp.babel.js --cwd . --mode renderer",
     "build:main": "cross-env NODE_ENV='production' BABEL_ENV=main gulp --gulpfile config/gulp.babel.js --cwd . --mode main",
     "build:all": "concurrently \"npm run build:renderer\" \"npm run build:main\"",
-    "packager:mac": "electron-packager ./lib Yosoro --overwrite --platform=darwin --arch=x64 --out=out --icon=assets/icons/osx/app.icns --osx-sign=true",
+    "packager:mac:app": "electron-packager ./lib Yosoro --overwrite --platform=darwin --arch=x64 --out=out --icon=assets/icons/osx/app.icns",
+    "packager:mac:dmg":"babel-node ./scripts/packageDMG.js",
+    "packager:mac": "npm run packager:mac:app && npm run packager:mac:dmg",
     "packager:win": "electron-packager ./lib Yosoro --overwrite --platform=win32 --arch=ia32 --out=out --icon=assets/icons/win/app.ico",
     "packager:win:64": "electron-packager ./lib Yosoro --overwrite --platform=win32 --arch=x64 --out=out --icon=assets/icons/win/app.ico",
     "packager:linux": "electron-packager ./lib Yosoro --overwrite --platform=linux --arch=x64 --out=out",
@@ -22,12 +24,11 @@
     "url": "https://github.com/IceEnd/Yosoro.git"
   },
   "browserslist": "electron 2.0",
-  "build": {
-    "publish": [{
-      "provider": "github",
-      "owner": "IceEnd",
-      "repo": "Yosoro"
-    }]
+  "mac": {
+    "icon": "./asstes/icons/osx/app.icns"
+  },
+  "win": {
+    "icon": "./asstes/icons/win/app.ico"
   },
   "dependencies": {
     "antd": "^3.5.2",
@@ -75,9 +76,10 @@
     "devtron": "^1.4.0",
     "electron": "^2.0.1",
     "electron-builder": "^20.15.1",
+    "electron-installer-dmg": "^1.0.0",
     "electron-packager": "^9.1.0",
-    "electron-updater": "^2.21.10",
     "electron-watch": "^1.0.5",
+    "electron-winstaller": "^2.6.4",
     "eslint": "^4.10.0",
     "eslint-config-alchemy": "^0.1.13",
     "eslint-import-resolver-webpack": "^0.10.0",

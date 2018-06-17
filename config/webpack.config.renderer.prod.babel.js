@@ -23,7 +23,6 @@ export default merge.smart(baseConfig, {
     index: path.join(__dirname, '../app/views/index.jsx'),
     vendor: ['react', 'react-dom', 'redux', 'redux-saga', 'redux-logger', 'history', 'prop-types', 'antd', 'whatwg-fetch'],
     'webview/webview-pre': [
-      'webpack/hot/only-dev-server',
       path.resolve(__dirname, '../app/webview/webview-pre.js'),
     ],
   },

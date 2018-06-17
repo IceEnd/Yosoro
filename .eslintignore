@@ -3,3 +3,4 @@ node_modules
 lib
 app/views/utils/highlight.min.js
 out
+releases

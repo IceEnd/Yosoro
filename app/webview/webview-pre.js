@@ -18,12 +18,27 @@ function checkMode(editorMode) {
   currentMode = editorMode;
 }
 
+function handleInnerClick(event) {
+  if (!event) {
+    return;
+  }
+  const node = event.target;
+  event.preventDefault();
+  if (node.tagName && node.tagName.toLowerCase() === 'a' && node.href) {
+    ipcRenderer.sendToHost('did-click-link', node.href);
+  }
+}
+
+document.addEventListener('click', handleInnerClick);
+
 document.addEventListener('DOMContentLoaded', () => {
   ipcRenderer.sendToHost('wv-first-loaded');
 
   // 渲染预览页面
   ipcRenderer.on('wv-render-html', (event, args) => {
-    const { html, editorMode } = args;
+    let { html, editorMode } = args;
+    html = html || '';
+    editorMode = editorMode || 'normal';
     if (!nodeRoot || !nodeLoading) {
       nodeRoot = document.getElementById('root');
       nodeLoading = document.getElementById('loading');

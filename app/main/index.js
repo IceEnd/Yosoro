@@ -49,14 +49,8 @@ if (process.env.NODE_ENV === 'development') {
   require('electron-watch')(
     __dirname,
     'dev:main',
-    path.join(__dirname, './'),
+    process.cwd(),
   );
-}
-
-if (process.platform === 'win32' || process.platform === 'darwin') {
-  require('update-electron-app')({
-    updateInterval: '5 minutes',
-  });
 }
 
 function createWindow() {

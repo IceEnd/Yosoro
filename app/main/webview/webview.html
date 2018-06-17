@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Virtual Document</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src http: https: data: file:; media-src file: http: https: data:; script-src 'none'; style-src 'unsafe-inline' https: data:; font-src https: data:;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src http: https: data: file:; media-src file: http: https: data:; script-src 'none';style-src 'unsafe-inline' https: data:; font-src https: data:;">
   <style>
     html {
       font-family: "BlinkMacSystemFont", "Lucida Grande", "Segoe UI", Ubuntu, Cantarell, sans-serif;
@@ -61,6 +61,9 @@
     }
     p {
       margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    #root>ol, #root>ul, #root>blockquote, #root>pre {
       margin-bottom: 1rem;
     }
     ol li {

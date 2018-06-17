@@ -100,7 +100,7 @@ export default class Markdown extends Component {
 
   @autobind
   handleMouseUp(e) {
-    e.preventDefault();
+    // e.preventDefault();
     e.stopPropagation();
     if (this.state.drag) {
       this.setState({
@@ -130,7 +130,7 @@ export default class Markdown extends Component {
       <div className="markdown">
         <div
           className="markdown-content"
-          onMouseDown={this.handleMouseDown}
+          // onMouseDown={this.handleMouseDown}
           onMouseMove={this.handleMouseMove}
           onMouseUp={this.handleMouseUp}
           onMouseLeave={this.handMouseLeave}

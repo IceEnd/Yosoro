@@ -1,4 +1,11 @@
 {
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": 8
+      }
+    }]
+  ],
   "env": {
     "main": {
       "presets": [
