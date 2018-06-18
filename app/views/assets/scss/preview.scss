@@ -1,6 +1,6 @@
 .preview-root {
 	background-color: #fcfdfe;
-	overflow-y: scroll;
+	overflow: hidden;
 	position: relative;
 
 	&.pre-mode {
@@ -17,7 +17,7 @@
 .preview-body {
 	width: 100%;
 	height: 100%;
-	overflow-x: hidden;
+	overflow: hidden;
 	box-sizing: border-box;
 	padding: 0.5rem;
 }

@@ -1,5 +1,5 @@
 {
-  "name": "yosoro-desktop",
+  "name": "yosorodesktop",
   "productName": "Yosoro",
   "version": "1.0.6",
   "description": "Beautiful Cloud Drive Markdown NoteBook Desktop App, based on React, Redux, Webpack, React Hot Loader for rapid application development",
@@ -11,12 +11,14 @@
     "build:main": "cross-env NODE_ENV='production' BABEL_ENV=main gulp --gulpfile config/gulp.babel.js --cwd . --mode main",
     "build:all": "concurrently \"npm run build:renderer\" \"npm run build:main\"",
     "packager:mac:app": "electron-packager ./lib Yosoro --overwrite --platform=darwin --arch=x64 --out=out --icon=assets/icons/osx/app.icns",
-    "packager:mac:dmg":"babel-node ./scripts/packageDMG.js",
+    "packager:mac:dmg": "babel-node ./scripts/packageDMG.js",
     "packager:mac": "npm run packager:mac:app && npm run packager:mac:dmg",
-    "packager:win": "electron-packager ./lib Yosoro --overwrite --platform=win32 --arch=ia32 --out=out --icon=assets/icons/win/app.ico",
+    "packager:win:32": "electron-packager ./lib Yosoro --overwrite --platform=win32 --arch=ia32 --out=out --icon=assets/icons/win/app.ico",
     "packager:win:64": "electron-packager ./lib Yosoro --overwrite --platform=win32 --arch=x64 --out=out --icon=assets/icons/win/app.ico",
+    "packager:win": "concurrently \"npm run packager:win:32\" \"npm run packager:win:64\"",
+    "packager:win:installer": "babel-node ./scripts/packageInstaller.js",
     "packager:linux": "electron-packager ./lib Yosoro --overwrite --platform=linux --arch=x64 --out=out",
-    "lint": "concurrently \"eslint app config --ext .js,.jsx\" \"sass-lint -v -q\"",
+    "lint": "concurrently \"eslint app config scripts --ext .js,.jsx\" \"sass-lint -v -q\"",
     "test": "npm run lint"
   },
   "repository": {
@@ -75,7 +77,6 @@
     "del": "^3.0.0",
     "devtron": "^1.4.0",
     "electron": "^2.0.1",
-    "electron-builder": "^20.15.1",
     "electron-installer-dmg": "^1.0.0",
     "electron-packager": "^9.1.0",
     "electron-watch": "^1.0.5",

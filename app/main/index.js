@@ -2,6 +2,7 @@ import electron from 'electron';
 import path from 'path';
 import url from 'url';
 import fs from 'fs';
+import ChildProcess from 'child_process';
 import { setMenu, getExplorerMenuItem, getExplorerFileMenuItem, getExplorerProjectItemMenu, getExplorerFileItemMenu } from './menu';
 import { removeEventListeners, eventListener } from './event';
 import schedule from './schedule';
@@ -15,6 +16,70 @@ const BrowserWindow = electron.BrowserWindow;
 const shell = electron.shell;
 
 app.setName('Yosoro');
+
+function handleSquirrelEvent() {
+  if (process.argv.length === 1) {
+    return false;
+  }
+
+  const appFolder = path.resolve(process.execPath, '..');
+  const rootAtomFolder = path.resolve(appFolder, '..');
+  const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
+  const exeName = path.basename(process.execPath);
+
+  const spawn = (command, args) => {
+    let spawnedProcess;
+    try {
+      spawnedProcess = ChildProcess.spawn(command, args, { detached: true });
+    } catch (error) {
+      console.warn(error);
+    }
+
+    return spawnedProcess;
+  };
+
+  const spawnUpdate = args => spawn(updateDotExe, args);
+  const squirrelEvent = process.argv[1];
+  switch (squirrelEvent) {
+    case '--squirrel-install':
+    case '--squirrel-updated': {
+      // Optionally do things such as:
+      // - Add your .exe to the PATH
+      // - Write to the registry for things like file associations and
+      //   explorer context menus
+
+      // Install desktop and start menu shortcuts
+      spawnUpdate(['--createShortcut', exeName]);
+      setTimeout(app.quit, 1000);
+      return true;
+    }
+    case '--squirrel-uninstall': {
+      // Undo anything you did in the --squirrel-install and
+      // --squirrel-updated handlers
+      // Remove desktop and start menu shortcuts
+      spawnUpdate(['--removeShortcut', exeName]);
+      setTimeout(app.quit, 1000);
+      return true;
+    }
+    case '--squirrel-obsolete': {
+      // This is called on the outgoing version of your app before
+      // we update to the new version - it's the opposite of
+      // --squirrel-updated
+      app.quit();
+      return true;
+    }
+    default:
+      return true;
+  }
+}
+
+// this should be placed at top of main.js to handle setup events quickly
+if (process.platform === 'win32' && handleSquirrelEvent()) {
+  if (handleSquirrelEvent()) {
+    // squirrel event handled and app will exit in 1000ms, so don't do anything else
+    app.quit();
+  }
+}
 
 let mainWindow;
 // let tray = null;
@@ -168,6 +233,6 @@ app.on('activate', () => {
 });
 
 app.on('before-quit', () => {
-  // 推出应用关闭定时器
+  // 退出应用关闭定时器
   schedule.cancelReleases();
 });
