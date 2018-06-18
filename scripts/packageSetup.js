@@ -9,7 +9,7 @@ const packageQueue = [];
 function getOptions(appPath, arch) {
   return {
     appDirectory: appPath,
-    outputDirectory: path.resolve(__dirname, '../out', `win32-${arch}-installer-${version}`),
+    outputDirectory: path.resolve(__dirname, '../out', `${productName}-win32-${arch}-setup-${version}`),
     authors: 'Alchemy',
     description: 'Beautiful Cloud Drive Markdown NoteBook Desktop App, based on React, Redux, Webpack, React Hot Loader for rapid application development',
     exe: `${productName}.exe`,
