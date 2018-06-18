@@ -12,7 +12,7 @@ cache:
      - node_modules
 
 install:
-  - npm install
+  - yarn install
 
 script:
   - node --version
