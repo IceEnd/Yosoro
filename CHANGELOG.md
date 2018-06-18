@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.0.6
+
+### Optimize
+
+- Use `webview` to render html
+- Remove js-xss and increase conversion speed
+
 ## v1.0.5
 
 ### new Features

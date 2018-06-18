@@ -8,7 +8,7 @@ parserOptions:
 settings:
   import/resolver:
     webpack:
-      config: 'config/webpack.eslint.config.js'
+      config: './config/webpack.eslint.config.js'
 parser: 'babel-eslint'
 extends: alchemy
 plugins:
