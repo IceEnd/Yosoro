@@ -1,5 +1,5 @@
 {
-  "name": "yosorodesktop",
+  "name": "yosoro",
   "productName": "Yosoro",
   "version": "1.0.6",
   "description": "Beautiful Cloud Drive Markdown NoteBook Desktop App, based on React, Redux, Webpack, React Hot Loader for rapid application development",
@@ -18,8 +18,14 @@
     "packager:win": "concurrently \"npm run packager:win:32\" \"npm run packager:win:64\"",
     "packager:win:installer": "babel-node ./scripts/packageInstaller.js",
     "packager:linux": "electron-packager ./lib Yosoro --overwrite --platform=linux --arch=x64 --out=out",
+    "packager:linux:deb": "babel-node ./scripts/packageDeb.js",
     "lint": "concurrently \"eslint app config scripts --ext .js,.jsx\" \"sass-lint -v -q\"",
     "test": "npm run lint"
+  },
+  "author": {
+    "name": "Alchemy",
+    "email": "min@coolecho.net",
+    "url": "https://github.com/IceEnd"
   },
   "repository": {
     "type": "git",
@@ -77,6 +83,7 @@
     "del": "^3.0.0",
     "devtron": "^1.4.0",
     "electron": "^2.0.1",
+    "electron-installer-debian": "^0.8.1",
     "electron-installer-dmg": "^1.0.0",
     "electron-packager": "^9.1.0",
     "electron-watch": "^1.0.5",
@@ -105,7 +112,6 @@
     "webpack-dev-server": "^3.1.4",
     "webpack-merge": "^4.1.2"
   },
-  "author": "Alchemy",
   "license": "GPL-3.0",
   "pre-commit": [
     "lint"
