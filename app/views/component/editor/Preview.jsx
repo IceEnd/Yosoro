@@ -4,6 +4,7 @@ import autobind from 'autobind-decorator';
 import { ipcRenderer, remote } from 'electron';
 import classNames from 'classnames';
 import { getWebviewPreJSPath } from '../../utils/utils';
+import LoadingImg from '../../assets/images/loading.svg';
 
 import '../../assets/scss/preview.scss';
 
@@ -28,6 +29,7 @@ export default class Preview extends PureComponent {
     const bodyWidth = this.getBodyWidth(props);
     this.state = {
       bodyWidth,
+      loading: true,
     };
   }
 
@@ -78,6 +80,9 @@ export default class Preview extends PureComponent {
         this.webview.send('wv-render-html', {
           html,
           editorMode,
+        });
+        this.setState({
+          loading: false,
         });
         break;
       }
@@ -145,6 +150,21 @@ export default class Preview extends PureComponent {
     }
   }
 
+  renderLoading() {
+    if (this.state.loading) {
+      return (
+        <img
+          className="preview-loading"
+          src={LoadingImg}
+          style={{
+            position: 'absolute',
+          }}
+          alt=""
+        />
+      );
+    }
+  }
+
   render() {
     const { bodyWidth } = this.state;
     const { editorMode, drag } = this.props;
@@ -173,6 +193,7 @@ export default class Preview extends PureComponent {
             devtools
           </span>
         ) : null}
+        {this.renderLoading()}
         <div
           className="preview-body"
           style={{ width: bodyWidth }}

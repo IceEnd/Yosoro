@@ -1,7 +1,6 @@
 const ipcRenderer = require('electron').ipcRenderer;
 
 let nodeRoot = null;
-let nodeLoading = null;
 
 let currentMode = '';
 
@@ -39,12 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let { html, editorMode } = args;
     html = html || '';
     editorMode = editorMode || 'normal';
-    if (!nodeRoot || !nodeLoading) {
+    if (!nodeRoot) {
       nodeRoot = document.getElementById('root');
-      nodeLoading = document.getElementById('loading');
-    }
-    if (nodeLoading.style.display !== 'none') {
-      nodeLoading.style.display = 'none';
     }
     if (currentMode === '') {
       currentMode = editorMode;
