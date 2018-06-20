@@ -7,7 +7,6 @@ const SETTINGS = 'yosoroSettings';
 const PROJECTS = 'yosoroProjects';
 const FILES = 'yosoroFiles';
 const OAUTHTOKEN = 'yosoroOAuthToken';
-// const TRASHPROJECTS = 'yosoroTrashProjects';
 
 /**
  * @description 设置默认配置
@@ -26,7 +25,6 @@ export function setDefaults() {
   });
   db.set(PROJECTS, []);
   db.set(FILES, []);
-  // db.set(TRASHPROJECTS, []);
 }
 
 /**

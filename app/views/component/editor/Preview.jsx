@@ -182,6 +182,7 @@ export default class Preview extends PureComponent {
             id="webview"
             className="preview-webview"
             autoresize="on"
+            webpreferences="contextIsolation=yes"
             disableblinkfeatures="Auxclick"
             src={webviewPath}
             preload={preJSPath}

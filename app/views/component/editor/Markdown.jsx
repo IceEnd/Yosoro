@@ -27,6 +27,12 @@ export default class Markdown extends Component {
     markdownSettings: PropTypes.shape({
       editorWidth: PropTypes.number.isRequired,
     }).isRequired,
+    note: PropTypes.shape({
+      projectUuid: PropTypes.string.isRequired,
+      projectName: PropTypes.string.isRequired,
+      fileUuid: PropTypes.string.isRequired,
+      fileName: PropTypes.string.isRequired,
+    }).isRequired,
     editorMode: PropTypes.string.isRequired,
   };
 
@@ -121,7 +127,7 @@ export default class Markdown extends Component {
   }
 
   render() {
-    const { markdown: { content, status, html, start, uuid }, dispatch, editorMode } = this.props;
+    const { markdown: { content, status, html, start, uuid }, dispatch, editorMode, note } = this.props;
     const { editorWidth, drag, editorWidthValue } = this.state;
     if (status === 0) {
       return null;
@@ -138,6 +144,7 @@ export default class Markdown extends Component {
         >
           <Editor
             uuid={uuid}
+            note={note}
             setDrag={this.setDrag}
             defaultContent={content}
             dispatch={dispatch}

@@ -209,6 +209,22 @@ export function eventListener(menus) {
     }
   });
 
+  ipcMain.on('auto-save-content-to-file', (event, args) => {
+    const { content, fileName, projectName } = args;
+    const filePath = `${projectsPath}/${projectName}/${fileName}.md`;
+    const folder = `${projectsPath}/${projectName}`;
+    try {
+      if (!fs.existsSync(folder)) {
+        fs.mkdirSync(folder);
+      }
+      fs.writeFile(filePath, content, () => {
+        console.info(`${projectName}/${projectName}:auto save`);
+      });
+    } catch (ex) {
+      console.warn(ex);
+    }
+  });
+
   ipcMain.on('save-content-to-trash-file', (event, args) => {
     const { content, projectName, name } = args;
     // const file = path.join(__dirname, `../documents/trash/${projectName}/${name}.md`);
@@ -534,6 +550,7 @@ export function removeEventListeners() {
     'create-file',
     'rename-note',
     'read-file',
+    'save-content-to-trash-fil',
     'save-content-to-file',
     'save-content-to-trash-file',
     'move-file-to-trash',

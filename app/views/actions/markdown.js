@@ -29,6 +29,9 @@ export function beforeSwitchSave(projectName, needUpdateCloudStatus) {
   };
 }
 
+// 异步自动保存文件内容
+export const AUTO_SAVE_CONTENT_TO_FILE = 'AUTO_SAVE_CONTENT_TO_FILE';
+
 export const SAVE_CONTENT_TO_TRASH_FILE = 'SAVE_CONTENT_TO_TRASH_FILE';
 
 export function saveContentToTrashFile(projectName) {

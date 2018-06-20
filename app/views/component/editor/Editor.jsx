@@ -1,6 +1,7 @@
 import 'codemirror/lib/codemirror.css';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { ipcRenderer } from 'electron';
 import autobind from 'autobind-decorator';
 import CodeMirror from 'codemirror';
 import 'codemirror/addon/fold/markdown-fold';
@@ -22,6 +23,12 @@ export default class Editor extends Component {
     editorWidthValue: PropTypes.number.isRequired,
     drag: PropTypes.bool.isRequired,
     setPreiewScrollRatio: PropTypes.func.isRequired,
+    note: PropTypes.shape({
+      projectUuid: PropTypes.string.isRequired,
+      projectName: PropTypes.string.isRequired,
+      fileUuid: PropTypes.string.isRequired,
+      fileName: PropTypes.string.isRequired,
+    }).isRequired,
   };
 
   static getDerivedStateFromProps(nextProps) {
@@ -120,6 +127,16 @@ export default class Editor extends Component {
     this.codeMirror.on('focus', this.handleFocus);
   }
 
+  // 停止编辑500ms, 异步保存文件内容
+  autoSave = debounce(() => {
+    const { note: { projectName, fileName }, defaultContent } = this.props;
+    ipcRenderer.send('auto-save-content-to-file', {
+      projectName,
+      fileName,
+      content: defaultContent,
+    });
+  }, 500);
+
   removeChangeEvent() {
     if (this.codeMirror) {
       this.codeMirror.off('change', this.handleChange);
@@ -136,6 +153,7 @@ export default class Editor extends Component {
     const content = cm.getValue();
     const { uuid } = this.props;
     this.props.dispatch(updateMarkdownHtml(content, uuid, -1));
+    this.autoSave();
   }
 
   updateCode = () => {

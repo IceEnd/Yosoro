@@ -11,9 +11,6 @@ import {
   FETCHING_GITHUB_RELEASES_FAILED,
   FETCHING_GITHUB_RELEASES_SUCCESS,
   CLOSE_UPDATE_NOTIFICATION,
-  // ONEDRIVE_ALL_UPLOAD,
-  // ONEDRIVE_ALL_UPLOAD_SUCCESS,
-  // ONEDRIVE_ALL_UPLOAD_FAILED,
 } from '../actions/app';
 import appInfo from '../../../package.json';
 import { checkDefaults, getAppSettings, setMarkdownSettings, setToken } from '../utils/db/app';

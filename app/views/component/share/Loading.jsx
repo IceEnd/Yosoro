@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Spin } from 'antd';
+import loadingImg from '../../assets/images/loading.svg';
 
 const Loading = props => (
   <div className="loading-default">
-    <Spin size="large" tip={props.tip} />
+    <img src={loadingImg} alt="" />
+    <p className="loading-tips" style={{ color: '#923f2b' }}>{props.tip}</p>
   </div>
 );
 

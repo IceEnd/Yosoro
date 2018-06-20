@@ -22,7 +22,7 @@ html, body, #root {
 }
 
 html {
-	font-family: "BlinkMacSystemFont", "Lucida Grande", "Segoe UI", Ubuntu, Cantarell, sans-serif;
+	font-family: "BlinkMacSystemFont", "Helvetica Neue", Helvetica, "Microsoft YaHei", "微软雅黑", "Arial", "Lucida Grande", "Segoe UI", Ubuntu, Cantarell, sans-serif;
 	font-size: 14px;
 	line-height: 1.5;
 	overflow: hidden;
@@ -197,10 +197,14 @@ html {
 // 公用的loading样式
 .loading-default {
 	position: absolute;
-	z-index: 999;
+	z-index: 9999;
 	width: 100%;
 	height: 100%;
 	text-align: center;
-	padding-top: 30%;
+	left: 0;
+	top: 0;
 	background-color: rgba($color: #ffffff, $alpha: 0.7);
+	img {
+		margin-top: 25%;
+	}
 }

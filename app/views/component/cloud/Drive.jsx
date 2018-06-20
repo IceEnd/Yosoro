@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Spin, Breadcrumb, message, Icon, Modal } from 'antd';
+import { Breadcrumb, message, Icon, Modal } from 'antd';
 import autobind from 'autobind-decorator';
 import Notebooks from './Notebooks';
 import Notes from './Notes';
+import Loading from '../share/Loading';
 import {
   DRIVE_FETCHING_PROJECTS,
   DRIVE_FETCHING_NOTES,
@@ -42,11 +43,6 @@ export default class Drive extends Component {
       driveName: '',
       loadingText: 'Loading',
     };
-    // this.chooseProject = this.chooseProject.bind(this);
-    // this.handleRefresh = this.handleRefresh.bind(this);
-    // this.downloadNote = this.downloadNote.bind(this);
-    // this.openDelete = this.openDelete.bind(this);
-    // this.backRoot = this.backRoot.bind(this);
   }
 
   componentDidMount() {
@@ -290,9 +286,7 @@ export default class Drive extends Component {
     const { loadingText } = this.state;
     if (status === 0) {
       return (
-        <div className="loading">
-          <Spin size="large" tip={loadingText} />
-        </div>
+        <Loading tip={loadingText} />
       );
     }
     return null;

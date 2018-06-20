@@ -47,6 +47,7 @@ const NoteWorkspace = (props) => {
           markdownSettings={markdownSettings}
           dispatch={dispatch}
           editorMode={editorMode}
+          note={note}
         />
       </div>
     </div>
