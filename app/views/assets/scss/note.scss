@@ -584,8 +584,10 @@
 		}
 
 		.CodeMirror {
+			font-family: -apple-system, BlinkMacSystemFont, Segoe WPC, Segoe UI, HelveticaNeue-Light, Noto Sans, monospace, Microsoft YaHei, PingFang SC, Hiragino Sans GB, Source Han Sans SC, Source Han Sans CN, Source Han Sans, sans-serif;
 			background-color: #fcfdfe;
 			height: 100%;
+			font-size: 1.1rem;
 
 			.CodeMirror-gutters {
 				background-color: #fcfdfe;

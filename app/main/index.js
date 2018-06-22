@@ -74,7 +74,7 @@ function handleSquirrelEvent() {
 }
 
 // this should be placed at top of main.js to handle setup events quickly
-if (process.platform === 'win32' && handleSquirrelEvent()) {
+if (process.platform === 'win32' && handleSquirrelEvent() && process.env.NODE_ENV === 'production') {
   if (handleSquirrelEvent()) {
     // squirrel event handled and app will exit in 1000ms, so don't do anything else
     app.quit();

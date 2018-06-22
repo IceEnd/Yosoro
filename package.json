@@ -85,7 +85,7 @@
     "electron": "^2.0.1",
     "electron-installer-dmg": "^1.0.0",
     "electron-packager": "^9.1.0",
-    "electron-watch": "^1.0.5",
+    "electron-watch": "^1.0.9",
     "electron-winstaller": "^2.6.4",
     "eslint": "^4.10.0",
     "eslint-config-alchemy": "^0.1.13",
