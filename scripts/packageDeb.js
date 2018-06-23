@@ -1,6 +1,6 @@
 import path from 'path';
 import installer from 'electron-installer-debian';
-import { productName, version, name } from '../package.json'
+import { productName, version } from '../package.json';
 
 const options = {
   bin: 'Yosoro',

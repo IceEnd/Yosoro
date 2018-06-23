@@ -19,7 +19,7 @@
     "packager:win:setup": "babel-node ./scripts/packageSetup.js",
     "packager:linux": "electron-packager ./lib Yosoro --overwrite --platform=linux --arch=x64 --out=out",
     "packager:linux:deb": "babel-node ./scripts/packageDeb.js",
-    "lint": "concurrently \"eslint app config --ext .js,.jsx\" \"sass-lint -v -q\"",
+    "lint": "concurrently \"eslint app config scripts --ext .js,.jsx\" \"sass-lint -v -q\"",
     "test": "npm run lint"
   },
   "author": {
@@ -84,6 +84,7 @@
     "del": "^3.0.0",
     "devtron": "^1.4.0",
     "electron": "^2.0.1",
+    "electron-installer-debian": "^0.8.1",
     "electron-installer-dmg": "^1.0.0",
     "electron-packager": "^9.1.0",
     "electron-watch": "^1.0.9",
