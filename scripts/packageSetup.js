@@ -16,6 +16,7 @@ function getOptions(appPath, arch) {
     iconUrl: path.resolve(__dirname, '../assets/icons/win/app.ico'),
     setupIcon: path.resolve(__dirname, '../assets/icons/win/app.ico'),
     setupExe: `${productName}-win32-${arch}-setup.exe`,
+    loadingGif: path.resolve(__dirname, '../assets/loading.gif'),
     noMsi: true,
   };
 }

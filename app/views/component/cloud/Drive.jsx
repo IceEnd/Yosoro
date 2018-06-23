@@ -15,6 +15,7 @@ import {
 import { getTokens } from '../../utils/db/app';
 
 const confirm = Modal.confirm;
+const BreadcrumbItem = Breadcrumb.Item;
 
 export default class Drive extends Component {
   static displayName = 'CloudDrive';
@@ -261,17 +262,17 @@ export default class Drive extends Component {
       <div className={`bread-bar ${blur}`}>
         <div className="bread-container">
           <Breadcrumb>
-            <Breadcrumb.Item>{driveName}</Breadcrumb.Item>
-            <Breadcrumb.Item
+            <BreadcrumbItem>{driveName}</BreadcrumbItem>
+            <BreadcrumbItem
               className="cursor-pointer"
               onClick={this.backRoot}
             >
               Yosoro
-            </Breadcrumb.Item>
+            </BreadcrumbItem>
             {currentProjectName ? (
-              <Breadcrumb.Item>
+              <BreadcrumbItem>
                 {currentProjectName}
-              </Breadcrumb.Item>
+              </BreadcrumbItem>
             ) : null}
           </Breadcrumb>
           <div className="tools">
