@@ -2,6 +2,7 @@ import path from 'path';
 import merge from 'webpack-merge';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import baseConfig from './webpack.config.base.babel';
 
 process.traceDeprecation = true;
@@ -21,7 +22,6 @@ export default merge.smart(baseConfig, {
   mode: 'production',
   entry: {
     index: path.join(__dirname, '../app/views/index.jsx'),
-    vendor: ['react', 'react-dom', 'redux', 'redux-saga', 'redux-logger', 'history', 'prop-types', 'antd', 'whatwg-fetch'],
     'webview/webview-pre': [
       path.resolve(__dirname, '../app/webview/webview-pre.js'),
     ],
@@ -53,6 +53,15 @@ export default merge.smart(baseConfig, {
         test: /\.scss$/,
         use: extractTextConf(['sass-loader']),
       },
+      {
+        test: /\.less$/,
+        use: extractTextConf([{
+          loader: 'less-loader',
+          options: {
+            javascriptEnabled: true,
+          },
+        }]),
+      },
     ],
   },
   optimization: {
@@ -62,7 +71,8 @@ export default merge.smart(baseConfig, {
       cacheGroups: {
         commons: {
           name: 'vendor',
-          test: /react|react-dom|redux|redux-saga|redux-logger|history|prop-types|antd|whatwg-fetch/,
+          // test: /react|react-dom|redux|redux-saga|redux-logger|history|prop-types|antd|moment|whatwg-fetch/,
+          test: /node_modules/,
           chunks: 'initial',
           enforce: true,
         },
@@ -98,5 +108,6 @@ export default merge.smart(baseConfig, {
         minifyCSS: true,
       },
     }),
+    new BundleAnalyzerPlugin(),
   ],
 });

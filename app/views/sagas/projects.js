@@ -1,6 +1,6 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import { ipcRenderer } from 'electron';
-import { messgae } from 'antd';
+import { message } from 'antd';
 import {
   UPLOAD_NOTE_ONEDRIVE,
   UPLOAD_NOTE_ONEDRIVE_SUCCESS,
@@ -80,7 +80,7 @@ function* oneDriveUpload(action) {
       });
     }
   } catch (ex) {
-    messgae.error('Upload failed.');
+    message.error('Upload failed.');
     console.error(ex);
     yield put({
       type: UPLOAD_NOTE_ONEDRIVE_FAILED,

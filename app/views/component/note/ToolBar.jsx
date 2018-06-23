@@ -12,6 +12,8 @@ import { appSwitchEditMode } from '../../actions/app';
 import { clearWorkspace } from '../../actions/note';
 import { clearMarkdown, beforeSwitchSave, MARKDOWN_UPLOADING } from '../../actions/markdown';
 
+const MenuItem = Menu.Item;
+
 export default class Tool extends PureComponent {
   static displayName = 'NoteToolBar';
   static propTypes = {
@@ -146,9 +148,9 @@ export default class Tool extends PureComponent {
     if (type === 'export') {
       const menu = (
         <Menu onClick={this.handleExport}>
-          <Menu.Item key="md">Markdown</Menu.Item>
-          <Menu.Item key="html">Html</Menu.Item>
-          <Menu.Item key="pdf">PDF</Menu.Item>
+          <MenuItem key="md">Markdown</MenuItem>
+          <MenuItem key="html">Html</MenuItem>
+          <MenuItem key="pdf">PDF</MenuItem>
         </Menu>
       );
       return (
