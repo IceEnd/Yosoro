@@ -550,8 +550,8 @@ export function removeEventListeners() {
     'create-file',
     'rename-note',
     'read-file',
-    'save-content-to-trash-fil',
     'save-content-to-file',
+    'auto-save-content-to-file',
     'save-content-to-trash-file',
     'move-file-to-trash',
     'permanent-remove-note',
@@ -563,6 +563,7 @@ export function removeEventListeners() {
     'start-release-schedule',
     'export-note',
     'export-notebook',
+    'get-webview-path',
   ];
   for (const listener of listeners) {
     ipcMain.removeAllListeners(listener);
