@@ -1,10 +1,15 @@
 export default class OneDrive {
   constructor() {
-    this.rootPath = 'https://graph.microsoft.com/v1.0';
+    const root = 'https://graph.microsoft.com';
+    this.V1 = `${root}/v1.0`;
+    this.BETA = `${root}/beta`;
   }
 
-  xhr = (url, method, token, param, responseType = 'json') => {
-    const { rootPath } = this;
+  xhr = (url, method, token, param, responseType = 'json', isBeta = false) => {
+    let rootPath = this.V1;
+    if (isBeta) {
+      rootPath = this.BETA;
+    }
     return new Promise((resolve, reject) => {
       let targetUrl = `${rootPath}${url}`;
       let body = null;
@@ -41,6 +46,9 @@ export default class OneDrive {
             }
             if (responseType === 'text') {
               return response.text();
+            }
+            if (responseType === 'image') {
+              return response.blob();
             }
             return response;
           } else if (status === 204) {
@@ -117,4 +125,7 @@ export default class OneDrive {
   uploadSingleFile = (token, url, filePath) => this.xhr(url, 'PUT', token, filePath);
 
   deleteItem = (token, url) => this.xhr(url, 'DELETE', token);
+
+  // 获取用户头像
+  getUserAvatar = token => this.xhr('/me/photo/$value', 'GET', token, null, 'image', true);
 }

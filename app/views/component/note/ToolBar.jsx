@@ -72,6 +72,7 @@ export default class Tool extends PureComponent {
       dispatch(clearMarkdown());
       dispatch(clearWorkspace());
       dispatch(searchNotes(value));
+      dispatch(appSwitchEditMode(''));
       this.setState({
         searchStatus: 1,
       });

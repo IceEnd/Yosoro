@@ -1,4 +1,5 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
+import { ipcRenderer } from 'electron';
 import { message } from 'antd';
 import {
   DRIVE_FETCHING_PROJECTS,
@@ -14,10 +15,16 @@ import {
   DRIVE_DELETE_ITEM_SUCCESS,
   DRIVE_DELETE_ITEM_FAILED,
 } from '../actions/drive';
+import {
+  GET_USER_AVATAR,
+  GET_USER_AVATAR_SUCCESS,
+  GET_USER_AVATAR_FAILED,
+} from '../actions/user';
 import { SAVE_NOTE_FROM_DRIVE } from '../actions/projects';
 import { JUST_UPDATE_MARKDWON_HTML } from '../actions/markdown';
 import * as db from '../utils/db/app';
 import OneDrive from '../services/OneDrive';
+import { blobToBase64 } from '../utils/utils';
 
 const oneDrive = new OneDrive();
 
@@ -205,9 +212,40 @@ function* handleDeleteItem() {
   yield takeLatest(DRIVE_DELETE_ITEM, deleteItem);
 }
 
+// 获取用户头像
+function* getUserAvatar(action) {
+  const { driveName } = action;
+  let cloudDrive;
+  let driveType;
+  if (driveName === 'oneDrive') {
+    cloudDrive = oneDrive;
+    driveType = 'oneDriver';
+  }
+  try {
+    const token = yield call(getToken, cloudDrive, driveType);
+    const data = yield call(cloudDrive.getUserAvatar, token);
+    const base64 = yield call(blobToBase64, data);
+    const avatar = ipcRenderer.sendSync('save-user-avatar', base64);
+    yield put({
+      type: GET_USER_AVATAR_SUCCESS,
+      avatar: avatar.url,
+    });
+  } catch (ex) {
+    console.warn(ex);
+    yield put({
+      type: GET_USER_AVATAR_FAILED,
+    });
+  }
+}
+
+function* handleGetUserAvatar() {
+  yield takeLatest(GET_USER_AVATAR, getUserAvatar);
+}
+
 export default [
   fetchProjectList,
   fetchNotesList,
   handleDownloadNote,
   handleDeleteItem,
+  handleGetUserAvatar,
 ];

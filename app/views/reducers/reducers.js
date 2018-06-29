@@ -6,6 +6,7 @@ import markdown from './markdown';
 import note from './note';
 import drive from './drive';
 import exportQueue from './exportQueue';
+import user from './user';
 
 const rootReducer = combineReducers({
   app,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   drive,
   exportQueue,
   routing: routerReducer,
+  user,
 });
 
 export default rootReducer;

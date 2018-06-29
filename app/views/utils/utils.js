@@ -192,3 +192,20 @@ export function getWebviewPreJSPath() {
   }
   return './webview/webview-pre.js';
 }
+
+/**
+ * @description blob to base6
+ */
+export function blobToBase64(blob) {
+  const reader = new FileReader();
+  return new Promise((resolve, reject) => {
+    reader.onload = () => {
+      const dataUrl = reader.result;
+      resolve(dataUrl);
+    };
+    reader.onerror = (error) => {
+      reject(error);
+    };
+    reader.readAsDataURL(blob);
+  });
+}

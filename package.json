@@ -56,6 +56,7 @@
     "react-resize-detector": "^2.3.0",
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^4.0.8",
+    "react-transition-group": "^2.4.0",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",

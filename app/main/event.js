@@ -19,6 +19,7 @@ if (process.env.NODE_ENV === 'development') {
 const documentsPath = `${appDataPath}/documents`;
 const projectsPath = `${documentsPath}/projects`;
 const trashPath = `${documentsPath}/trash`;
+const profilePath = `${appDataPath}/profilePath`;
 
 export function eventListener(menus) {
   const { explorerMenu, exploereFileMenu, projectItemMenu,
@@ -535,6 +536,36 @@ export function eventListener(menus) {
       protocol: 'file:',
     });
   });
+
+  // 将用户头像保存到 应用数据文件夹/profile
+  ipcMain.on('save-user-avatar', (event, args) => {
+    const data = args.replace(/^data:image\/\w+;base64,/, '');
+    const avatar = `${profilePath}/avatar.png`;
+    try {
+      fs.writeFileSync(avatar, data, { encoding: 'base64' });
+      event.returnValue = {
+        url: `file://${avatar}`,
+      };
+    } catch (ex) {
+      console.warn(ex);
+      event.returnValue = {
+        url: '',
+      };
+    }
+  });
+
+  // 获取本地存储的avatar
+  ipcMain.on('get-local-avatar', (event) => {
+    try {
+      let avatar = `${profilePath}/avatar.png`;
+      if (!fs.existsSync(avatar)) {
+        avatar = '';
+      }
+      event.returnValue = avatar;
+    } catch (error) {
+      event.returnValue = '';
+    }
+  });
 }
 
 export function removeEventListeners() {
@@ -564,6 +595,8 @@ export function removeEventListeners() {
     'export-note',
     'export-notebook',
     'get-webview-path',
+    'save-user-avatar',
+    'get-local-avatar',
   ];
   for (const listener of listeners) {
     ipcMain.removeAllListeners(listener);

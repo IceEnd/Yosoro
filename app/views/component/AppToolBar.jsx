@@ -14,14 +14,19 @@ const cloudActive = (match, location) => {
   }
   return false;
 };
-
 const AppToolBar = (props) => {
   const defaultDriver = props.defaultDrive.toLowerCase();
+  const avatar = props.avatar;
+
   return (
     <div className="tool-bar" id="app_tool_bar">
       <div className="app-title-bar" />
       <div className="logo">
-        <img alt="log" src={logo} />
+        {avatar ? (
+          <img className="avatar" alt="avatar" src={avatar} />
+        ) : (
+          <img alt="logo" src={logo} />
+        )}
       </div>
       <ul className="menu-list">
         <li className="menu-item">
@@ -72,6 +77,7 @@ const AppToolBar = (props) => {
 AppToolBar.displayName = 'AppToolBar';
 AppToolBar.propTypes = {
   defaultDrive: PropTypes.string.isRequired,
+  avatar: PropTypes.string.isRequired,
 };
 
 export default AppToolBar;

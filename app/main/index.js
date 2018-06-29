@@ -89,22 +89,30 @@ let appDataPath = `${dataPath}/Yosoro`;
 if (process.env.NODE_ENV === 'development') {
   appDataPath += 'Test';
 }
+const profilePath = `${appDataPath}/profilePath`;
 const documentsPath = `${appDataPath}/documents`;
 const projectsPath = `${appDataPath}/documents/projects`;
 const trashPath = `${appDataPath}/documents/trash`;
 
 function createInitWorkSpace() {
-  if (!fs.existsSync(appDataPath)) {
-    fs.mkdirSync(appDataPath);
-  }
-  if (!fs.existsSync(documentsPath)) {
-    fs.mkdirSync(documentsPath);
-  }
-  if (!fs.existsSync(projectsPath)) {
-    fs.mkdirSync(projectsPath);
-  }
-  if (!fs.existsSync(trashPath)) {
-    fs.mkdirSync(trashPath);
+  try {
+    if (!fs.existsSync(appDataPath)) {
+      fs.mkdirSync(appDataPath);
+    }
+    if (!fs.existsSync(profilePath)) {
+      fs.mkdir(profilePath); // 异步创建
+    }
+    if (!fs.existsSync(documentsPath)) {
+      fs.mkdirSync(documentsPath);
+    }
+    if (!fs.existsSync(projectsPath)) {
+      fs.mkdirSync(projectsPath);
+    }
+    if (!fs.existsSync(trashPath)) {
+      fs.mkdirSync(trashPath);
+    }
+  } catch (ex) {
+    console.warn(ex);
   }
 }
 

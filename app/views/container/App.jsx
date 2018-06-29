@@ -10,6 +10,8 @@ import SVG from '../component/SVG';
 import Note from '../component/note/Note';
 import Trash from '../component/trash/Trash';
 import Cloud from '../component/cloud/Cloud';
+import { getTokens } from '../utils/db/app';
+import { GET_USER_AVATAR, SET_USER_LOCAL_AVATAR } from '../actions/user';
 // import About from '../component/about/About';
 // import ImageHosting from '../component/imageHosting/ImgaeHosting';
 
@@ -105,6 +107,10 @@ class App extends Component {
     exportQueue: PropTypes.shape({
       status: PropTypes.number.isRequired,
     }).isRequired,
+    // 用户信息
+    user: PropTypes.shape({
+      avatar: PropTypes.string.isRequired,
+    }).isRequired,
     history: PropTypes.any,
   };
 
@@ -122,6 +128,8 @@ class App extends Component {
     dispatch(getProjectList());
     this.fetchReleases();
     this.listenEvent();
+    this.getLocalAvatar();
+    this.fetchAvatar();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -150,6 +158,17 @@ class App extends Component {
     ipcRenderer.removeAllListeners('fetch-releases');
     ipcRenderer.removeAllListeners('async-export-file');
     ipcRenderer.removeAllListeners('async-export-file-complete');
+  }
+
+  // 获取本地存储的头像
+  getLocalAvatar() {
+    const avatar = ipcRenderer.sendSync('get-local-avatar');
+    if (avatar) {
+      this.props.dispatch({
+        type: SET_USER_LOCAL_AVATAR,
+        avatar,
+      });
+    }
   }
 
   updateNotification = (latestVersion) => {
@@ -187,6 +206,22 @@ class App extends Component {
   }
 
   fetchReleases = () => this.props.dispatch({ type: FETCHING_GITHUB_RELEASES });
+
+  fetchAvatar() {
+    // 获取用户头像
+    const defaultDrive = this.props.app.settings.defaultDrive;
+    const oAuth = getTokens();
+    let auth;
+    if (defaultDrive === 'oneDrive') {
+      auth = oAuth.oneDriver;
+    }
+    if (auth) {
+      this.props.dispatch({
+        type: GET_USER_AVATAR,
+        driveName: defaultDrive,
+      });
+    }
+  }
 
   // 监听
   listenEvent = () => {
@@ -249,7 +284,7 @@ class App extends Component {
   }
 
   render() {
-    const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash }, markdown, note, drive, exportQueue } = this.props;
+    const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash }, markdown, note, drive, exportQueue, user } = this.props;
     const { settings, platform } = app;
     const { theme } = settings;
     const { dispatch, history } = this.props;
@@ -259,7 +294,10 @@ class App extends Component {
         <SVG />
         <Router history={history}>
           <div className={`container ${notDarwin} ${theme}`}>
-            <AppToolBar defaultDrive={app.settings.defaultDrive} />
+            <AppToolBar
+              defaultDrive={app.settings.defaultDrive}
+              avatar={user.avatar}
+            />
             <Switch>
               {/* 笔记部分 */}
               <Route
@@ -316,7 +354,7 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  const { app, projects, markdown, note, drive, exportQueue } = state;
+  const { app, projects, markdown, note, drive, exportQueue, user } = state;
   return {
     app,
     projectsData: projects,
@@ -324,6 +362,7 @@ function mapStateToProps(state) {
     note,
     drive,
     exportQueue,
+    user,
   };
 }
 

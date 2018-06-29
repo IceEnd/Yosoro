@@ -85,9 +85,15 @@ html, body, #root {
 		text-align: center;
 		margin-top: 1.6rem;
 		img {
-			width: 3.8rem;
-			height: 3.8rem;
+			width: 4rem;
+			height: 4rem;
 			border-radius: 50%;
+		}
+
+		.avatar {
+			width: 4rem;
+			height: 4rem;
+			border: 3px solid #e4d3cc;
 		}
 	}
 
