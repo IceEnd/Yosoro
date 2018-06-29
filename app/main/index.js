@@ -89,7 +89,7 @@ let appDataPath = `${dataPath}/Yosoro`;
 if (process.env.NODE_ENV === 'development') {
   appDataPath += 'Test';
 }
-const profilePath = `${appDataPath}/profilePath`;
+const profilePath = `${appDataPath}/profiledata`;
 const documentsPath = `${appDataPath}/documents`;
 const projectsPath = `${appDataPath}/documents/projects`;
 const trashPath = `${appDataPath}/documents/trash`;

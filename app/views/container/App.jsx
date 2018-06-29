@@ -215,7 +215,7 @@ class App extends Component {
     if (defaultDrive === 'oneDrive') {
       auth = oAuth.oneDriver;
     }
-    if (auth) {
+    if (auth.token && auth.refreshToken) {
       this.props.dispatch({
         type: GET_USER_AVATAR,
         driveName: defaultDrive,

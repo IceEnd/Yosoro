@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'development') {
 const documentsPath = `${appDataPath}/documents`;
 const projectsPath = `${documentsPath}/projects`;
 const trashPath = `${documentsPath}/trash`;
-const profilePath = `${appDataPath}/profilePath`;
+const profilePath = `${appDataPath}/profiledata`;
 
 export function eventListener(menus) {
   const { explorerMenu, exploereFileMenu, projectItemMenu,
