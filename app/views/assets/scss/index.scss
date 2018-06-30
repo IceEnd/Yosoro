@@ -94,6 +94,7 @@ html, body, #root {
 			width: 4rem;
 			height: 4rem;
 			border: 3px solid #e4d3cc;
+			animation: a-fade-in .5s ease;
 		}
 	}
 
@@ -207,5 +208,16 @@ html, body, #root {
 	background-color: rgba($color: #ffffff, $alpha: 0.7);
 	img {
 		margin-top: 25%;
+	}
+}
+
+@keyframes a-fade-in {
+	0% {
+		transform: rotate(-360deg);
+		opacity: 0;
+	}
+	100% {
+		transform: rotate(0);
+		opacity: 1;
 	}
 }
