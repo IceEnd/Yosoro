@@ -46,7 +46,7 @@ You can read the [CHANGELOG](./CHANGELOG.md) to get more information.
 
 ### macOS
 
-![screenshot-osx](https://s1.ax1x.com/2018/05/13/CDVMcD.png)
+![screenshot-osx](https://s1.ax1x.com/2018/06/30/PFoMsP.png)
 
 ### Windows
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { CSSTransition } from 'react-transition-group';
 import {
   NavLink,
 } from 'react-router-dom';
@@ -24,13 +23,7 @@ const AppToolBar = (props) => {
       <div className="app-title-bar" />
       <div className="logo">
         {avatar ? (
-          <CSSTransition
-            classNames="fade"
-            timeout={1000}
-            in
-          >
-            <img className="avatar" alt="avatar" src={avatar} />
-          </CSSTransition>
+          <img className="avatar" alt="avatar" src={avatar} />
         ) : (
           <img alt="logo" src={logo} />
         )}

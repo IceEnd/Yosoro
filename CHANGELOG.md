@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## v1.0.7
+
+### New Features
+
+- Set user avatar
+
+### Optimize
+
+- Automatically save files
+- Reduce file size
+- Optimize transition animation
+- Windows font optimization
+
+### BugFix
+
+- Search mode switching bug
+
 ## v1.0.6
 
 ### Optimize
