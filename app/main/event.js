@@ -54,13 +54,17 @@ export function eventListener(menus) {
     const folder = `${projectsPath}/${name}`;
     try {
       if (fs.existsSync(folder)) {
-        fse.removeSync(folder);
+        event.returnValue = {
+          folder,
+          success: true,
+        };
+      } else {
+        fs.mkdirSync(folder);
+        event.returnValue = {
+          folder,
+          success: true,
+        };
       }
-      fs.mkdirSync(folder);
-      event.returnValue = {
-        folder,
-        success: true,
-      };
     } catch (ex) {
       event.returnValue = {
         success: false,
@@ -219,7 +223,7 @@ export function eventListener(menus) {
         fs.mkdirSync(folder);
       }
       fs.writeFile(filePath, content, () => {
-        console.info(`${projectName}/${projectName}:auto save`);
+        console.info(`${projectName}/${fileName}:auto save`);
       });
     } catch (ex) {
       console.warn(ex);
