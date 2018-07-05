@@ -7,7 +7,7 @@ import SVGIcon from '../share/SVGIcon';
 import { createFile, renameNote, deletNote, updateNoteDesc, trashBack, updateNoteUploadStatus, UPLOAD_NOTE_ONEDRIVE } from '../../actions/projects';
 import { formatDate, pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
 import { readFile, beforeSwitchSave, saveContentToTrashFile, updateCurrentTitle, clearMarkdown, MARKDOWN_UPLOADING } from '../../actions/markdown';
-import { switchFile, clearNote } from '../../actions/note';
+import { switchFile, clearNote, updateNoteFileName } from '../../actions/note';
 import { getNote } from '../../utils/db/app';
 
 import oneDriveLogo from '../../assets/images/onedrive.png';
@@ -362,6 +362,7 @@ export default class Files extends Component {
       }
       dispatch(renameNote(uuid, name, parentsId));
       dispatch(updateCurrentTitle(uuid, name));
+      dispatch(updateNoteFileName(name));
       this.setState({
         rename: {
           uuid: '',
