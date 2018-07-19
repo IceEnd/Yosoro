@@ -34,6 +34,14 @@
 				}
 			}
 		}
+		.setting {
+			fill: #555;
+			// fill: #c0f3f3;
+			opacity: 0.5;
+			&:hover {
+				transform: scale(1.1, 1.1);
+			}
+		}
 	}
 
 	.note {

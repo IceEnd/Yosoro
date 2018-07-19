@@ -70,6 +70,15 @@ const AppToolBar = (props) => {
           </NavLink>
         </li>
       </ul>
+      <div className="setting-wrap">
+        <NavLink to="/settings" activeClassName="">
+          <SVGIcon
+            className="setting"
+            viewBox="0 0 56 56"
+            id="#icon_svg_setting"
+          />
+        </NavLink>
+      </div>
     </div>
   );
 };

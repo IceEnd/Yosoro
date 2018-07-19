@@ -10,6 +10,7 @@ import SVG from '../component/SVG';
 import Note from '../component/note/Note';
 import Trash from '../component/trash/Trash';
 import Cloud from '../component/cloud/Cloud';
+import Settings from '../component/settings/Settings';
 import { getTokens } from '../utils/db/app';
 import { GET_USER_AVATAR, SET_USER_LOCAL_AVATAR } from '../actions/user';
 // import About from '../component/about/About';
@@ -343,6 +344,13 @@ class App extends Component {
                     dispatch={dispatch}
                     note={note}
                   />
+                )}
+              />
+
+              <Route
+                path="/settings"
+                render={() => (
+                  <Settings />
                 )}
               />
             </Switch>
