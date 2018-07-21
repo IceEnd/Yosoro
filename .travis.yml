@@ -17,3 +17,6 @@ install:
 script:
   - node --version
   - npm test
+  - npm run build:all
+  - npm run packager:linux
+  - npm run packager:linux:deb

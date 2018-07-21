@@ -1,5 +1,16 @@
 import React from 'react';
+import Title from 'Share/title/Title';
 
-const Settings = () => (<h1>Settings</h1>);
+import '../../assets/scss/settings.scss';
+
+const Settings = () => (
+  <div className="settings-root">
+    <Title
+      title="Settings"
+      iconType="setting"
+    />
+    Settings
+  </div>
+);
 
 export default Settings;

@@ -7,6 +7,10 @@ parserOptions:
   sourceType: 'module'
 parser: 'babel-eslint'
 extends: alchemy
+settings:
+  import/resolver:
+    webpack:
+      config: './config/webpack.config.eslint.js'
 plugins:
   - react
   - jsx-a11y

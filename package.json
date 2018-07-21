@@ -60,8 +60,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
-    "uuid": "^3.1.0",
-    "whatwg-fetch": "^2.0.3"
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

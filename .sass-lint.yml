@@ -2,7 +2,7 @@ options:
   merge-default-rules: false
 files:
   include:
-    - './app/views/assets/scss/**/*.scss'
+    - './app/views/**/*.scss'
 rules:
   # Extends
   extends-before-declarations: 2
