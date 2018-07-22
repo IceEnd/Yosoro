@@ -7,6 +7,7 @@ const SETTINGS = 'yosoroSettings';
 const PROJECTS = 'yosoroProjects';
 const FILES = 'yosoroFiles';
 const OAUTHTOKEN = 'yosoroOAuthToken';
+const IMAGE_HOSTING = 'yosoroImageHosting';
 
 /**
  * @description 设置默认配置
@@ -35,6 +36,7 @@ export function checkDefaults() {
   const settings = db.has(SETTINGS).value();
   const notes = db.has(FILES).value();
   const oauth = db.has(OAUTHTOKEN).value();
+  const imageHosting = db.has(IMAGE_HOSTING).value();
   if (!projects) {
     db.set(PROJECTS, []);
   }
@@ -60,7 +62,19 @@ export function checkDefaults() {
       defaultDrive: 'oneDrive',
     });
   }
-  return projects && settings && notes && oauth;
+  if (!imageHosting) {
+    db.set(IMAGE_HOSTING, {
+      default: 'github',
+      github: {
+        repo: '',
+        branch: '',
+        token: '',
+        path: '',
+        domain: '',
+      },
+    });
+  }
+  return projects && settings && notes && oauth && imageHosting;
 }
 
 
@@ -70,6 +84,10 @@ export function checkDefaults() {
 export function getAppSettings() {
   const settings = db.get(SETTINGS).value();
   return settings;
+}
+
+export function getAppImageHosting() {
+  return db.get(IMAGE_HOSTING).value();
 }
 
 /**

@@ -1,5 +1,3 @@
-// import { checkServers, setDefaults } from '../utils/lowdb';
-
 export const GET_APP_INFO = 'APP_GET_INFO';
 export const APP_LOAD_FIRST = 'APP_LOAD_FIRST';
 export const APP_LOUNCH_DEFAULT = 'APP_LOUNCH_DEFAULT';

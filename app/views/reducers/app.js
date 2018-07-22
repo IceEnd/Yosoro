@@ -11,9 +11,15 @@ import {
   FETCHING_GITHUB_RELEASES_FAILED,
   FETCHING_GITHUB_RELEASES_SUCCESS,
   CLOSE_UPDATE_NOTIFICATION,
-} from '../actions/app';
+} from 'Actions/app';
+import {
+  checkDefaults,
+  getAppSettings,
+  setMarkdownSettings,
+  setToken,
+  getAppImageHosting,
+} from 'Utils/db/app';
 import appInfo from '../../../package.json';
-import { checkDefaults, getAppSettings, setMarkdownSettings, setToken } from '../utils/db/app';
 import { compareVersion } from '../utils/utils';
 
 const assign = Object.assign;
@@ -33,6 +39,16 @@ export default function lounchApp(state = {
     },
     defaultDrive: 'oneDrive',
   },
+  imageHosting: {
+    default: 'github',
+    github: {
+      repo: '',
+      branch: '',
+      token: '',
+      path: '',
+      domain: '',
+    },
+  },
   first: false,
   oneDriveTokenStatus: 0, // 0 未请求 1 请求中 2 成功 3 失败
   platform: '',
@@ -50,11 +66,13 @@ export default function lounchApp(state = {
       if (settings.defaultDrive === 'oneDriver') {
         settings.defaultDrive = 'oneDrive';
       }
+      const imageHosting = getAppImageHosting();
       const platform = remote.getGlobal('process').platform;
       const app = {
         status: 1,
         version: appInfo.version,
         settings,
+        imageHosting,
         platform,
       };
       return assign({}, state, app);

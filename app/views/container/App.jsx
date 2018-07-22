@@ -57,6 +57,16 @@ export default class App extends Component {
       }).isRequired,
       oneDriveTokenStatus: PropTypes.number.isRequired,
       platform: PropTypes.string.isRequired,
+      imageHosting: PropTypes.shape({
+        default: PropTypes.oneOf(['github']).isRequired,
+        github: PropTypes.shape({
+          repo: PropTypes.string.isRequired,
+          branch: PropTypes.string.isRequired,
+          token: PropTypes.string.isRequired,
+          path: PropTypes.string.isRequired,
+          domain: PropTypes.string.isRequired,
+        }).isRequired,
+      }),
     }),
     projectsData: PropTypes.shape({
       projects: PropTypes.arrayOf(PropTypes.shape({
@@ -361,7 +371,9 @@ export default class App extends Component {
               <Route
                 path="/settings"
                 render={() => (
-                  <Settings />
+                  <Settings
+                    imageHosting={app.imageHosting}
+                  />
                 )}
               />
             </Switch>
