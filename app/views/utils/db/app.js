@@ -77,7 +77,6 @@ export function checkDefaults() {
   return projects && settings && notes && oauth && imageHosting;
 }
 
-
 /**
  * @description 读取app settings
  */
@@ -88,6 +87,19 @@ export function getAppSettings() {
 
 export function getAppImageHosting() {
   return db.get(IMAGE_HOSTING).value();
+}
+
+/**
+ * 更新图床配置
+ *
+ * @export
+ * @param {String} name 图床名称
+ * @param {Object} param 详细配置
+ */
+export function updateImageHosting(name, param) {
+  const config = db.get(IMAGE_HOSTING).value();
+  config[name] = param;
+  db.set(IMAGE_HOSTING, config);
 }
 
 /**

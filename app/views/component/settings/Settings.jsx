@@ -12,13 +12,17 @@ const Settings = props => (
       iconType="setting"
     />
     <div className="modules">
-      <ImageHosting {...props.imageHosting} />
+      <ImageHosting
+        dispatch={props.dispatch}
+        {...props.imageHosting}
+      />
     </div>
   </div>
 );
 
 Settings.displayName = 'YsosoroSettings';
 Settings.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   imageHosting: PropTypes.shape({
     default: PropTypes.oneOf(['github']).isRequired,
     github: PropTypes.shape({

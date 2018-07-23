@@ -372,6 +372,7 @@ export default class App extends Component {
                 path="/settings"
                 render={() => (
                   <Settings
+                    dispatch={dispatch}
                     imageHosting={app.imageHosting}
                   />
                 )}

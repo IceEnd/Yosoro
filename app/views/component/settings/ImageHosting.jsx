@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import { Form, Input, Icon, Row, Col, Button } from 'antd';
+import { CHANGE_IMAGE_HOSTING } from 'Actions/app';
 
 import Module from './Module';
 
@@ -10,6 +11,7 @@ const FormItem = Form.Item;
 export default class ImageHosting extends Component {
   static displayName = 'SettingsImagesHosting';
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
     // default: PropTypes.oneOf(['github']).isRequired,
     github: PropTypes.shape({
       repo: PropTypes.string.isRequired,
@@ -85,23 +87,55 @@ export default class ImageHosting extends Component {
     githubForm[key].value = e.target.value;
     this.setState({
       githubForm,
+      hasEidt: true,
     });
   }
 
   @autobind
   handleBlur(key) {
+    this.checkValue(key);
+  }
+
+  @autobind
+  handleSubmit() {
+    const repoF = this.checkValue('repo');
+    const branchF = this.checkValue('branch');
+    const tokenF = this.checkValue('token');
+    const pathF = this.checkValue('path');
+    if (repoF && branchF && tokenF && pathF) {
+      const githubForm = this.state.githubForm;
+      this.setState({
+        hasEidt: false,
+      });
+      this.props.dispatch({
+        type: CHANGE_IMAGE_HOSTING,
+        name: 'github',
+        param: {
+          repo: githubForm.repo.value,
+          branch: githubForm.branch.value,
+          token: githubForm.token.value,
+          path: githubForm.path.value,
+        },
+      });
+    }
+  }
+
+  @autobind
+  checkValue(key) {
     const githubForm = Object.assign({}, this.state.githubForm);
     const value = githubForm[key].value;
+    let flag = false;
     switch (key) {
       case 'repo':
         if (value === '') {
           this.changeWran(githubForm, key, 'empty');
-        } else if (!/^\w+\/\w+$/ig.test(value)) {
+        } else if (!/^(\w|-)+\/(\w|-)+$/ig.test(value)) {
           this.changeWran(githubForm, key, 'error');
         } else {
+          flag = true;
           this.clearWran(githubForm, key);
         }
-        return null;
+        break;
       case 'branch':
         if (value === '') {
           this.changeWran(githubForm, key, 'empty');
@@ -109,8 +143,9 @@ export default class ImageHosting extends Component {
           this.changeWran(githubForm, key, 'error');
         } else {
           this.clearWran(githubForm, key);
+          flag = true;
         }
-        return null;
+        break;
       case 'token':
         if (value === '') {
           this.changeWran(githubForm, key, 'empty');
@@ -118,20 +153,24 @@ export default class ImageHosting extends Component {
           this.changeWran(githubForm, key, 'error');
         } else {
           this.clearWran(githubForm, key);
+          flag = true;
         }
-        return null;
+        break;
       case 'path':
         if (value === '') {
-          this.clearWran();
+          this.clearWran(githubForm, key);
+          flag = true;
         } else if (!/^\/\w+$/ig.test(value)) {
           this.changeWran(githubForm, key, 'error');
         } else {
           this.clearWran(githubForm, key);
+          flag = true;
         }
-        return null;
+        break;
       default:
-        return null;
+        break;
     }
+    return flag;
   }
 
   render() {
@@ -162,8 +201,11 @@ export default class ImageHosting extends Component {
             </h3>
           </Col>
         </Row>
-        <Form>
+        <Form
+          onSubmit={this.handleSubmit}
+        >
           <FormItem
+            key="repo"
             label={githubForm.repo.label}
             help={githubForm.repo.help}
             validateStatus={githubForm.repo.validateStatus}
@@ -178,6 +220,7 @@ export default class ImageHosting extends Component {
             />
           </FormItem>
           <FormItem
+            key="branch"
             label={githubForm.branch.label}
             help={githubForm.branch.help}
             validateStatus={githubForm.branch.validateStatus}
@@ -186,11 +229,13 @@ export default class ImageHosting extends Component {
           >
             <Input
               placeholder="master eg."
+              value={githubForm.branch.value}
               onChange={e => this.handleInput(e, 'branch')}
               onBlur={() => this.handleBlur('branch')}
             />
           </FormItem>
           <FormItem
+            key="token"
             label={githubForm.token.label}
             help={githubForm.token.help}
             validateStatus={githubForm.token.validateStatus}
@@ -199,11 +244,13 @@ export default class ImageHosting extends Component {
           >
             <Input
               placeholder="token"
+              value={githubForm.token.value}
               onChange={e => this.handleInput(e, 'token')}
               onBlur={() => this.handleBlur('token')}
             />
           </FormItem>
           <FormItem
+            key="path"
             label={githubForm.path.label}
             help={githubForm.path.help}
             validateStatus={githubForm.path.validateStatus}
@@ -211,12 +258,16 @@ export default class ImageHosting extends Component {
           >
             <Input
               placeholder="/img eg."
+              value={githubForm.path.value}
               onChange={e => this.handleInput(e, 'path')}
               onBlur={() => this.handleBlur('path')}
             />
           </FormItem>
-          <FormItem {...tailFormItemLayout}>
-            <Button type="primary" htmlType="submit">Save</Button>
+          <FormItem key="submit" {...tailFormItemLayout}>
+            <Button
+              type="primary"
+              onClick={this.handleSubmit}
+            >Save</Button>
           </FormItem>
         </Form>
       </Module>
