@@ -336,6 +336,7 @@ export default class App extends Component {
                     markdownSettings={app.settings.markdownSettings}
                     editorMode={app.settings.editorMode}
                     exportQueue={exportQueue}
+                    imageHosting={app.imageHosting}
                   />
                 )}
               />

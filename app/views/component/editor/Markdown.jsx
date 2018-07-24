@@ -33,6 +33,16 @@ export default class Markdown extends Component {
       fileUuid: PropTypes.string.isRequired,
       fileName: PropTypes.string.isRequired,
     }).isRequired,
+    imageHosting: PropTypes.shape({
+      default: PropTypes.oneOf(['github']).isRequired,
+      github: PropTypes.shape({
+        repo: PropTypes.string.isRequired,
+        branch: PropTypes.string.isRequired,
+        token: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired,
+        domain: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
     editorMode: PropTypes.string.isRequired,
   };
 
@@ -127,7 +137,7 @@ export default class Markdown extends Component {
   }
 
   render() {
-    const { markdown: { content, status, html, start, uuid }, dispatch, editorMode, note } = this.props;
+    const { markdown: { content, status, html, start, uuid }, dispatch, editorMode, note, imageHosting } = this.props;
     const { editorWidth, drag, editorWidthValue } = this.state;
     if (status === 0) {
       return null;
@@ -145,6 +155,7 @@ export default class Markdown extends Component {
           <Editor
             uuid={uuid}
             note={note}
+            imageHosting={imageHosting}
             setDrag={this.setDrag}
             defaultContent={content}
             dispatch={dispatch}

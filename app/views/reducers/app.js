@@ -26,6 +26,8 @@ import { compareVersion } from '../utils/utils';
 
 const assign = Object.assign;
 
+const first = checkDefaults();
+
 const initImageHosting = getAppImageHosting();
 const initSettings = getAppSettings();
 if (typeof initSettings.defaultDrive === 'undefined') {
@@ -44,16 +46,12 @@ export default function lounchApp(state = {
   allowShowUpdate: true,
   settings: initSettings,
   imageHosting: initImageHosting,
-  first: false,
+  first,
   oneDriveTokenStatus: 0, // 0 未请求 1 请求中 2 成功 3 失败
   platform: '',
 }, action) {
   switch (action.type) {
     case APP_LOUNCH: {
-      const flag = checkDefaults();
-      if (!flag) { // 判断是否进行过初始化
-        state.first = true;
-      }
       const platform = remote.getGlobal('process').platform;
       const app = {
         status: 1,

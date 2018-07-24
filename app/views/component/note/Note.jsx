@@ -9,7 +9,7 @@ import Loading from '../share/Loading';
 import '../../assets/scss/note.scss';
 
 const NoteWorkspace = (props) => {
-  const { projects, markdown, dispatch, note, markdownSettings, editorMode, searchStatus, searchResult, exportQueue: { status: exportStatus } } = props;
+  const { projects, markdown, dispatch, note, markdownSettings, editorMode, searchStatus, searchResult, exportQueue: { status: exportStatus }, imageHosting } = props;
   let projectData;
   if (searchStatus === 0) {
     projectData = projects;
@@ -43,6 +43,7 @@ const NoteWorkspace = (props) => {
           hasEdit={markdown.hasEdit}
         />
         <Markdown
+          imageHosting={imageHosting}
           markdown={markdown}
           markdownSettings={markdownSettings}
           dispatch={dispatch}
@@ -57,6 +58,16 @@ const NoteWorkspace = (props) => {
 NoteWorkspace.displayName = 'NoteSpace';
 NoteWorkspace.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  imageHosting: PropTypes.shape({
+    default: PropTypes.oneOf(['github']).isRequired,
+    github: PropTypes.shape({
+      repo: PropTypes.string.isRequired,
+      branch: PropTypes.string.isRequired,
+      token: PropTypes.string.isRequired,
+      path: PropTypes.string.isRequired,
+      domain: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
   projects: PropTypes.arrayOf(PropTypes.shape({
     uuid: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
