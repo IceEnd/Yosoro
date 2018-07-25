@@ -45,7 +45,7 @@ export default function lounchApp(state = {
   showUpdate: false,
   allowShowUpdate: true,
   settings: initSettings,
-  imageHosting: initImageHosting,
+  imageHostingConfig: initImageHosting,
   first,
   oneDriveTokenStatus: 0, // 0 未请求 1 请求中 2 成功 3 失败
   platform: '',
@@ -142,7 +142,7 @@ export default function lounchApp(state = {
       });
     case CHANGE_IMAGE_HOSTING: {
       const { name, param } = action;
-      state.imageHosting[name] = param;
+      state.imageHostingConfig[name] = param;
       updateImageHosting(name, param);
       return assign({}, state);
     }

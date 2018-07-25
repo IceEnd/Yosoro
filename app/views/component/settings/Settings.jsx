@@ -14,7 +14,7 @@ const Settings = props => (
     <div className="modules">
       <ImageHosting
         dispatch={props.dispatch}
-        {...props.imageHosting}
+        {...props.imageHostingConfig}
       />
     </div>
   </div>
@@ -23,7 +23,7 @@ const Settings = props => (
 Settings.displayName = 'YsosoroSettings';
 Settings.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  imageHosting: PropTypes.shape({
+  imageHostingConfig: PropTypes.shape({
     default: PropTypes.oneOf(['github']).isRequired,
     github: PropTypes.shape({
       repo: PropTypes.string.isRequired,

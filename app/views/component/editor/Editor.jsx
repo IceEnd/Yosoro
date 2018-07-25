@@ -7,6 +7,7 @@ import CodeMirror from 'codemirror';
 import 'codemirror/addon/fold/markdown-fold';
 import 'codemirror/mode/markdown/markdown';
 import ReactResizeDetector from 'react-resize-detector';
+import { UPLOAD_IMAGE } from 'Actions/imageHosting';
 import Notification from '../share/Notification';
 import { updateMarkdownHtml } from '../../actions/markdown';
 import { throttle, debounce, formatDate } from '../../utils/utils';
@@ -50,7 +51,7 @@ export default class Editor extends Component {
       fileUuid: PropTypes.string.isRequired,
       fileName: PropTypes.string.isRequired,
     }).isRequired,
-    imageHosting: PropTypes.shape({
+    imageHostingConfig: PropTypes.shape({
       default: PropTypes.oneOf(['github']).isRequired,
       github: PropTypes.shape({
         repo: PropTypes.string.isRequired,
@@ -273,21 +274,28 @@ export default class Editor extends Component {
         invaildNotification.show();
         return null;
       }
-      this.handleUpload(cm);
+      const files = dataTransfer.files[0];
+      this.handleUpload(cm, files);
     }
   }
 
   @autobind
-  handleUpload(cm) {
-    const { imageHosting } = this.props;
-    const current = imageHosting.default;
-    if (!imageHosting[current].token) {
+  handleUpload(cm, files) {
+    const { imageHostingConfig } = this.props;
+    const current = imageHostingConfig.default;
+    if (!imageHostingConfig[current].token) {
       uploadNotification.show();
       return null;
     }
     const date = formatDate(new Date());
-    const uuid = `Uploading ${date}-${key++}`;
-    cm.doc.replaceSelection(`![${uuid}]()`);
+    const uuid = `${date}-${key++}`;
+    cm.doc.replaceSelection(`![Uploading ${uuid}]()`);
+    this.props.dispatch({
+      type: UPLOAD_IMAGE,
+      current,
+      files,
+      uuid,
+    });
   }
 
   render() {

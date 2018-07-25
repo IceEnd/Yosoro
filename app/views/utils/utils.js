@@ -34,7 +34,7 @@ function formatNumber(number) {
 }
 
 
-export function formatDate(date) {
+export function formatDate(date, type = 'normal') {
   const newDate = new Date(date);
   const year = newDate.getFullYear();
   const month = formatNumber(newDate.getMonth() + 1);
@@ -42,7 +42,10 @@ export function formatDate(date) {
   const hour = formatNumber(newDate.getHours());
   const minutes = formatNumber(newDate.getMinutes());
   const seconds = formatNumber(newDate.getSeconds());
-  return `${year}-${month}-${day}  ${hour}:${minutes}:${seconds}`;
+  if (type === 'nolmal') {
+    return `${year}-${month}-${day}  ${hour}:${minutes}:${seconds}`;
+  }
+  return `${year}-${month}-${day}.${hour}.${minutes}.${seconds}`;
 }
 
 /**

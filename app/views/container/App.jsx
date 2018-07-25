@@ -23,7 +23,7 @@ import '../assets/scss/themes.scss';
 const { shell } = remote;
 
 function mapStateToProps(state) {
-  const { app, projects, markdown, note, drive, exportQueue, user } = state;
+  const { app, projects, markdown, note, drive, exportQueue, user, imageHosting } = state;
   return {
     app,
     projectsData: projects,
@@ -32,6 +32,7 @@ function mapStateToProps(state) {
     drive,
     exportQueue,
     user,
+    imageHosting,
   };
 }
 
@@ -57,7 +58,7 @@ export default class App extends Component {
       }).isRequired,
       oneDriveTokenStatus: PropTypes.number.isRequired,
       platform: PropTypes.string.isRequired,
-      imageHosting: PropTypes.shape({
+      imageHostingConfig: PropTypes.shape({
         default: PropTypes.oneOf(['github']).isRequired,
         github: PropTypes.shape({
           repo: PropTypes.string.isRequired,
@@ -133,6 +134,10 @@ export default class App extends Component {
     user: PropTypes.shape({
       avatar: PropTypes.string.isRequired,
     }).isRequired,
+    // 图床
+    // imageHosting: PropTypes.shape({
+    //   uploadQueue: PropTypes.any,
+    // }).isRequired,
     history: PropTypes.any,
   };
 
@@ -336,7 +341,7 @@ export default class App extends Component {
                     markdownSettings={app.settings.markdownSettings}
                     editorMode={app.settings.editorMode}
                     exportQueue={exportQueue}
-                    imageHosting={app.imageHosting}
+                    imageHostingConfig={app.imageHostingConfig}
                   />
                 )}
               />
@@ -374,7 +379,7 @@ export default class App extends Component {
                 render={() => (
                   <Settings
                     dispatch={dispatch}
-                    imageHosting={app.imageHosting}
+                    imageHostingConfig={app.imageHostingConfig}
                   />
                 )}
               />
