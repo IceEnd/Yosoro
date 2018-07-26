@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v1.0.8
+
+### New Features
+
+- Image hosting(Github)
+- Settings page
+
+### Bugfix
+
+- Fixes automatically saved bug
+- Fixes multiple windows
+
 ## v1.0.7
 
 ### New Features
