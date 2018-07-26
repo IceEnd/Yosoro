@@ -16,7 +16,7 @@ let key = 0;
 
 const uploadNotification = new Notification({
   title: 'Image upload failed',
-  body: 'Please check the network or image hosting configuration',
+  body: 'Please check the network or configuration',
   key: 'editor-upload-notification',
 });
 
