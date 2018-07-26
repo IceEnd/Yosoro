@@ -10,7 +10,8 @@ import ReactResizeDetector from 'react-resize-detector';
 import { UPLOAD_IMAGE } from 'Actions/imageHosting';
 import Notification from '../share/Notification';
 import { updateMarkdownHtml } from '../../actions/markdown';
-import { throttle, debounce, formatDate } from '../../utils/utils';
+import { throttle, debounce } from '../../utils/utils';
+import eventMd from '../../events/eventMD';
 
 let key = 0;
 
@@ -63,12 +64,6 @@ export default class Editor extends Component {
     }).isRequired,
   };
 
-  static getDerivedStateFromProps(nextProps) {
-    return {
-      content: nextProps.defaultContent,
-    };
-  }
-
   constructor() {
     super();
     this.codeMirror = null;
@@ -85,6 +80,7 @@ export default class Editor extends Component {
     window.addEventListener('resize', throttle(this.onWindowResize, 60));
     this.container.addEventListener('resize', this.handleContainerResize);
     this.setCodeMirror();
+    eventMd.on('sync-value', this.SyncValue);
   }
 
   componentDidUpdate(prevProps) {
@@ -102,6 +98,7 @@ export default class Editor extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', throttle(this.onWindowResize, 60));
+    eventMd.removeAllListeners('sync-value');
     this.deleteCodeMirror();
   }
 
@@ -144,7 +141,7 @@ export default class Editor extends Component {
 
   setCodeMirror = () => {
     this.codeMirror = CodeMirror(this.container, {
-      value: this.state.content,
+      value: this.props.defaultContent,
       mode: 'markdown',
       lineNumbers: true,
       lineWrapping: true,
@@ -161,6 +158,10 @@ export default class Editor extends Component {
     // this.codeMirror.on('dragleave', this.handleDragLeave);
     // this.codeMirror.on('dragover', this.handleDragOver);
     this.codeMirror.on('drop', this.handleDrop);
+  }
+
+  SyncValue = () => {
+    this.codeMirror.setValue(this.props.defaultContent);
   }
 
   // 停止编辑500ms, 异步保存文件内容
@@ -287,14 +288,14 @@ export default class Editor extends Component {
       uploadNotification.show();
       return null;
     }
-    const date = formatDate(new Date());
-    const uuid = `${date}-${key++}`;
+    const uuid = `${Date.now()}${key++}`;
     cm.doc.replaceSelection(`![Uploading ${uuid}]()`);
     this.props.dispatch({
       type: UPLOAD_IMAGE,
       current,
       files,
       uuid,
+      from: 'editor',
     });
   }
 

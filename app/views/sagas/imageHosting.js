@@ -10,6 +10,10 @@ import {
   UPLOAD_IMAGE_FAILED,
   UPLOAD_IMAGE_SUCCESS,
 } from 'Actions/imageHosting';
+
+import {
+  REPLACE_UPLOAD_IMAGE_TEXT,
+} from 'Actions/markdown';
 import Notification from 'Components/share/Notification';
 
 const uploadNotification = new Notification({
@@ -27,18 +31,26 @@ const successNotification = new Notification({
 const github = new GitHub();
 
 function* handleUpload(action) {
-  const { files, current } = action;
+  const { files, current, from, uuid } = action;
   let services;
   if (current === 'github') {
     services = github;
   }
   try {
-    const res = yield call(services.upload(files));
+    const res = yield call(services.upload, files);
+    successNotification.show();
+    if (from === 'editor') {
+      yield put({
+        type: REPLACE_UPLOAD_IMAGE_TEXT,
+        res,
+        uuid,
+      });
+    }
     yield put({
       type: UPLOAD_IMAGE_SUCCESS,
       res,
+      uuid,
     });
-    successNotification.show();
   } catch (ex) {
     console.warn(ex);
     yield put({
