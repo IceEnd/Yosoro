@@ -2,7 +2,7 @@ import path from 'path';
 import merge from 'webpack-merge';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+// import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import baseConfig from './webpack.config.base.babel';
 
 process.traceDeprecation = true;
@@ -108,6 +108,6 @@ export default merge.smart(baseConfig, {
         minifyCSS: true,
       },
     }),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
 });

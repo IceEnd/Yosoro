@@ -11,50 +11,50 @@ import {
   FETCHING_GITHUB_RELEASES_FAILED,
   FETCHING_GITHUB_RELEASES_SUCCESS,
   CLOSE_UPDATE_NOTIFICATION,
-} from '../actions/app';
+  CHANGE_IMAGE_HOSTING,
+} from 'Actions/app';
+import {
+  checkDefaults,
+  getAppSettings,
+  setMarkdownSettings,
+  setToken,
+  getAppImageHosting,
+  updateImageHosting,
+} from 'Utils/db/app';
 import appInfo from '../../../package.json';
-import { checkDefaults, getAppSettings, setMarkdownSettings, setToken } from '../utils/db/app';
 import { compareVersion } from '../utils/utils';
 
 const assign = Object.assign;
 
+const first = checkDefaults();
+
+const initImageHosting = getAppImageHosting();
+const initSettings = getAppSettings();
+if (typeof initSettings.defaultDrive === 'undefined') {
+  initSettings.defaultDrive = 'oneDrive';
+}
+if (initSettings.defaultDrive === 'oneDriver') {
+  initSettings.defaultDrive = 'oneDrive';
+}
+
 export default function lounchApp(state = {
   status: 0, // 0: app 初始化 1: 初始化成功
-  version: '',
+  version: appInfo.version,
   latestVersion: '',
   versionFetchStatus: 0, // 0: 请求中 1: 请求成功 2: 请求失败
   showUpdate: false,
   allowShowUpdate: true,
-  settings: {
-    theme: 'light',
-    editorMode: 'normal',
-    markdownSettings: {
-      editorWidth: 0.5,
-    },
-    defaultDrive: 'oneDrive',
-  },
-  first: false,
+  settings: initSettings,
+  imageHostingConfig: initImageHosting,
+  first,
   oneDriveTokenStatus: 0, // 0 未请求 1 请求中 2 成功 3 失败
   platform: '',
 }, action) {
   switch (action.type) {
     case APP_LOUNCH: {
-      const flag = checkDefaults();
-      if (!flag) { // 判断是否进行过初始化
-        state.first = true;
-      }
-      const settings = getAppSettings();
-      if (typeof settings.defaultDrive === 'undefined') {
-        settings.defaultDrive = 'oneDrive';
-      }
-      if (settings.defaultDrive === 'oneDriver') {
-        settings.defaultDrive = 'oneDrive';
-      }
       const platform = remote.getGlobal('process').platform;
       const app = {
         status: 1,
-        version: appInfo.version,
-        settings,
         platform,
       };
       return assign({}, state, app);
@@ -140,6 +140,12 @@ export default function lounchApp(state = {
       return assign({}, state, {
         allowShowUpdate: false,
       });
+    case CHANGE_IMAGE_HOSTING: {
+      const { name, param } = action;
+      state.imageHostingConfig[name] = param;
+      updateImageHosting(name, param);
+      return assign({}, state);
+    }
     default:
       return state;
   }

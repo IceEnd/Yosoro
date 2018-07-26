@@ -1,0 +1,31 @@
+@import "common.scss";
+@import "color.scss";
+
+.settings-root {
+	flex: 1 1 auto;
+	@include display-flex;
+	flex-direction: column;
+
+	.modules {
+		flex: 1 1 auto;
+		overflow-y: auto;
+
+		.settings-module {
+			width: 80%;
+			margin: 0 auto;
+
+			.module-title {
+				position: relative;
+				border-bottom: 2px solid $lightHeaderBorder;
+				padding-bottom: 0.5rem;
+				height: 2em;
+				span {
+					position: absolute;
+					padding: 0 0.3em;
+					bottom: 0;
+					border-bottom: 2px solid $lightHeaderBorder;
+				}
+			}
+		}
+	}
+}

@@ -207,6 +207,7 @@ export default class Preview extends PureComponent {
             disableblinkfeatures="Auxclick"
             src={webviewPath}
             preload={preJSPath}
+            onDrop={e => e.preventDefault()}
             ref={node => (this.webview = node)}
           />
         </div>

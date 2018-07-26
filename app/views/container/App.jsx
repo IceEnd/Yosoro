@@ -1,19 +1,17 @@
-import 'whatwg-fetch';
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Router, Route, Switch } from 'react-router-dom';
 import { ipcRenderer, remote } from 'electron';
 import { message, notification } from 'antd';
-import AppToolBar from '../component/AppToolBar';
-import SVG from '../component/SVG';
-import Note from '../component/note/Note';
-import Trash from '../component/trash/Trash';
-import Cloud from '../component/cloud/Cloud';
-import { getTokens } from '../utils/db/app';
-import { GET_USER_AVATAR, SET_USER_LOCAL_AVATAR } from '../actions/user';
-// import About from '../component/about/About';
-// import ImageHosting from '../component/imageHosting/ImgaeHosting';
+import AppToolBar from 'Components/AppToolBar';
+import SVG from 'Components/SVG';
+import Note from 'Components/note/Note';
+import Trash from 'Components/trash/Trash';
+import Cloud from 'Components/cloud/Cloud';
+import Settings from 'Components/settings/Settings';
+import { getTokens } from 'Utils/db/app';
+import { GET_USER_AVATAR, SET_USER_LOCAL_AVATAR } from 'Actions/user';
 
 import { appLounch, FETCHING_ONEDRIVE_TOKEN, FETCHING_GITHUB_RELEASES, CLOSE_UPDATE_NOTIFICATION } from '../actions/app';
 import { getProjectList, saveNote } from '../actions/projects';
@@ -24,7 +22,22 @@ import '../assets/scss/themes.scss';
 
 const { shell } = remote;
 
-class App extends Component {
+function mapStateToProps(state) {
+  const { app, projects, markdown, note, drive, exportQueue, user, imageHosting } = state;
+  return {
+    app,
+    projectsData: projects,
+    markdown,
+    note,
+    drive,
+    exportQueue,
+    user,
+    imageHosting,
+  };
+}
+
+@connect(mapStateToProps)
+export default class App extends Component {
   static displayName = 'App';
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -45,6 +58,16 @@ class App extends Component {
       }).isRequired,
       oneDriveTokenStatus: PropTypes.number.isRequired,
       platform: PropTypes.string.isRequired,
+      imageHostingConfig: PropTypes.shape({
+        default: PropTypes.oneOf(['github']).isRequired,
+        github: PropTypes.shape({
+          repo: PropTypes.string.isRequired,
+          branch: PropTypes.string.isRequired,
+          token: PropTypes.string.isRequired,
+          path: PropTypes.string.isRequired,
+          domain: PropTypes.string.isRequired,
+        }).isRequired,
+      }),
     }),
     projectsData: PropTypes.shape({
       projects: PropTypes.arrayOf(PropTypes.shape({
@@ -111,6 +134,10 @@ class App extends Component {
     user: PropTypes.shape({
       avatar: PropTypes.string.isRequired,
     }).isRequired,
+    // 图床
+    // imageHosting: PropTypes.shape({
+    //   uploadQueue: PropTypes.any,
+    // }).isRequired,
     history: PropTypes.any,
   };
 
@@ -314,6 +341,7 @@ class App extends Component {
                     markdownSettings={app.settings.markdownSettings}
                     editorMode={app.settings.editorMode}
                     exportQueue={exportQueue}
+                    imageHostingConfig={app.imageHostingConfig}
                   />
                 )}
               />
@@ -345,6 +373,16 @@ class App extends Component {
                   />
                 )}
               />
+
+              <Route
+                path="/settings"
+                render={() => (
+                  <Settings
+                    dispatch={dispatch}
+                    imageHostingConfig={app.imageHostingConfig}
+                  />
+                )}
+              />
             </Switch>
           </div>
         </Router>
@@ -352,18 +390,3 @@ class App extends Component {
     );
   }
 }
-
-function mapStateToProps(state) {
-  const { app, projects, markdown, note, drive, exportQueue, user } = state;
-  return {
-    app,
-    projectsData: projects,
-    markdown,
-    note,
-    drive,
-    exportQueue,
-    user,
-  };
-}
-
-export default connect(mapStateToProps)(App);

@@ -10,11 +10,13 @@ import {
   MARKDWON_UPLADING_SUCCESS,
   MARKDWON_UPLADING_FAILED,
   JUST_UPDATE_MARKDWON_HTML,
+  REPLACE_UPLOAD_IMAGE_TEXT,
   // READ_FILE_SUCCESS,
   // READ_FILE_FARILED,
 } from '../actions/markdown';
 import { updateNoteInfo } from '../utils/db/app';
 import { markedToHtml } from '../utils/utils';
+import eventMD from '../events/eventMD';
 
 const assign = Object.assign;
 
@@ -147,6 +149,22 @@ function updateMarkdown(state = initState, action) {
       return assign({}, state, {
         uploadStatus: 3,
       });
+    }
+    case REPLACE_UPLOAD_IMAGE_TEXT: { // 替换上传后的图片文本
+      const { uuid, res } = action;
+      if (res.content) {
+        /* eslint-disable camelcase */
+        const { name, download_url } = res.content;
+        const reg = new RegExp(`!\\[Uploading\\s*${uuid}\\s*\\]\\s*\\(\\w*\\)`, 'ig');
+        state.content = state.content.replace(reg, `![${name}](${download_url})`);
+        /* eslint-ensable camelcase */
+        state.html = markedToHtml(state.content);
+        setTimeout(() => {
+          eventMD.emit('sync-value');
+        }, 0);
+        return assign({}, state);
+      }
+      return state;
     }
     default:
       return state;

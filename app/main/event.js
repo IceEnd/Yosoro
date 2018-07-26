@@ -2,24 +2,20 @@
  * @description 主进程事件监听
  */
 
-import { ipcMain, BrowserWindow, app, Menu, dialog, shell } from 'electron';
+import { ipcMain, BrowserWindow, Menu, dialog, shell } from 'electron';
 import fs from 'fs';
 import fse from 'fs-extra';
 import path from 'path';
 import url from 'url';
+import {
+  PROFILE_PATH,
+  PROJECTS_PATH,
+  TRASH_PATH,
+  DESKTOP_PATH,
+} from './paths';
 import { markedToHtml } from '../views/utils/utils';
 import schedule from './schedule';
 import PDF from './pdf';
-
-const dataPath = app.getPath('appData');
-let appDataPath = `${dataPath}/Yosoro`;
-if (process.env.NODE_ENV === 'development') {
-  appDataPath += 'Test';
-}
-const documentsPath = `${appDataPath}/documents`;
-const projectsPath = `${documentsPath}/projects`;
-const trashPath = `${documentsPath}/trash`;
-const profilePath = `${appDataPath}/profiledata`;
 
 export function eventListener(menus) {
   const { explorerMenu, exploereFileMenu, projectItemMenu,
@@ -51,16 +47,20 @@ export function eventListener(menus) {
   // 新建项目文件夹
   ipcMain.on('create-project', (event, args) => {
     const name = args;
-    const folder = `${projectsPath}/${name}`;
+    const folder = `${PROJECTS_PATH}/${name}`;
     try {
       if (fs.existsSync(folder)) {
-        fse.removeSync(folder);
+        event.returnValue = {
+          folder,
+          success: true,
+        };
+      } else {
+        fs.mkdirSync(folder);
+        event.returnValue = {
+          folder,
+          success: true,
+        };
       }
-      fs.mkdirSync(folder);
-      event.returnValue = {
-        folder,
-        success: true,
-      };
     } catch (ex) {
       event.returnValue = {
         success: false,
@@ -71,10 +71,10 @@ export function eventListener(menus) {
 
   ipcMain.on('rename-project', (event, args) => {
     const { oldName, newName } = args;
-    const oldfolder = `${projectsPath}/${oldName}`;
-    const newfolder = `${projectsPath}/${newName}`;
-    const oldTrashFolder = `${trashPath}/${oldName}`;
-    const newTrashFolder = `${trashPath}/${newName}`;
+    const oldfolder = `${PROJECTS_PATH}/${oldName}`;
+    const newfolder = `${PROJECTS_PATH}/${newName}`;
+    const oldTrashFolder = `${TRASH_PATH}/${oldName}`;
+    const newTrashFolder = `${TRASH_PATH}/${newName}`;
     try {
       fs.renameSync(oldfolder, newfolder);
       if (fs.existsSync(oldTrashFolder)) {
@@ -96,8 +96,8 @@ export function eventListener(menus) {
   ipcMain.on('move-project-to-trash', (event, args) => {
     const { name } = args;
     // const newPath = path.join(__dirname, `../documents/trash/${name}`);
-    const oldPath = `${projectsPath}/${name}`;
-    const newPath = `${trashPath}/${name}`;
+    const oldPath = `${PROJECTS_PATH}/${name}`;
+    const newPath = `${TRASH_PATH}/${name}`;
     try {
       if (!fs.existsSync(oldPath)) { // 不存在对应文件夹
         event.returnValue = {
@@ -135,7 +135,7 @@ export function eventListener(menus) {
   // 新建文件
   ipcMain.on('create-file', (event, args) => {
     const { name, projectName } = args;
-    const file = `${projectsPath}/${projectName}/${name}.md`;
+    const file = `${PROJECTS_PATH}/${projectName}/${name}.md`;
     try {
       fs.writeFileSync(file, '');
       event.returnValue = {
@@ -153,8 +153,8 @@ export function eventListener(menus) {
   // 重命名笔记标题
   ipcMain.on('rename-note', (event, args) => {
     const { oldName, newName, projectName } = args;
-    const oldPath = `${projectsPath}/${projectName}/${oldName}.md`;
-    const newPath = `${projectsPath}/${projectName}/${newName}.md`;
+    const oldPath = `${PROJECTS_PATH}/${projectName}/${oldName}.md`;
+    const newPath = `${PROJECTS_PATH}/${projectName}/${newName}.md`;
     try {
       fs.renameSync(oldPath, newPath);
       event.returnValue = {
@@ -172,7 +172,7 @@ export function eventListener(menus) {
   // 读取文件内容
   ipcMain.on('read-file', (event, args) => {
     const { projectName, fileName } = args;
-    const filePath = `${projectsPath}/${projectName}/${fileName}.md`;
+    const filePath = `${PROJECTS_PATH}/${projectName}/${fileName}.md`;
     try {
       const data = fs.readFileSync(filePath, {
         encoding: 'utf8',
@@ -192,8 +192,8 @@ export function eventListener(menus) {
   // 保存文件内容
   ipcMain.on('save-content-to-file', (event, args) => {
     const { content, fileName, projectName } = args;
-    const filePath = `${projectsPath}/${projectName}/${fileName}.md`;
-    const folder = `${projectsPath}/${projectName}`;
+    const filePath = `${PROJECTS_PATH}/${projectName}/${fileName}.md`;
+    const folder = `${PROJECTS_PATH}/${projectName}`;
     try {
       if (!fs.existsSync(folder)) {
         fs.mkdirSync(folder);
@@ -212,14 +212,14 @@ export function eventListener(menus) {
 
   ipcMain.on('auto-save-content-to-file', (event, args) => {
     const { content, fileName, projectName } = args;
-    const filePath = `${projectsPath}/${projectName}/${fileName}.md`;
-    const folder = `${projectsPath}/${projectName}`;
+    const filePath = `${PROJECTS_PATH}/${projectName}/${fileName}.md`;
+    const folder = `${PROJECTS_PATH}/${projectName}`;
     try {
       if (!fs.existsSync(folder)) {
         fs.mkdirSync(folder);
       }
       fs.writeFile(filePath, content, () => {
-        console.info(`${projectName}/${projectName}:auto save`);
+        // console.info(`${projectName}/${fileName}:auto save`);
       });
     } catch (ex) {
       console.warn(ex);
@@ -229,7 +229,7 @@ export function eventListener(menus) {
   ipcMain.on('save-content-to-trash-file', (event, args) => {
     const { content, projectName, name } = args;
     // const file = path.join(__dirname, `../documents/trash/${projectName}/${name}.md`);
-    const filePath = `${trashPath}/${projectName}/${name}.md`;
+    const filePath = `${TRASH_PATH}/${projectName}/${name}.md`;
     try {
       fs.writeFileSync(filePath, content);
       event.returnValue = {
@@ -246,9 +246,9 @@ export function eventListener(menus) {
   // 将笔记移动到废纸篓中
   ipcMain.on('move-file-to-trash', (event, args) => {
     const { name, projectName } = args;
-    const oldPath = `${projectsPath}/${projectName}/${name}.md`;
-    const newPath = `${trashPath}/${projectName}/${name}.md`;
-    const newfolder = `${trashPath}/${projectName}`;
+    const oldPath = `${PROJECTS_PATH}/${projectName}/${name}.md`;
+    const newPath = `${TRASH_PATH}/${projectName}/${name}.md`;
+    const newfolder = `${TRASH_PATH}/${projectName}`;
     try {
       if (!fs.existsSync(oldPath)) {
         event.returnValue = {
@@ -281,7 +281,7 @@ export function eventListener(menus) {
   // 永久删除笔记
   ipcMain.on('permanent-remove-note', (event, args) => {
     const { projectName, name } = args;
-    const filePath = `${trashPath}/${projectName}/${name}.md`;
+    const filePath = `${TRASH_PATH}/${projectName}/${name}.md`;
     try {
       if (!fs.existsSync(filePath)) {
         event.returnValue = {
@@ -306,7 +306,7 @@ export function eventListener(menus) {
   // 永久删除笔记本
   ipcMain.on('permanent-remove-notebook', (event, args) => {
     const { name } = args;
-    const folder = `${trashPath}/${name}`;
+    const folder = `${TRASH_PATH}/${name}`;
     try {
       if (!fs.existsSync(folder)) {
         event.returnValue = {
@@ -330,9 +330,9 @@ export function eventListener(menus) {
   // 从废纸篓中还原笔记
   ipcMain.on('restore-note', (event, args) => {
     const { projectName, name } = args;
-    const folder = `${projectsPath}/${projectName}`;
-    const oldFile = `${trashPath}/${projectName}/${name}.md`;
-    const newFile = `${projectsPath}/${projectName}/${name}.md`;
+    const folder = `${PROJECTS_PATH}/${projectName}`;
+    const oldFile = `${TRASH_PATH}/${projectName}/${name}.md`;
+    const newFile = `${PROJECTS_PATH}/${projectName}/${name}.md`;
     try {
       if (!fs.existsSync(folder)) {
         fs.mkdirSync(folder);
@@ -352,8 +352,8 @@ export function eventListener(menus) {
   // 从废纸篓中还原笔记本
   ipcMain.on('restore-notebook', (event, args) => {
     const { name } = args;
-    const oldPath = `${trashPath}/${name}`;
-    const newPath = `${projectsPath}/${name}`;
+    const oldPath = `${TRASH_PATH}/${name}`;
+    const newPath = `${PROJECTS_PATH}/${name}`;
     try {
       const files = fs.readdirSync(oldPath);
       const fl = files.length;
@@ -376,7 +376,7 @@ export function eventListener(menus) {
   // 保存上传信息
   ipcMain.on('save-upload-info-data', (event, args) => {
     const content = JSON.stringify(args);
-    const filePath = `${projectsPath}/data.json`;
+    const filePath = `${PROJECTS_PATH}/data.json`;
     try {
       fs.writeFileSync(filePath, content);
       event.returnValue = {
@@ -434,8 +434,8 @@ export function eventListener(menus) {
 
   ipcMain.on('export-note', (event, args) => {
     const { projectName, fileName, type, data } = args;
-    const folderPath = `${projectsPath}/${projectName}`;
-    const filePath = `${projectsPath}/${projectName}/${fileName}.md`;
+    const folderPath = `${PROJECTS_PATH}/${projectName}`;
+    const filePath = `${PROJECTS_PATH}/${projectName}/${fileName}.md`;
     try {
       let content;
       if (data) {
@@ -458,7 +458,7 @@ export function eventListener(menus) {
       }
       const options = {
         title,
-        defaultPath: `${app.getPath('desktop')}/${fileName}.${type}`,
+        defaultPath: `${DESKTOP_PATH}/${fileName}.${type}`,
       };
       dialog.showSaveDialog(options, async (fname) => {
         if (typeof fname === 'string') {
@@ -491,8 +491,8 @@ export function eventListener(menus) {
     const { notebook, type } = args;
     try {
       event.sender.send('async-export-file');
-      const folderPath = `${projectsPath}/${notebook}`;
-      const exportPath = `${app.getPath('desktop')}/${notebook}`;
+      const folderPath = `${PROJECTS_PATH}/${notebook}`;
+      const exportPath = `${DESKTOP_PATH}/${notebook}`;
       if (!fs.existsSync(exportPath)) {
         fs.mkdirSync(exportPath);
       }
@@ -540,7 +540,7 @@ export function eventListener(menus) {
   // 将用户头像保存到 应用数据文件夹/profile
   ipcMain.on('save-user-avatar', (event, args) => {
     const data = args.replace(/^data:image\/\w+;base64,/, '');
-    const avatar = `${profilePath}/avatar.png`;
+    const avatar = `${PROFILE_PATH}/avatar.png`;
     try {
       fs.writeFileSync(avatar, data, { encoding: 'base64' });
       event.returnValue = {
@@ -557,7 +557,7 @@ export function eventListener(menus) {
   // 获取本地存储的avatar
   ipcMain.on('get-local-avatar', (event) => {
     try {
-      let avatar = `${profilePath}/avatar.png`;
+      let avatar = `${PROFILE_PATH}/avatar.png`;
       if (!fs.existsSync(avatar)) {
         avatar = '';
       }

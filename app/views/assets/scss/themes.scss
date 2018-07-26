@@ -34,12 +34,21 @@
 				}
 			}
 		}
+		.setting {
+			fill: #555;
+			// fill: #c0f3f3;
+			opacity: 0.7;
+		}
 	}
 
 	.note {
 		.project-list {
 			border-color: $lightBorderBg;
 		}
+	}
+
+	.settings-root {
+		background-color: #f8f8f8;
 	}
 }
 

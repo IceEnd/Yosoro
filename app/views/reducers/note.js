@@ -4,6 +4,7 @@ import {
   CLEAR_NOTE,
   CLEAR_NOTE_WORKSCAPE,
   UPDATE_NOTE_PROJECTNAME,
+  UPDATE_NOTE_FILENAME,
 } from '../actions/note';
 
 const assign = Object.assign;
@@ -44,6 +45,12 @@ export default function updateNote(state = {
       const { name } = action;
       return assign({}, state, {
         projectName: name,
+      });
+    }
+    case UPDATE_NOTE_FILENAME: {
+      const { name } = action;
+      return assign({}, state, {
+        fileName: name,
       });
     }
     default:

@@ -7,8 +7,31 @@ import CodeMirror from 'codemirror';
 import 'codemirror/addon/fold/markdown-fold';
 import 'codemirror/mode/markdown/markdown';
 import ReactResizeDetector from 'react-resize-detector';
+import { UPLOAD_IMAGE } from 'Actions/imageHosting';
+import Notification from '../share/Notification';
 import { updateMarkdownHtml } from '../../actions/markdown';
 import { throttle, debounce } from '../../utils/utils';
+import eventMd from '../../events/eventMD';
+
+let key = 0;
+
+const uploadNotification = new Notification({
+  title: 'Image upload failed',
+  body: 'Please check the network or configuration',
+  key: 'editor-upload-notification',
+});
+
+const invaildNotification = new Notification({
+  title: 'Only support uploading images',
+  body: 'Support upload jpg, jpeg, png, svg, webp',
+  key: 'editor-invaild-notification',
+});
+
+const sigleNotification = new Notification({
+  title: 'Image upload failed',
+  body: 'Uploading multiple files is not supported',
+  key: 'editor-single-file-notification',
+});
 
 export default class Editor extends Component {
   static displayName = 'MarkdownEditor';
@@ -29,13 +52,17 @@ export default class Editor extends Component {
       fileUuid: PropTypes.string.isRequired,
       fileName: PropTypes.string.isRequired,
     }).isRequired,
+    imageHostingConfig: PropTypes.shape({
+      default: PropTypes.oneOf(['github']).isRequired,
+      github: PropTypes.shape({
+        repo: PropTypes.string.isRequired,
+        branch: PropTypes.string.isRequired,
+        token: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired,
+        domain: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
   };
-
-  static getDerivedStateFromProps(nextProps) {
-    return {
-      content: nextProps.defaultContent,
-    };
-  }
 
   constructor() {
     super();
@@ -53,6 +80,7 @@ export default class Editor extends Component {
     window.addEventListener('resize', throttle(this.onWindowResize, 60));
     this.container.addEventListener('resize', this.handleContainerResize);
     this.setCodeMirror();
+    eventMd.on('sync-value', this.SyncValue);
   }
 
   componentDidUpdate(prevProps) {
@@ -70,6 +98,7 @@ export default class Editor extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', throttle(this.onWindowResize, 60));
+    eventMd.removeAllListeners('sync-value');
     this.deleteCodeMirror();
   }
 
@@ -112,7 +141,7 @@ export default class Editor extends Component {
 
   setCodeMirror = () => {
     this.codeMirror = CodeMirror(this.container, {
-      value: this.state.content,
+      value: this.props.defaultContent,
       mode: 'markdown',
       lineNumbers: true,
       lineWrapping: true,
@@ -125,6 +154,15 @@ export default class Editor extends Component {
     this.codeMirror.on('scroll', this.handleScroll);
     this.codeMirror.on('keydown', this.handleKeyDown);
     this.codeMirror.on('focus', this.handleFocus);
+    // this.codeMirror.on('dragenter', this.handleDragEnter);
+    // this.codeMirror.on('dragleave', this.handleDragLeave);
+    // this.codeMirror.on('dragover', this.handleDragOver);
+    this.codeMirror.on('drop', this.handleDrop);
+    this.codeMirror.on('paste', this.handlePaste);
+  }
+
+  SyncValue = () => {
+    this.codeMirror.setValue(this.props.defaultContent);
   }
 
   // 停止编辑500ms, 异步保存文件内容
@@ -208,6 +246,69 @@ export default class Editor extends Component {
   @autobind
   handleCodeMirrorResize() {
     this.containerResize();
+  }
+
+  // handleDragStart = (e) => {
+  //   e.preventDefault();
+  // }
+
+  // handleDragEnter = () => {
+  //   // console.log('enter');
+  // }
+
+  // handleDragLeave = () => {
+  //   // console.log('leave');
+  // }
+
+  handleDragOver = () => {
+    // console.log('over');
+  }
+
+  @autobind
+  handleDrop(cm, e) {
+    this.handleDragAndPaste(cm, e, 'dataTransfer');
+  }
+
+  @autobind
+  handlePaste(cm, e) {
+    this.handleDragAndPaste(cm, e, 'clipboardData');
+  }
+
+  @autobind
+  handleDragAndPaste(cm, e, type) {
+    const dataTransfer = e[type];
+    if (dataTransfer && dataTransfer.files.length > 0) {
+      if (dataTransfer.files.length !== 1) { // 只允许一次上传一个图片
+        sigleNotification.show();
+        return null;
+      }
+      if (!/.(png|jpg|jpeg|gif|webp|svg)$/ig.test(dataTransfer.files[0].name)) { // 文件类型不对
+        invaildNotification.show();
+        return null;
+      }
+      e.preventDefault();
+      const files = dataTransfer.files[0];
+      this.handleUpload(cm, files);
+    }
+  }
+
+  @autobind
+  handleUpload(cm, files) {
+    const { imageHostingConfig } = this.props;
+    const current = imageHostingConfig.default;
+    if (!imageHostingConfig[current].token) {
+      uploadNotification.show();
+      return null;
+    }
+    const uuid = `${Date.now()}${key++}`;
+    cm.doc.replaceSelection(`![Uploading ${uuid}]()`);
+    this.props.dispatch({
+      type: UPLOAD_IMAGE,
+      current,
+      files,
+      uuid,
+      from: 'editor',
+    });
   }
 
   render() {

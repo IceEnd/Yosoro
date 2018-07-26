@@ -7,7 +7,7 @@ import SVGIcon from '../share/SVGIcon';
 import { createFile, renameNote, deletNote, updateNoteDesc, trashBack, updateNoteUploadStatus, UPLOAD_NOTE_ONEDRIVE } from '../../actions/projects';
 import { formatDate, pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
 import { readFile, beforeSwitchSave, saveContentToTrashFile, updateCurrentTitle, clearMarkdown, MARKDOWN_UPLOADING } from '../../actions/markdown';
-import { switchFile, clearNote } from '../../actions/note';
+import { switchFile, clearNote, updateNoteFileName } from '../../actions/note';
 import { getNote } from '../../utils/db/app';
 
 import oneDriveLogo from '../../assets/images/onedrive.png';
@@ -297,7 +297,8 @@ export default class Files extends Component {
    * @description 新建笔记
    */
   createFile = () => {
-    const name = this.state.newFileTitle || 'New Note';
+    const value = this.state.newFileTitle || 'New Note';
+    const name = value.replace(/(^\s*|\s*$)/ig, '');
     const { parentsId, projectName, notes } = this.props;
     const arr = notes.filter(item => item.name === name);
     if (arr.length !== 0) {
@@ -336,7 +337,8 @@ export default class Files extends Component {
 
   editTitle = () => {
     const { parentsId, dispatch, projectName } = this.props;
-    const { uuid, name } = this.state.rename;
+    const { uuid, name: value } = this.state.rename;
+    const name = value.replace(/(^\s*|\s*$)/ig, '');
     if (name === '' || name === this.state.contextNote.name) {
       this.setState({
         rename: {
@@ -362,6 +364,7 @@ export default class Files extends Component {
       }
       dispatch(renameNote(uuid, name, parentsId));
       dispatch(updateCurrentTitle(uuid, name));
+      dispatch(updateNoteFileName(name));
       this.setState({
         rename: {
           uuid: '',

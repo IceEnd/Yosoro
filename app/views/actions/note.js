@@ -43,3 +43,12 @@ export function updateNoteProjectName(name) {
     name,
   };
 }
+
+export const UPDATE_NOTE_FILENAME = 'UPDATE_NOTE_FILENAME';
+
+export function updateNoteFileName(name) {
+  return {
+    type: UPDATE_NOTE_FILENAME,
+    name,
+  };
+}

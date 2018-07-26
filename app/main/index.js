@@ -1,11 +1,12 @@
 import electron from 'electron';
 import path from 'path';
 import url from 'url';
-import fs from 'fs';
 import ChildProcess from 'child_process';
 import { setMenu, getExplorerMenuItem, getExplorerFileMenuItem, getExplorerProjectItemMenu, getExplorerFileItemMenu } from './menu';
 import { removeEventListeners, eventListener } from './event';
 import schedule from './schedule';
+import * as appPaths from './paths';
+import pkg from '../../package.json';
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -81,42 +82,13 @@ if (process.platform === 'win32' && handleSquirrelEvent() && process.env.NODE_EN
   }
 }
 
+if (process.platform === 'win32') {
+  app.setAppUserModelId(pkg.build.appId);
+}
+
 let mainWindow;
-// let tray = null;
 
-const dataPath = app.getPath('appData');
-let appDataPath = `${dataPath}/Yosoro`;
-if (process.env.NODE_ENV === 'development') {
-  appDataPath += 'Test';
-}
-const profilePath = `${appDataPath}/profiledata`;
-const documentsPath = `${appDataPath}/documents`;
-const projectsPath = `${appDataPath}/documents/projects`;
-const trashPath = `${appDataPath}/documents/trash`;
-
-function createInitWorkSpace() {
-  try {
-    if (!fs.existsSync(appDataPath)) {
-      fs.mkdirSync(appDataPath);
-    }
-    if (!fs.existsSync(profilePath)) {
-      fs.mkdir(profilePath); // 异步创建
-    }
-    if (!fs.existsSync(documentsPath)) {
-      fs.mkdirSync(documentsPath);
-    }
-    if (!fs.existsSync(projectsPath)) {
-      fs.mkdirSync(projectsPath);
-    }
-    if (!fs.existsSync(trashPath)) {
-      fs.mkdirSync(trashPath);
-    }
-  } catch (ex) {
-    console.warn(ex);
-  }
-}
-
-createInitWorkSpace();
+appPaths.initWorkSpace();
 
 if (process.env.NODE_ENV === 'development') {
   require('electron-watch')(
@@ -207,6 +179,21 @@ function createWindow() {
     }
     /* eslint-enable */
   }
+}
+
+// 只允许单个实例运行
+const isSecondInstance = app.makeSingleInstance(() => {
+  // Someone tried to run a second instance, we should focus our window.
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore();
+    }
+    mainWindow.focus();
+  }
+});
+
+if (isSecondInstance) {
+  app.quit();
 }
 
 // This method will be called when Electron has finished

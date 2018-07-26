@@ -1,7 +1,7 @@
 {
   "name": "yosoro",
   "productName": "Yosoro",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Beautiful Cloud Drive Markdown NoteBook Desktop App.",
   "main": "./app/main/index.js",
   "scripts": {
@@ -19,8 +19,12 @@
     "packager:win:setup": "babel-node ./scripts/packageSetup.js",
     "packager:linux": "electron-packager ./lib Yosoro --overwrite --platform=linux --arch=x64 --out=out",
     "packager:linux:deb": "babel-node ./scripts/packageDeb.js",
-    "lint": "concurrently \"eslint app config scripts --ext .js,.jsx\" \"sass-lint -v -q\"",
+    "lint": "concurrently \"eslint . --ext .js,.jsx\" \"sass-lint -v -q\"",
     "test": "npm run lint"
+  },
+  "build": {
+    "productName": "Yosoro",
+    "appId": "com.alchemy.yosoro"
   },
   "author": {
     "name": "Alchemy",
@@ -60,8 +64,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
-    "uuid": "^3.1.0",
-    "whatwg-fetch": "^2.0.3"
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

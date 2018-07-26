@@ -11,7 +11,6 @@ export default merge.smart(baseConfig, {
   context: path.resolve(__dirname, '../app/views'),
   entry: {
     'js/bundle': [
-      'whatwg-fetch',
       'react-hot-loader/patch',
       'webpack/hot/only-dev-server',
       path.resolve(__dirname, '../app/views/index.jsx'),

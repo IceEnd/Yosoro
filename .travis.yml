@@ -16,4 +16,4 @@ install:
 
 script:
   - node --version
-  - npm test
+  - npm run lint

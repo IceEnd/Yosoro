@@ -27,16 +27,21 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 - Support Markdown syntax
 - Delete & Restore
 - Synchronize with Cloud Drive(OneDrive is supported)
+- Image upload (GitHub is supported).
 - Export notes as markdown or html or pdf
 - Update Notification
 
-You can read the [CHANGELOG](./CHANGELOG.md) to get more information.
+You can read [Wiki](https://github.com/IceEnd/Yosoro/wiki) & [CHANGELOG](./CHANGELOG.md) to get more information.
 
 ## Demo
 
 ### Write Notes
 
 ![write](https://t1.picb.cc/uploads/2018/05/13/2vBxK7.gif)
+
+### Upload Image
+
+![image](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.47.27-image.gif)
 
 ### File Syncing
 
@@ -46,15 +51,15 @@ You can read the [CHANGELOG](./CHANGELOG.md) to get more information.
 
 ### macOS
 
-![screenshot-osx](https://s1.ax1x.com/2018/06/30/PFoMsP.png)
+![screenshot-osx.png](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.49.24-image.png)
 
 ### Windows
 
-![screenshot-windows](https://s1.ax1x.com/2018/05/13/CDZC5t.png)
+![screenshot-window.png](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-26.17.43.22-image.png)
 
 ### linux
 
-![screenshot-linux](https://s1.ax1x.com/2018/05/13/CDZF8f.png)
+![screenshot-linux](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.22.40-linux.png)
 
 ## Quick Start
 

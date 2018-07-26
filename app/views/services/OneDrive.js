@@ -15,6 +15,7 @@ export default class OneDrive {
       let body = null;
       let headers = {
         Authorization: `bearer ${token}`,
+        'User-Agent': 'Yosoro',
       };
       if (/get/ig.test(method) && param) {
         let queryString = '';
