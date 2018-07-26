@@ -297,7 +297,8 @@ export default class Files extends Component {
    * @description 新建笔记
    */
   createFile = () => {
-    const name = this.state.newFileTitle || 'New Note';
+    const value = this.state.newFileTitle || 'New Note';
+    const name = value.replace(/(^\s*|\s*$)/ig, '');
     const { parentsId, projectName, notes } = this.props;
     const arr = notes.filter(item => item.name === name);
     if (arr.length !== 0) {
@@ -336,7 +337,8 @@ export default class Files extends Component {
 
   editTitle = () => {
     const { parentsId, dispatch, projectName } = this.props;
-    const { uuid, name } = this.state.rename;
+    const { uuid, name: value } = this.state.rename;
+    const name = value.replace(/(^\s*|\s*$)/ig, '');
     if (name === '' || name === this.state.contextNote.name) {
       this.setState({
         rename: {

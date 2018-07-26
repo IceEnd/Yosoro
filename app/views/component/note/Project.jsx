@@ -214,7 +214,8 @@ export default class Project extends Component {
     dispatch(switchFile('-1', '')); // 清空选中笔记
   }
 
-  createProject = (name) => {
+  createProject = (value) => {
+    const name = value.replace(/(^\s*|\s*$)/ig, '');
     const arr = this.props.projects.filter(item => item.name === name);
     if (arr.length !== 0) {
       message.error('Name repeat.');
@@ -250,7 +251,8 @@ export default class Project extends Component {
   }
 
   renameProject = () => {
-    const { uuid, name } = this.state.rename;
+    const { uuid, name: value } = this.state.rename;
+    const name = value.replace(/(^\s*|\s*$)/ig, '');
     if (name === '' || name === this.state.contextProject.name) {
       this.setState({
         rename: {

@@ -212,3 +212,13 @@ export function blobToBase64(blob) {
     reader.readAsDataURL(blob);
   });
 }
+
+/**
+ * 检查文件名称合法性
+ *
+ * @export
+ * @param {*} name
+ */
+export function checkFileName(name) {
+  return /[，,“”‘’：]+/ig.test(name);
+}

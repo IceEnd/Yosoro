@@ -219,7 +219,7 @@ export function eventListener(menus) {
         fs.mkdirSync(folder);
       }
       fs.writeFile(filePath, content, () => {
-        console.info(`${projectName}/${fileName}:auto save`);
+        // console.info(`${projectName}/${fileName}:auto save`);
       });
     } catch (ex) {
       console.warn(ex);

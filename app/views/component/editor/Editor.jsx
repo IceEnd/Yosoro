@@ -158,6 +158,7 @@ export default class Editor extends Component {
     // this.codeMirror.on('dragleave', this.handleDragLeave);
     // this.codeMirror.on('dragover', this.handleDragOver);
     this.codeMirror.on('drop', this.handleDrop);
+    this.codeMirror.on('paste', this.handlePaste);
   }
 
   SyncValue = () => {
@@ -265,16 +266,27 @@ export default class Editor extends Component {
 
   @autobind
   handleDrop(cm, e) {
-    const dataTransfer = e.dataTransfer;
+    this.handleDragAndPaste(cm, e, 'dataTransfer');
+  }
+
+  @autobind
+  handlePaste(cm, e) {
+    this.handleDragAndPaste(cm, e, 'clipboardData');
+  }
+
+  @autobind
+  handleDragAndPaste(cm, e, type) {
+    const dataTransfer = e[type];
     if (dataTransfer && dataTransfer.files.length > 0) {
       if (dataTransfer.files.length !== 1) { // 只允许一次上传一个图片
         sigleNotification.show();
         return null;
       }
-      if (dataTransfer.items[0].kind !== 'file' || !/^image\/(png|jpg|jpeg|gif|webp|svg)$/ig.test(dataTransfer.items[0].type)) { // 文件类型不对
+      if (!/.(png|jpg|jpeg|gif|webp|svg)$/ig.test(dataTransfer.files[0].name)) { // 文件类型不对
         invaildNotification.show();
         return null;
       }
+      e.preventDefault();
       const files = dataTransfer.files[0];
       this.handleUpload(cm, files);
     }
