@@ -19,7 +19,7 @@ export default class Notification {
   }
 
   show() {
-    if (this.isSupported && this.native) {
+    if (this.isSupported && this.native && process.platform !== 'win32') {
       this.native.show();
     } else {
       notification.open({

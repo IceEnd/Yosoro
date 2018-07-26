@@ -53,10 +53,10 @@ function* handleUpload(action) {
     });
   } catch (ex) {
     console.warn(ex);
+    uploadNotification.show();
     yield put({
       type: UPLOAD_IMAGE_FAILED,
     });
-    uploadNotification.show();
   }
 }
 

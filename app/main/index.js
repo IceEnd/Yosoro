@@ -6,6 +6,7 @@ import { setMenu, getExplorerMenuItem, getExplorerFileMenuItem, getExplorerProje
 import { removeEventListeners, eventListener } from './event';
 import schedule from './schedule';
 import * as appPaths from './paths';
+import pkg from '../../package.json';
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -79,6 +80,10 @@ if (process.platform === 'win32' && handleSquirrelEvent() && process.env.NODE_EN
     // squirrel event handled and app will exit in 1000ms, so don't do anything else
     app.quit();
   }
+}
+
+if (process.platform === 'win32') {
+  app.setAppUserModelId(pkg.build.appId);
 }
 
 let mainWindow;

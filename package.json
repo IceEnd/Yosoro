@@ -1,7 +1,7 @@
 {
   "name": "yosoro",
   "productName": "Yosoro",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Beautiful Cloud Drive Markdown NoteBook Desktop App.",
   "main": "./app/main/index.js",
   "scripts": {
@@ -21,6 +21,10 @@
     "packager:linux:deb": "babel-node ./scripts/packageDeb.js",
     "lint": "concurrently \"eslint . --ext .js,.jsx\" \"sass-lint -v -q\"",
     "test": "npm run lint"
+  },
+  "build": {
+    "productName": "Yosoro",
+    "appId": "com.alchemy.yosoro"
   },
   "author": {
     "name": "Alchemy",
