@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { remote } from 'electron';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import { Form, Input, Icon, Row, Col, Button } from 'antd';
@@ -7,6 +8,7 @@ import { CHANGE_IMAGE_HOSTING } from 'Actions/app';
 import Module from './Module';
 
 const FormItem = Form.Item;
+const { shell } = remote;
 
 export default class ImageHosting extends Component {
   static displayName = 'SettingsImagesHosting';
@@ -173,6 +175,10 @@ export default class ImageHosting extends Component {
     return flag;
   }
 
+  handleOpenWiki = () => {
+    shell.openExternal('https://github.com/IceEnd/Yosoro/wiki');
+  }
+
   render() {
     const { githubForm } = this.state;
     const formItemLayout = {
@@ -182,12 +188,6 @@ export default class ImageHosting extends Component {
       },
       wrapperCol: {
         span: 12,
-      },
-    };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        span: 4,
-        offset: 2,
       },
     };
     return (
@@ -263,12 +263,33 @@ export default class ImageHosting extends Component {
               onBlur={() => this.handleBlur('path')}
             />
           </FormItem>
-          <FormItem key="submit" {...tailFormItemLayout}>
-            <Button
-              type="primary"
-              onClick={this.handleSubmit}
-            >Save</Button>
-          </FormItem>
+          <Row
+            type="flex"
+            align="middle"
+          >
+            <Col
+              span="2"
+              offset="2"
+            >
+              <Button
+                type="primary"
+                onClick={this.handleSubmit}
+              >Save</Button>
+            </Col>
+            <Col
+              span="10"
+              offset="1"
+            >
+              <a onClick={this.handleOpenWiki}>Click here for help</a>
+            </Col>
+          </Row>
+          {/* <FormItem key="submit" {...wrapFormItemLayout}>
+            <Row>
+            ...tailFormItemLayout
+
+            </Row>
+
+          </FormItem> */}
         </Form>
       </Module>
     );
