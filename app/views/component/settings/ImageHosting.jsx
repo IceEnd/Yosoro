@@ -84,7 +84,7 @@ export default class ImageHosting extends Component {
   @autobind
   handleInput(e, key) {
     const githubForm = Object.assign({}, this.state.githubForm);
-    githubForm[key].value = e.target.value;
+    githubForm[key].value = e.target.value.replace(/(^\s|\s$)*/g, '');
     this.setState({
       githubForm,
       hasEidt: true,

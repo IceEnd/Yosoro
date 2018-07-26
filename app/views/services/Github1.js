@@ -4,18 +4,19 @@
 import { getAppImageHosting } from 'Utils/db/app';
 import { blobToBase64, formatDate } from 'Utils/utils';
 
-const imageHostingConfig = getAppImageHosting();
-const githubConfig = imageHostingConfig.github;
-
 export default class GitHub {
   constructor() {
-    this.github = githubConfig;
     this.root = 'https://api.github.com';
     this.key = 0;
   }
 
-  xhr(url, method, param) {
-    const { token } = this.github;
+  static getGithubConfig() {
+    const imageHostingConfig = getAppImageHosting();
+    const githubConfig = imageHostingConfig.github;
+    return githubConfig;
+  }
+
+  xhr(url, method, token, param) {
     const targetUrl = `${this.root}${url}`;
     let body = null;
     if (param) {
@@ -35,8 +36,7 @@ export default class GitHub {
         .then((response) => {
           const { status } = response;
           if (status === 200 || status === 201) {
-            // console.log(response);
-            resolve(true);
+            return response.json();
           }
           throw new Error('Fetching Failed.');
         })
@@ -46,7 +46,7 @@ export default class GitHub {
   }
 
   upload = async (files) => {
-    const { branch, path, repo } = this.github;
+    const { branch, path, repo, token } = GitHub.getGithubConfig();
     const { name } = files;
     const base64 = await blobToBase64(files);
     const content = base64.replace(/^data:image\/(png|jpe?g|svg|gif);base64,/ig, '');
@@ -56,9 +56,8 @@ export default class GitHub {
       content,
       branch,
       path: `${path}/${encodeURI(uploadName)}`,
-      // sha: '57b9ff79553162f2e7fcfda132247c54bff211cd8fe7514af58fb06839d3714c', // Yosoro
     };
     const url = `/repos/${repo}/contents${encodeURI(path)}/${encodeURI(uploadName)}`;
-    return this.xhr(url, 'PUT', body);
+    return this.xhr(url, 'PUT', token, body);
   }
 }

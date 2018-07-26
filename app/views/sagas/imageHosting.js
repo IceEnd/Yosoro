@@ -2,7 +2,7 @@ import {
   // put, call,
   takeEvery,
 } from 'redux-saga/effects';
-import GitHub from 'Services/GitHub';
+import GitHub from 'Services/Github';
 
 import {
   UPLOAD_IMAGE,
@@ -18,7 +18,12 @@ function* handleUpload(action) {
   if (current === 'github') {
     services = github;
   }
-  yield services.upload(files);
+  try {
+    const res = yield services.upload(files);
+    console.log(res);
+  } catch (ex) {
+    console.warn(ex);
+  }
 }
 
 function* upload() {
