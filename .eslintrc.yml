@@ -10,7 +10,7 @@ extends: alchemy
 settings:
   import/resolver:
     webpack:
-      config: 'webpack.config.eslint.js'
+      config: './config/webpack.config.eslint.js'
 plugins:
   - react
   - jsx-a11y

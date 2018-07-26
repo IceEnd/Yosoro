@@ -19,7 +19,7 @@
     "packager:win:setup": "babel-node ./scripts/packageSetup.js",
     "packager:linux": "electron-packager ./lib Yosoro --overwrite --platform=linux --arch=x64 --out=out",
     "packager:linux:deb": "babel-node ./scripts/packageDeb.js",
-    "lint": "concurrently \"eslint app config scripts --ext .js,.jsx\" \"sass-lint -v -q\"",
+    "lint": "concurrently \"eslint . --ext .js,.jsx\" \"sass-lint -v -q\"",
     "test": "npm run lint"
   },
   "author": {
