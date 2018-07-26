@@ -17,6 +17,3 @@ install:
 script:
   - node --version
   - npm run lint
-  - npm run build:all
-  - npm run packager:linux
-  - npm run packager:linux:deb
