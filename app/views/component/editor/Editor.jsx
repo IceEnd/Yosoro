@@ -80,7 +80,7 @@ export default class Editor extends Component {
     window.addEventListener('resize', throttle(this.onWindowResize, 60));
     this.container.addEventListener('resize', this.handleContainerResize);
     this.setCodeMirror();
-    eventMd.on('sync-value', this.SyncValue);
+    eventMd.on('sync-value', this.syncValue);
   }
 
   componentDidUpdate(prevProps) {
@@ -161,8 +161,10 @@ export default class Editor extends Component {
     this.codeMirror.on('paste', this.handlePaste);
   }
 
-  SyncValue = () => {
+  syncValue = () => {
+    const { top } = this.codeMirror.getScrollInfo();
     this.codeMirror.setValue(this.props.defaultContent);
+    this.codeMirror.scrollTo(0, top);
   }
 
   // 停止编辑500ms, 异步保存文件内容
