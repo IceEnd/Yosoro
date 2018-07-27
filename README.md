@@ -3,15 +3,15 @@
   <h3 align="center">Yosoro</h3>
   <p align="center">Beautiful Cloud Drive Markdown NoteBook Desktop App</p>
   <p align="center">
-    <img src="https://img.shields.io/badge/platform-masOS%20%7C%20Linux%20%7C%20Windows-lightgrey.svg" />
+    <img src="https://img.shields.io/badge/platform-masOS%20%7C%20Linux%20%7C%20Windows-lightgrey.svg?style=flat-square" />
   </p>
   <p align="center">
-    <img src="https://img.shields.io/github/release/iceend/yosoro.svg" />
-    <img src="https://travis-ci.org/IceEnd/Yosoro.svg?branch=master">
-    <img src="https://img.shields.io/github/license/IceEnd/Yosoro.svg" />
+    <img src="https://img.shields.io/github/release/iceend/yosoro.svg?style=flat-square" />
+    <img src="https://img.shields.io/travis/IceEnd/Yosoro.svg?style=flat-square">
+    <img src="https://img.shields.io/github/license/IceEnd/Yosoro.svg?style=flat-square" />
   </p>
   <p align="center">
-    <img src="https://img.shields.io/github/downloads/IceEnd/Yosoro/total.svg">
+    <img src="https://img.shields.io/github/downloads/IceEnd/Yosoro/total.svg?style=flat-square">
   </p>
 </p>
 
@@ -33,7 +33,7 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 
 You can read [Wiki](https://github.com/IceEnd/Yosoro/wiki) & [CHANGELOG](./CHANGELOG.md) to get more information.
 
-## Demo
+## Dem
 
 ### Write Notes
 
