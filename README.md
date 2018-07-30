@@ -33,7 +33,7 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 
 You can read [Wiki](https://github.com/IceEnd/Yosoro/wiki) & [CHANGELOG](./CHANGELOG.md) to get more information.
 
-## Dem
+## Demo
 
 ### Write Notes
 
