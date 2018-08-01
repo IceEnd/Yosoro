@@ -33,6 +33,9 @@
         "transform-async-to-generator",
         ["import", { "libraryName": "antd", "style": "css" }]
       ]
+    },
+    "test": {
+      "presets": [["env"], "react"]
     }
   }
 }
