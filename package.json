@@ -122,6 +122,7 @@
   },
   "license": "GPL-3.0",
   "pre-commit": [
-    "lint"
+    "lint",
+    "test"
   ]
 }
