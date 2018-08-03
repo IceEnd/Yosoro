@@ -8,7 +8,7 @@ import 'codemirror/addon/fold/markdown-fold';
 import 'codemirror/mode/markdown/markdown';
 import ReactResizeDetector from 'react-resize-detector';
 import { UPLOAD_IMAGE } from 'Actions/imageHosting';
-import { widthDispatch } from 'Components/HOC/withDispatch';
+import { withDispatch } from 'Components/HOC/withDispatch';
 import Notification from '../share/Notification';
 import { updateMarkdownHtml } from '../../actions/markdown';
 import { throttle, debounce } from '../../utils/utils';
@@ -34,7 +34,7 @@ const sigleNotification = new Notification({
   key: 'editor-single-file-notification',
 });
 
-@widthDispatch
+@withDispatch
 export default class Editor extends Component {
   static displayName = 'MarkdownEditor';
   static propTypes = {

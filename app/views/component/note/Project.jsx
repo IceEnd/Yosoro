@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Input, message } from 'antd';
 import { ipcRenderer } from 'electron';
-import { widthDispatch } from 'Components/HOC/withDispatch';
+import { withDispatch } from 'Components/HOC/withDispatch';
 import { createProject, deleteProject, renameProject, trashBack, updateNoteUploadStatus } from '../../actions/projects';
 import { beforeSwitchSave, clearMarkdown } from '../../actions/markdown';
 import { switchProject, switchFile, clearWorkspace, updateNoteProjectName } from '../../actions/note';
 import { pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
 import { getNote } from '../../utils/db/app';
 
-@widthDispatch
+@withDispatch
 export default class Project extends Component {
   static displayName = 'NoteExplorerProject'
   static propTypes = {

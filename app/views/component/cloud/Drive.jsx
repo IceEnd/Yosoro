@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Breadcrumb, message, Icon, Modal } from 'antd';
 import autobind from 'autobind-decorator';
-import { widthDispatch } from 'Components/HOC/withDispatch';
+import { withDispatch } from 'Components/HOC/withDispatch';
 import Notebooks from './Notebooks';
 import Notes from './Notes';
 import Loading from '../share/Loading';
@@ -18,7 +18,7 @@ import { getTokens } from '../../utils/db/app';
 const confirm = Modal.confirm;
 const BreadcrumbItem = Breadcrumb.Item;
 
-@widthDispatch
+@withDispatch
 export default class Drive extends Component {
   static displayName = 'CloudDrive';
   static propTypes = {

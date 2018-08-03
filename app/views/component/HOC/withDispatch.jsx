@@ -4,7 +4,7 @@ const dispatchContext = React.createContext();
 
 export const { Provider, Consumer } = dispatchContext;
 
-export const widthDispatch = (Component) => {
+export const withDispatch = (Component) => {
   const HOC = props => (
     <Consumer>
       {value => (
