@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input, message, Icon } from 'antd';
 import { ipcRenderer } from 'electron';
+import { widthDispatch } from 'Components/HOC/withDispatch';
 import SVGIcon from '../share/SVGIcon';
 
 import { createFile, renameNote, deletNote, updateNoteDesc, trashBack, updateNoteUploadStatus, UPLOAD_NOTE_ONEDRIVE } from '../../actions/projects';
@@ -12,6 +13,7 @@ import { getNote } from '../../utils/db/app';
 
 import oneDriveLogo from '../../assets/images/onedrive.png';
 
+@widthDispatch
 export default class Files extends Component {
   static displayName = 'NoteExplorerFiles';
   static propTypes = {

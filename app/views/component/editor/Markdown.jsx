@@ -11,7 +11,6 @@ let appToolWidth = null;
 export default class Markdown extends Component {
   static displayName = 'Markdown';
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
     markdown: PropTypes.shape({
       parentsId: PropTypes.string.isRequired,
       uuid: PropTypes.string.isRequired,
@@ -137,7 +136,7 @@ export default class Markdown extends Component {
   }
 
   render() {
-    const { markdown: { content, status, html, start, uuid }, dispatch, editorMode, note, imageHostingConfig } = this.props;
+    const { markdown: { content, status, html, start, uuid }, editorMode, note, imageHostingConfig } = this.props;
     const { editorWidth, drag, editorWidthValue } = this.state;
     if (status === 0) {
       return null;
@@ -158,7 +157,6 @@ export default class Markdown extends Component {
             imageHostingConfig={imageHostingConfig}
             setDrag={this.setDrag}
             defaultContent={content}
-            dispatch={dispatch}
             start={start}
             editorWidth={editorWidth}
             editorMode={editorMode}

@@ -10,6 +10,7 @@ import Note from 'Components/note/Note';
 import Trash from 'Components/trash/Trash';
 import Cloud from 'Components/cloud/Cloud';
 import Settings from 'Components/settings/Settings';
+import { Provider } from 'Components/HOC/withDispatch';
 import { getTokens } from 'Utils/db/app';
 import { GET_USER_AVATAR, SET_USER_LOCAL_AVATAR } from 'Actions/user';
 
@@ -317,76 +318,74 @@ export default class App extends Component {
     const { dispatch, history } = this.props;
     const notDarwin = platform === 'darwin' ? 'darwin' : 'not-darwin';
     return (
-      <Fragment>
-        <SVG />
-        <Router history={history}>
-          <div className={`container ${notDarwin} ${theme}`}>
-            <AppToolBar
-              defaultDrive={app.settings.defaultDrive}
-              avatar={user.avatar}
-            />
-            <Switch>
-              {/* 笔记部分 */}
-              <Route
-                path="/note"
-                exact
-                render={() => (
-                  <Note
-                    projects={projects}
-                    searchResult={searchResult}
-                    searchStatus={searchStatus}
-                    markdown={markdown}
-                    dispatch={dispatch}
-                    note={note}
-                    markdownSettings={app.settings.markdownSettings}
-                    editorMode={app.settings.editorMode}
-                    exportQueue={exportQueue}
-                    imageHostingConfig={app.imageHostingConfig}
-                  />
-                )}
+      <Provider value={dispatch}>
+        <Fragment>
+          <SVG />
+          <Router history={history}>
+            <div className={`container ${notDarwin} ${theme}`}>
+              <AppToolBar
+                defaultDrive={app.settings.defaultDrive}
+                avatar={user.avatar}
               />
-              {/* 回收站 */}
-              <Route
-                path="/trash"
-                render={() => (
-                  <Trash
-                    dispatch={dispatch}
-                    projects={trashProjects}
-                    trash={trash}
-                  />
-                )}
-              />
-              {/* <Route
-                path="/images"
-                render={() => (
-                  <ImageHosting dispatch={dispatch} />
-                )}
-              /> */}
-              {/* cloud dirve */}
-              <Route
-                path="/cloud"
-                render={() => (
-                  <Cloud
-                    drive={drive}
-                    dispatch={dispatch}
-                    note={note}
-                  />
-                )}
-              />
+              <Switch>
+                {/* 笔记部分 */}
+                <Route
+                  path="/note"
+                  exact
+                  render={() => (
+                    <Note
+                      projects={projects}
+                      searchResult={searchResult}
+                      searchStatus={searchStatus}
+                      markdown={markdown}
+                      note={note}
+                      markdownSettings={app.settings.markdownSettings}
+                      editorMode={app.settings.editorMode}
+                      exportQueue={exportQueue}
+                      imageHostingConfig={app.imageHostingConfig}
+                    />
+                  )}
+                />
+                {/* 回收站 */}
+                <Route
+                  path="/trash"
+                  render={() => (
+                    <Trash
+                      projects={trashProjects}
+                      trash={trash}
+                    />
+                  )}
+                />
+                {/* <Route
+                  path="/images"
+                  render={() => (
+                    <ImageHosting dispatch={dispatch} />
+                  )}
+                /> */}
+                {/* cloud dirve */}
+                <Route
+                  path="/cloud"
+                  render={() => (
+                    <Cloud
+                      drive={drive}
+                      note={note}
+                    />
+                  )}
+                />
 
-              <Route
-                path="/settings"
-                render={() => (
-                  <Settings
-                    dispatch={dispatch}
-                    imageHostingConfig={app.imageHostingConfig}
-                  />
-                )}
-              />
-            </Switch>
-          </div>
-        </Router>
-      </Fragment>
+                <Route
+                  path="/settings"
+                  render={() => (
+                    <Settings
+                      imageHostingConfig={app.imageHostingConfig}
+                    />
+                  )}
+                />
+              </Switch>
+            </div>
+          </Router>
+        </Fragment>
+      </Provider>
     );
   }
 }

@@ -9,7 +9,7 @@ import Loading from '../share/Loading';
 import '../../assets/scss/note.scss';
 
 const NoteWorkspace = (props) => {
-  const { projects, markdown, dispatch, note, markdownSettings, editorMode, searchStatus, searchResult, exportQueue: { status: exportStatus }, imageHostingConfig } = props;
+  const { projects, markdown, note, markdownSettings, editorMode, searchStatus, searchResult, exportQueue: { status: exportStatus }, imageHostingConfig } = props;
   let projectData;
   if (searchStatus === 0) {
     projectData = projects;
@@ -28,7 +28,6 @@ const NoteWorkspace = (props) => {
       <ToolBar
         markdown={markdown}
         editorMode={editorMode}
-        dispatch={dispatch}
         searchStatus={searchStatus}
         note={note}
         blur={blur}
@@ -36,7 +35,6 @@ const NoteWorkspace = (props) => {
       <div className={contClass} id="note_root_cont">
         <Explorer
           projects={projectData}
-          dispatch={dispatch}
           note={note}
           editorMode={editorMode}
           searchStatus={searchStatus}
@@ -46,7 +44,6 @@ const NoteWorkspace = (props) => {
           imageHostingConfig={imageHostingConfig}
           markdown={markdown}
           markdownSettings={markdownSettings}
-          dispatch={dispatch}
           editorMode={editorMode}
           note={note}
         />
@@ -57,7 +54,6 @@ const NoteWorkspace = (props) => {
 
 NoteWorkspace.displayName = 'NoteSpace';
 NoteWorkspace.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   imageHostingConfig: PropTypes.shape({
     default: PropTypes.oneOf(['github']).isRequired,
     github: PropTypes.shape({

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { widthDispatch } from 'Components/HOC/withDispatch';
 import ToolBar from './ToolBar';
 import Projects from './Projects';
 import Files from './Files';
 
 import '../../assets/scss/trash.scss';
 
+@widthDispatch
 export default class ImageHosting extends Component {
   static displayName = 'Transh';
   static propTypes = {
@@ -51,9 +53,9 @@ export default class ImageHosting extends Component {
           trash={trash}
         />
         {isRoot ? (
-          <Projects projects={projects} dispatch={dispatch} trash={trash} />
+          <Projects projects={projects} trash={trash} dispatch={dispatch} />
         ) : (
-          <Files notes={notes} dispatch={dispatch} trash={trash} />
+          <Files notes={notes} trash={trash} dispatch={dispatch} />
         )}
       </div>
     );
