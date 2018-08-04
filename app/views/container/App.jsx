@@ -23,7 +23,7 @@ import '../assets/scss/themes.scss';
 const { shell } = remote;
 
 function mapStateToProps(state) {
-  const { app, projects, markdown, note, drive, exportQueue, user, imageHosting } = state;
+  const { app, projects, markdown, note, drive, exportQueue, user, imageHosting, medium } = state;
   return {
     app,
     projectsData: projects,
@@ -33,6 +33,7 @@ function mapStateToProps(state) {
     exportQueue,
     user,
     imageHosting,
+    medium,
   };
 }
 
@@ -139,6 +140,15 @@ export default class App extends Component {
     //   uploadQueue: PropTypes.any,
     // }).isRequired,
     history: PropTypes.any,
+    medium: PropTypes.shape({
+      medium: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+        token: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+        imageUrl: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
   };
 
   constructor() {
@@ -311,7 +321,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash }, markdown, note, drive, exportQueue, user } = this.props;
+    const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash }, markdown, note, drive, exportQueue, user, medium } = this.props;
     const { settings, platform } = app;
     const { theme } = settings;
     const { dispatch, history } = this.props;
@@ -342,6 +352,7 @@ export default class App extends Component {
                     editorMode={app.settings.editorMode}
                     exportQueue={exportQueue}
                     imageHostingConfig={app.imageHostingConfig}
+                    medium={medium.medium}
                   />
                 )}
               />
@@ -380,6 +391,7 @@ export default class App extends Component {
                   <Settings
                     dispatch={dispatch}
                     imageHostingConfig={app.imageHostingConfig}
+                    medium={medium.medium}
                   />
                 )}
               />
