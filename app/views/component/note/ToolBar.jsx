@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import classnames from 'classnames';
 import { Icon, Tooltip, Menu, Dropdown } from 'antd';
+import { withDispatch } from 'Components/HOC/withDispatch';
 import Search from '../share/search/Search';
 import SVGIcon from '../share/SVGIcon';
 
@@ -15,6 +16,7 @@ import { POST_MEDIUM } from '../../actions/medium';
 
 const MenuItem = Menu.Item;
 
+@withDispatch
 export default class Tool extends PureComponent {
   static displayName = 'NoteToolBar';
   static propTypes = {

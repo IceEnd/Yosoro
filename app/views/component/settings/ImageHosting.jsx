@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import { Form, Input, Icon, Row, Col, Button } from 'antd';
 import { CHANGE_IMAGE_HOSTING } from 'Actions/app';
+import { withDispatch } from 'Components/HOC/withDispatch';
 
 import Module from './Module';
 
 const FormItem = Form.Item;
 const { shell } = remote;
 
+@withDispatch
 export default class ImageHosting extends Component {
   static displayName = 'SettingsImagesHosting';
   static propTypes = {

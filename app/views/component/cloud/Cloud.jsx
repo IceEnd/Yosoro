@@ -26,7 +26,6 @@ const Cloud = props => (
           <Drive
             drive={props.drive}
             {...routeProps}
-            dispatch={props.dispatch}
             note={props.note}
           />
         )}
@@ -37,7 +36,6 @@ const Cloud = props => (
 
 Cloud.displayName = 'Cloud';
 Cloud.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   drive: PropTypes.shape({
     status: PropTypes.number.isRequired,
     projects: PropTypes.array.isRequired,

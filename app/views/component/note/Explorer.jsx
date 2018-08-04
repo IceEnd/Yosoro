@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { withDispatch } from 'Components/HOC/withDispatch';
 import Project from './Project';
 import Files from './Files';
 import { pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
 
+@withDispatch
 export default class Explorer extends Component {
   static displayName = 'NoteExplorer';
   static propTypes = {

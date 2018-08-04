@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import { Form, Input, Icon, Row, Col, Button, Avatar, Select } from 'antd';
 import { AUTH_MEDIUM } from 'Actions/medium';
+import { withDispatch } from 'Components/HOC/withDispatch';
 
 import Module from './Module';
 
@@ -11,6 +12,7 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const { shell } = remote;
 
+@withDispatch
 export default class MediumConfig extends Component {
   static displayName = 'MediumConfig';
   static propTypes = {

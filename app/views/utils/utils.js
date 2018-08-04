@@ -42,7 +42,7 @@ export function formatDate(date, type = 'normal') {
   const hour = formatNumber(newDate.getHours());
   const minutes = formatNumber(newDate.getMinutes());
   const seconds = formatNumber(newDate.getSeconds());
-  if (type === 'nolmal') {
+  if (type === 'normal') {
     return `${year}-${month}-${day}  ${hour}:${minutes}:${seconds}`;
   }
   return `${year}-${month}-${day}.${hour}.${minutes}.${seconds}`;
