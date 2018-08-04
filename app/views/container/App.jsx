@@ -147,6 +147,7 @@ export default class App extends Component {
         token: PropTypes.string.isRequired,
         url: PropTypes.string.isRequired,
         imageUrl: PropTypes.string.isRequired,
+        publishStatus: PropTypes.string.isRequired,
       }).isRequired,
     }).isRequired,
   };

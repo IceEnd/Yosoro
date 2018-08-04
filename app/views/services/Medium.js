@@ -1,4 +1,4 @@
-import { getAppMedium } from 'Utils/db/app';
+import { getAppMediumConfig } from 'Utils/db/app';
 
 
 export default class Medium {
@@ -8,7 +8,7 @@ export default class Medium {
   }
 
   static getMediumConfig() {
-    const mediumAuthConfig = getAppMedium();
+    const mediumAuthConfig = getAppMediumConfig();
     const mediumConfig = mediumAuthConfig.medium;
     return mediumConfig;
   }
@@ -22,6 +22,8 @@ export default class Medium {
     return new Promise((resolve, reject) => {
       const headers = {
         Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       };
       fetch(targetUrl, {
         headers,
@@ -57,16 +59,16 @@ export default class Medium {
     }).then(res => resolve(res));
   });
 
-  post = async () => {
-    const { id, token } = Medium.getMediumConfig();
+  postMarkdown = async (title, markdown) => {
+    const { id, token, publishStatus } = Medium.getMediumConfig();
     const body = {
-      title: 'title ggg',
+      title,
       contentFormat: 'markdown',
-      content: 'markdown test',
-      tags: ['football', 'sport', 'Liverpool'],
-      publishStatus: 'draft',
+      content: markdown,
+      tags: ['Yosoro', 'Markdown'], // todo
+      publishStatus,
     };
-    const url = `users/${id}/posts`;
+    const url = `/users/${id}/posts`;
     return this.xhr(url, 'POST', token, body);
   }
 }

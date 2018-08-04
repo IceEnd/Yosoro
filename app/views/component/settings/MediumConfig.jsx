@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { remote } from 'electron';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
-import { Form, Input, Icon, Row, Col, Button, Avatar } from 'antd';
+import { Form, Input, Icon, Row, Col, Button, Avatar, Select } from 'antd';
 import { AUTH_MEDIUM } from 'Actions/medium';
 
 import Module from './Module';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
 const { shell } = remote;
 
 export default class MediumConfig extends Component {
@@ -15,9 +16,10 @@ export default class MediumConfig extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     medium: PropTypes.shape({
+      token: PropTypes.string.isRequired,
+      publishStatus: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
       username: PropTypes.string.isRequired,
-      token: PropTypes.string.isRequired,
       url: PropTypes.string.isRequired,
       imageUrl: PropTypes.string.isRequired,
     }).isRequired,
@@ -35,6 +37,11 @@ export default class MediumConfig extends Component {
         token: {
           value: medium.token,
           label: 'Token',
+          ...status,
+        },
+        publishStatus: {
+          value: medium.publishStatus,
+          label: 'Publish Status',
           ...status,
         },
       },
@@ -89,6 +96,7 @@ export default class MediumConfig extends Component {
       this.props.dispatch({
         type: AUTH_MEDIUM,
         token: mediumForm.token.value,
+        publishStatus: mediumForm.publishStatus.value,
       });
     }
   }
@@ -98,13 +106,29 @@ export default class MediumConfig extends Component {
     const mediumForm = Object.assign({}, this.state.mediumForm);
     const value = mediumForm[key].value;
     let flag = true;
-    if (value === '') {
-      this.changeWran(mediumForm, key, 'empty');
-    } else if (!/\w+/ig.test(value)) {
-      this.changeWran(mediumForm, key, 'error');
-    } else {
-      this.clearWran(mediumForm, key);
-      flag = true;
+    switch (key) {
+      case 'publishStatus':
+        if (value === '') {
+          this.changeWran(mediumForm, key, 'empty');
+        } else if (!/([A-Z])\w+/ig.test(value)) {
+          this.changeWran(mediumForm, key, 'error');
+        } else {
+          this.clearWran(mediumForm, key);
+          flag = true;
+        }
+        break;
+      case 'token':
+        if (value === '') {
+          this.changeWran(mediumForm, key, 'empty');
+        } else if (!/\w+/ig.test(value)) {
+          this.changeWran(mediumForm, key, 'error');
+        } else {
+          this.clearWran(mediumForm, key);
+          flag = true;
+        }
+        break;
+      default:
+        break;
     }
     return flag;
   }
@@ -152,21 +176,39 @@ export default class MediumConfig extends Component {
             />
           </FormItem>
           <FormItem
+            key="publishStatus"
+            label={mediumForm.publishStatus.label}
+            help={mediumForm.publishStatus.help}
+            validateStatus={mediumForm.publishStatus.validateStatus}
+            required
+            {...formItemLayout}
+          >
+            <Select
+              defaultValue={mediumForm.publishStatus.value}
+              onChange={e => this.handleInput({ target: { value: e } }, 'publishStatus')}
+            >
+              <Option value="draft">Draft</Option>
+              <Option value="public">Public</Option>
+            </Select>
+          </FormItem>
+          <FormItem
             key="user"
             label="User"
             {...formItemLayout}
           >
-            <a href={this.props.medium.url}>
-              <Avatar src={this.props.medium.imageUrl} /> {this.props.medium.username}
-            </a>
+            {this.props.medium.username === ''
+              ? 'You are not Sing in. pls add your token and save first.'
+              : <a href={this.props.medium.url}>
+                <Avatar src={this.props.medium.imageUrl} /> {this.props.medium.username}
+              </a>}
           </FormItem>
-          <FormItem
+          {/* <FormItem
             key="id"
             label="Id"
             {...formItemLayout}
           >
             {this.props.medium.id}
-          </FormItem>
+          </FormItem> */}
           <Row
             type="flex"
             align="middle"
@@ -178,7 +220,7 @@ export default class MediumConfig extends Component {
               <Button
                 type="primary"
                 onClick={this.handleSubmit}
-              >Sign In</Button>
+              >Save</Button>
             </Col>
             <Col
               span="10"

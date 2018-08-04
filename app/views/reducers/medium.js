@@ -9,11 +9,11 @@ import {
 } from 'Actions/medium';
 
 import {
-  getAppMediumAuth,
-  updateMediumAuth,
+  getAppMediumConfig,
+  updateMediumConfig,
 } from 'Utils/db/app';
 
-const initMediumAuth = getAppMediumAuth();
+const initMediumAuth = getAppMediumConfig();
 const assign = Object.assign;
 
 function medium(state = initMediumAuth, action) {
@@ -21,13 +21,14 @@ function medium(state = initMediumAuth, action) {
     case CHANGE_MEDIUM_AUTH: {
       const { name, param } = action;
       state[name] = param;
-      updateMediumAuth(name, param);
+      updateMediumConfig(name, param);
       return assign({}, state);
     }
     case AUTH_MEDIUM:
       return state;
     case AUTH_MEDIUM_SUCCESS: {
       state.medium.token = action.medium.token;
+      state.medium.publishStatus = action.medium.publishStatus;
       state.medium.username = action.medium.username;
       state.medium.id = action.medium.id;
       state.medium.url = action.medium.url;

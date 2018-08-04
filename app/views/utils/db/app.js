@@ -85,6 +85,7 @@ export function checkDefaults() {
         token: '',
         url: '',
         imageUrl: '',
+        publishStatus: 'draft',
       },
     },
     );
@@ -104,7 +105,7 @@ export function getAppImageHosting() {
   return db.get(IMAGE_HOSTING).value();
 }
 
-export function getAppMediumAuth() {
+export function getAppMediumConfig() {
   return db.get(MEDIUM_AUTH).value();
 }
 
@@ -128,7 +129,7 @@ export function updateImageHosting(name, param) {
  * @param {String} name 图床名称
  * @param {Object} param 详细配置
  */
-export function updateMediumAuth(name, param) {
+export function updateMediumConfig(name, param) {
   const config = db.get(MEDIUM_AUTH).value();
   config[name] = param;
   db.set(MEDIUM_AUTH, config);

@@ -42,16 +42,16 @@ const postMediumSuccess = new Notification({
   key: 'post-medium-success-notification',
 });
 
-const medium = new Medium();
+const mediumservices = new Medium();
 
 function* handleAuth(action) {
-  const { token } = action;
-  const services = medium;
+  const { token, publishStatus } = action;
   try {
-    const res = yield call(services.getUser, token);
+    const res = yield call(mediumservices.getUser, token);
     authMediumSuccess.show();
     const mediumUser = res.data;
     mediumUser.token = token;
+    mediumUser.publishStatus = publishStatus;
     yield put({
       type: AUTH_MEDIUM_SUCCESS,
       medium: mediumUser,
@@ -74,11 +74,10 @@ function* auth() {
   yield takeEvery(AUTH_MEDIUM, handleAuth);
 }
 
-function* handlePost() {
-  // const { markdown } = action;
-  const services = medium;
+function* handlePost(action) {
+  const { title, markdown } = action;
   try {
-    const res = yield call(services.post);
+    const res = yield call(mediumservices.postMarkdown, title, markdown);
     postMediumSuccess.show();
     yield put({
       type: POST_MEDIUM_SUCCESS,
