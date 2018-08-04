@@ -4,7 +4,6 @@ import { getAppMediumConfig } from 'Utils/db/app';
 export default class Medium {
   constructor() {
     this.root = 'https://api.medium.com/v1';
-    this.key = 0;
   }
 
   static getMediumConfig() {
@@ -47,7 +46,7 @@ export default class Medium {
     const header = {
       Authorization: `Bearer ${token}`,
     };
-    fetch('https://api.medium.com/v1/me', {
+    fetch(`${this.root}/me`, {
       method: 'GET',
       headers: header,
     }).then((response) => {
@@ -65,7 +64,7 @@ export default class Medium {
       title,
       contentFormat: 'markdown',
       content: markdown,
-      tags: ['Yosoro', 'Markdown'], // todo
+      tags: ['Yosoro'], // todo up to 5 tags
       publishStatus,
     };
     const url = `/users/${id}/posts`;

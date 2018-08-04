@@ -79,9 +79,10 @@ function* handlePost(action) {
   try {
     const res = yield call(mediumservices.postMarkdown, title, markdown);
     postMediumSuccess.show();
+    const postData = res.data;
     yield put({
       type: POST_MEDIUM_SUCCESS,
-      res,
+      postUrl: postData.url,
     });
   } catch (ex) {
     console.warn(ex);

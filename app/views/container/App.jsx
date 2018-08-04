@@ -353,7 +353,6 @@ export default class App extends Component {
                     editorMode={app.settings.editorMode}
                     exportQueue={exportQueue}
                     imageHostingConfig={app.imageHostingConfig}
-                    medium={medium.medium}
                   />
                 )}
               />

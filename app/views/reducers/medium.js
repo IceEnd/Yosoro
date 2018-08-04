@@ -12,6 +12,9 @@ import {
   getAppMediumConfig,
   updateMediumConfig,
 } from 'Utils/db/app';
+import { remote } from 'electron';
+
+const { shell } = remote;
 
 const initMediumAuth = getAppMediumConfig();
 const assign = Object.assign;
@@ -27,12 +30,7 @@ function medium(state = initMediumAuth, action) {
     case AUTH_MEDIUM:
       return state;
     case AUTH_MEDIUM_SUCCESS: {
-      state.medium.token = action.medium.token;
-      state.medium.publishStatus = action.medium.publishStatus;
-      state.medium.username = action.medium.username;
-      state.medium.id = action.medium.id;
-      state.medium.url = action.medium.url;
-      state.medium.imageUrl = action.medium.imageUrl;
+      state.medium = action.medium;
       return assign({}, state);
     }
     case AUTH_MEDIUM_FAILED:
@@ -40,6 +38,7 @@ function medium(state = initMediumAuth, action) {
     case POST_MEDIUM:
       return state;
     case POST_MEDIUM_SUCCESS: {
+      shell.openExternal(action.postUrl);
       return assign({}, state);
     }
     case POST_MEDIUM_FAILED:
