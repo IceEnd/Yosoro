@@ -8,6 +8,7 @@ const PROJECTS = 'yosoroProjects';
 const FILES = 'yosoroFiles';
 const OAUTHTOKEN = 'yosoroOAuthToken';
 const IMAGE_HOSTING = 'yosoroImageHosting';
+const MEDIUM_CONFIG = 'yosoroMediumConfig';
 
 /**
  * @description 设置默认配置
@@ -37,6 +38,7 @@ export function checkDefaults() {
   const notes = db.has(FILES).value();
   const oauth = db.has(OAUTHTOKEN).value();
   const imageHosting = db.has(IMAGE_HOSTING).value();
+  const mediumConfig = db.has(MEDIUM_CONFIG).value();
   if (!projects) {
     db.set(PROJECTS, []);
   }
@@ -74,6 +76,20 @@ export function checkDefaults() {
       },
     });
   }
+  if (!mediumConfig) {
+    db.set(MEDIUM_CONFIG, {
+      medium: {
+        default: 'medium',
+        id: '',
+        username: '',
+        token: '',
+        url: '',
+        imageUrl: '',
+        publishStatus: 'draft',
+      },
+    },
+    );
+  }
   return projects && settings && notes && oauth && imageHosting;
 }
 
@@ -89,6 +105,10 @@ export function getAppImageHosting() {
   return db.get(IMAGE_HOSTING).value();
 }
 
+export function getAppMediumConfig() {
+  return db.get(MEDIUM_CONFIG).value();
+}
+
 /**
  * 更新图床配置
  *
@@ -100,6 +120,19 @@ export function updateImageHosting(name, param) {
   const config = db.get(IMAGE_HOSTING).value();
   config[name] = param;
   db.set(IMAGE_HOSTING, config);
+}
+
+/**
+ * 更新图床配置
+ *
+ * @export
+ * @param {String} name 图床名称
+ * @param {Object} param 详细配置
+ */
+export function updateMediumConfig(name, param) {
+  const config = db.get(MEDIUM_CONFIG).value();
+  config[name] = param;
+  db.set(MEDIUM_CONFIG, config);
 }
 
 /**

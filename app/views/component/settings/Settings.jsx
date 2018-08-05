@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Title from 'Share/title/Title';
 import ImageHosting from './ImageHosting';
+import MediumConfig from './MediumConfig';
 
 import '../../assets/scss/settings.scss';
 
@@ -15,6 +16,10 @@ const Settings = props => (
       <ImageHosting
         // dispatch={props.dispatch}
         {...props.imageHostingConfig}
+      />
+      <MediumConfig
+        // dispatch={props.dispatch}
+        medium={props.medium}
       />
     </div>
   </div>
@@ -32,6 +37,14 @@ Settings.propTypes = {
       path: PropTypes.string.isRequired,
       domain: PropTypes.string.isRequired,
     }).isRequired,
+  }).isRequired,
+  medium: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    token: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string.isRequired,
+    publishStatus: PropTypes.string.isRequired,
   }).isRequired,
 };
 
