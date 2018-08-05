@@ -22,10 +22,9 @@ const assign = Object.assign;
 function medium(state = initMediumAuth, action) {
   switch (action.type) {
     case CHANGE_MEDIUM_AUTH: {
-      const { name, param } = action;
-      state[name] = param;
-      updateMediumConfig(name, param);
-      return assign({}, state);
+      const { param } = action;
+      updateMediumConfig(param);
+      return assign({}, state, param);
     }
     case AUTH_MEDIUM:
       return state;

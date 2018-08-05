@@ -78,17 +78,13 @@ export function checkDefaults() {
   }
   if (!mediumConfig) {
     db.set(MEDIUM_CONFIG, {
-      medium: {
-        default: 'medium',
-        id: '',
-        username: '',
-        token: '',
-        url: '',
-        imageUrl: '',
-        publishStatus: 'draft',
-      },
-    },
-    );
+      id: '',
+      username: '',
+      token: '',
+      url: '',
+      imageUrl: '',
+      publishStatus: 'draft',
+    });
   }
   return projects && settings && notes && oauth && imageHosting;
 }
@@ -105,8 +101,22 @@ export function getAppImageHosting() {
   return db.get(IMAGE_HOSTING).value();
 }
 
+/**
+ * 获取Medium配置
+ * @export
+ */
 export function getAppMediumConfig() {
   return db.get(MEDIUM_CONFIG).value();
+}
+
+/**
+ * 更新Medium配置
+ * @export
+ * @param {Object} param 详细配置
+ */
+export function updateMediumConfig(name, param) {
+  const config = db.get(MEDIUM_CONFIG).value();
+  db.set(MEDIUM_CONFIG, Object.assign(config, param));
 }
 
 /**
@@ -120,19 +130,6 @@ export function updateImageHosting(name, param) {
   const config = db.get(IMAGE_HOSTING).value();
   config[name] = param;
   db.set(IMAGE_HOSTING, config);
-}
-
-/**
- * 更新图床配置
- *
- * @export
- * @param {String} name 图床名称
- * @param {Object} param 详细配置
- */
-export function updateMediumConfig(name, param) {
-  const config = db.get(MEDIUM_CONFIG).value();
-  config[name] = param;
-  db.set(MEDIUM_CONFIG, config);
 }
 
 /**

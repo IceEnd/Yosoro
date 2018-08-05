@@ -58,7 +58,6 @@ function* handleAuth(action) {
     });
     yield put({
       type: CHANGE_MEDIUM_AUTH,
-      name: 'medium',
       param: mediumUser,
     });
   } catch (ex) {
