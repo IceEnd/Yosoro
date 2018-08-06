@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { Icon, Input, message } from 'antd';
 import { ipcRenderer } from 'electron';
 import { withDispatch } from 'Components/HOC/withDispatch';
-import { createProject, deleteProject, renameProject, trashBack, updateNoteUploadStatus } from '../../actions/projects';
-import { beforeSwitchSave, clearMarkdown } from '../../actions/markdown';
-import { switchProject, switchFile, clearWorkspace, updateNoteProjectName } from '../../actions/note';
-import { pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
-import { getNote } from '../../utils/db/app';
+import { createProject, deleteProject, renameProject, trashBack, updateNoteUploadStatus } from 'Actions/projects';
+import { beforeSwitchSave, clearMarkdown } from 'Actions/markdown';
+import { switchProject, switchFile, clearWorkspace, updateNoteProjectName } from 'Actions/note';
+import { pushStateToStorage, mergeStateFromStorage, checkSpecial } from 'Utils/utils';
+import { getNote } from 'Utils/db/app';
+
 
 @withDispatch
 export default class Project extends Component {
@@ -218,6 +219,9 @@ export default class Project extends Component {
 
   createProject = (value) => {
     const name = value.replace(/(^\s*|\s*$)/ig, '');
+    if (!checkSpecial(value)) {
+      return;
+    }
     const arr = this.props.projects.filter(item => item.name === name);
     if (arr.length !== 0) {
       message.error('Name repeat.');
@@ -255,6 +259,9 @@ export default class Project extends Component {
   renameProject = () => {
     const { uuid, name: value } = this.state.rename;
     const name = value.replace(/(^\s*|\s*$)/ig, '');
+    if (!checkSpecial(value)) {
+      return;
+    }
     if (name === '' || name === this.state.contextProject.name) {
       this.setState({
         rename: {

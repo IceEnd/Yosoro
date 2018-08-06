@@ -2,7 +2,8 @@
   "presets": [
     ["env", {
       "targets": {
-        "node": 8
+        "node": 8,
+        "modules": false
       }
     }]
   ],
@@ -11,7 +12,8 @@
       "presets": [
         ["env", {
           "targets": {
-            "node": 8
+            "node": 8,
+            "modules": false
           }
         }]
       ]
@@ -20,7 +22,8 @@
       "presets": [
         ["env", {
           "targets": {
-            "chrome": 59
+            "chrome": 59,
+            "modules": false
           },
           "loose": true
         }],
@@ -37,5 +40,6 @@
     "test": {
       "presets": [["env"], "react"]
     }
-  }
+  },
+  "plugins": ["transform-runtime"]
 }

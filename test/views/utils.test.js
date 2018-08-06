@@ -1,6 +1,7 @@
 import {
   formatDate,
   compareVersion,
+  checkSpecial,
 } from '../../app/views/utils/utils';
 
 test('FormatDate new date', () => {
@@ -29,4 +30,11 @@ test('compare version case', () => {
   oldVersion = '1.0.9';
   newVersion = '1.0.9';
   expect(compareVersion(oldVersion, newVersion)).toBe(false);
+});
+
+test('str checkSpecial', () => {
+  expect(checkSpecial('/2333', false)).toBe(false);
+  expect(checkSpecial('2333:', false)).toBe(false);
+  expect(checkSpecial('2333：', false)).toBe(false);
+  expect(checkSpecial('正常测试', false)).toBe(true);
 });
