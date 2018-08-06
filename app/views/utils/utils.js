@@ -1,4 +1,5 @@
 import marked from 'marked';
+import { message } from 'antd';
 
 const renderer = new marked.Renderer();
 
@@ -221,4 +222,26 @@ export function blobToBase64(blob) {
  */
 export function checkFileName(name) {
   return /[，,“”‘’：]+/ig.test(name);
+}
+
+/**
+ * 检查字符串长度（100），以及是否有特殊字符
+ * @export
+ * @param {String} str 字符串
+ * @param {Boolean} showMessage 是否现实提示
+ */
+export function checkSpecial(str, showMessage = true) {
+  if (/[，：:/]/g.test(str)) {
+    if (showMessage) {
+      message.error('Name does not allow special characters');
+    }
+    return false;
+  }
+  if (str.length > 100) {
+    if (showMessage) {
+      message.error('Name is within 100 characters');
+    }
+    return false;
+  }
+  return true;
 }

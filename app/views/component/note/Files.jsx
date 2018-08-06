@@ -3,15 +3,15 @@ import PropTypes from 'prop-types';
 import { Input, message, Icon } from 'antd';
 import { ipcRenderer } from 'electron';
 import { withDispatch } from 'Components/HOC/withDispatch';
+
+import { createFile, renameNote, deletNote, updateNoteDesc, trashBack, updateNoteUploadStatus, UPLOAD_NOTE_ONEDRIVE } from 'Actions/projects';
+import { formatDate, pushStateToStorage, mergeStateFromStorage, checkSpecial } from 'Utils/utils';
+import { readFile, beforeSwitchSave, saveContentToTrashFile, updateCurrentTitle, clearMarkdown, MARKDOWN_UPLOADING } from 'Actions/markdown';
+import { switchFile, clearNote, updateNoteFileName } from 'Actions/note';
+import { getNote } from 'Utils/db/app';
+import oneDriveLogo from 'Assets/images/onedrive.png';
+
 import SVGIcon from '../share/SVGIcon';
-
-import { createFile, renameNote, deletNote, updateNoteDesc, trashBack, updateNoteUploadStatus, UPLOAD_NOTE_ONEDRIVE } from '../../actions/projects';
-import { formatDate, pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
-import { readFile, beforeSwitchSave, saveContentToTrashFile, updateCurrentTitle, clearMarkdown, MARKDOWN_UPLOADING } from '../../actions/markdown';
-import { switchFile, clearNote, updateNoteFileName } from '../../actions/note';
-import { getNote } from '../../utils/db/app';
-
-import oneDriveLogo from '../../assets/images/onedrive.png';
 
 @withDispatch
 export default class Files extends Component {
@@ -301,6 +301,9 @@ export default class Files extends Component {
   createFile = () => {
     const value = this.state.newFileTitle || 'New Note';
     const name = value.replace(/(^\s*|\s*$)/ig, '');
+    if (!checkSpecial(value)) {
+      return;
+    }
     const { parentsId, projectName, notes } = this.props;
     const arr = notes.filter(item => item.name === name);
     if (arr.length !== 0) {
@@ -341,6 +344,9 @@ export default class Files extends Component {
     const { parentsId, dispatch, projectName } = this.props;
     const { uuid, name: value } = this.state.rename;
     const name = value.replace(/(^\s*|\s*$)/ig, '');
+    if (!checkSpecial(value)) { // 检查长度和特殊字符
+      return;
+    }
     if (name === '' || name === this.state.contextNote.name) {
       this.setState({
         rename: {
