@@ -14,9 +14,11 @@ const Settings = props => (
     />
     <div className="modules">
       <ImageHosting
+        key="image-hosting-config"
         {...props.imageHostingConfig}
       />
       <MediumConfig
+        key="medium-config"
         medium={props.medium}
       />
     </div>
