@@ -175,6 +175,7 @@ export default class MediumConfig extends Component {
               value={mediumForm.token.value}
               onChange={e => this.handleInput(e, 'token')}
               onBlur={() => this.handleBlur('token')}
+              type="password"
             />
           </FormItem>
           <FormItem

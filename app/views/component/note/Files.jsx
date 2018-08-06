@@ -10,6 +10,7 @@ import { formatDate, pushStateToStorage, mergeStateFromStorage } from '../../uti
 import { readFile, beforeSwitchSave, saveContentToTrashFile, updateCurrentTitle, clearMarkdown, MARKDOWN_UPLOADING } from '../../actions/markdown';
 import { switchFile, clearNote, updateNoteFileName } from '../../actions/note';
 import { getNote } from '../../utils/db/app';
+import { POST_MEDIUM } from '../../actions/medium';
 
 import oneDriveLogo from '../../assets/images/onedrive.png';
 
@@ -136,6 +137,21 @@ export default class Files extends Component {
         projectName,
         fileName: name,
         type,
+      });
+    });
+    // post markdown to medium
+    ipcRenderer.on('post-medium', () => {
+      const { projectName, dispatch } = this.props;
+      const { name } = this.state.contextNote;
+      const data = ipcRenderer.sendSync('read-file', {
+        projectName,
+        fileName: name,
+      });
+      const content = data.data;
+      dispatch({
+        type: POST_MEDIUM,
+        title: name,
+        markdown: content,
       });
     });
   }

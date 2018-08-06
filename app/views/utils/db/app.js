@@ -114,7 +114,7 @@ export function getAppMediumConfig() {
  * @export
  * @param {Object} param 详细配置
  */
-export function updateMediumConfig(name, param) {
+export function updateMediumConfig(param) {
   const config = db.get(MEDIUM_CONFIG).value();
   db.set(MEDIUM_CONFIG, Object.assign(config, param));
 }
