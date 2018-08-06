@@ -142,14 +142,12 @@ export default class App extends Component {
     // }).isRequired,
     history: PropTypes.any,
     medium: PropTypes.shape({
-      medium: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        username: PropTypes.string.isRequired,
-        token: PropTypes.string.isRequired,
-        url: PropTypes.string.isRequired,
-        imageUrl: PropTypes.string.isRequired,
-        publishStatus: PropTypes.string.isRequired,
-      }).isRequired,
+      id: PropTypes.string.isRequired,
+      username: PropTypes.string.isRequired,
+      token: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+      imageUrl: PropTypes.string.isRequired,
+      publishStatus: PropTypes.string.isRequired,
     }).isRequired,
   };
 
@@ -388,7 +386,7 @@ export default class App extends Component {
                   render={() => (
                     <Settings
                       imageHostingConfig={app.imageHostingConfig}
-                      medium={medium.medium}
+                      medium={medium}
                     />
                   )}
                 />
