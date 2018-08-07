@@ -141,6 +141,7 @@ export default class MediumConfig extends Component {
 
   render() {
     const { mediumForm } = this.state;
+    const { medium } = this.props;
     const formItemLayout = {
       labelCol: {
         offset: 1,
@@ -199,10 +200,10 @@ export default class MediumConfig extends Component {
             label="User"
             {...formItemLayout}
           >
-            {this.props.medium.username === ''
+            {medium.username === ''
               ? 'You are not Sing in. pls add your token and save first.'
-              : <a href={this.props.medium.url}>
-                <Avatar src={this.props.medium.imageUrl} /> {this.props.medium.username}
+              : <a href={medium.url}>
+                <Avatar src={medium.imageUrl} /> {medium.username}
               </a>}
           </FormItem>
           {/* <FormItem
@@ -210,7 +211,7 @@ export default class MediumConfig extends Component {
             label="Id"
             {...formItemLayout}
           >
-            {this.props.medium.id}
+            {medium.id}
           </FormItem> */}
           <Row
             type="flex"

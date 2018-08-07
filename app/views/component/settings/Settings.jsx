@@ -19,7 +19,7 @@ const Settings = props => (
       />
       <MediumConfig
         // dispatch={props.dispatch}
-        medium={props.medium}
+        medium={props.mediumConfig.medium}
       />
     </div>
   </div>
@@ -38,13 +38,15 @@ Settings.propTypes = {
       domain: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
-  medium: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
-    token: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    imageUrl: PropTypes.string.isRequired,
-    publishStatus: PropTypes.string.isRequired,
+  mediumConfig: PropTypes.shape({
+    medium: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      username: PropTypes.string.isRequired,
+      token: PropTypes.string.isRequired,
+      url: PropTypes.string.isRequired,
+      imageUrl: PropTypes.string.isRequired,
+      publishStatus: PropTypes.string.isRequired,
+    }).isRequired,
   }).isRequired,
 };
 

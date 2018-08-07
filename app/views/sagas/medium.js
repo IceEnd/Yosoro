@@ -7,7 +7,10 @@ import {
 import Medium from 'Services/Medium';
 
 import {
-  CHANGE_MEDIUM_AUTH,
+  CHANGE_MEDIUM_CONFIG,
+} from 'Actions/app';
+
+import {
   AUTH_MEDIUM,
   AUTH_MEDIUM_SUCCESS,
   AUTH_MEDIUM_FAILED,
@@ -57,7 +60,8 @@ function* handleAuth(action) {
       medium: mediumUser,
     });
     yield put({
-      type: CHANGE_MEDIUM_AUTH,
+      type: CHANGE_MEDIUM_CONFIG,
+      name: 'medium',
       param: mediumUser,
     });
   } catch (ex) {

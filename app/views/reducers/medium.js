@@ -1,5 +1,4 @@
 import {
-  CHANGE_MEDIUM_AUTH,
   AUTH_MEDIUM,
   AUTH_MEDIUM_SUCCESS,
   AUTH_MEDIUM_FAILED,
@@ -8,24 +7,14 @@ import {
   POST_MEDIUM_FAILED,
 } from 'Actions/medium';
 
-import {
-  getAppMediumConfig,
-  updateMediumConfig,
-} from 'Utils/db/app';
 import { remote } from 'electron';
 
 const { shell } = remote;
 
-const initMediumAuth = getAppMediumConfig();
 const assign = Object.assign;
 
-function medium(state = initMediumAuth, action) {
+function medium(state = {}, action) {
   switch (action.type) {
-    case CHANGE_MEDIUM_AUTH: {
-      const { param } = action;
-      updateMediumConfig(param);
-      return assign({}, state, param);
-    }
     case AUTH_MEDIUM:
       return state;
     case AUTH_MEDIUM_SUCCESS: {

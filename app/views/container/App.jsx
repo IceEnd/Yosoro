@@ -70,6 +70,14 @@ export default class App extends Component {
           domain: PropTypes.string.isRequired,
         }).isRequired,
       }),
+      mediumConfig: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+        token: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+        imageUrl: PropTypes.string.isRequired,
+        publishStatus: PropTypes.string.isRequired,
+      }).isRequired,
     }),
     projectsData: PropTypes.shape({
       projects: PropTypes.arrayOf(PropTypes.shape({
@@ -141,16 +149,6 @@ export default class App extends Component {
     //   uploadQueue: PropTypes.any,
     // }).isRequired,
     history: PropTypes.any,
-    medium: PropTypes.shape({
-      medium: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        username: PropTypes.string.isRequired,
-        token: PropTypes.string.isRequired,
-        url: PropTypes.string.isRequired,
-        imageUrl: PropTypes.string.isRequired,
-        publishStatus: PropTypes.string.isRequired,
-      }).isRequired,
-    }).isRequired,
   };
 
   constructor() {
@@ -323,7 +321,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash }, markdown, note, drive, exportQueue, user, medium } = this.props;
+    const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash }, markdown, note, drive, exportQueue, user } = this.props;
     const { settings, platform } = app;
     const { theme } = settings;
     const { dispatch, history } = this.props;
@@ -388,7 +386,7 @@ export default class App extends Component {
                   render={() => (
                     <Settings
                       imageHostingConfig={app.imageHostingConfig}
-                      medium={medium.medium}
+                      mediumConfig={app.mediumConfig}
                     />
                   )}
                 />

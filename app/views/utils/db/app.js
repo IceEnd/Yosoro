@@ -78,12 +78,14 @@ export function checkDefaults() {
   }
   if (!mediumConfig) {
     db.set(MEDIUM_CONFIG, {
-      id: '',
-      username: '',
-      token: '',
-      url: '',
-      imageUrl: '',
-      publishStatus: 'draft',
+      medium: {
+        id: '',
+        username: '',
+        token: '',
+        url: '',
+        imageUrl: '',
+        publishStatus: 'draft',
+      },
     });
   }
   return projects && settings && notes && oauth && imageHosting;
@@ -114,9 +116,10 @@ export function getAppMediumConfig() {
  * @export
  * @param {Object} param 详细配置
  */
-export function updateMediumConfig(param) {
+export function updateMediumConfig(name, param) {
   const config = db.get(MEDIUM_CONFIG).value();
-  db.set(MEDIUM_CONFIG, Object.assign(config, param));
+  config[name] = param;
+  db.set(MEDIUM_CONFIG, config);
 }
 
 /**
