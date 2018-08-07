@@ -5,9 +5,9 @@ const Module = (props) => {
   const { title, children } = props;
   return (
     <div className="settings-module">
-      <h1 className="module-title">
+      <h2 className="module-title">
         <span>{title}</span>
-      </h1>
+      </h2>
       {children}
     </div>
   );
