@@ -61,15 +61,15 @@ You can read [Wiki](https://github.com/IceEnd/Yosoro/wiki) & [CHANGELOG](./CHANG
 
 ![screenshot-linux](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.22.40-linux.png)
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-| [<img src="https://avatars1.githubusercontent.com/u/11556339?v=4" width="100px;"/><br /><sub><b>Alchemy</b></sub>](https://www.coolecho.net)<br />[💻](https://github.com/IceEnd/Yosoro/commits?author=IceEnd "Code") [🎨](#design-IceEnd "Design") [⚠️](https://github.com/IceEnd/Yosoro/commits?author=IceEnd "Tests") | [<img src="https://avatars3.githubusercontent.com/u/8283616?v=4" width="100px;"/><br /><sub><b>Jirawat Boonkumnerd</b></sub>](http://ntsd.github.io)<br />[💻](https://github.com/IceEnd/Yosoro/commits?author=ntsd "Code") | [<img src="https://avatars2.githubusercontent.com/u/32113014?v=4" width="100px;"/><br /><sub><b>Austin Leath</b></sub>](https://www.austinleath.com)<br />[📖](https://github.com/IceEnd/Yosoro/commits?author=AustinLeath "Documentation") |
-| :---: | :---: | :---: |
+| [<img src="https://avatars1.githubusercontent.com/u/11556339?v=4" width="100px;"/><br /><sub><b>Alchemy</b></sub>](https://www.coolecho.net)<br />[💻](https://github.com/IceEnd/Yosoro/commits?author=IceEnd "Code") [🎨](#design-IceEnd "Design") [⚠️](https://github.com/IceEnd/Yosoro/commits?author=IceEnd "Tests") | [<img src="https://avatars3.githubusercontent.com/u/8283616?v=4" width="100px;"/><br /><sub><b>Jirawat Boonkumnerd</b></sub>](http://ntsd.github.io)<br />[💻](https://github.com/IceEnd/Yosoro/commits?author=ntsd "Code") | [<img src="https://avatars2.githubusercontent.com/u/32113014?v=4" width="100px;"/><br /><sub><b>Austin Leath</b></sub>](https://www.austinleath.com)<br />[📖](https://github.com/IceEnd/Yosoro/commits?author=AustinLeath "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8417583?v=4" width="100px;"/><br /><sub><b>Hermes Gjini</b></sub>](http://afractal.me)<br />[📖](https://github.com/IceEnd/Yosoro/commits?author=afractal "Documentation") |
+| :---: | :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
