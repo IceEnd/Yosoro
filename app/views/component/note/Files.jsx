@@ -10,6 +10,7 @@ import { readFile, beforeSwitchSave, saveContentToTrashFile, updateCurrentTitle,
 import { switchFile, clearNote, updateNoteFileName } from 'Actions/note';
 import { getNote } from 'Utils/db/app';
 import oneDriveLogo from 'Assets/images/onedrive.png';
+import { POST_MEDIUM } from '../../actions/medium';
 
 import SVGIcon from '../share/SVGIcon';
 
@@ -136,6 +137,21 @@ export default class Files extends Component {
         projectName,
         fileName: name,
         type,
+      });
+    });
+    // post markdown to medium
+    ipcRenderer.on('post-medium', () => {
+      const { projectName, dispatch } = this.props;
+      const { name } = this.state.contextNote;
+      const data = ipcRenderer.sendSync('read-file', {
+        projectName,
+        fileName: name,
+      });
+      const content = data.data;
+      dispatch({
+        type: POST_MEDIUM,
+        title: name,
+        markdown: content,
       });
     });
   }

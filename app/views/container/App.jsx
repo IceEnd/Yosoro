@@ -24,7 +24,7 @@ import '../assets/scss/themes.scss';
 const { shell } = remote;
 
 function mapStateToProps(state) {
-  const { app, projects, markdown, note, drive, exportQueue, user, imageHosting } = state;
+  const { app, projects, markdown, note, drive, exportQueue, user, imageHosting, medium } = state;
   return {
     app,
     projectsData: projects,
@@ -34,6 +34,7 @@ function mapStateToProps(state) {
     exportQueue,
     user,
     imageHosting,
+    medium,
   };
 }
 
@@ -69,6 +70,14 @@ export default class App extends Component {
           domain: PropTypes.string.isRequired,
         }).isRequired,
       }),
+      mediumConfig: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+        token: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+        imageUrl: PropTypes.string.isRequired,
+        publishStatus: PropTypes.string.isRequired,
+      }).isRequired,
     }),
     projectsData: PropTypes.shape({
       projects: PropTypes.arrayOf(PropTypes.shape({
@@ -372,12 +381,12 @@ export default class App extends Component {
                     />
                   )}
                 />
-
                 <Route
                   path="/settings"
                   render={() => (
                     <Settings
                       imageHostingConfig={app.imageHostingConfig}
+                      mediumConfig={app.mediumConfig}
                     />
                   )}
                 />
