@@ -61,14 +61,6 @@ You can read [Wiki](https://github.com/IceEnd/Yosoro/wiki) & [CHANGELOG](./CHANG
 
 ![screenshot-linux](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.22.40-linux.png)
 
-## Contributors
-
-Thanks goes to these people:
-
-<!-- ALL-CONTRIBUTORS-LIST: START - Do not remove or modify this section -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
 ## Quick Start
 
 ### Install
