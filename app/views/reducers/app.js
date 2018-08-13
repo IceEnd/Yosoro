@@ -12,6 +12,7 @@ import {
   FETCHING_GITHUB_RELEASES_SUCCESS,
   CLOSE_UPDATE_NOTIFICATION,
   CHANGE_IMAGE_HOSTING,
+  CHANGE_MEDIUM_CONFIG,
 } from 'Actions/app';
 import {
   checkDefaults,
@@ -20,6 +21,8 @@ import {
   setToken,
   getAppImageHosting,
   updateImageHosting,
+  getAppMediumConfig,
+  updateMediumConfig,
 } from 'Utils/db/app';
 import appInfo from '../../../package.json';
 import { compareVersion } from '../utils/utils';
@@ -28,6 +31,7 @@ const assign = Object.assign;
 
 const first = checkDefaults();
 
+const initMediumConfig = getAppMediumConfig();
 const initImageHosting = getAppImageHosting();
 const initSettings = getAppSettings();
 if (typeof initSettings.defaultDrive === 'undefined') {
@@ -46,6 +50,7 @@ export default function lounchApp(state = {
   allowShowUpdate: true,
   settings: initSettings,
   imageHostingConfig: initImageHosting,
+  mediumConfig: initMediumConfig,
   first,
   oneDriveTokenStatus: 0, // 0 未请求 1 请求中 2 成功 3 失败
   platform: '',
@@ -145,6 +150,12 @@ export default function lounchApp(state = {
       state.imageHostingConfig[name] = param;
       updateImageHosting(name, param);
       return assign({}, state);
+    }
+    case CHANGE_MEDIUM_CONFIG: {
+      const { name, param } = action;
+      state.mediumConfig[name] = param;
+      updateMediumConfig(name, param);
+      return assign({}, state, param);
     }
     default:
       return state;

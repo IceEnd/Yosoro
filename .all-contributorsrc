@@ -1,0 +1,51 @@
+{
+  "projectName": "Yosoro",
+  "projectOwner": "IceEnd",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "IceEnd",
+      "name": "Alchemy",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/11556339?v=4",
+      "profile": "https://www.coolecho.net",
+      "contributions": [
+        "code",
+        "design",
+        "test"
+      ]
+    },
+    {
+      "login": "ntsd",
+      "name": "Jirawat Boonkumnerd",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/8283616?v=4",
+      "profile": "http://ntsd.github.io",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "AustinLeath",
+      "name": "Austin Leath",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/32113014?v=4",
+      "profile": "https://www.austinleath.com",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "afractal",
+      "name": "Hermes Gjini",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/8417583?v=4",
+      "profile": "http://afractal.me",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ]
+}

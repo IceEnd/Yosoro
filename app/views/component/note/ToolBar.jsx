@@ -12,6 +12,7 @@ import { pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
 import { appSwitchEditMode } from '../../actions/app';
 import { clearWorkspace } from '../../actions/note';
 import { clearMarkdown, beforeSwitchSave, MARKDOWN_UPLOADING } from '../../actions/markdown';
+import { POST_MEDIUM } from '../../actions/medium';
 
 const MenuItem = Menu.Item;
 
@@ -135,6 +136,13 @@ export default class Tool extends PureComponent {
       data = html;
     } else if (key === 'pdf') {
       data = html;
+    } else if (key === 'medium') {
+      this.props.dispatch({
+        type: POST_MEDIUM,
+        title: name,
+        markdown: content,
+      });
+      return;
     }
     ipcRenderer.send('export-note', {
       content,
@@ -154,6 +162,7 @@ export default class Tool extends PureComponent {
           <MenuItem key="md">Markdown</MenuItem>
           <MenuItem key="html">Html</MenuItem>
           <MenuItem key="pdf">PDF</MenuItem>
+          <MenuItem key="medium">Medium</MenuItem>
         </Menu>
       );
       return (

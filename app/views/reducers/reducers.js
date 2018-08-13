@@ -8,6 +8,7 @@ import drive from './drive';
 import exportQueue from './exportQueue';
 import user from './user';
 import imageHosting from './imageHosting';
+import medium from './medium';
 
 const rootReducer = combineReducers({
   app,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   routing: routerReducer,
   user,
   imageHosting,
+  medium,
 });
 
 export default rootReducer;
