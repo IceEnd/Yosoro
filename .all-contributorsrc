@@ -19,6 +19,15 @@
         "design",
         "test"
       ]
+    },
+    {
+      "login": "ntsd",
+      "name": "Jirawat Boonkumnerd",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/8283616?v=4",
+      "profile": "http://ntsd.github.io",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
