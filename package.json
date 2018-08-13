@@ -20,7 +20,9 @@
     "packager:linux": "electron-packager ./lib Yosoro --overwrite --platform=linux --arch=x64 --out=out",
     "packager:linux:deb": "babel-node ./scripts/packageDeb.js",
     "lint": "concurrently \"eslint . --ext .js,.jsx\" \"sass-lint -v -q\"",
-    "test": "cross-env NODE_ENV='test' BABEL_ENV=test jest"
+    "test": "cross-env NODE_ENV='test' BABEL_ENV=test jest",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
   },
   "build": {
     "productName": "Yosoro",
@@ -67,6 +69,7 @@
     "uuid": "^3.1.0"
   },
   "devDependencies": {
+    "all-contributors-cli": "^5.4.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",

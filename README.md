@@ -61,8 +61,9 @@ You can read [Wiki](https://github.com/IceEnd/Yosoro/wiki) & [CHANGELOG](./CHANG
 
 ![screenshot-linux](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.22.40-linux.png)
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
 ## Contributors
+
+[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
 
@@ -73,44 +74,6 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
-
-## Quick Start
-
-### Install
-
-```shell
-yarn
-```
-
-### Dev Tools Extension
-
-```shell
-cp ./config/devconfig.example.json ./config/devconfig.json
-```
-
-### Run Main Process
-
-```shell
-npm run dev:main
-```
-
-### Run Renderer Process
-
-```shell
-npm run dev:renderer
-```
-
-### Build
-
-```shell
-npm run build:all|main|renderer
-```
-
-### Package
-
-```
-npm run packager:mac|win|win:64|linux
-```
 
 ## License
 
