@@ -19,33 +19,6 @@
         "design",
         "test"
       ]
-    },
-    {
-      "login": "ntsd",
-      "name": "Jirawat Boonkumnerd",
-      "avatar_url": "https://avatars3.githubusercontent.com/u/8283616?v=4",
-      "profile": "http://ntsd.github.io",
-      "contributions": [
-        "code"
-      ]
-    },
-    {
-      "login": "AustinLeath",
-      "name": "Austin Leath",
-      "avatar_url": "https://avatars2.githubusercontent.com/u/32113014?v=4",
-      "profile": "https://www.austinleath.com",
-      "contributions": [
-        "doc"
-      ]
-    },
-    {
-      "login": "afractal",
-      "name": "Hermes Gjini",
-      "avatar_url": "https://avatars0.githubusercontent.com/u/8417583?v=4",
-      "profile": "http://afractal.me",
-      "contributions": [
-        "doc"
-      ]
     }
   ]
 }
