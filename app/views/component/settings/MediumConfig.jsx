@@ -25,6 +25,7 @@ export default class MediumConfig extends Component {
       url: PropTypes.string.isRequired,
       imageUrl: PropTypes.string.isRequired,
     }).isRequired,
+    id: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -141,7 +142,7 @@ export default class MediumConfig extends Component {
 
   render() {
     const { mediumForm } = this.state;
-    const { medium } = this.props;
+    const { medium, id } = this.props;
     const formItemLayout = {
       labelCol: {
         offset: 1,
@@ -154,6 +155,7 @@ export default class MediumConfig extends Component {
     return (
       <Module
         title="Medium Config"
+        id={id}
       >
         <Row>
           <Col span="4" offset="1">

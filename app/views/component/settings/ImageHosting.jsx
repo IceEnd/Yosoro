@@ -24,6 +24,7 @@ export default class ImageHosting extends Component {
       path: PropTypes.string.isRequired,
       domain: PropTypes.string.isRequired,
     }).isRequired,
+    id: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -182,6 +183,7 @@ export default class ImageHosting extends Component {
   }
 
   render() {
+    const { id } = this.props;
     const { githubForm } = this.state;
     const formItemLayout = {
       labelCol: {
@@ -195,6 +197,7 @@ export default class ImageHosting extends Component {
     return (
       <Module
         title="Image Hosting"
+        id={id}
       >
         <Row>
           <Col span="4" offset="1">
