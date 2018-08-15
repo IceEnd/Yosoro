@@ -1,0 +1,19 @@
+[ignore]
+.*/node_modules/.*
+
+[include]
+
+[libs]
+
+[lints]
+
+[options]
+module.system=haste
+module.name_mapper='^Components' ->'<PROJECT_ROOT>/app/views/component'
+module.name_mapper='^Share' ->'<PROJECT_ROOT>/app/views/component/share'
+module.name_mapper='^Utils' ->'<PROJECT_ROOT>/app/views/utils'
+module.name_mapper='^Actions' ->'<PROJECT_ROOT>/app/views/actions'
+module.name_mapper='^Services' ->'<PROJECT_ROOT>/app/views/services'
+module.name_mapper='^Assets' ->'<PROJECT_ROOT>app/views/assets'
+
+[strict]

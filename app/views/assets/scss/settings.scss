@@ -29,6 +29,12 @@
 			right: 0;
 			left: unset;
 		}
+
+		.ant-anchor-link-title {
+			&:focus {
+				text-decoration: none;
+			}
+		}
 	}
 
 
@@ -49,7 +55,7 @@
 			// margin: 1rem auto 2rem auto;
 			width: 75%;
 			margin: 0 5% 0 20%;
-			padding: 2rem 0 2rem 1rem;
+			padding: 2rem 3rem;
 
 			.module-title {
 				position: relative;

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Anchor } from 'antd';
+import { Anchor, Icon } from 'antd';
 import Title from 'Share/title/Title';
 import ImageHosting from './ImageHosting';
 import MediumConfig from './MediumConfig';
@@ -9,14 +9,48 @@ import '../../assets/scss/settings.scss';
 
 const { Link } = Anchor;
 
+type LinkTitleProps = {
+  type: string,
+  title: string,
+};
+
+const LinkTitle = (props: LinkTitleProps) => (
+  <Fragment>
+    <Icon type={props.type} /> {props.title}
+  </Fragment>
+);
+LinkTitle.displayName = 'LinkTitle';
+LinkTitle.propTypes = {
+  type: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+};
+
+const TOC_ITMES = [
+  {
+    href: '#/settings#anchor-image-hosting',
+    title: 'Image Hosting',
+    type: 'picture',
+  }, {
+    href: '#/settings#anchor-medium',
+    title: 'Medium',
+    type: 'medium',
+  },
+];
+
 const SettingsToc = () => (
   <div className="settings-toc">
     <Anchor
       affix
       getContainer={() => document.querySelector('#modules')}
     >
-      <Link href="#anchor-image-hosting" title="Image Hosting" />
-      <Link href="#anchor-medium" title="Medium" />
+      { TOC_ITMES.map(item => (
+        <Link
+          href={item.href}
+          title={(
+            <LinkTitle type={item.type} title={item.title} />
+          )}
+        />
+      ))}
     </Anchor>
   </div>
 );
