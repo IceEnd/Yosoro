@@ -3,7 +3,7 @@ import { remote } from 'electron';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import { Form, Input, Icon, Row, Col, Button, Avatar, Select } from 'antd';
-import { AUTH_MEDIUM } from 'Actions/medium';
+import { AUTH_MEDIUM, SIGN_OUT_MEDIUM } from 'Actions/medium';
 import { withDispatch } from 'Components/HOC/withDispatch';
 
 import Module from './Module';
@@ -140,6 +140,13 @@ export default class MediumConfig extends Component {
     shell.openExternal('https://github.com/Medium/medium-api-docs#22-self-issued-access-tokens');
   }
 
+  signout = () => {
+    this.state.mediumForm.token.value = '';
+    this.props.dispatch({
+      type: SIGN_OUT_MEDIUM,
+    });
+  }
+
   render() {
     const { mediumForm } = this.state;
     const { medium, id } = this.props;
@@ -204,9 +211,19 @@ export default class MediumConfig extends Component {
           >
             {medium.username === ''
               ? 'You are not Sing in. pls add your token and save first.'
-              : <a href={medium.url}>
-                <Avatar src={medium.imageUrl} /> {medium.username}
-              </a>}
+              : <div>
+                <Col span="5">
+                  <a href={medium.url}>
+                    <Avatar src={medium.imageUrl} /> {medium.username}
+                  </a>
+                </Col>
+                <Col span="2">
+                  <Button
+                    onClick={this.signout}
+                  >Sign out</Button>
+                </Col>
+              </div>
+            }
           </FormItem>
           {/* <FormItem
             key="id"
