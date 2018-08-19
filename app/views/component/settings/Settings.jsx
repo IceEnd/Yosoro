@@ -4,6 +4,7 @@ import { Anchor, Icon } from 'antd';
 import Title from 'Share/title/Title';
 import ImageHosting from './ImageHosting';
 import MediumConfig from './MediumConfig';
+import General from './general/General';
 
 import '../../assets/scss/settings.scss';
 
@@ -27,6 +28,10 @@ LinkTitle.propTypes = {
 
 const TOC_ITMES = [
   {
+    href: '#/settings#anchor-general',
+    title: 'General',
+    type: 'layout',
+  }, {
     href: '#/settings#anchor-image-hosting',
     title: 'Image Hosting',
     type: 'picture',
@@ -65,6 +70,7 @@ const Settings = props => (
     />
     <SettingsToc />
     <div className="modules" id="modules">
+      <General />
       <ImageHosting
         key="image-hosting-config"
         id="anchor-image-hosting"

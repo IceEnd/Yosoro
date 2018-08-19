@@ -188,7 +188,7 @@ export default class ImageHosting extends Component {
     const formItemLayout = {
       labelCol: {
         offset: 1,
-        span: 4,
+        span: 6,
       },
       wrapperCol: {
         span: 12,
@@ -282,10 +282,12 @@ export default class ImageHosting extends Component {
               >Save</Button>
             </Col>
             <Col
-              span="10"
-              offset="1"
+              span="2"
+              offset="2"
             >
-              <a onClick={this.handleOpenWiki}>Click here for help</a>
+              <a onClick={this.handleOpenWiki}>
+                <Icon type="question-circle-o" />
+              </a>
             </Col>
           </Row>
           {/* <FormItem key="submit" {...wrapFormItemLayout}>
