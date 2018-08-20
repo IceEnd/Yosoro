@@ -8,10 +8,10 @@ const labelLayout = {
 };
 
 const FontSize = (props) => {
-  const { fontSize, onChange, type } = props;
+  const { fontSize, onChange, type, title } = props;
   return (
-    <Row>
-      <Col {...labelLayout}>Editor Font Size:</Col>
+    <Row className="font-size-row">
+      <Col {...labelLayout} className="row-label">{title}:</Col>
       <Col span="10">
         <Slider
           min={12}
@@ -21,7 +21,7 @@ const FontSize = (props) => {
           step={1}
         />
       </Col>
-      <Col>
+      <Col span="5" className="number-col">
         <InputNumber
           min={12}
           max={32}
@@ -37,6 +37,7 @@ const FontSize = (props) => {
 FontSize.displayName = 'SetingsFontSize';
 FontSize.propTypes = {
   type: PropTypes.oneOf(['editor', 'preview']).isRequired,
+  title: PropTypes.string.isRequired,
   fontSize: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
 };

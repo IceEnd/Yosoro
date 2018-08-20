@@ -21,6 +21,12 @@ export function setDefaults() {
       editorWidth: 0.5,
     },
     defaultDriver: 'oneDrive',
+    editor: {
+      fontSize: 14,
+    },
+    preview: {
+      fontSize: 16,
+    },
   });
   db.set(OAUTHTOKEN, {
     oneDrive: '',

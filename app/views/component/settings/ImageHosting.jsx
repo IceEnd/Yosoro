@@ -283,7 +283,7 @@ export default class ImageHosting extends Component {
             </Col>
             <Col
               span="2"
-              offset="2"
+              offset="1"
             >
               <a onClick={this.handleOpenWiki}>
                 <Icon type="question-circle-o" />

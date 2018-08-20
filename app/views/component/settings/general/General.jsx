@@ -29,15 +29,18 @@ export default class General extends Component {
       <Module
         title="General"
         id="anchor-general"
+        className="general-settings"
       >
         <FontSize
           type="editor"
+          title="Editor Font Size"
           fontSize={editorFontSize}
           onChange={this.handleFontSize}
         />
 
         <FontSize
           type="preview"
+          title="Preview Font Size"
           fontSize={previewFontSize}
           onChange={this.handleFontSize}
         />

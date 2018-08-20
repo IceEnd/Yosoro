@@ -31,6 +31,15 @@ const assign = Object.assign;
 
 const first = checkDefaults();
 
+// const assignSettings = {
+//   editor: {
+//     fontSize: 14,
+//   },
+//   preview: {
+//     fontSize: 16,
+//   },
+// }
+
 const initMediumConfig = getAppMediumConfig();
 const initImageHosting = getAppImageHosting();
 const initSettings = getAppSettings();

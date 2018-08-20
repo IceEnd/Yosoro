@@ -203,7 +203,7 @@ export default class MediumConfig extends Component {
             {...formItemLayout}
           >
             {medium.username === ''
-              ? 'You are not Sing in. pls add your token and save first.'
+              ? 'You are not Sing in. Please add your token and save first.'
               : <a href={medium.url}>
                 <Avatar src={medium.imageUrl} /> {medium.username}
               </a>}
@@ -230,7 +230,7 @@ export default class MediumConfig extends Component {
             </Col>
             <Col
               span="2"
-              offset="2"
+              offset="1"
             >
               <a onClick={this.handleOpenWiki}>
                 <Icon type="question-circle-o" />
