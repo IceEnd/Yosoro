@@ -5,6 +5,7 @@ import Title from 'Share/title/Title';
 import ImageHosting from './ImageHosting';
 import MediumConfig from './MediumConfig';
 import General from './general/General';
+import About from './About';
 
 import '../../assets/scss/settings.scss';
 
@@ -39,6 +40,11 @@ const TOC_ITMES = [
     href: '#/settings#anchor-medium',
     title: 'Medium',
     type: 'medium',
+  },
+  {
+    href: '#/settings#anchor-about',
+    title: 'About',
+    type: 'copyright',
   },
 ];
 
@@ -83,6 +89,11 @@ const Settings = props => (
         key="medium-config"
         id="anchor-medium"
         medium={props.mediumConfig.medium}
+      />
+
+      <About
+        key="about-config"
+        id="anchor-about"
       />
     </div>
   </div>
