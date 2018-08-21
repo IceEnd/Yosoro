@@ -5,7 +5,8 @@
         "node": 8,
         "modules": false
       }
-    }]
+    }],
+    "flow"
   ],
   "env": {
     "main": {
@@ -15,7 +16,8 @@
             "node": 8,
             "modules": false
           }
-        }]
+        }],
+        "flow"
       ]
     },
     "renderer": {
@@ -29,7 +31,8 @@
         }],
         "react",
         "react-optimize",
-        "stage-0"
+        "stage-0",
+        "flow"
       ],
       "plugins": [
         "transform-decorators-legacy",
@@ -38,7 +41,7 @@
       ]
     },
     "test": {
-      "presets": [["env"], "react"]
+      "presets": [["env"], "react", "flow"]
     }
   },
   "plugins": ["transform-runtime"]

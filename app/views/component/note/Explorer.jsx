@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { withDispatch } from 'Components/HOC/withDispatch';
+import { withDispatch } from 'Components/HOC/context';
 import Project from './Project';
 import Files from './Files';
 import { pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';

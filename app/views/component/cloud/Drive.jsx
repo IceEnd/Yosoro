@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Breadcrumb, message, Icon, Modal } from 'antd';
 import autobind from 'autobind-decorator';
-import { withDispatch } from 'Components/HOC/withDispatch';
+import { withDispatch } from 'Components/HOC/context';
 import Notebooks from './Notebooks';
 import Notes from './Notes';
 import Loading from '../share/Loading';

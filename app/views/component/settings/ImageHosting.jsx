@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import { Form, Input, Icon, Row, Col, Button } from 'antd';
 import { CHANGE_IMAGE_HOSTING } from 'Actions/app';
-import { withDispatch } from 'Components/HOC/withDispatch';
+import { withDispatch } from 'Components/HOC/context';
 
 import Module from './Module';
 
@@ -24,6 +24,7 @@ export default class ImageHosting extends Component {
       path: PropTypes.string.isRequired,
       domain: PropTypes.string.isRequired,
     }).isRequired,
+    id: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -182,11 +183,12 @@ export default class ImageHosting extends Component {
   }
 
   render() {
+    const { id } = this.props;
     const { githubForm } = this.state;
     const formItemLayout = {
       labelCol: {
         offset: 1,
-        span: 4,
+        span: 6,
       },
       wrapperCol: {
         span: 12,
@@ -195,6 +197,7 @@ export default class ImageHosting extends Component {
     return (
       <Module
         title="Image Hosting"
+        id={id}
       >
         <Row>
           <Col span="4" offset="1">
@@ -279,10 +282,12 @@ export default class ImageHosting extends Component {
               >Save</Button>
             </Col>
             <Col
-              span="10"
+              span="2"
               offset="1"
             >
-              <a onClick={this.handleOpenWiki}>Click here for help</a>
+              <a onClick={this.handleOpenWiki}>
+                <Icon type="question-circle-o" />
+              </a>
             </Col>
           </Row>
           {/* <FormItem key="submit" {...wrapFormItemLayout}>

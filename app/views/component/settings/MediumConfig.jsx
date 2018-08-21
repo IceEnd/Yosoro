@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import { Form, Input, Icon, Row, Col, Button, Avatar, Select } from 'antd';
 import { AUTH_MEDIUM } from 'Actions/medium';
-import { withDispatch } from 'Components/HOC/withDispatch';
+import { withDispatch } from 'Components/HOC/context';
 
 import Module from './Module';
 
@@ -25,6 +25,7 @@ export default class MediumConfig extends Component {
       url: PropTypes.string.isRequired,
       imageUrl: PropTypes.string.isRequired,
     }).isRequired,
+    id: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -141,11 +142,11 @@ export default class MediumConfig extends Component {
 
   render() {
     const { mediumForm } = this.state;
-    const { medium } = this.props;
+    const { medium, id } = this.props;
     const formItemLayout = {
       labelCol: {
         offset: 1,
-        span: 4,
+        span: 6,
       },
       wrapperCol: {
         span: 12,
@@ -154,6 +155,7 @@ export default class MediumConfig extends Component {
     return (
       <Module
         title="Medium Config"
+        id={id}
       >
         <Row>
           <Col span="4" offset="1">
@@ -201,7 +203,7 @@ export default class MediumConfig extends Component {
             {...formItemLayout}
           >
             {medium.username === ''
-              ? 'You are not Sing in. pls add your token and save first.'
+              ? 'You are not Sing in. Please add your token and save first.'
               : <a href={medium.url}>
                 <Avatar src={medium.imageUrl} /> {medium.username}
               </a>}
@@ -227,10 +229,12 @@ export default class MediumConfig extends Component {
               >Save</Button>
             </Col>
             <Col
-              span="10"
+              span="2"
               offset="1"
             >
-              <a onClick={this.handleOpenWiki}>Click here for help</a>
+              <a onClick={this.handleOpenWiki}>
+                <Icon type="question-circle-o" />
+              </a>
             </Col>
           </Row>
         </Form>

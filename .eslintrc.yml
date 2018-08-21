@@ -17,6 +17,7 @@ plugins:
   - jsx-a11y
   - import
   - jest
+  - flowtype
 rules:
   no-console:
     - error

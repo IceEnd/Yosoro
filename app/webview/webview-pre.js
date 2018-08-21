@@ -2,19 +2,31 @@ const ipcRenderer = require('electron').ipcRenderer;
 
 let nodeRoot = null;
 
-let currentMode = '';
+/**
+ * 设置字体大小
+ *
+ * @param {Number} fontSize
+ */
+function setFontSize(fontSize) {
+  if (fontSize) {
+    document.getElementsByTagName('html')[0].style.fontSize = `${fontSize}px`;
+  }
+}
 
 /**
  * @description 检测编辑模式
  * @param {String} editorMode 编辑模式
  */
 function checkMode(editorMode) {
-  if (currentMode !== editorMode && currentMode === 'preview') {
-    nodeRoot.classList.remove('preview');
-  } else if (currentMode !== editorMode && editorMode === 'preview') {
-    nodeRoot.classList.add('preview');
+  if (editorMode === 'preview') {
+    if (!nodeRoot.classList.contains('preview')) {
+      nodeRoot.classList.add('preview');
+    }
+  } else if (editorMode !== 'preview') {
+    if (nodeRoot.classList.contains('preview')) {
+      nodeRoot.classList.remove('preview');
+    }
   }
-  currentMode = editorMode;
 }
 
 function handleInnerClick(event) {
@@ -36,13 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // 渲染预览页面
   ipcRenderer.on('wv-render-html', (event, args) => {
     let { html, editorMode } = args;
+    const { fontSize } = args;
+    // 设置字体大小
+    setFontSize(fontSize);
     html = html || '';
     editorMode = editorMode || 'normal';
     if (!nodeRoot) {
       nodeRoot = document.getElementById('root');
-    }
-    if (currentMode === '') {
-      currentMode = editorMode;
     }
     checkMode(editorMode);
     nodeRoot.innerHTML = html;
@@ -50,5 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   ipcRenderer.on('wv-scroll', (event, radio) => {
     document.body.scrollTop = nodeRoot.offsetHeight * radio;
+  });
+
+  ipcRenderer.on('wv-change-fontsize', (event, fontSize) => {
+    setFontSize(fontSize);
   });
 });

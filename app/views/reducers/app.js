@@ -13,6 +13,7 @@ import {
   CLOSE_UPDATE_NOTIFICATION,
   CHANGE_IMAGE_HOSTING,
   CHANGE_MEDIUM_CONFIG,
+  CHANGE_FONT_SIZE,
 } from 'Actions/app';
 import {
   checkDefaults,
@@ -23,6 +24,7 @@ import {
   updateImageHosting,
   getAppMediumConfig,
   updateMediumConfig,
+  updateFontSize,
 } from 'Utils/db/app';
 import appInfo from '../../../package.json';
 import { compareVersion } from '../utils/utils';
@@ -31,9 +33,17 @@ const assign = Object.assign;
 
 const first = checkDefaults();
 
+const appendSettings = {
+  editor: {
+    fontSize: 14,
+    previewFontSize: 16,
+  },
+  defaultDrive: 'oneDrive',
+};
+
 const initMediumConfig = getAppMediumConfig();
 const initImageHosting = getAppImageHosting();
-const initSettings = getAppSettings();
+const initSettings = assign({}, appendSettings, getAppSettings());
 if (typeof initSettings.defaultDrive === 'undefined') {
   initSettings.defaultDrive = 'oneDrive';
 }
@@ -156,6 +166,16 @@ export default function lounchApp(state = {
       state.mediumConfig[name] = param;
       updateMediumConfig(name, param);
       return assign({}, state, param);
+    }
+    case CHANGE_FONT_SIZE: {
+      const { fontType, fontSize } = action;
+      let target = 'fontSize';
+      if (fontType === 'preview') {
+        target = 'previewFontSize';
+      }
+      updateFontSize(target, fontSize);
+      state.settings.editor[target] = fontSize;
+      return assign({}, state);
     }
     default:
       return state;

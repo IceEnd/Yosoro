@@ -9,7 +9,7 @@ import Loading from '../share/Loading';
 import '../../assets/scss/note.scss';
 
 const NoteWorkspace = (props) => {
-  const { projects, markdown, note, markdownSettings, editorMode, searchStatus, searchResult, exportQueue: { status: exportStatus }, imageHostingConfig } = props;
+  const { projects, markdown, note, markdownSettings, editorMode, searchStatus, searchResult, exportQueue: { status: exportStatus }, imageHostingConfig, editor } = props;
   let projectData;
   if (searchStatus === 0) {
     projectData = projects;
@@ -45,6 +45,7 @@ const NoteWorkspace = (props) => {
           markdown={markdown}
           markdownSettings={markdownSettings}
           editorMode={editorMode}
+          editor={editor}
           note={note}
         />
       </div>
@@ -99,6 +100,10 @@ NoteWorkspace.propTypes = {
     projectName: PropTypes.string.isRequired,
     fileUuid: PropTypes.string.isRequired,
     exportStatus: PropTypes.number.isRequired,
+  }).isRequired,
+  editor: PropTypes.shape({
+    fontSize: PropTypes.number.isRequired,
+    previewFontSize: PropTypes.number.isRequired,
   }).isRequired,
   markdownSettings: PropTypes.shape({
     editorWidth: PropTypes.number.isRequired,
