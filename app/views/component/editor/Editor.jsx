@@ -8,7 +8,7 @@ import 'codemirror/addon/fold/markdown-fold';
 import 'codemirror/mode/markdown/markdown';
 import ReactResizeDetector from 'react-resize-detector';
 import { UPLOAD_IMAGE } from 'Actions/imageHosting';
-import { withDispatch } from 'Components/HOC/withDispatch';
+import { withDispatch } from 'Components/HOC/context';
 import Notification from '../share/Notification';
 import { updateMarkdownHtml } from '../../actions/markdown';
 import { throttle, debounce } from '../../utils/utils';
@@ -45,6 +45,7 @@ export default class Editor extends Component {
     editorWidth: PropTypes.string.isRequired,
     setDrag: PropTypes.func.isRequired,
     editorMode: PropTypes.string.isRequired,
+    fontSize: PropTypes.number.isRequired,
     editorWidthValue: PropTypes.number.isRequired,
     drag: PropTypes.bool.isRequired,
     setPreiewScrollRatio: PropTypes.func.isRequired,
@@ -317,7 +318,7 @@ export default class Editor extends Component {
 
   render() {
     // const { textWidth } = this.state;
-    const { editorWidth, editorMode, editorWidthValue, drag } = this.props;
+    const { editorWidth, editorMode, editorWidthValue, drag, fontSize } = this.props;
     let width = editorWidth;
     let rootClass = '';
     let split = true;
@@ -337,7 +338,7 @@ export default class Editor extends Component {
     return (
       <div
         className={`editor-root ${rootClass} ${noBorder} ${drag ? 'drag' : ''}`}
-        style={{ flexBasis: width }}
+        style={{ flexBasis: width, fontSize: `${fontSize}px` }}
         ref={node => (this.editorRoot = node)}
       >
         <ReactResizeDetector handleWidth onResize={this.handleCodeMirrorResize} />

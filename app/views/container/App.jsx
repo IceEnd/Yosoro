@@ -10,7 +10,7 @@ import Note from 'Components/note/Note';
 import Trash from 'Components/trash/Trash';
 import Cloud from 'Components/cloud/Cloud';
 import Settings from 'Components/settings/Settings';
-import { Provider } from 'Components/HOC/withDispatch';
+import { Provider } from 'Components/HOC/context';
 import { getTokens } from 'Utils/db/app';
 import { GET_USER_AVATAR, SET_USER_LOCAL_AVATAR } from 'Actions/user';
 
@@ -56,6 +56,10 @@ export default class App extends Component {
         markdownSettings: PropTypes.shape({
           editorWidth: PropTypes.number.isRequired,
         }).isRequired,
+        editor: {
+          fontSize: PropTypes.number.isRequired,
+          previewFontSize: PropTypes.number.isRequired,
+        },
         defaultDrive: PropTypes.string.isRequired,
       }).isRequired,
       oneDriveTokenStatus: PropTypes.number.isRequired,
@@ -350,6 +354,7 @@ export default class App extends Component {
                       note={note}
                       markdownSettings={app.settings.markdownSettings}
                       editorMode={app.settings.editorMode}
+                      editor={settings.editor}
                       exportQueue={exportQueue}
                       imageHostingConfig={app.imageHostingConfig}
                     />
@@ -387,6 +392,7 @@ export default class App extends Component {
                     <Settings
                       imageHostingConfig={app.imageHostingConfig}
                       mediumConfig={app.mediumConfig}
+                      editor={settings.editor}
                     />
                   )}
                 />

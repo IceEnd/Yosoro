@@ -31,7 +31,7 @@ function formatNumber(number) {
   if (number < 10) {
     return `0${number}`;
   }
-  return number;
+  return `${number}`;
 }
 
 
@@ -120,8 +120,7 @@ export function compareVersion(localVersion, latestVersion) {
  * @desc markdown to html
  *
  * @export
- * @param {any} string markdown内容
- * @param {boolean} [xssWhite=false] 是否阻止xss
+ * @param {String} string markdown内容
  * @returns html
  */
 export function markedToHtml(string) {
@@ -218,10 +217,10 @@ export function blobToBase64(blob) {
  * 检查文件名称合法性
  *
  * @export
- * @param {*} name
+ * @param {string} name
  */
 export function checkFileName(name) {
-  return /[，,“”‘’：]+/ig.test(name);
+  return /[，,“”‘’：/]+/ig.test(name);
 }
 
 /**

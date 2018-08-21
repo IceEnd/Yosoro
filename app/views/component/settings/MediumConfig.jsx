@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import { Form, Input, Icon, Row, Col, Button, Avatar, Select } from 'antd';
 import { AUTH_MEDIUM } from 'Actions/medium';
-import { withDispatch } from 'Components/HOC/withDispatch';
+import { withDispatch } from 'Components/HOC/context';
 
 import Module from './Module';
 

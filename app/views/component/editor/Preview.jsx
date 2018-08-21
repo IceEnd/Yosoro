@@ -20,8 +20,13 @@ export default class Preview extends PureComponent {
     html: PropTypes.string.isRequired,
     editorMode: PropTypes.string.isRequired,
     // editorWidth: PropTypes.string.isRequired,
+    fontSize: PropTypes.number.isRequired,
     drag: PropTypes.bool.isRequired,
     editorWidthValue: PropTypes.number.isRequired,
+  };
+
+  static defalutProps = {
+    fontSize: 16,
   };
 
   constructor(props) {
@@ -45,6 +50,10 @@ export default class Preview extends PureComponent {
       this.setState({
         bodyWidth,
       });
+    }
+    if (this.props.fontSize !== nextProps.fontSize) {
+      const { fontSize } = nextProps.fontSize;
+      this.webview.send('wv-change-fontsize', fontSize);
     }
   }
 
@@ -74,12 +83,13 @@ export default class Preview extends PureComponent {
   @autobind
   onWVMessage(event) {
     const channel = event.channel;
-    const { html, editorMode } = this.props;
+    const { html, editorMode, fontSize } = this.props;
     switch (channel) {
       case 'wv-first-loaded': {
         this.webview.send('wv-render-html', {
           html,
           editorMode,
+          fontSize,
         });
         this.setState({
           loading: false,

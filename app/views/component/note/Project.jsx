@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Input, message } from 'antd';
 import { ipcRenderer } from 'electron';
-import { withDispatch } from 'Components/HOC/withDispatch';
+import { withDispatch } from 'Components/HOC/context';
 import { createProject, deleteProject, renameProject, trashBack, updateNoteUploadStatus } from 'Actions/projects';
 import { beforeSwitchSave, clearMarkdown } from 'Actions/markdown';
 import { switchProject, switchFile, clearWorkspace, updateNoteProjectName } from 'Actions/note';

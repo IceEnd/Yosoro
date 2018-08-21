@@ -70,7 +70,10 @@ const Settings = props => (
     />
     <SettingsToc />
     <div className="modules" id="modules">
-      <General />
+      <General
+        key="general-config"
+        {...props.editor}
+      />
       <ImageHosting
         key="image-hosting-config"
         id="anchor-image-hosting"
@@ -106,6 +109,10 @@ Settings.propTypes = {
       imageUrl: PropTypes.string.isRequired,
       publishStatus: PropTypes.string.isRequired,
     }).isRequired,
+  }).isRequired,
+  editor: PropTypes.shape({
+    fontSize: PropTypes.number.isRequired,
+    previewFontSize: PropTypes.number.isRequired,
   }).isRequired,
 };
 

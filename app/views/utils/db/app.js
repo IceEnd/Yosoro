@@ -23,9 +23,7 @@ export function setDefaults() {
     defaultDriver: 'oneDrive',
     editor: {
       fontSize: 14,
-    },
-    preview: {
-      fontSize: 16,
+      previewFontSize: 16,
     },
   });
   db.set(OAUTHTOKEN, {
@@ -479,4 +477,22 @@ export function getNote(uuid) {
     return null;
   }
   return notes[0];
+}
+
+/**
+ * 设置字体大小
+ *
+ * @param {String} target 目标
+ * @param {Number} value 字体大小
+ */
+export function updateFontSize(target, value) {
+  const settings = db.get(SETTINGS).value();
+  if (settings.editor) {
+    settings.editor[target] = value;
+  } else {
+    settings.editor = {
+      [target]: value,
+    };
+  }
+  db.set(SETTINGS, settings);
 }

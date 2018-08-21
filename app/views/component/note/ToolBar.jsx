@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import classnames from 'classnames';
 import { Icon, Tooltip, Menu, Dropdown } from 'antd';
-import { withDispatch } from 'Components/HOC/withDispatch';
+import { withDispatch } from 'Components/HOC/context';
 import Search from '../share/search/Search';
 import SVGIcon from '../share/SVGIcon';
 
