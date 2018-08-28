@@ -17,6 +17,7 @@ import {
   POST_MEDIUM,
   POST_MEDIUM_SUCCESS,
   POST_MEDIUM_FAILED,
+  SIGN_OUT_MEDIUM,
 } from 'Actions/medium';
 
 import Notification from 'Components/share/Notification';
@@ -35,7 +36,7 @@ const authMediumSuccess = new Notification({
 
 const postMediumFailed = new Notification({
   title: 'Post Medium failed',
-  body: 'Post Medium failed',
+  body: 'Please check your medium config',
   key: 'post-medium-success-notification',
 });
 
@@ -100,7 +101,28 @@ function* post() {
   yield takeLatest(POST_MEDIUM, handlePost);
 }
 
+function* handleSignOut() {
+  const mediumUser = {
+    id: '',
+    username: '',
+    token: '',
+    url: '',
+    imageUrl: '',
+    publishStatus: 'draft',
+  };
+  yield put({
+    type: CHANGE_MEDIUM_CONFIG,
+    name: 'medium',
+    param: mediumUser,
+  });
+}
+
+function* signOut() {
+  yield takeLatest(SIGN_OUT_MEDIUM, handleSignOut);
+}
+
 export default [
   auth,
   post,
+  signOut,
 ];
