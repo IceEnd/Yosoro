@@ -45,6 +45,7 @@ export default class Markdown extends Component {
     editor: PropTypes.shape({
       fontSize: PropTypes.number.isRequired,
       previewFontSize: PropTypes.number.isRequired,
+      cursorPosition: PropTypes.number.isRequired,
     }).isRequired,
     editorMode: PropTypes.string.isRequired,
   };
@@ -140,7 +141,7 @@ export default class Markdown extends Component {
   }
 
   render() {
-    const { markdown: { content, status, html, start, uuid }, editorMode, note, imageHostingConfig, editor: { fontSize, previewFontSize } } = this.props;
+    const { markdown: { content, status, html, start, uuid }, editorMode, note, imageHostingConfig, editor: { fontSize, previewFontSize, cursorPosition } } = this.props;
     const { editorWidth, drag, editorWidthValue } = this.state;
     if (status === 0) {
       return null;
@@ -157,6 +158,7 @@ export default class Markdown extends Component {
         >
           <Editor
             fontSize={fontSize}
+            cursorPosition={cursorPosition}
             uuid={uuid}
             note={note}
             imageHostingConfig={imageHostingConfig}

@@ -161,7 +161,7 @@ export default class MediumConfig extends Component {
     };
     return (
       <Module
-        title="Medium Config"
+        title="Publish Config"
         id={id}
       >
         <Row>
@@ -211,10 +211,11 @@ export default class MediumConfig extends Component {
           >
             {medium.username === ''
               ? 'You are not Sing in. Please add your token and save first.'
-              : <div>
+              : <Row>
                 <Col span="5">
                   <a href={medium.url}>
-                    <Avatar src={medium.imageUrl} /> {medium.username}
+                    <Avatar src={medium.imageUrl} />
+                    <span>{medium.username}</span>
                   </a>
                 </Col>
                 <Col span="2">
@@ -222,7 +223,7 @@ export default class MediumConfig extends Component {
                     onClick={this.signout}
                   >Sign out</Button>
                 </Col>
-              </div>
+              </Row>
             }
           </FormItem>
           {/* <FormItem

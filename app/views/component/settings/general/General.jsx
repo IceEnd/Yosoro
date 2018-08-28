@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withDispatch } from 'Components/HOC/context';
-import { CHANGE_FONT_SIZE } from 'Actions/app';
+import { CHANGE_EDITOR_SETTINGS } from 'Actions/app';
 import Module from '../Module';
 import FontSize from './FontSize';
+import Switch from './Switch';
 
 const MIN_SIZE = 12;
 const MAX_SIZE = 32;
@@ -15,24 +16,27 @@ export default class General extends PureComponent {
     dispatch: PropTypes.func.isRequired,
     fontSize: PropTypes.number.isRequired,
     previewFontSize: PropTypes.number.isRequired,
+    cursorPosition: PropTypes.number.isRequired,
   }
 
-  handleFontSize = (type = 'editor', value) => {
-    if (typeof value !== 'number') {
-      return;
-    }
-    if (value < MIN_SIZE && value > MAX_SIZE) {
-      return;
+  handleChange = (type, value) => {
+    if (type === 'editorFontSize' || type === 'previewFontSize') {
+      if (typeof value !== 'number') {
+        return;
+      }
+      if (value < MIN_SIZE && value > MAX_SIZE) {
+        return;
+      }
     }
     this.props.dispatch({
-      type: CHANGE_FONT_SIZE,
-      fontType: type,
-      fontSize: value,
+      type: CHANGE_EDITOR_SETTINGS,
+      target: type,
+      value,
     });
   }
 
   render() {
-    const { fontSize, previewFontSize } = this.props;
+    const { fontSize, previewFontSize, cursorPosition } = this.props;
     return (
       <Module
         title="General"
@@ -40,21 +44,29 @@ export default class General extends PureComponent {
         className="general-settings"
       >
         <FontSize
-          type="editor"
+          type="editorFontSize"
           title="Editor Font Size"
           minSize={MIN_SIZE}
           maxSize={MAX_SIZE}
           fontSize={fontSize}
-          onChange={this.handleFontSize}
+          onChange={this.handleChange}
         />
 
         <FontSize
-          type="preview"
+          type="previewFontSize"
           title="Preview Font Size"
           minSize={MIN_SIZE}
           maxSize={MAX_SIZE}
           fontSize={previewFontSize}
-          onChange={this.handleFontSize}
+          onChange={this.handleChange}
+        />
+
+        <Switch
+          type="cursorPosition"
+          title="Cursor Position"
+          value={cursorPosition}
+          onChange={this.handleChange}
+          tips="View positioning based on the cursor position of the editor."
         />
       </Module>
     );

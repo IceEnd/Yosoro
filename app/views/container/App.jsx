@@ -59,6 +59,7 @@ export default class App extends Component {
         editor: {
           fontSize: PropTypes.number.isRequired,
           previewFontSize: PropTypes.number.isRequired,
+          cursorPosition: PropTypes.number.isRequired,
         },
         defaultDrive: PropTypes.string.isRequired,
       }).isRequired,

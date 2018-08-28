@@ -36,7 +36,16 @@ function handleInnerClick(event) {
   const node = event.target;
   event.preventDefault();
   if (node.tagName && node.tagName.toLowerCase() === 'a' && node.href) {
-    ipcRenderer.sendToHost('did-click-link', node.href);
+    if (node.getAttribute('href') === '#') { // 回到顶部
+      document.body.scrollTop = 0;
+    } else if (node.hash && (node.getAttribute('href') === node.hash)) {
+      const scrollTarget = event.view.document.getElementById(node.hash.substr(1, node.hash.length - 1));
+      if (scrollTarget) {
+        scrollTarget.scrollIntoView();
+      }
+    } else {
+      ipcRenderer.sendToHost('did-click-link', node.href);
+    }
   }
 }
 

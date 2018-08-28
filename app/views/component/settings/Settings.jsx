@@ -37,8 +37,8 @@ const TOC_ITMES = [
     title: 'Image Hosting',
     type: 'picture',
   }, {
-    href: '#/settings#anchor-medium',
-    title: 'Medium',
+    href: '#/settings#anchor-publish',
+    title: 'Publish',
     type: 'medium',
   },
   {
@@ -87,7 +87,7 @@ const Settings = props => (
       />
       <MediumConfig
         key="medium-config"
-        id="anchor-medium"
+        id="anchor-publish"
         medium={props.mediumConfig.medium}
       />
 
@@ -124,6 +124,7 @@ Settings.propTypes = {
   editor: PropTypes.shape({
     fontSize: PropTypes.number.isRequired,
     previewFontSize: PropTypes.number.isRequired,
+    cursorPosition: PropTypes.number.isRequired,
   }).isRequired,
 };
 

@@ -1,4 +1,5 @@
 import marked from 'marked';
+import markdownTOC from 'markdown-toc';
 import { message } from 'antd';
 
 const renderer = new marked.Renderer();
@@ -125,6 +126,16 @@ export function compareVersion(localVersion, latestVersion) {
  */
 export function markedToHtml(string) {
   return marked(string);
+}
+
+/**
+ * 获取Markdown toc
+ *
+ * @param {String} string markdown内容
+ * @returns json
+ */
+export function markdown2TOC(string) {
+  return markdownTOC(string).json;
 }
 
 

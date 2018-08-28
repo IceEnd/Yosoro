@@ -46,6 +46,7 @@ export default class Editor extends Component {
     setDrag: PropTypes.func.isRequired,
     editorMode: PropTypes.string.isRequired,
     fontSize: PropTypes.number.isRequired,
+    cursorPosition: PropTypes.number.isRequired,
     editorWidthValue: PropTypes.number.isRequired,
     drag: PropTypes.bool.isRequired,
     setPreiewScrollRatio: PropTypes.func.isRequired,
@@ -148,7 +149,6 @@ export default class Editor extends Component {
       mode: 'markdown',
       lineNumbers: true,
       lineWrapping: true,
-      // extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
       foldGutter: true,
       gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
     });
@@ -225,17 +225,22 @@ export default class Editor extends Component {
   }
 
   handleFocus = (cm) => {
-    const currentLine = cm.getCursor().line;
-    const lines = cm.lineCount();
-    this.props.setPreiewScrollRatio(currentLine / lines);
+    this.handleNeedScroll(cm);
   }
 
   handleKeyDown = (cm) => {
     this.setState({
       listenScroll: false,
     });
-    const ratio = this.getRatio(cm);
-    this.props.setPreiewScrollRatio(ratio);
+    this.handleNeedScroll(cm);
+  }
+
+  handleNeedScroll = (cm) => {
+    const { cursorPosition } = this.props;
+    if (cursorPosition) {
+      const ratio = this.getRatio(cm);
+      this.props.setPreiewScrollRatio(ratio);
+    }
   }
 
   @autobind

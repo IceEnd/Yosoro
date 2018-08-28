@@ -4,15 +4,16 @@ import { ipcRenderer } from 'electron';
 import classnames from 'classnames';
 import { Icon, Tooltip, Menu, Dropdown } from 'antd';
 import { withDispatch } from 'Components/HOC/context';
+import { pushStateToStorage, mergeStateFromStorage } from 'Utils/utils';
+
+import { searchNotes, clearSearchNotes, UPLOAD_NOTE_ONEDRIVE } from 'Actions/projects';
+import { appSwitchEditMode } from 'Actions/app';
+import { clearWorkspace } from 'Actions/note';
+import { clearMarkdown, beforeSwitchSave, MARKDOWN_UPLOADING } from 'Actions/markdown';
+import { POST_MEDIUM } from 'Actions/medium';
+
 import Search from '../share/search/Search';
 import SVGIcon from '../share/SVGIcon';
-
-import { searchNotes, clearSearchNotes, UPLOAD_NOTE_ONEDRIVE } from '../../actions/projects';
-import { pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
-import { appSwitchEditMode } from '../../actions/app';
-import { clearWorkspace } from '../../actions/note';
-import { clearMarkdown, beforeSwitchSave, MARKDOWN_UPLOADING } from '../../actions/markdown';
-import { POST_MEDIUM } from '../../actions/medium';
 
 const MenuItem = Menu.Item;
 
@@ -136,13 +137,6 @@ export default class Tool extends PureComponent {
       data = html;
     } else if (key === 'pdf') {
       data = html;
-    } else if (key === 'medium') {
-      this.props.dispatch({
-        type: POST_MEDIUM,
-        title: name,
-        markdown: content,
-      });
-      return;
     }
     ipcRenderer.send('export-note', {
       content,
@@ -154,6 +148,31 @@ export default class Tool extends PureComponent {
     });
   }
 
+  // 发布文章
+  handlePublic = ({ key }) => {
+    const { markdown: { content, name } } = this.props;
+    if (key === 'medium') {
+      this.props.dispatch({
+        type: POST_MEDIUM,
+        title: name,
+        markdown: content,
+      });
+    }
+  }
+
+  renderDropDown = (menu, type, style = {}) => (
+    <Dropdown
+      overlay={menu}
+      placement="bottomCenter"
+    >
+      <span
+        className="tools-item font-icon"
+      >
+        <Icon type={type} style={style} />
+      </span>
+    </Dropdown>
+  );
+
   renderIcon = (type, desc) => {
     const { markdown: { uploadStatus } } = this.props;
     if (type === 'export') {
@@ -162,22 +181,17 @@ export default class Tool extends PureComponent {
           <MenuItem key="md">Markdown</MenuItem>
           <MenuItem key="html">Html</MenuItem>
           <MenuItem key="pdf">PDF</MenuItem>
+        </Menu>
+      );
+      return this.renderDropDown(menu, type);
+    }
+    if (type === 'upload') {
+      const menu = (
+        <Menu onClick={this.handlePublic}>
           <MenuItem key="medium">Medium</MenuItem>
         </Menu>
       );
-      return (
-        <Dropdown
-          overlay={menu}
-          placement="bottomCenter"
-        >
-          <span
-            className="tools-item font-icon"
-            onClick={() => this.handleClick(type)}
-          >
-            <Icon type={type} />
-          </span>
-        </Dropdown>
-      );
+      return this.renderDropDown(menu, type, { fontSize: '1.28rem' });
     }
     return (
       <span
@@ -240,14 +254,8 @@ export default class Tool extends PureComponent {
             <h3 className="title">{name}</h3>
             <div className="tools">
               {this.renderIcon('cloud-upload-o', 'upload')}
-              {/* {this.renderIcon('link')}
-              {this.renderIcon('picture')}
-              {this.renderIcon('code-o')}
-              {this.renderIcon('smile-o')}
-              {this.renderIcon('tag')}
-              {this.renderIcon('arrows-alt')} */}
-              {/* {this.renderIcon('arrows-alt')} */}
               {this.renderIcon('export', 'export')}
+              {this.renderIcon('upload', 'public')}
               {this.renderEditModalIcon()}
             </div>
           </Fragment>
