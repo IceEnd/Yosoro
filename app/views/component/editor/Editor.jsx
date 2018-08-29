@@ -218,9 +218,8 @@ export default class Editor extends Component {
       });
       return false;
     }
-    const element = cm.getScrollerElement();
-    const heigth = element.scrollHeight;
-    const ratio = element.scrollTop / heigth;
+    const { top, height, clientHeight } = cm.getScrollInfo();
+    const ratio = (top + clientHeight) / height;
     this.props.setPreiewScrollRatio(ratio);
   }
 

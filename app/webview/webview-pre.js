@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   ipcRenderer.on('wv-scroll', (event, radio) => {
-    document.body.scrollTop = nodeRoot.offsetHeight * radio;
+    document.body.scrollTop = (nodeRoot.scrollHeight * radio) - document.body.clientHeight;
   });
 
   ipcRenderer.on('wv-change-fontsize', (event, fontSize) => {

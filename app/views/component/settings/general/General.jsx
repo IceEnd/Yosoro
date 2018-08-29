@@ -7,7 +7,7 @@ import FontSize from './FontSize';
 import Switch from './Switch';
 
 const MIN_SIZE = 12;
-const MAX_SIZE = 32;
+const MAX_SIZE = 36;
 
 @withDispatch
 export default class General extends PureComponent {
@@ -44,7 +44,7 @@ export default class General extends PureComponent {
         className="general-settings"
       >
         <FontSize
-          type="editorFontSize"
+          type="fontSize"
           title="Editor Font Size"
           minSize={MIN_SIZE}
           maxSize={MAX_SIZE}

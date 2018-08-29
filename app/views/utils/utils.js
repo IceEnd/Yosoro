@@ -1,5 +1,5 @@
 import marked from 'marked';
-import markdownTOC from 'markdown-toc';
+// import toc from 'markdown-toc';
 import { message } from 'antd';
 
 const renderer = new marked.Renderer();
@@ -134,9 +134,9 @@ export function markedToHtml(string) {
  * @param {String} string markdown内容
  * @returns json
  */
-export function markdown2TOC(string) {
-  return markdownTOC(string).json;
-}
+// export function markdown2TOC(string) {
+//   return markdownTOC(string).json;
+// }
 
 
 /**
