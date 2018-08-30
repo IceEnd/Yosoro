@@ -5,6 +5,7 @@ import Title from 'Share/title/Title';
 import ImageHosting from './ImageHosting';
 import MediumConfig from './MediumConfig';
 import General from './general/General';
+import About from './About';
 
 import '../../assets/scss/settings.scss';
 
@@ -36,9 +37,14 @@ const TOC_ITMES = [
     title: 'Image Hosting',
     type: 'picture',
   }, {
-    href: '#/settings#anchor-medium',
-    title: 'Medium',
+    href: '#/settings#anchor-publish',
+    title: 'Publish',
     type: 'medium',
+  },
+  {
+    href: '#/settings#anchor-about',
+    title: 'About',
+    type: 'copyright',
   },
 ];
 
@@ -81,8 +87,13 @@ const Settings = props => (
       />
       <MediumConfig
         key="medium-config"
-        id="anchor-medium"
+        id="anchor-publish"
         medium={props.mediumConfig.medium}
+      />
+
+      <About
+        key="about-config"
+        id="anchor-about"
       />
     </div>
   </div>
@@ -113,6 +124,7 @@ Settings.propTypes = {
   editor: PropTypes.shape({
     fontSize: PropTypes.number.isRequired,
     previewFontSize: PropTypes.number.isRequired,
+    cursorPosition: PropTypes.number.isRequired,
   }).isRequired,
 };
 

@@ -104,6 +104,7 @@ NoteWorkspace.propTypes = {
   editor: PropTypes.shape({
     fontSize: PropTypes.number.isRequired,
     previewFontSize: PropTypes.number.isRequired,
+    cursorPosition: PropTypes.number.isRequired,
   }).isRequired,
   markdownSettings: PropTypes.shape({
     editorWidth: PropTypes.number.isRequired,

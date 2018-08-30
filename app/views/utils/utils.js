@@ -127,6 +127,16 @@ export function markedToHtml(string) {
   return marked(string);
 }
 
+/**
+ * 获取Markdown toc
+ *
+ * @param {String} string markdown内容
+ * @returns json
+ */
+// export function markdown2TOC(string) {
+//   return markdownTOC(string).json;
+// }
+
 
 /**
  * @desc 函数节流 返回函数连续调用时，fun 执行频率限定为 次/wait
@@ -243,4 +253,15 @@ export function checkSpecial(str, showMessage = true) {
     return false;
   }
   return true;
+}
+
+/**
+ * 根据Markdown内容生成TOC
+ *
+ * @param {String} str
+ */
+export function markedTOC(str) {
+  const tokens = marked.lexer(str);
+  const headers = tokens.filter(token => token.type === 'heading');
+  return headers;
 }

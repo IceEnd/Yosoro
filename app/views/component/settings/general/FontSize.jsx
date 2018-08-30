@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Slider, InputNumber, Row, Col } from 'antd';
 
 const labelLayout = {
-  offset: 1,
-  span: 5,
+  offset: 0,
+  span: 7,
 };
 
 const FontSize = (props) => {

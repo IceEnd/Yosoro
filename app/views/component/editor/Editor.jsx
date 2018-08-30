@@ -12,7 +12,7 @@ import { withDispatch } from 'Components/HOC/context';
 import Notification from '../share/Notification';
 import { updateMarkdownHtml } from '../../actions/markdown';
 import { throttle, debounce } from '../../utils/utils';
-import eventMd from '../../events/eventMD';
+import { eventMD } from '../../events/eventDispatch';
 
 let key = 0;
 
@@ -46,6 +46,7 @@ export default class Editor extends Component {
     setDrag: PropTypes.func.isRequired,
     editorMode: PropTypes.string.isRequired,
     fontSize: PropTypes.number.isRequired,
+    cursorPosition: PropTypes.number.isRequired,
     editorWidthValue: PropTypes.number.isRequired,
     drag: PropTypes.bool.isRequired,
     setPreiewScrollRatio: PropTypes.func.isRequired,
@@ -83,7 +84,7 @@ export default class Editor extends Component {
     window.addEventListener('resize', throttle(this.onWindowResize, 60));
     this.container.addEventListener('resize', this.handleContainerResize);
     this.setCodeMirror();
-    eventMd.on('sync-value', this.syncValue);
+    eventMD.on('sync-value', this.syncValue);
   }
 
   componentDidUpdate(prevProps) {
@@ -101,7 +102,7 @@ export default class Editor extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', throttle(this.onWindowResize, 60));
-    eventMd.removeAllListeners('sync-value');
+    eventMD.removeAllListeners('sync-value');
     this.deleteCodeMirror();
   }
 
@@ -148,7 +149,6 @@ export default class Editor extends Component {
       mode: 'markdown',
       lineNumbers: true,
       lineWrapping: true,
-      // extraKeys: {"Ctrl-Q": function(cm){ cm.foldCode(cm.getCursor()); }},
       foldGutter: true,
       gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
     });
@@ -218,24 +218,28 @@ export default class Editor extends Component {
       });
       return false;
     }
-    const element = cm.getScrollerElement();
-    const heigth = element.scrollHeight;
-    const ratio = element.scrollTop / heigth;
+    const { top, height, clientHeight } = cm.getScrollInfo();
+    const ratio = (top + clientHeight) / height;
     this.props.setPreiewScrollRatio(ratio);
   }
 
   handleFocus = (cm) => {
-    const currentLine = cm.getCursor().line;
-    const lines = cm.lineCount();
-    this.props.setPreiewScrollRatio(currentLine / lines);
+    this.handleNeedScroll(cm);
   }
 
   handleKeyDown = (cm) => {
     this.setState({
       listenScroll: false,
     });
-    const ratio = this.getRatio(cm);
-    this.props.setPreiewScrollRatio(ratio);
+    this.handleNeedScroll(cm);
+  }
+
+  handleNeedScroll = (cm) => {
+    const { cursorPosition } = this.props;
+    if (cursorPosition) {
+      const ratio = this.getRatio(cm);
+      this.props.setPreiewScrollRatio(ratio);
+    }
   }
 
   @autobind

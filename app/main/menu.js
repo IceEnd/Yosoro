@@ -344,7 +344,14 @@ export function getExplorerFileItemMenu(mainWindow) {
     }, {
       label: 'PDF',
       click: () => mainWindow.webContents.send('export-get-note-info', 'pdf'),
-    }, {
+    }],
+  }));
+  menu.append(new MenuItem({
+    type: 'separator',
+  }));
+  menu.append(new MenuItem({
+    label: 'Publish to',
+    submenu: [{
       label: 'Medium',
       click: () => mainWindow.webContents.send('post-medium'),
     }],

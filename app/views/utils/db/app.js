@@ -24,6 +24,7 @@ export function setDefaults() {
     editor: {
       fontSize: 14,
       previewFontSize: 16,
+      cursorPosition: false, // 是否根据光标定位
     },
   });
   db.set(OAUTHTOKEN, {
@@ -480,12 +481,12 @@ export function getNote(uuid) {
 }
 
 /**
- * 设置字体大小
+ * 设置编辑器
  *
  * @param {String} target 目标
- * @param {Number} value 字体大小
+ * @param {Number} value
  */
-export function updateFontSize(target, value) {
+export function updateEditorSettings(target, value) {
   const settings = db.get(SETTINGS).value();
   if (settings.editor) {
     settings.editor[target] = value;

@@ -10,7 +10,7 @@ import { readFile, beforeSwitchSave, saveContentToTrashFile, updateCurrentTitle,
 import { switchFile, clearNote, updateNoteFileName } from 'Actions/note';
 import { getNote } from 'Utils/db/app';
 import oneDriveLogo from 'Assets/images/onedrive.png';
-import { POST_MEDIUM } from '../../actions/medium';
+import { POST_MEDIUM } from 'Actions/medium';
 
 import SVGIcon from '../share/SVGIcon';
 

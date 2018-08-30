@@ -4,6 +4,7 @@ import autobind from 'autobind-decorator';
 import { ipcRenderer, remote } from 'electron';
 import classNames from 'classnames';
 import { getWebviewPreJSPath } from '../../utils/utils';
+import { eventTOC } from '../../events/eventDispatch';
 import LoadingImg from '../../assets/images/loading.svg';
 
 import '../../assets/scss/preview.scss';
@@ -42,6 +43,7 @@ export default class Preview extends PureComponent {
     this.noteRoot = document.getElementById('note_root_cont');
     window.addEventListener('resize', this.onWindowResize);
     this.webview.addEventListener('ipc-message', this.onWVMessage);
+    eventTOC.on('toc-jump', this.handleTOCJump);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,6 +70,7 @@ export default class Preview extends PureComponent {
   componentWillUnmount() {
     window.removeEventListener('resize', this.onWindowResize);
     this.webview.removeEventListener('ipc-message', this.onWVMessage);
+    eventTOC.removeListener('toc-jump', this.handleTOCJump);
   }
 
   onWindowResize = () => {
@@ -147,9 +150,6 @@ export default class Preview extends PureComponent {
   }
 
   setScrollRatio(radio) {
-    // const height = this.previewBody.offsetHeight;
-    // const scrollTop = height * radio;
-    // this.preview.scrollTop = scrollTop;
     this.webview.send('wv-scroll', radio);
   }
 
@@ -157,6 +157,12 @@ export default class Preview extends PureComponent {
   openWVDevTools() {
     if (this.webview) {
       this.webview.openDevTools();
+    }
+  }
+
+  handleTOCJump = (text) => {
+    if (text && this.webview) {
+      this.webview.send('scroll-target', text);
     }
   }
 
