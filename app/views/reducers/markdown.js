@@ -16,7 +16,7 @@ import {
 } from '../actions/markdown';
 import { updateNoteInfo } from '../utils/db/app';
 import { markedToHtml } from '../utils/utils';
-import eventMD from '../events/eventMD';
+import { eventMD } from '../events/eventDispatch';
 
 const assign = Object.assign;
 

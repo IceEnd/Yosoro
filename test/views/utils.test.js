@@ -1,9 +1,12 @@
+import fs from 'fs';
+import path from 'path';
 import {
   formatDate,
   compareVersion,
   checkSpecial,
   markedToHtml,
   checkFileName,
+  markedTOC,
 } from '../../app/views/utils/utils';
 
 test('FormatDate new date', () => {
@@ -66,4 +69,21 @@ test('markdwon to html: Code', () => {
   const html = markedToHtml('```js\r\nconsole.log(\'2333\');\r\n```');
   const target = /<pre>\s*<code class="lang-js"><span class="hljs-built_in">console<\/span>.log\(<span class="hljs-string">'2333'<\/span>\);\s*<\/code><\/pre>/ig;
   expect(target.test(html)).toBe(true);
+});
+
+test('marked TOC', () => {
+  const str = fs.readFileSync(path.resolve(__dirname, '../../README.md'), {
+    encoding: 'utf8',
+  });
+  const headers = markedTOC(str);
+  const length = headers.length;
+  expect(length > 0).toBe(true);
+  let flag = true;
+  for (let i = 0; i < length; i++) {
+    if (headers[i].type !== 'heading') {
+      flag = false;
+      break;
+    }
+  }
+  expect(flag).toBe(true);
 });

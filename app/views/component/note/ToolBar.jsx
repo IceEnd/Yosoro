@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import classnames from 'classnames';
-import { Icon, Tooltip, Menu, Dropdown } from 'antd';
+import { Icon, Tooltip, Menu, Dropdown, Popover } from 'antd';
 import { withDispatch } from 'Components/HOC/context';
 import { pushStateToStorage, mergeStateFromStorage } from 'Utils/utils';
 
@@ -11,6 +11,7 @@ import { appSwitchEditMode } from 'Actions/app';
 import { clearWorkspace } from 'Actions/note';
 import { clearMarkdown, beforeSwitchSave, MARKDOWN_UPLOADING } from 'Actions/markdown';
 import { POST_MEDIUM } from 'Actions/medium';
+import TOC from './TOC';
 
 import Search from '../share/search/Search';
 import SVGIcon from '../share/SVGIcon';
@@ -52,6 +53,7 @@ export default class Tool extends PureComponent {
     super();
     this.state = mergeStateFromStorage('noteExplorerState', {
       searchStatus: 0, // 0: 未搜索 1: 搜索中 2: 搜索完成
+      tocVisible: false, // 是否展示TOC
     });
   }
 
@@ -105,6 +107,12 @@ export default class Tool extends PureComponent {
     if (type === 'cloud-upload-o') {
       this.handleUpload();
     }
+  }
+
+  handleVisible = (type, value) => {
+    this.setState({
+      [type]: value,
+    });
   }
 
   handleUpload = () => {
@@ -193,6 +201,24 @@ export default class Tool extends PureComponent {
       );
       return this.renderDropDown(menu, type, { fontSize: '1.28rem' });
     }
+    if (type === 'bars') { // 打开TOC
+      const { markdown } = this.props;
+      const { tocVisible } = this.state;
+      const content = (<TOC {...markdown} visible={tocVisible} />);
+      return (
+        <Popover
+          overlayClassName="toc-popover"
+          trigger="click"
+          placement="bottomRight"
+          content={content}
+          onVisibleChange={value => this.handleVisible('tocVisible', value)}
+        >
+          <span className="tools-item font-icon">
+            <Icon type="bars" />
+          </span>
+        </Popover>
+      );
+    }
     return (
       <span
         className="tools-item font-icon"
@@ -256,6 +282,7 @@ export default class Tool extends PureComponent {
               {this.renderIcon('cloud-upload-o', 'upload')}
               {this.renderIcon('export', 'export')}
               {this.renderIcon('upload', 'public')}
+              {this.renderIcon('bars', 'toc')}
               {this.renderEditModalIcon()}
             </div>
           </Fragment>

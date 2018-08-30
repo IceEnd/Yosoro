@@ -659,7 +659,7 @@
 				-webkit-box-shadow: none;
 				box-shadow: none;
 			}
-    }
+		}
 	}
 }
 
@@ -671,4 +671,58 @@
 .fade-in {
 	animation: fade-in .5s;
 	-webkit-animation: fade-in .5s;
+}
+
+.toc-popover {
+	.ant-popover-inner-content {
+		padding: 0;
+	}
+}
+
+/* TOC card style */
+.toc-content {
+	position: relative;
+	width: 12rem;
+	height: 16rem;
+	font-size: 16px;
+	color: rgba(46, 128, 254, 0.8);
+	overflow: auto;
+
+	&::-webkit-scrollbar {
+		width: 0;
+	}
+
+	.toc-list {
+		width: 100%;
+		overflow-y: auto;
+		padding: 0.6rem;
+		margin-bottom: 0;
+
+		.toc-item {
+			padding: 0.1em 0.2em;
+			width: 100%;
+			@include text-ellipsis;
+			cursor: pointer;
+			border-radius: 0.3rem;
+
+			&:hover {
+				background-color: rgba(127, 122, 120, 0.8);
+				color: #ffffff;
+			}
+		}
+	}
+
+	.tips {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 100%;
+		text-align: center;
+	}
+
+	.header-label {
+		margin-right: 0.3em;
+		opacity: 0.6;
+	}
 }

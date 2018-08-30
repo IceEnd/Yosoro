@@ -76,4 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
   ipcRenderer.on('wv-change-fontsize', (event, fontSize) => {
     setFontSize(fontSize);
   });
+
+  ipcRenderer.on('scroll-target', (event, id) => {
+    const scrollTarget = document.getElementById(id.toLowerCase());
+    if (scrollTarget) {
+      scrollTarget.scrollIntoView();
+    }
+  });
 });

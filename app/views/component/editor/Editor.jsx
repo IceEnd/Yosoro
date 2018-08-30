@@ -12,7 +12,7 @@ import { withDispatch } from 'Components/HOC/context';
 import Notification from '../share/Notification';
 import { updateMarkdownHtml } from '../../actions/markdown';
 import { throttle, debounce } from '../../utils/utils';
-import eventMd from '../../events/eventMD';
+import { eventMD } from '../../events/eventDispatch';
 
 let key = 0;
 
@@ -84,7 +84,7 @@ export default class Editor extends Component {
     window.addEventListener('resize', throttle(this.onWindowResize, 60));
     this.container.addEventListener('resize', this.handleContainerResize);
     this.setCodeMirror();
-    eventMd.on('sync-value', this.syncValue);
+    eventMD.on('sync-value', this.syncValue);
   }
 
   componentDidUpdate(prevProps) {
@@ -102,7 +102,7 @@ export default class Editor extends Component {
 
   componentWillUnmount() {
     window.removeEventListener('resize', throttle(this.onWindowResize, 60));
-    eventMd.removeAllListeners('sync-value');
+    eventMD.removeAllListeners('sync-value');
     this.deleteCodeMirror();
   }
 

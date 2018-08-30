@@ -1,5 +1,4 @@
 import marked from 'marked';
-// import toc from 'markdown-toc';
 import { message } from 'antd';
 
 const renderer = new marked.Renderer();
@@ -254,4 +253,15 @@ export function checkSpecial(str, showMessage = true) {
     return false;
   }
   return true;
+}
+
+/**
+ * 根据Markdown内容生成TOC
+ *
+ * @param {String} str
+ */
+export function markedTOC(str) {
+  const tokens = marked.lexer(str);
+  const headers = tokens.filter(token => token.type === 'heading');
+  return headers;
 }
