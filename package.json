@@ -22,7 +22,8 @@
     "lint": "concurrently \"eslint . --ext .js,.jsx\" \"sass-lint -v -q\"",
     "test": "cross-env NODE_ENV='test' BABEL_ENV=test jest",
     "contributors:add": "all-contributors add",
-    "contributors:generate": "all-contributors generate"
+    "contributors:generate": "all-contributors generate",
+    "postinstall": "opencollective-postinstall"
   },
   "build": {
     "productName": "Yosoro",
@@ -55,6 +56,7 @@
     "marked": "^0.3.19",
     "node-fetch": "^1.3.3",
     "node-schedule": "^1.3.0",
+    "opencollective": "^1.0.3",
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
@@ -131,5 +133,9 @@
   "pre-commit": [
     "lint",
     "test"
-  ]
+  ],
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/Yosoro"
+  }
 }
