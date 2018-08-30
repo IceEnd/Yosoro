@@ -13,6 +13,9 @@
   <p align="center">
     <img src="https://img.shields.io/github/downloads/IceEnd/Yosoro/total.svg?style=flat-square">
   </p>
+  <p align="center">
+  <a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/Yosoro/backers/badge.svg" /></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/Yosoro/sponsors/badge.svg" /></a> 
+  </p>
 </p>
 
 ## Download
@@ -112,6 +115,36 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
+
+## Contributors
+
+This project exists thanks to all the people who contribute.
+<a href="graphs/contributors"><img src="https://opencollective.com/Yosoro/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/Yosoro#backer)]
+
+<a href="https://opencollective.com/Yosoro#backers" target="_blank"><img src="https://opencollective.com/Yosoro/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/Yosoro#sponsor)]
+
+<a href="https://opencollective.com/Yosoro/sponsor/0/website" target="_blank"><img src="https://opencollective.com/Yosoro/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/Yosoro/sponsor/1/website" target="_blank"><img src="https://opencollective.com/Yosoro/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/Yosoro/sponsor/2/website" target="_blank"><img src="https://opencollective.com/Yosoro/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/Yosoro/sponsor/3/website" target="_blank"><img src="https://opencollective.com/Yosoro/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/Yosoro/sponsor/4/website" target="_blank"><img src="https://opencollective.com/Yosoro/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/Yosoro/sponsor/5/website" target="_blank"><img src="https://opencollective.com/Yosoro/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/Yosoro/sponsor/6/website" target="_blank"><img src="https://opencollective.com/Yosoro/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/Yosoro/sponsor/7/website" target="_blank"><img src="https://opencollective.com/Yosoro/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/Yosoro/sponsor/8/website" target="_blank"><img src="https://opencollective.com/Yosoro/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/Yosoro/sponsor/9/website" target="_blank"><img src="https://opencollective.com/Yosoro/sponsor/9/avatar.svg"></a>
+
+
 
 ## License
 
