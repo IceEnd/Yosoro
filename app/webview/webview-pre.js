@@ -39,7 +39,7 @@ function handleInnerClick(event) {
     if (node.getAttribute('href') === '#') { // 回到顶部
       document.body.scrollTop = 0;
     } else if (node.hash && (node.getAttribute('href') === node.hash)) {
-      const scrollTarget = event.view.document.getElementById(node.hash.substr(1, node.hash.length - 1));
+      const scrollTarget = event.view.document.getElementById(node.hash.substr(1, node.hash.length - 1).toLowerCase());
       if (scrollTarget) {
         scrollTarget.scrollIntoView();
       }

@@ -8,11 +8,11 @@ import 'codemirror/addon/fold/markdown-fold';
 import 'codemirror/mode/markdown/markdown';
 import ReactResizeDetector from 'react-resize-detector';
 import { UPLOAD_IMAGE } from 'Actions/imageHosting';
+import { updateMarkdownHtml } from 'Actions/markdown';
+import { throttle, debounce } from 'Utils/utils';
 import { withDispatch } from 'Components/HOC/context';
 import Notification from '../share/Notification';
-import { updateMarkdownHtml } from '../../actions/markdown';
-import { throttle, debounce } from '../../utils/utils';
-import { eventMD } from '../../events/eventDispatch';
+import { eventMD, eventTOC } from '../../events/eventDispatch';
 
 let key = 0;
 
@@ -85,6 +85,7 @@ export default class Editor extends Component {
     this.container.addEventListener('resize', this.handleContainerResize);
     this.setCodeMirror();
     eventMD.on('sync-value', this.syncValue);
+    eventTOC.on('toc-jump', this.handleTOCJump);
   }
 
   componentDidUpdate(prevProps) {
@@ -103,6 +104,7 @@ export default class Editor extends Component {
   componentWillUnmount() {
     window.removeEventListener('resize', throttle(this.onWindowResize, 60));
     eventMD.removeAllListeners('sync-value');
+    eventTOC.removeListener('toc-jump', this.handleTOCJump);
     this.deleteCodeMirror();
   }
 
@@ -189,6 +191,32 @@ export default class Editor extends Component {
   addChangeEvent() {
     if (this.codeMirror) {
       this.codeMirror.on('change', this.handleChange);
+    }
+  }
+
+  handleTOCJump = () => {
+    if (this.codeMirror) {
+      // const { depth, text } = data;
+      // const name = `cm-header-${depth}`;
+      // const headers = ReactDOM.findDOMNode(this).getElementsByClassName(name); // eslint-disable-line react/no-find-dom-node
+      // let scrollTarget;
+      // const length = headers.length;
+      // const label = '#'.repeat(depth);
+      // for (let i = 0; i < length; i++) {
+      //   let headerText = headers[i].textContent.replace(label, '');
+      //   headerText = trim(headerText);
+      //   if (headerText === text) {
+      //     scrollTarget = headers[i];
+      //     break;
+      //   }
+      // }
+      // this.codeMirror.off('scroll', this.handleScroll);
+      // if (scrollTarget) {
+      //   scrollTarget.scrollIntoView();
+      // }
+      // setTimeout(() => {
+      //   this.codeMirror.on('scroll', this.handleScroll);
+      // }, 100);
     }
   }
 
