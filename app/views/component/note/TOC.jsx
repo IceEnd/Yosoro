@@ -36,8 +36,11 @@ export default class TOC extends PureComponent {
     };
   }
 
-  handleClick = (text) => {
-    eventTOC.emit('toc-jump', text);
+  handleClick = (depth, text) => {
+    eventTOC.emit('toc-jump', {
+      depth,
+      text,
+    });
   }
 
   render() {
@@ -53,7 +56,7 @@ export default class TOC extends PureComponent {
                 return (
                   <li
                     className="toc-item"
-                    onClick={() => this.handleClick(text)}
+                    onClick={() => this.handleClick(depth, text)}
                     role="presentation"
                   >
                     {renderLabel(depth)}
