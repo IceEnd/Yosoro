@@ -31,7 +31,7 @@ const About = (props) => {
         </Col>
       </Row>
       <Row justify="center" type="flex">
-        <Col span="12" className="txt-center" style={{ paddingTop: '1rem' }} >
+        <Col span="24" className="txt-center" style={{ paddingTop: '1rem' }} >
           <Button
             type="ghost"
             className="btn"
