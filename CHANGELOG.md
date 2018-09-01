@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v1.0.9
+
+### New Features
+
+- Post article to Medium
+- Editor settings
+- TOC
+
+![2018-09-02.00.43.19-toc.gif](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-09-02.00.43.19-toc.gif)
+
 ## v1.0.8
 
 ### New Features

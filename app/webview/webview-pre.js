@@ -39,7 +39,7 @@ function handleInnerClick(event) {
     if (node.getAttribute('href') === '#') { // 回到顶部
       document.body.scrollTop = 0;
     } else if (node.hash && (node.getAttribute('href') === node.hash)) {
-      const scrollTarget = event.view.document.getElementById(node.hash.substr(1, node.hash.length - 1));
+      const scrollTarget = event.view.document.getElementById(node.hash.substr(1, node.hash.length - 1).toLowerCase());
       if (scrollTarget) {
         scrollTarget.scrollIntoView();
       }
@@ -77,8 +77,18 @@ document.addEventListener('DOMContentLoaded', () => {
     setFontSize(fontSize);
   });
 
-  ipcRenderer.on('scroll-target', (event, id) => {
-    const scrollTarget = document.getElementById(id.toLowerCase());
+  ipcRenderer.on('scroll-target', (event, data) => {
+    const { text, depth } = data;
+    const tagName = `h${depth}`;
+    const headers = document.getElementsByTagName(tagName);
+    let scrollTarget;
+    const length = headers.length;
+    for (let i = 0; i < length; i++) {
+      if (headers[i].innerText === text) {
+        scrollTarget = headers[i];
+        break;
+      }
+    }
     if (scrollTarget) {
       scrollTarget.scrollIntoView();
     }

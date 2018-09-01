@@ -160,9 +160,10 @@ export default class Preview extends PureComponent {
     }
   }
 
-  handleTOCJump = (text) => {
-    if (text && this.webview) {
-      this.webview.send('scroll-target', text);
+  handleTOCJump = (data) => {
+    const { depth, text } = data;
+    if (text && depth && this.webview) {
+      this.webview.send('scroll-target', data);
     }
   }
 

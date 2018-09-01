@@ -1,7 +1,7 @@
 {
   "name": "yosoro",
   "productName": "Yosoro",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Beautiful Cloud Drive Markdown NoteBook Desktop App.",
   "main": "./app/main/index.js",
   "scripts": {

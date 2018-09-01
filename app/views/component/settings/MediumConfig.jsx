@@ -108,7 +108,7 @@ export default class MediumConfig extends Component {
   checkValue(key) {
     const mediumForm = Object.assign({}, this.state.mediumForm);
     const value = mediumForm[key].value;
-    let flag = true;
+    let flag = false;
     switch (key) {
       case 'publishStatus':
         if (value === '') {

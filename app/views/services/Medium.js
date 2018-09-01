@@ -42,21 +42,7 @@ export default class Medium {
     });
   }
 
-  getUser = token => new Promise((resolve) => {
-    const header = {
-      Authorization: `Bearer ${token}`,
-    };
-    fetch(`${this.root}/me`, {
-      method: 'GET',
-      headers: header,
-    }).then((response) => {
-      const { status } = response;
-      if (status === 200 || status === 201) {
-        return response.json();
-      }
-      throw new Error('Fetching Failed.');
-    }).then(res => resolve(res));
-  });
+  getUser = token => this.xhr('/me', 'GET', token);
 
   postMarkdown = async (title, markdown) => {
     const { id, token, publishStatus } = Medium.getMediumConfig();

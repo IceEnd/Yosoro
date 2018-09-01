@@ -8,11 +8,11 @@ import 'codemirror/addon/fold/markdown-fold';
 import 'codemirror/mode/markdown/markdown';
 import ReactResizeDetector from 'react-resize-detector';
 import { UPLOAD_IMAGE } from 'Actions/imageHosting';
+import { updateMarkdownHtml } from 'Actions/markdown';
+import { throttle, debounce } from 'Utils/utils';
 import { withDispatch } from 'Components/HOC/context';
 import Notification from '../share/Notification';
-import { updateMarkdownHtml } from '../../actions/markdown';
-import { throttle, debounce } from '../../utils/utils';
-import { eventMD } from '../../events/eventDispatch';
+import { eventMD, eventTOC } from '../../events/eventDispatch';
 
 let key = 0;
 
@@ -85,6 +85,7 @@ export default class Editor extends Component {
     this.container.addEventListener('resize', this.handleContainerResize);
     this.setCodeMirror();
     eventMD.on('sync-value', this.syncValue);
+    eventTOC.on('toc-jump', this.handleTOCJump);
   }
 
   componentDidUpdate(prevProps) {
@@ -103,6 +104,7 @@ export default class Editor extends Component {
   componentWillUnmount() {
     window.removeEventListener('resize', throttle(this.onWindowResize, 60));
     eventMD.removeAllListeners('sync-value');
+    eventTOC.removeListener('toc-jump', this.handleTOCJump);
     this.deleteCodeMirror();
   }
 
@@ -192,6 +194,30 @@ export default class Editor extends Component {
     }
   }
 
+  handleTOCJump = (data) => {
+    if (this.codeMirror) {
+      const { defaultContent } = this.props;
+      const { depth, text } = data;
+      const reg = new RegExp(`^\\s*${'#'.repeat(depth)}\\s+${text}\\s*`, 'ig');
+      const lines = defaultContent.split('\n');
+      const length = lines.length;
+      let targetLineNum = -1;
+      for (let i = 0; i < length; i++) {
+        if (reg.test(lines[i])) {
+          targetLineNum = i;
+          break;
+        }
+      }
+      if (targetLineNum >= 0) {
+        this.codeMirror.off('scroll', this.handleScroll);
+        const height = this.codeMirror.heightAtLine(targetLineNum, 'local');
+        this.codeMirror.scrollTo(null, height);
+        setTimeout(() => {
+          this.codeMirror.on('scroll', this.handleScroll);
+        }, 100);
+      }
+    }
+  }
   handleChange = (cm) => {
     const content = cm.getValue();
     const { uuid } = this.props;

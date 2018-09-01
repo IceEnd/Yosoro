@@ -29,7 +29,7 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 - Synchronize with Cloud Drive(OneDrive is supported)
 - Image upload (GitHub is supported).
 - Export notes as markdown or html or pdf
-- Update Notification
+- Post article(Supports Medium)
 
 You can read [Wiki](https://github.com/IceEnd/Yosoro/wiki) & [CHANGELOG](./CHANGELOG.md) to get more information.
 

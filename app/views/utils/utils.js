@@ -265,3 +265,13 @@ export function markedTOC(str) {
   const headers = tokens.filter(token => token.type === 'heading');
   return headers;
 }
+
+/**
+ * 去掉收尾空格
+ *
+ * @export
+ * @param {String} str
+ */
+export function trim(str) {
+  return str.replace(/^\s+|\s+$/g, '');
+}
