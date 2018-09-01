@@ -194,32 +194,30 @@ export default class Editor extends Component {
     }
   }
 
-  handleTOCJump = () => {
+  handleTOCJump = (data) => {
     if (this.codeMirror) {
-      // const { depth, text } = data;
-      // const name = `cm-header-${depth}`;
-      // const headers = ReactDOM.findDOMNode(this).getElementsByClassName(name); // eslint-disable-line react/no-find-dom-node
-      // let scrollTarget;
-      // const length = headers.length;
-      // const label = '#'.repeat(depth);
-      // for (let i = 0; i < length; i++) {
-      //   let headerText = headers[i].textContent.replace(label, '');
-      //   headerText = trim(headerText);
-      //   if (headerText === text) {
-      //     scrollTarget = headers[i];
-      //     break;
-      //   }
-      // }
-      // this.codeMirror.off('scroll', this.handleScroll);
-      // if (scrollTarget) {
-      //   scrollTarget.scrollIntoView();
-      // }
-      // setTimeout(() => {
-      //   this.codeMirror.on('scroll', this.handleScroll);
-      // }, 100);
+      const { defaultContent } = this.props;
+      const { depth, text } = data;
+      const reg = new RegExp(`^\\s*${'#'.repeat(depth)}\\s+${text}\\s*`, 'ig');
+      const lines = defaultContent.split('\n');
+      const length = lines.length;
+      let targetLineNum = -1;
+      for (let i = 0; i < length; i++) {
+        if (reg.test(lines[i])) {
+          targetLineNum = i;
+          break;
+        }
+      }
+      if (targetLineNum >= 0) {
+        this.codeMirror.off('scroll', this.handleScroll);
+        const height = this.codeMirror.heightAtLine(targetLineNum, 'local');
+        this.codeMirror.scrollTo(null, height);
+        setTimeout(() => {
+          this.codeMirror.on('scroll', this.handleScroll);
+        }, 100);
+      }
     }
   }
-
   handleChange = (cm) => {
     const content = cm.getValue();
     const { uuid } = this.props;
