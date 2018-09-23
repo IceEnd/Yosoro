@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
+import { pushStateToStorage, mergeStateFromStorage, throttle } from 'Utils/utils';
 import Editor from './Editor';
 import Preview from './Preview';
-import { pushStateToStorage, mergeStateFromStorage, throttle } from '../../utils/utils';
-// import { appMarkdownAdjust } from '../../actions/app';
 
 let appToolWidth = null;
 
@@ -14,7 +13,6 @@ export default class Markdown extends Component {
     markdown: PropTypes.shape({
       parentsId: PropTypes.string.isRequired,
       uuid: PropTypes.string.isRequired,
-      // file: PropTypes.string.isRequired,
       createDate: PropTypes.string.isRequired,
       latestDate: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,

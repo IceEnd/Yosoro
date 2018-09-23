@@ -215,6 +215,10 @@ export function getFilesList() {
   return db.get(FILES).value() || [];
 }
 
+export function getFileById(uuid) {
+  return db.get(FILES).find({ uuid }).value() || [];
+}
+
 /**
  * @description 新建项目
  * @param {String} name - 项目名称

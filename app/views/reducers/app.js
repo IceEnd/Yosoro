@@ -22,6 +22,7 @@ import {
   setToken,
   getAppImageHosting,
   updateImageHosting,
+  updateAppSettings,
   getAppMediumConfig,
   updateMediumConfig,
   updateEditorSettings,
@@ -76,29 +77,10 @@ export default function lounchApp(state = {
       return assign({}, state, app);
     }
     case APP_SWITCH_EDIT_MODE: {
-      // const { currentMode } = action;
-      // let mode = 'normal';
-      // switch (currentMode) {
-      //   case 'normal':
-      //     mode = 'edit';
-      //     break;
-      //   case 'edit':
-      //     mode = 'preview';
-      //     break;
-      //   case 'preview':
-      //     mode = 'immersion';
-      //     break;
-      //   case 'immersion':
-      //     mode = 'normal';
-      //     break;
-      //   default:
-      //     mode = 'normal';
-      //     break;
-      // }
       const { mode } = action;
       const settings = state.settings;
       settings.editorMode = mode;
-      // updateAppSettings(settings);
+      updateAppSettings(settings);
       const newState = assign({}, state, {
         settings,
       });

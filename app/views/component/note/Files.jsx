@@ -217,16 +217,6 @@ export default class Files extends Component {
   handleUpload = () => {
     const { contextNote: { uuid, name } } = this.state;
     const { parentsId, projectName, dispatch } = this.props;
-    // if (oneDriver === 2) {
-    //   return false;
-    // }
-    // let toolbar = false;
-    // if (currentUuid === uuid) {
-    //   toolbar = true;
-    //   dispatch({
-    //     type: MARKDOWN_UPLOADING,
-    //   });
-    // }
     dispatch({
       type: MARKDOWN_UPLOADING,
     });

@@ -106,14 +106,18 @@ export default class Tool extends Component {
     dispatch(clearSearchNotes());
   }
 
+  setModeInk = (mode) => {
+    const inkIndex = VIEWS.indexOf(mode);
+    this.modeInk.style.transform = inkIndex ? `translateX(${inkIndex}00%)` : 'translateX(0)';
+  }
+
   handleSwitchMode = (mode) => {
     const { dispatch, editorMode } = this.props;
     if (editorMode === mode) {
       return;
     }
     dispatch(appSwitchEditMode(mode));
-    const inkIndex = VIEWS.indexOf(mode);
-    this.modeInk.style.transform = inkIndex ? `translateX(${inkIndex}00%)` : 'translateX(0)';
+    this.setModeInk(mode);
   }
 
   handleClick = (type) => {
@@ -255,9 +259,11 @@ export default class Tool extends Component {
   }
 
   renderModeViews() {
+    const { editorMode } = this.props;
+    const inkIndex = VIEWS.indexOf(editorMode);
     const inkStyle = {
       width: `${(100 / VIEWS.length).toFixed(2)}%`,
-      // transform: inkIndex ? `translateX(${inkIndex}00%)` : 'translateX(0)',
+      transform: inkIndex ? `translateX(${inkIndex}00%)` : 'translateX(0)',
     };
     const content = (
       <div className="mode-wrap">

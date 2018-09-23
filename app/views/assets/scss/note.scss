@@ -85,7 +85,7 @@
 				width: 3rem;
 				height: 1.8rem;
 				line-height: 1.8rem;
-				margin: 0.5rem .2rem auto .2rem;
+				margin: 0.6rem .2rem auto .2rem;
 				text-align: center;
 				background-color: #ffffff;
 				border: 1px solid #d6d5d7;
@@ -590,6 +590,27 @@
 			}
 			.CodeMirror-linenumber {
 				color: rgba($color: #999, $alpha: 0.5);
+			}
+
+			.cm-header {
+				&.cm-header-1 {
+					font-size: 1.5em;
+				}
+				&.cm-header-2 {
+					font-size: 1.4em;
+				}
+				&.cm-header-3 {
+					font-size: 1.3em;
+				}
+				&.cm-header-4 {
+					font-size: 1.2em;
+				}
+				&.cm-header-5 {
+					font-size: 1.1em;
+				}
+				&.cm-header-6 {
+					font-size: 1em;
+				}
 			}
 		}
 

@@ -9,8 +9,8 @@ export default {
         loader: 'url-loader?limit=10000&name=images/[name].[ext]',
       },
       {
-        test: /\.(eot|woff2|woff|ttf|svg)$/,
-        loader: 'url-loader?name=fonts/[name].[ext]',
+        test: /\.(eot|woff(2)?|ttf|svg)$/,
+        loader: 'url-loader?limit=10000&name=fonts/[name].[ext]',
       },
     ],
   },

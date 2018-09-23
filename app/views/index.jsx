@@ -8,6 +8,9 @@ import createSagaMiddleware from 'redux-saga';
 // import { hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { createHashHistory } from 'history';
+import { persistStore, persistReducer } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+import storage from 'redux-persist/lib/storage';
 import App from './container/App';
 import rootReducer from './reducers/reducers';
 import sagas from './sagas/sagas';
@@ -26,10 +29,21 @@ const enhancer = composeEnhancers(
   ),
 );
 
+const persistConfig = {
+  key: 'edit',
+  storage,
+  blacklist: ['app', 'drive', 'projects', 'markdown', 'exportQueue', 'routing', 'user', 'imageHosting', 'medium'],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 const store = createStore(
-  rootReducer,
+  // rootReducer,
+  persistedReducer,
   enhancer,
 );
+
+const persistor = persistStore(store);
 
 const sagaLen = sagas.length;
 for (let i = 0; i < sagaLen; i++) {
@@ -45,7 +59,9 @@ const render = (Component) => {
   ReactDOM.render(
     <AppContainer>
       <Provider store={store}>
-        <Component history={history} />
+        <PersistGate loading={null} persistor={persistor}>
+          <Component history={history} />
+        </PersistGate>
       </Provider>
     </AppContainer>,
     document.querySelector('#root')
