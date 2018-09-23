@@ -126,7 +126,7 @@ export default class Editor extends Component {
   }
 
   getTextWidth(editorMode, editorWidthValue) {
-    if (editorMode === 'normal' || editorMode === 'immersion') {
+    if (editorMode === 'normal' || editorMode === 'immersion' || editorMode === 'write') {
       return '100%';
     }
     if (this.editorRoot) {
@@ -358,11 +358,11 @@ export default class Editor extends Component {
       rootClass = 'hide';
       split = false;
       noBorder = 'no-border';
-    } else if (editorMode === 'immersion') {
+    } else if (editorMode === 'immersion' || editorMode === 'write') {
       width = '100%';
       split = false;
       noBorder = 'no-border';
-      rootClass = 'immersion-mode';
+      rootClass = `${editorMode}-mode'`;
     }
     const textWidth = this.getTextWidth(editorMode, editorWidthValue);
     return (

@@ -23,7 +23,6 @@ const assign = Object.assign;
 const initState = {
   parentsId: '',
   uuid: '',
-  // file: '',
   name: '',
   createDate: '',
   latestDate: '',
@@ -42,10 +41,6 @@ function updateMarkdown(state = initState, action) {
       const info = action.param;
       const html = markedToHtml(info.content);
       info.html = html;
-      // let uploadStatus = 0;
-      // if (info.oneDriver === 2) {
-      //   uploadStatus = 1;
-      // }
       return assign({}, info, {
         status: 1,
         start: -1,
