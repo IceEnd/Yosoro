@@ -114,7 +114,8 @@ function createWindow() {
   if (process.platform === 'darwin') {
     options.transparent = true;
     options.frame = true;
-    options.titleBarStyle = 'hiddenInset';
+    // options.titleBarStyle = 'hiddenInset';
+    options.titleBarStyle = 'hidden';
   }
   mainWindow = new BrowserWindow(options);
   mainWindow.once('ready-to-show', () => {

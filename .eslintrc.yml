@@ -9,6 +9,9 @@ parserOptions:
 parser: 'babel-eslint'
 extends: alchemy
 settings:
+  react:
+    pragma: "React"
+    version: "16.3.0"
   import/resolver:
     webpack:
       config: './config/webpack.config.eslint.js'

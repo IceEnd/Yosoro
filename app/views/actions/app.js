@@ -38,10 +38,11 @@ export function appMarkdownAdjust(param) {
 
 export const APP_SWITCH_EDIT_MODE = 'APP_SWITCH_EDIT_MODE';
 
-export function appSwitchEditMode(currentMode) {
+export function appSwitchEditMode(mode) {
   return {
     type: APP_SWITCH_EDIT_MODE,
-    currentMode,
+    // currentMode,
+    mode,
   };
 }
 

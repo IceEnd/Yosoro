@@ -45,7 +45,7 @@
     "icon": "./asstes/icons/win/app.ico"
   },
   "dependencies": {
-    "antd": "^3.6.3",
+    "antd": "^3.9.2",
     "autobind-decorator": "^2.1.0",
     "classnames": "^2.2.5",
     "codemirror": "^5.36.0",
@@ -103,8 +103,8 @@
     "eslint-plugin-flowtype": "^2.50.0",
     "eslint-plugin-import": "2.7.0",
     "eslint-plugin-jest": "^21.18.0",
-    "eslint-plugin-jsx-a11y": "6.0.2",
-    "eslint-plugin-react": "7.1.0",
+    "eslint-plugin-jsx-a11y": "6.1.1",
+    "eslint-plugin-react": "7.11.1",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.5",
     "flow-bin": "^0.78.0",

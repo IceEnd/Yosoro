@@ -39,7 +39,7 @@ Notes.displayName = 'CloudDriveNotes';
 Notes.propTypes = {
   notes: PropTypes.array.isRequired,
   downloadNote: PropTypes.func.isRequired,
-  // openRemove: PropTypes.func.isRequired,
+  openRemove: PropTypes.func.isRequired,
 };
 
 export default Notes;

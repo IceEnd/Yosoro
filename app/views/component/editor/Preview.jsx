@@ -46,25 +46,20 @@ export default class Preview extends PureComponent {
     eventTOC.on('toc-jump', this.handleTOCJump);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.editorMode !== nextProps.editorMode || this.props.editorWidthValue !== nextProps.editorWidthValue) {
-      const bodyWidth = this.getBodyWidth(nextProps);
-      this.setState({
-        bodyWidth,
-      });
-    }
-    if (this.props.fontSize !== nextProps.fontSize) {
-      const { fontSize } = nextProps.fontSize;
-      this.webview.send('wv-change-fontsize', fontSize);
-    }
-  }
-
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { html, editorMode } = this.props;
     this.webview.send('wv-render-html', {
       html,
       editorMode,
     });
+    if (this.props.editorMode !== prevProps.editorMode || this.props.editorWidthValue !== prevProps.editorWidthValue) {
+      const bodyWidth = this.getBodyWidth(this.props);
+      this.setWidth(bodyWidth);
+    }
+    if (this.props.fontSize !== prevProps.fontSize) {
+      const { fontSize } = this.props.fontSize;
+      this.webview.send('wv-change-fontsize', fontSize);
+    }
   }
 
   componentWillUnmount() {
@@ -147,6 +142,12 @@ export default class Preview extends PureComponent {
       return res;
     }
     return '100%';
+  }
+
+  setWidth(bodyWidth) {
+    this.setState({
+      bodyWidth,
+    });
   }
 
   setScrollRatio(radio) {
