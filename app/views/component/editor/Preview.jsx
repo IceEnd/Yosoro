@@ -130,7 +130,7 @@ export default class Preview extends PureComponent {
     }
     if (this.preview) {
       let parentWidth;
-      if (editorMode === 'edit') {
+      if (editorMode === 'edit' || editorMode === 'write') {
         parentWidth = this.noteRoot.offsetWidth;
       } else {
         parentWidth = this.preview.offsetParent.offsetWidth;
@@ -189,7 +189,7 @@ export default class Preview extends PureComponent {
     const rootClass = classNames(
       'preview-root',
       {
-        hide: editorMode === 'immersion',
+        hide: editorMode === 'immersion' || editorMode === 'write',
       },
       {
         'pre-mode': editorMode === 'preview',

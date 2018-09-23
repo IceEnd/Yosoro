@@ -120,7 +120,8 @@ const SVG = () => (
         ry="40"
         width="560"
         height="480"
-        style={{ fill: 'transparent', strokeWidth: 50 }}
+        strokeWidth="50"
+        fill="transparent"
       />
       <rect
         x="100"
@@ -148,6 +149,71 @@ const SVG = () => (
       />
     </symbol>
 
+    {/* svg - write mode */}
+    <symbol id="icon_svg_write_mode" viewBox="0 0 640 640">
+      <rect
+        x="40"
+        y="80"
+        rx="40"
+        ry="40"
+        width="560"
+        height="480"
+        strokeWidth="50"
+        fill="transparent"
+      />
+
+      <line
+        x1="40"
+        y1="240"
+        x2="180"
+        y2="240"
+        strokeWidth="50"
+      />
+
+      <line
+        x1="40"
+        y1="400"
+        x2="180"
+        y2="400"
+        strokeWidth="50"
+      />
+
+      <line
+        x1="200"
+        y1="80"
+        x2="200"
+        y2="560"
+        strokeWidth="50"
+      />
+
+      <rect
+        x="260"
+        y="180"
+        rx="25"
+        ry="25"
+        width="280"
+        height="50"
+      />
+
+      <rect
+        x="260"
+        y="300"
+        rx="25"
+        ry="25"
+        width="280"
+        height="50"
+      />
+
+      <rect
+        x="260"
+        y="420"
+        rx="25"
+        ry="25"
+        width="280"
+        height="50"
+      />
+    </symbol>
+
     {/* svg - edit mode */}
     <symbol id="icon_svg_edit_mode" viewBox="0 0 640 640">
       <rect
@@ -157,7 +223,8 @@ const SVG = () => (
         ry="40"
         width="560"
         height="480"
-        style={{ fill: 'transparent', strokeWidth: 50 }}
+        strokeWidth="50"
+        fill="transparent"
       />
 
       <line
@@ -178,7 +245,24 @@ const SVG = () => (
         ry="40"
         width="560"
         height="480"
-        style={{ fill: 'transparent', strokeWidth: 50 }}
+        strokeWidth="50"
+        fill="transparent"
+      />
+
+      <line
+        x1="40"
+        y1="240"
+        x2="180"
+        y2="240"
+        strokeWidth="50"
+      />
+
+      <line
+        x1="40"
+        y1="400"
+        x2="180"
+        y2="400"
+        strokeWidth="50"
       />
 
       <line
@@ -207,7 +291,8 @@ const SVG = () => (
         ry="40"
         width="560"
         height="480"
-        style={{ fill: 'transparent', strokeWidth: 50 }}
+        strokeWidth="50"
+        fill="transparent"
       />
 
       <polyline

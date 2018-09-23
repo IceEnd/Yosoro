@@ -528,7 +528,7 @@ export default class Files extends Component {
     const { notes, currentUuid, editorMode } = this.props;
     const { newFile, rename, desc } = this.state;
     let rootClass = '';
-    if (editorMode !== 'normal') {
+    if (editorMode !== 'normal' && editorMode !== 'write') {
       rootClass = 'hide';
     }
     if (notes.length === 0) {

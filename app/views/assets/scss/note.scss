@@ -744,17 +744,17 @@
 .edit-mode-popover {
 	.mode-wrap {
 		position: relative;
-		width: 10rem;
+		width: 12rem;
 	}
 
 	.mode-list {
 		@include display-flex;
-		width: 10rem;
+		width: 12rem;
 		margin: 0 auto;
 
 		.mode-item {
 			flex: 1 1;
-			width: 2rem;
+			width: 12rem;
 			padding: 0 .2rem;
 			cursor: pointer;
 

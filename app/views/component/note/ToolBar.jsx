@@ -18,7 +18,7 @@ import SVGIcon from '../share/SVGIcon';
 
 const MenuItem = Menu.Item;
 
-const VIEWS = ['normal', 'edit', 'preview', 'immersion'];
+const VIEWS = ['normal', 'write', 'edit', 'preview', 'immersion'];
 
 @withDispatch
 export default class Tool extends Component {
