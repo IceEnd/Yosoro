@@ -1,7 +1,3 @@
-// @mixin display-flex {
-//	 display: flex;
-//	 display: -webkit-flex;
-// }
 @import "common.scss";
 @import "color.scss";
 
@@ -43,6 +39,10 @@
 	background-color: $rootBg;
 	position: relative;
 
+	h3 {
+		font-weight: normal;
+	}
+
 	.note-toolbar {
 		flex: 0 0 3rem;
 		width: 100%;
@@ -50,17 +50,17 @@
 		-webkit-app-region: drag;
 
 		.search-wrapper {
-			width: 13rem;
+			width: 12rem;
 		}
 
 		.search-root {
-			flex: 0 0 14rem;
+			flex: 0 0 13rem;
 			text-align: center;
 			padding: 0.6rem 0;
 
 			.ant-input {
-				height: 1.6rem;
-				font-size: 0.85rem;
+				height: 1.8rem;
+				font-size: 0.9rem;
 			}
 		}
 
@@ -80,16 +80,17 @@
 
 			.tools-item {
 				position: relative;
-				border-radius: 50%;
+				border-radius: 5px;
 				display: inline-block;
-				width: 2rem;
-				height: 2rem;
+				width: 3rem;
+				height: 1.8rem;
 				line-height: 1.8rem;
 				margin: 0.5rem .2rem auto .2rem;
 				text-align: center;
-				background-color: rgba(128, 128, 128, 0.2);
+				background-color: #ffffff;
+				border: 1px solid #d6d5d7;
 				text-align: center;
-				margin-right: 0.5em;
+				margin-right: 0.3em;
 				&:last-child {
 					margin-right: 0;
 				}
@@ -97,17 +98,13 @@
 				&.font-icon {
 					vertical-align: bottom;
 					.anticon {
-						&.anticon-loading {
-							font-size: 1.2rem;
-						}
-						// display: inline;
-						font-size: 1rem;
+						font-size: 1.25em;
 						line-height: 2rem;
-						font-size: 1.5rem;
-						color: rgba(0, 0, 0, 0.65);
-						// &:before {
-						//	 display: inline;
-						// }
+						color: #727272;
+
+						&.anticon-loading {
+							font-size: 1.3rem;
+						}
 					}
 				}
 
@@ -128,7 +125,7 @@
 	}
 
 	.project-explorer {
-		flex: 0 0 14rem;
+		flex: 0 0 13rem;
 		overflow: auto;
 		border-right: 1px solid #d9d9d9;
 		transition: flex-basis ease 0.5s;
@@ -203,8 +200,8 @@
 				border-bottom: 1px solid rgba(255, 204, 204, 1);
 
 				.project-list__item__icon {
-					flex: 0 0 2rem;
-					font-size: 1.5rem;
+					flex: 0 0 1.3rem;
+					font-size: 1.2rem;
 					text-align: center;
 				}
 
@@ -220,6 +217,7 @@
 						color: rgba(0, 0, 0, 0.5);
 						cursor: pointer;
 						margin-bottom: 0;
+						font-weight: normal;
 						@include text-ellipsis;
 					}
 					input {
@@ -306,7 +304,6 @@
 					&.success {
 						&:after {
 							display: none;
-							// background-color: #8ec720;
 						}
 					}
 
@@ -445,11 +442,10 @@
 			}
 
 			.file-list__item__icon {
-				flex: 0 0 3rem;
-				text-align: center;
+				flex: 0 0 2rem;
 
 				svg {
-					width: 2.2rem;
+					width: 2rem;
 					height: 3rem;
 					fill: #ff6666;
 
@@ -465,10 +461,10 @@
 				line-height: 3rem;
 				position: relative;
 				@include text-ellipsis;
-				padding: 0 0.2rem;
+				padding: 0 0.1rem;
 
 				h3 {
-					font-size: 1.2rem;
+					font-size: 0.9rem;
 					padding: 0 0.2rem;
 					color: rgba(0, 0, 0, 0.5);
 					cursor: pointer;
@@ -598,7 +594,6 @@
 		}
 
 		&.drag {
-			// transition: width ease 0s;
 			transition: width, flex, flex-basis ease 0s;
 		}
 
@@ -685,7 +680,6 @@
 	width: 12rem;
 	height: 16rem;
 	font-size: 14px;
-	// color: rgba(46, 128, 254, 0.8);
 	overflow: auto;
 	user-select: none;
 
@@ -723,5 +717,41 @@
 	.header-label {
 		margin-right: 0.3em;
 		opacity: 0.6;
+	}
+}
+
+.edit-mode-popover {
+	.mode-wrap {
+		position: relative;
+		width: 10rem;
+	}
+
+	.mode-list {
+		@include display-flex;
+		width: 10rem;
+		margin: 0 auto;
+
+		.mode-item {
+			flex: 1 1;
+			width: 2rem;
+			padding: 0 .2rem;
+			cursor: pointer;
+
+			svg {
+				stroke: #727272;
+				fill: #727272;
+			}
+		}
+	}
+
+	.mode-ink {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		@include zoom-in(1);
+		height: 1px;
+		background-color: #f04134;
+		transform: translateX(0);
+		transition: transform .3s cubic-bezier(.645, .045, .355, 1);
 	}
 }

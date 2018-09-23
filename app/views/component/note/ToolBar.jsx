@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import classnames from 'classnames';
@@ -18,8 +18,10 @@ import SVGIcon from '../share/SVGIcon';
 
 const MenuItem = Menu.Item;
 
+const VIEWS = ['normal', 'edit', 'preview', 'immersion'];
+
 @withDispatch
-export default class Tool extends PureComponent {
+export default class Tool extends Component {
   static displayName = 'NoteToolBar';
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -49,6 +51,13 @@ export default class Tool extends PureComponent {
     blur: false,
   };
 
+  static getDerivedStateFromProps(nextProps) {
+    const { searchStatus } = nextProps;
+    return {
+      searchStatus: searchStatus === 1 ? 2 : searchStatus,
+    };
+  }
+
   constructor() {
     super();
     this.state = mergeStateFromStorage('noteExplorerState', {
@@ -57,12 +66,11 @@ export default class Tool extends PureComponent {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.searchStatus === 1) {
-      this.setState({
-        searchStatus: 2,
-      });
+  shouldComponentUpdate(nextProps) {
+    if (this.props.editorMode !== nextProps.editorMode) {
+      return false;
     }
+    return true;
   }
 
   componentWillUnmount() {
@@ -78,7 +86,7 @@ export default class Tool extends PureComponent {
       dispatch(clearMarkdown());
       dispatch(clearWorkspace());
       dispatch(searchNotes(value));
-      dispatch(appSwitchEditMode(''));
+      dispatch(appSwitchEditMode('normal'));
       this.setState({
         searchStatus: 1,
       });
@@ -98,9 +106,14 @@ export default class Tool extends PureComponent {
     dispatch(clearSearchNotes());
   }
 
-  handleSwitchMode = () => {
+  handleSwitchMode = (mode) => {
     const { dispatch, editorMode } = this.props;
-    dispatch(appSwitchEditMode(editorMode));
+    if (editorMode === mode) {
+      return;
+    }
+    dispatch(appSwitchEditMode(mode));
+    const inkIndex = VIEWS.indexOf(mode);
+    this.modeInk.style.transform = inkIndex ? `translateX(${inkIndex}00%)` : 'translateX(0)';
   }
 
   handleClick = (type) => {
@@ -199,7 +212,7 @@ export default class Tool extends PureComponent {
           <MenuItem key="medium">Medium</MenuItem>
         </Menu>
       );
-      return this.renderDropDown(menu, type, { fontSize: '1.28rem' });
+      return this.renderDropDown(menu, type);
     }
     if (type === 'bars') { // 打开TOC
       const { markdown } = this.props;
@@ -218,6 +231,9 @@ export default class Tool extends PureComponent {
           </span>
         </Popover>
       );
+    }
+    if (type === 'layout') {
+      return this.renderModeViews();
     }
     return (
       <span
@@ -238,24 +254,44 @@ export default class Tool extends PureComponent {
     );
   }
 
-  renderEditModalIcon = () => {
-    const { editorMode } = this.props;
+  renderModeViews() {
+    const inkStyle = {
+      width: `${(100 / VIEWS.length).toFixed(2)}%`,
+      // transform: inkIndex ? `translateX(${inkIndex}00%)` : 'translateX(0)',
+    };
+    const content = (
+      <div className="mode-wrap">
+        <ul className="mode-list">
+          {VIEWS.map(item => (
+            <li
+              key={item}
+              className="mode-item"
+              role="presentation"
+              onClick={() => this.handleSwitchMode(item)}
+            >
+              <SVGIcon
+                className="tools-item-svg"
+                viewBox="0 0 640 640"
+                id={`#icon_svg_${item}_mode`}
+              />
+            </li>
+          ))}
+        </ul>
+        <div key="inkBar" className="mode-ink" style={inkStyle} ref={node => (this.modeInk = node)} />
+      </div>
+    );
     return (
-      <span
-        className="tools-item"
-        onClick={this.handleSwitchMode}
+      <Popover
+        key="modePopover"
+        overlayClassName="edit-mode-popover"
+        trigger="click"
+        placement="bottomRight"
+        content={content}
       >
-        <Tooltip
-          placement="bottom"
-          title={editorMode}
-        >
-          <SVGIcon
-            className="tools-item-svg"
-            viewBox="0 0 640 640"
-            id={`#icon_svg_${editorMode}_mode`}
-          />
-        </Tooltip>
-      </span>
+        <span className="tools-item font-icon">
+          <Icon type="layout" />
+        </span>
+      </Popover>
     );
   }
 
@@ -283,7 +319,7 @@ export default class Tool extends PureComponent {
               {this.renderIcon('export', 'export')}
               {this.renderIcon('upload', 'public')}
               {this.renderIcon('bars', 'toc')}
-              {this.renderEditModalIcon()}
+              {this.renderIcon('layout', 'layout')}
             </div>
           </Fragment>
         ) : (null)}

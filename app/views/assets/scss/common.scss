@@ -24,3 +24,17 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
+
+/**
+ * zoom: 0 - 299
+ */
+@mixin zoom-in($value: 0) {
+	zoom: $value;
+}
+
+/**
+ * zoom: 300 - 999
+ */
+@mixin zoom-out($value) {
+	zoom: $value;
+}

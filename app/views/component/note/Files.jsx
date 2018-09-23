@@ -156,6 +156,7 @@ export default class Files extends Component {
     });
   }
 
+  /* eslint-disable react/no-deprecated */
   componentWillReceiveProps(nextProps) {
     if (this.props.parentsId === nextProps.parentsId && this.selectNew) {
       const { dispatch, projectName } = this.props;
@@ -176,6 +177,7 @@ export default class Files extends Component {
     }
     return true;
   }
+  /* eslint-enable react/no-deprecated */
 
   componentWillUnmount() {
     pushStateToStorage('noteExplorerFilesState', Object.assign({}, this.state, {

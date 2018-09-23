@@ -77,12 +77,9 @@ export default class Markdown extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.markdownSettings.editorWidth !== nextProps.markdownSettings.editorWidth) {
-      this.setState({
-        editorWidth: `${nextProps.markdownSettings.editorWidth * 100}%`,
-        editorWidthValue: nextProps.markdownSettings.editorWidth,
-      });
+  componentDidUpdate(prevProps) {
+    if (this.props.markdownSettings.editorWidth !== prevProps.markdownSettings.editorWidth) {
+      this.setWidth(`${this.props.markdownSettings.editorWidth * 100}%`, this.props.markdownSettings.editorWidth);
     }
   }
 
@@ -90,11 +87,12 @@ export default class Markdown extends Component {
     pushStateToStorage('markdownState', this.state);
   }
 
-  // setWidth(markdownWidth) {
-  //   this.setState({
-  //     markdownWidth,
-  //   });
-  // }
+  setWidth(editorWidth, editorWidthValue) {
+    this.setState({
+      editorWidth,
+      editorWidthValue,
+    });
+  }
 
   @autobind
   setDrag(drag) {

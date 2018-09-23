@@ -174,19 +174,13 @@ export default class App extends Component {
     this.fetchAvatar();
   }
 
-  componentWillReceiveProps(nextProps) {
-    // if (this.props.app.oneDriveTokenStatus === 1 && nextProps.app.oneDriveTokenStatus === 3) {
-    //   message.error('One Driver auth failed');
-    // }
-    if (this.props.app.allowShowUpdate && !nextProps.app.allowShowUpdate) {
-      ipcRenderer.send('stop-release-schedule');
-    }
-  }
-
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     const { app: { latestVersion, showUpdate, allowShowUpdate } } = this.props;
     if (allowShowUpdate && showUpdate) {
       this.updateNotification(latestVersion);
+    }
+    if (prevProps.app.allowShowUpdate && !allowShowUpdate) {
+      ipcRenderer.send('stop-release-schedule');
     }
   }
 

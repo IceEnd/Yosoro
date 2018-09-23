@@ -33,7 +33,7 @@ const Notebooks = (props) => {
 Notebooks.displayName = 'CloudDriveNotebooks';
 Notebooks.propTypes = {
   projects: PropTypes.array.isRequired,
-  // chooseProject: PropTypes.func.isRequired,
+  chooseProject: PropTypes.func.isRequired,
   openRemove: PropTypes.func.isRequired,
 };
 
