@@ -317,14 +317,12 @@
 						}
 
 						.anticon-loading {
-							height: 2rem;
-							width: 2rem;
-							line-height: 2rem;
 							font-size: 1.2rem;
 							position: absolute;
-							top: 0;
-							left: 0;
+							top: 50%;
+							left: 50%;
 							color: #ffffff;
+							transform: translate(-50%, -50%);
 						}
 					}
 
@@ -474,7 +472,7 @@
 
 				.ant-input {
 					@include normal-ipt;
-					font-size: 1.2rem;
+					font-size: .9rem;
 					background-color: inherit;
 					border: 1px solid transparent;
 

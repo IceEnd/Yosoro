@@ -51,11 +51,11 @@ You can read [Wiki](https://github.com/IceEnd/Yosoro/wiki) & [CHANGELOG](./CHANG
 
 ### macOS
 
-![screenshot-osx.png](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.49.24-image.png)
+![screenshot-osx](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-09-23.19.10.55-image.png)
 
 ### Windows
 
-![screenshot-window.png](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-26.17.43.22-image.png)
+![screenshot-window](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-26.17.43.22-image.png)
 
 ### linux
 

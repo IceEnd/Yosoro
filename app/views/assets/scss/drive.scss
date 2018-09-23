@@ -186,7 +186,7 @@
 				cursor: pointer;
 				&:hover {
 					.anticon {
-						font-size: 1.2rem;
+						transform: scale(1.2, 1.2);
 					}
 				}
 			}
@@ -194,7 +194,7 @@
 				font-size: 1rem;
 				margin: 0 0.5em;
 				cursor: pointer;
-				transition: font-size ease 0.2s;
+				transition: transform ease 0.2s;
 			}
 		}
 	}
