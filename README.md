@@ -35,9 +35,9 @@ You can read [Wiki](https://github.com/IceEnd/Yosoro/wiki) & [CHANGELOG](./CHANG
 
 ## Demo
 
-### Write Notes
+### Write
 
-![write](https://t1.picb.cc/uploads/2018/05/13/2vBxK7.gif)
+![2018-09-24.14.00.53-write.gif](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-09-24.14.00.53-write.gif)
 
 ### Upload Image
 

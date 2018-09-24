@@ -1,5 +1,5 @@
-import marked from 'marked';
 import { message } from 'antd';
+import marked from 'marked';
 
 const renderer = new marked.Renderer();
 
