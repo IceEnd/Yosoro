@@ -204,6 +204,7 @@ import katex from 'katex';
         isordered,
         istask,
         ischecked;
+    debugger;
 
     while (src) {
       // newline
@@ -1102,21 +1103,6 @@ import katex from 'katex';
 
   Renderer.prototype.latex = function(text, block = false) {
     var out;
-    // try {
-    //   if (marked.defaults.latexRender) {
-    //     var html = marked.defaults.latexRender(text);
-    //     if (block) {
-    //       out = `<p class="latex-block" style="text-align:center">${html}</p>`;
-    //     } else {
-    //       out = html;
-    //     }
-    //   } else {
-    //     console.log('No latexRender');
-    //   }
-    // } catch (e) {
-    //   console.info(`Failed to render latex: ${text}`);
-    //   out = `$$${escape(text)}$$`;
-    // }
     console.log(text, block);
     out = katex.renderToString(text, {
       throwOnError: false,
