@@ -37,7 +37,7 @@ import katex from 'katex';
     lheading: /^([^\n]+)\n *(=|-){2,} *(?:\n+|$)/,
     paragraph: /^([^\n]+(?:\n(?!hr|heading|lheading| {0,3}>|<\/?(?:tag)(?: +|\n|\/?>)|<(?:script|pre|style|!--))[^\n]+)*)/,
     text: /^[^\n]+/,
-    blocklatex: /^(\${2}) *((?:[^$]|\\\$)+?) *\n\1(?:\n|$)/, // latex block
+    blocklatex: /^ *(\${2})\n* *((?:[^$]|\\\$)+?) *\n\1(?:(\n|$| )*)/, // latex block
   };
 
   block._label = /(?!\s*\])(?:\\[\[\]]|[^\[\]])+/;
@@ -204,7 +204,6 @@ import katex from 'katex';
         isordered,
         istask,
         ischecked;
-    debugger;
 
     while (src) {
       // newline
@@ -829,7 +828,6 @@ import katex from 'katex';
 
       // latex
       if (cap = this.rules.inlinelatex.exec(src)) {
-        debugger;
         src = src.substring(cap[0].length);
         out += this.renderer.latex(cap[2], false);
         continue;
@@ -1103,10 +1101,20 @@ import katex from 'katex';
 
   Renderer.prototype.latex = function(text, block = false) {
     var out;
-    console.log(text, block);
-    out = katex.renderToString(text, {
-      throwOnError: false,
-    });
+    let html = text;
+    try {
+      html = katex.renderToString(text, {
+        throwOnError: false,
+      });
+    } catch (ex) {
+      html = text;
+      console.warn(ex);
+    }
+    if (block) { // block
+      out = `<p align="center">${html}</p>`;
+    } else {
+      out = html;
+    }
     return out;
   }
 
@@ -1312,7 +1320,6 @@ import katex from 'katex';
         return this.renderer.paragraph(this.parseText());
       }
       case 'blocklatex': {
-        debugger;
         return this.renderer.latex(this.token.text, true);
       }
     }

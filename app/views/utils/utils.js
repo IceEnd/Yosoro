@@ -130,17 +130,6 @@ export function markedToHtml(string) {
 }
 
 /**
- * 获取Markdown toc
- *
- * @param {String} string markdown内容
- * @returns json
- */
-// export function markdown2TOC(string) {
-//   return markdownTOC(string).json;
-// }
-
-
-/**
  * @desc 函数节流 返回函数连续调用时，fun 执行频率限定为 次/wait
  *
  * @param {Function} func 需要执行的函数
