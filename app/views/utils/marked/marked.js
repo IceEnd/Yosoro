@@ -1103,7 +1103,6 @@ import katex from 'katex';
   Renderer.prototype.latex = function(text, block = false) {
     var out;
     let html = text;
-    debugger;
     try {
       html = katex.renderToString(text, {
         throwOnError: false,
