@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { ipcRenderer } from 'electron';
 import { message } from 'antd';
 import { withDispatch } from 'Components/HOC/context';
+import { appSwitchEditMode } from 'Actions/app';
 import { readFile } from 'Actions/markdown';
 import { getFileById } from 'Utils/db/app';
 
@@ -96,6 +97,9 @@ export default class NoteWorkspace extends Component {
       });
       if (!data.success) {
         message.error('Failed to read file data.');
+        // 文件读取失败
+        // 防止界面空白，自动切换到 `write` 模式
+        this.props.dispatch(appSwitchEditMode('write'));
         return false;
       }
       item.content = data.data;
