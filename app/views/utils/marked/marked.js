@@ -556,10 +556,11 @@ import katex from 'katex';
     strong: /^__([^\s])__(?!_)|^\*\*([^\s])\*\*(?!\*)|^__([^\s][\s\S]*?[^\s])__(?!_)|^\*\*([^\s][\s\S]*?[^\s])\*\*(?!\*)/,
     em: /^_([^\s_])_(?!_)|^\*([^\s*"<\[])\*(?!\*)|^_([^\s][\s\S]*?[^\s_])_(?!_)|^_([^\s_][\s\S]*?[^\s])_(?!_)|^\*([^\s"<\[][\s\S]*?[^\s*])\*(?!\*)|^\*([^\s*"<\[][\s\S]*?[^\s])\*(?!\*)/,
     code: /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/,
+    inlinelatex: /^(\${2}) *((?:[^\\$]|\\\S)+?) *\1(?!\$)/, // inline latex
     br: /^( {2,}|\\)\n(?!\s*$)/,
     del: noop,
-    text: /^(`+|[^`])[\s\S]*?(?=[\\<!\[`*]|\b_| {2,}\n|$)/,
-    inlinelatex: /^(\${1,2}) *((?:[^\\$]|\\\S)+?) *\1(?!\$)/    // inline latex
+    // text: /^(`+|[^`])[\s\S]*?(?=[\\<!\[`*]|\b_| {2,}\n|$)/
+    text: /^(`+|[^`])[\s\S]*?(?=[\\<!\[`*]|\b_| {2,}\n|\${2}|$)/
   };
 
   inline._escapes = /\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/g;
@@ -1102,6 +1103,7 @@ import katex from 'katex';
   Renderer.prototype.latex = function(text, block = false) {
     var out;
     let html = text;
+    debugger;
     try {
       html = katex.renderToString(text, {
         throwOnError: false,
