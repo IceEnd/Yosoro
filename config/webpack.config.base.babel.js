@@ -5,11 +5,11 @@ export default {
   module: {
     rules: [
       {
-        test: /\.(png|jpg|jpeg|gif)$/,
+        test: /\.(png|jpg|jpeg|gif|svg)$/,
         loader: 'url-loader?limit=10000&name=images/[name].[ext]',
       },
       {
-        test: /\.(eot|woff(2)?|ttf|svg)$/,
+        test: /\.(eot|woff(2)?|ttf)$/,
         loader: 'url-loader?limit=10000&name=fonts/[name].[ext]',
       },
     ],

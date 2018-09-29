@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Virtual Document</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src http: https: data: file:; media-src file: http: https: data:; script-src 'none';style-src 'unsafe-inline' data: file:; font-src file:;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src http: https: data: file:; media-src file: http: https: data:; script-src 'none';style-src 'unsafe-inline' https: data:; font-src https: data:;">
   <style>
     html {
       font-family: "BlinkMacSystemFont", "Helvetica Neue", Helvetica, "Microsoft YaHei", "微软雅黑", "Arial", "Lucida Grande", "Segoe UI", Ubuntu, Cantarell, sans-serif;
@@ -216,7 +216,7 @@
       font-weight: bold;
     }
   </style>
-  <link rel="stylesheet" href="../resource/kalex.css">
+  <script nonce="FA00259254D831F0A1A148B725B8F8883154B51CE879E8B1F74737696F2003D" src="http://localhost:3000/static/webview/webview.js"></script>
 </head>
 <body>
   <div id="root" class="light">

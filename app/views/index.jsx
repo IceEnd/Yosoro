@@ -22,11 +22,13 @@ const sagaMiddleware = createSagaMiddleware();
 const composeEnhancers = typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
 /* eslint-enable */
 
+const reduxMiddleware = [sagaMiddleware];
+if (process.env.NODE_ENV === 'development') {
+  reduxMiddleware.push(loggerMiddleware);
+}
+
 const enhancer = composeEnhancers(
-  applyMiddleware(
-    loggerMiddleware,
-    sagaMiddleware,
-  ),
+  applyMiddleware(...reduxMiddleware),
 );
 
 const persistConfig = {

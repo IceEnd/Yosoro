@@ -57,17 +57,17 @@ test('markdown to html: Header', () => {
 
 test('markdwon to html: TODO LIST', () => {
   let html = markedToHtml('- [ ] a');
-  let target = /<ul>\s*<li class="task-list-li"><input class="task-list-item-checkbox" type="checkbox" disabled><\/input> a<\/li>\s*<\/ul>/ig;
+  let target = /<ul>\s*<li class="task-list-li"><input class="task-list-item-checkbox" disabled type="checkbox" \/> a<\/li>\s*<\/ul>/ig;
   expect(target.test(html)).toBe(true);
 
   html = markedToHtml('- [x] a');
-  target = /<ul>\s*<li class="task-list-li"><input class="task-list-item-checkbox" checked disabled type="checkbox"><\/input> a<\/li>\s*<\/ul>/ig;
+  target = /<ul>\s*<li class="task-list-li"><input class="task-list-item-checkbox" checked disabled type="checkbox" \/> a<\/li>\s*<\/ul>/ig;
   expect(target.test(html)).toBe(true);
 });
 
 test('markdwon to html: Code', () => {
   const html = markedToHtml('```js\r\nconsole.log(\'2333\');\r\n```');
-  const target = /<pre>\s*<code class="lang-js"><span class="hljs-built_in">console<\/span>.log\(<span class="hljs-string">'2333'<\/span>\);\s*<\/code><\/pre>/ig;
+  const target = /<pre>\s*<code class="language-js"><span class="hljs-built_in">console<\/span>.log\(<span class="hljs-string">'2333'<\/span>\);\s*<\/code><\/pre>/ig;
   expect(target.test(html)).toBe(true);
 });
 

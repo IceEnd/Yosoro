@@ -1,15 +1,17 @@
-import marked from 'marked';
 import { message } from 'antd';
+import marked from './marked/marked';
 
 const renderer = new marked.Renderer();
 
 renderer.listitem = function (text) {
-  let res = text;
-  if (/^\s*\[[x ]\]\s*/.test(text)) {
-    res = text.replace(/^\s*\[ \]\s*/, '<input class="task-list-item-checkbox" type="checkbox" disabled></input> ').replace(/^\s*\[x\]\s*/, '<input class="task-list-item-checkbox" checked disabled type="checkbox"></input> ');
-    return `<li class="task-list-li">${res}</li>`;
+  if (/^\s*<input class="task-list-item-checkbox"/.test(text)) {
+    return `<li class="task-list-li">${text}</li>`;
   }
   return `<li>${text}</li>`;
+};
+
+renderer.checkbox = function (checked) {
+  return `<input class="task-list-item-checkbox" ${checked ? 'checked ' : ''}disabled type="checkbox" /> `;
 };
 
 marked.setOptions({
@@ -126,17 +128,6 @@ export function compareVersion(localVersion, latestVersion) {
 export function markedToHtml(string) {
   return marked(string);
 }
-
-/**
- * 获取Markdown toc
- *
- * @param {String} string markdown内容
- * @returns json
- */
-// export function markdown2TOC(string) {
-//   return markdownTOC(string).json;
-// }
-
 
 /**
  * @desc 函数节流 返回函数连续调用时，fun 执行频率限定为 次/wait
