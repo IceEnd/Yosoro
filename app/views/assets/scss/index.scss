@@ -71,8 +71,6 @@ html, body, #root {
 
 /* 工具栏 */
 .tool-bar {
-	// flex: 0 0 5.4rem;
-	// width: 5.4rem;
 	flex: 0 0 4.5rem;
 	width: 4.5rem;
 	height: 100%;
@@ -119,7 +117,7 @@ html, body, #root {
 			height: 2.6rem;
 			width: 2.6rem;
 			display: inline-block;
-			line-height: 3rem;
+			line-height: 2.6rem;
 			transition: background-color, box-shadow .2s ease-in-out;
 		}
 
@@ -147,6 +145,41 @@ html, body, #root {
 				transform: scale(1.1, 1.1);
 			}
 		}
+	}
+}
+
+/* linux or windows tool-bar */
+.not-darwin {
+	.tool-bar {
+		flex: 0 0 4rem;
+		width: 4rem;
+	}
+
+
+	.logo {
+		text-align: center;
+		margin-top: 0;
+		img {
+			width: 3.3rem;
+			height: 3.3rem;
+			border-radius: 50%;
+		}
+
+		.avatar {
+			width: 3.3rem;
+			height: 3.3rem;
+		}
+	}
+
+	.menu-list .menu-item-radius {
+		height: 2.5rem;
+		width: 2.5rem;
+		line-height: 2.5rem;
+	}
+
+	.setting-wrap .setting {
+		width: 1.8rem;
+		height: 1.8rem;
 	}
 }
 
