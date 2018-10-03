@@ -330,7 +330,7 @@ export default class App extends Component {
         <Fragment>
           <SVG />
           <Router history={history}>
-            <div className={`container ${notDarwin} ${theme}`}>
+            <div className={`container ${notDarwin} ${theme} ${platform}`}>
               <AppToolBar
                 defaultDrive={app.settings.defaultDrive}
                 avatar={user.avatar}
