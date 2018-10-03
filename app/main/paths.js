@@ -1,7 +1,11 @@
 import { app } from 'electron';
 import fs from 'fs';
+import FSDB from './utils/FSDB';
+// import { initConfig } from './utils/config';
 
 const dataPath = app.getPath('appData');
+
+const SETTINGS_TEMP = {};
 
 let appDataPath = `${dataPath}/Yosoro`;
 if (process.env.NODE_ENV === 'development') {
@@ -10,9 +14,25 @@ if (process.env.NODE_ENV === 'development') {
 
 export const APP_DATA_PATH = appDataPath;
 export const PROFILE_PATH = `${appDataPath}/profiledata`;
-export const DOCUMENTS_PATH = `${appDataPath}/documents`;
-export const PROJECTS_PATH = `${DOCUMENTS_PATH}/projects`;
-export const TRASH_PATH = `${DOCUMENTS_PATH}/trash`;
+
+// setting file path
+export const SETTINGS_PATH = `${PROFILE_PATH}/settings.json`;
+
+// Initialization settings file
+// If the file exists, do nothing
+const settingsDB = new FSDB(SETTINGS_PATH);
+settingsDB.defaults(SETTINGS_TEMP);
+
+let DOCUMENTS_PATH = settingsDB.data.DOCUMENTS_PATH || `${appDataPath}/documents`;
+let PROJECTS_PATH = `${DOCUMENTS_PATH}/projects`;
+let TRASH_PATH = `${DOCUMENTS_PATH}/trash`;
+
+export function setDocumentsPath(documentsPath) {
+  DOCUMENTS_PATH = `${documentsPath}/Yosoro/documents`;
+  PROJECTS_PATH = `${DOCUMENTS_PATH}/projects`;
+  TRASH_PATH = `${DOCUMENTS_PATH}/trash`;
+}
+
 export const DESKTOP_PATH = app.getPath('desktop');
 
 export function initWorkSpace() {
@@ -35,4 +55,16 @@ export function initWorkSpace() {
   } catch (ex) {
     console.warn(ex);
   }
+}
+
+export function getDocumentsPath() {
+  return DOCUMENTS_PATH;
+}
+
+export function getProjectsPath() {
+  return PROJECTS_PATH;
+}
+
+export function getTrashPath() {
+  return TRASH_PATH;
 }
