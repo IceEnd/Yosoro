@@ -26,15 +26,22 @@
 }
 
 /**
- * zoom: 0 - 299
+ * zoom: 0 - 99
  */
 @mixin zoom-in($value: 0) {
-	zoom: $value;
+	z-index: $value;
 }
 
 /**
- * zoom: 300 - 999
+ * zoom: 100 - 299
  */
 @mixin zoom-out($value) {
-	zoom: $value;
+	z-index: $value;
+}
+
+/**
+ * zoom: 300-999
+ */
+@mixin zoom-windows($value) {
+	z-index: $value;
 }

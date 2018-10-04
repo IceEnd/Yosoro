@@ -109,4 +109,14 @@
 			margin: 0 0.5rem;
 		}
 	}
+
+	.settings-loading {
+		position: fixed;
+		@include zoom-windows(300);
+		background-color: rgba(0, 0, 0, .5);
+
+		.loading-tips {
+			color: #ffffff;
+		}
+	}
 }

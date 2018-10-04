@@ -10,8 +10,10 @@ import url from 'url';
 import {
   PROFILE_PATH,
   DESKTOP_PATH,
+  getDocumentsPath,
   getProjectsPath,
   getTrashPath,
+  setDocumentsPath,
 } from './paths';
 import { markedToHtml } from '../views/utils/utils';
 import schedule from './schedule';
@@ -566,6 +568,44 @@ export function eventListener(menus) {
       event.returnValue = '';
     }
   });
+
+  // get yosoro documents save path
+  ipcMain.on('get-docuemnts-save-path', (event) => {
+    event.returnValue = getDocumentsPath();
+  });
+
+  ipcMain.on('open-file-dialog', (event, args) => {
+    const { properties, cbChannel, cbOver } = args;
+    const win = BrowserWindow.fromWebContents(event.sender);
+    dialog.showOpenDialog(win, {
+      properties,
+    }, (filePaths) => {
+      if (filePaths) {
+        const oldDocPath = getDocumentsPath();
+        const newDocRoot = filePaths[0];
+        const newDocPath = `${newDocRoot}/documents`;
+        if (oldDocPath !== newDocPath) {
+          event.sender.send(cbChannel);
+          try {
+            fse.moveSync(oldDocPath, newDocPath);
+            if (fs.existsSync(oldDocPath)) {
+              fse.removeSync(oldDocPath);
+            }
+            setDocumentsPath(newDocRoot);
+            event.sender.send(cbOver, {
+              code: true,
+              res: newDocPath,
+            });
+          } catch (ex) {
+            console.error(ex);
+            event.sender.send(cbOver, {
+              code: false,
+            });
+          }
+        }
+      }
+    });
+  });
 }
 
 export function removeEventListeners() {
@@ -597,6 +637,7 @@ export function removeEventListeners() {
     'get-webview-path',
     'save-user-avatar',
     'get-local-avatar',
+    'get-docuemnts-save-path',
   ];
   for (const listener of listeners) {
     ipcMain.removeAllListeners(listener);

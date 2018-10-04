@@ -23,14 +23,20 @@ export const SETTINGS_PATH = `${PROFILE_PATH}/settings.json`;
 const settingsDB = new FSDB(SETTINGS_PATH);
 settingsDB.defaults(SETTINGS_TEMP);
 
-let DOCUMENTS_PATH = settingsDB.data.DOCUMENTS_PATH || `${appDataPath}/documents`;
+let DOCUMENTS_ROOT = settingsDB.data.documentsRoot || appDataPath;
+let DOCUMENTS_PATH = `${DOCUMENTS_ROOT}/documents`;
 let PROJECTS_PATH = `${DOCUMENTS_PATH}/projects`;
 let TRASH_PATH = `${DOCUMENTS_PATH}/trash`;
 
-export function setDocumentsPath(documentsPath) {
-  DOCUMENTS_PATH = `${documentsPath}/Yosoro/documents`;
+export function setDocumentsPath(rootPath) {
+  DOCUMENTS_ROOT = rootPath;
+  DOCUMENTS_PATH = `${DOCUMENTS_ROOT}/documents`;
   PROJECTS_PATH = `${DOCUMENTS_PATH}/projects`;
   TRASH_PATH = `${DOCUMENTS_PATH}/trash`;
+  const temp = Object.assign({}, settingsDB.data, {
+    documentsRoot: rootPath,
+  });
+  settingsDB.update(temp);
 }
 
 export const DESKTOP_PATH = app.getPath('desktop');
