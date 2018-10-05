@@ -3,7 +3,7 @@ import fs from 'fs';
 import FSDB from './utils/FSDB';
 // import { initConfig } from './utils/config';
 
-const splitFlag = process.platform === 'win32' ? '\\' : '/';
+export const splitFlag = process.platform === 'win32' ? '\\' : '/';
 
 const dataPath = app.getPath('appData');
 

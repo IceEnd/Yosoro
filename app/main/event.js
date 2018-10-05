@@ -14,6 +14,7 @@ import {
   getProjectsPath,
   getTrashPath,
   setDocumentsPath,
+  splitFlag,
 } from './paths';
 import { markedToHtml } from '../views/utils/utils';
 import schedule from './schedule';
@@ -583,7 +584,7 @@ export function eventListener(menus) {
       if (filePaths) {
         const oldDocPath = getDocumentsPath();
         const newDocRoot = filePaths[0];
-        const newDocPath = `${newDocRoot}/documents`;
+        const newDocPath = `${newDocRoot}${splitFlag}documents`;
         if (oldDocPath !== newDocPath) {
           event.sender.send(cbChannel);
           try {
