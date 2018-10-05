@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## v1.1.0
+
+### New Features
+
+- Support LaTeX
+- Editor state cache
+- Change the note save path.
+
+### Optimization
+
+- Mode switch
+- Beautify UI
+
+----
+
 ## v1.0.9
 
 ### New Features
