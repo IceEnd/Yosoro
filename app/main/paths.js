@@ -3,20 +3,22 @@ import fs from 'fs';
 import FSDB from './utils/FSDB';
 // import { initConfig } from './utils/config';
 
+const splitFlag = process.platform === 'win32' ? '\\' : '/';
+
 const dataPath = app.getPath('appData');
 
 const SETTINGS_TEMP = {};
 
-let appDataPath = `${dataPath}/Yosoro`;
+let appDataPath = `${dataPath}${splitFlag}Yosoro`;
 if (process.env.NODE_ENV === 'development') {
   appDataPath += 'Test';
 }
 
 export const APP_DATA_PATH = appDataPath;
-export const PROFILE_PATH = `${appDataPath}/profiledata`;
+export const PROFILE_PATH = `${appDataPath}${splitFlag}profiledata`;
 
 // setting file path
-export const SETTINGS_PATH = `${PROFILE_PATH}/settings.json`;
+export const SETTINGS_PATH = `${PROFILE_PATH}${splitFlag}settings.json`;
 
 // Initialization settings file
 // If the file exists, do nothing
@@ -24,15 +26,15 @@ const settingsDB = new FSDB(SETTINGS_PATH);
 settingsDB.defaults(SETTINGS_TEMP);
 
 let DOCUMENTS_ROOT = settingsDB.data.documentsRoot || appDataPath;
-let DOCUMENTS_PATH = `${DOCUMENTS_ROOT}/documents`;
-let PROJECTS_PATH = `${DOCUMENTS_PATH}/projects`;
-let TRASH_PATH = `${DOCUMENTS_PATH}/trash`;
+let DOCUMENTS_PATH = `${DOCUMENTS_ROOT}${splitFlag}documents`;
+let PROJECTS_PATH = `${DOCUMENTS_PATH}${splitFlag}projects`;
+let TRASH_PATH = `${DOCUMENTS_PATH}${splitFlag}trash`;
 
 export function setDocumentsPath(rootPath) {
   DOCUMENTS_ROOT = rootPath;
-  DOCUMENTS_PATH = `${DOCUMENTS_ROOT}/documents`;
-  PROJECTS_PATH = `${DOCUMENTS_PATH}/projects`;
-  TRASH_PATH = `${DOCUMENTS_PATH}/trash`;
+  DOCUMENTS_PATH = `${DOCUMENTS_ROOT}${splitFlag}documents`;
+  PROJECTS_PATH = `${DOCUMENTS_PATH}${splitFlag}projects`;
+  TRASH_PATH = `${DOCUMENTS_PATH}${splitFlag}trash`;
   const temp = Object.assign({}, settingsDB.data, {
     documentsRoot: rootPath,
   });

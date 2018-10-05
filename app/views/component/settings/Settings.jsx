@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Anchor, Icon } from 'antd';
 import Title from 'Share/title/Title';
@@ -69,7 +69,7 @@ const SettingsToc = () => (
 
 SettingsToc.displayName = 'SettingsToc';
 
-export default class Settings extends PureComponent {
+export default class Settings extends Component {
   static displayName = 'YsosoroSettings';
   static propTypes = {
     imageHostingConfig: PropTypes.shape({

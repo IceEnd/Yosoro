@@ -62,7 +62,7 @@ export default class SavePath extends PureComponent {
           <Input value={path} disabled />
         </Col>
         <Col span="5" className="number-col">
-          <Button
+          <Button
             onClick={this.handleClick}
           >
             Choose...
