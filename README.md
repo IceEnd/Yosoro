@@ -86,7 +86,7 @@ Drag the image into the editor or use the shortcut `ctrl+v` to upload the image.
 
 ### Windows
 
-![screenshot-window](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-26.17.43.22-image.png)
+![screenshot-window](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-10-05.11.19.18-image.png)
 
 ### linux
 
