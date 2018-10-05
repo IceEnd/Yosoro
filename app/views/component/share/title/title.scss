@@ -6,26 +6,27 @@
 	-webkit-app-region: drag;
 	position: relative;
 
-	&:after {
-		content: "";
-		z-index: 999;
-		position: absolute;
-		width: 90%;
-		bottom: 0;
-		left: 5%;
-		height: 1px;
-		background-color: #d9d9d9;
-		box-shadow: 0 1px 10px #d9d9d9;
-	}
-
 	.title {
+		position: relative;
 		line-height: 3rem;
 		font-size: 1.2rem;
-		width: 80%;
+		width: 90%;
 		margin: 0 auto;
 		text-align: center;
 		@include text-ellipsis;
 		color: rgba(0, 0, 0, 0.7);
+
+		&:after {
+			content: "";
+			@include zoom-in(99);
+			position: absolute;
+			width: 100%;
+			bottom: 0;
+			left: 0;
+			height: 1px;
+			background-color: #d9d9d9;
+			box-shadow: 0 1px 10px #d9d9d9;
+		}
 	}
 	.icon {
 		margin-right: .3em;
@@ -33,7 +34,7 @@
 	}
 
 	.back {
-		z-index: 999;
+		@include zoom-in(99);
 		padding-top: 0.5rem;
 		position: absolute;
 		height: 100%;

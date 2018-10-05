@@ -5,6 +5,7 @@ import { CHANGE_EDITOR_SETTINGS } from 'Actions/app';
 import Module from '../Module';
 import FontSize from './FontSize';
 import Switch from './Switch';
+import SavePath from './SavePath';
 
 const MIN_SIZE = 12;
 const MAX_SIZE = 36;
@@ -17,6 +18,8 @@ export default class General extends PureComponent {
     fontSize: PropTypes.number.isRequired,
     previewFontSize: PropTypes.number.isRequired,
     cursorPosition: PropTypes.number.isRequired,
+    showLoading: PropTypes.func.isRequired,
+    closeLoading: PropTypes.func.isRequired,
   }
 
   handleChange = (type, value) => {
@@ -36,7 +39,7 @@ export default class General extends PureComponent {
   }
 
   render() {
-    const { fontSize, previewFontSize, cursorPosition } = this.props;
+    const { fontSize, previewFontSize, cursorPosition, showLoading, closeLoading } = this.props;
     return (
       <Module
         title="General"
@@ -61,6 +64,11 @@ export default class General extends PureComponent {
           onChange={this.handleChange}
         />
 
+        <SavePath
+          showLoading={showLoading}
+          closeLoading={closeLoading}
+        />
+
         <Switch
           type="cursorPosition"
           title="Cursor Position"
@@ -68,6 +76,7 @@ export default class General extends PureComponent {
           onChange={this.handleChange}
           tips="View positioning based on the cursor position of the editor."
         />
+
       </Module>
     );
   }

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Anchor, Icon } from 'antd';
 import Title from 'Share/title/Title';
@@ -6,6 +6,7 @@ import ImageHosting from './ImageHosting';
 import MediumConfig from './MediumConfig';
 import General from './general/General';
 import About from './About';
+import Loading from '../share/Loading';
 
 import '../../assets/scss/settings.scss';
 
@@ -68,64 +69,99 @@ const SettingsToc = () => (
 
 SettingsToc.displayName = 'SettingsToc';
 
-const Settings = props => (
-  <div className="settings-root">
-    <Title
-      title="Settings"
-      iconType="setting"
-    />
-    <SettingsToc />
-    <div className="modules" id="modules">
-      <General
-        key="general-config"
-        {...props.editor}
-      />
-      <ImageHosting
-        key="image-hosting-config"
-        id="anchor-image-hosting"
-        {...props.imageHostingConfig}
-      />
-      <MediumConfig
-        key="medium-config"
-        id="anchor-publish"
-        medium={props.mediumConfig.medium}
-      />
-
-      <About
-        key="about-config"
-        id="anchor-about"
-      />
-    </div>
-  </div>
-);
-
-Settings.displayName = 'YsosoroSettings';
-Settings.propTypes = {
-  imageHostingConfig: PropTypes.shape({
-    default: PropTypes.oneOf(['github']).isRequired,
-    github: PropTypes.shape({
-      repo: PropTypes.string.isRequired,
-      branch: PropTypes.string.isRequired,
-      token: PropTypes.string.isRequired,
-      path: PropTypes.string.isRequired,
-      domain: PropTypes.string.isRequired,
+export default class Settings extends Component {
+  static displayName = 'YsosoroSettings';
+  static propTypes = {
+    imageHostingConfig: PropTypes.shape({
+      default: PropTypes.oneOf(['github']).isRequired,
+      github: PropTypes.shape({
+        repo: PropTypes.string.isRequired,
+        branch: PropTypes.string.isRequired,
+        token: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired,
+        domain: PropTypes.string.isRequired,
+      }).isRequired,
     }).isRequired,
-  }).isRequired,
-  mediumConfig: PropTypes.shape({
-    medium: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      username: PropTypes.string.isRequired,
-      token: PropTypes.string.isRequired,
-      url: PropTypes.string.isRequired,
-      imageUrl: PropTypes.string.isRequired,
-      publishStatus: PropTypes.string.isRequired,
+    mediumConfig: PropTypes.shape({
+      medium: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+        token: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+        imageUrl: PropTypes.string.isRequired,
+        publishStatus: PropTypes.string.isRequired,
+      }).isRequired,
     }).isRequired,
-  }).isRequired,
-  editor: PropTypes.shape({
-    fontSize: PropTypes.number.isRequired,
-    previewFontSize: PropTypes.number.isRequired,
-    cursorPosition: PropTypes.number.isRequired,
-  }).isRequired,
-};
+    editor: PropTypes.shape({
+      fontSize: PropTypes.number.isRequired,
+      previewFontSize: PropTypes.number.isRequired,
+      cursorPosition: PropTypes.number.isRequired,
+    }).isRequired,
+  };
 
-export default Settings;
+  constructor() {
+    super();
+    this.state = {
+      loading: false,
+      loadingTip: 'Loading',
+    };
+  }
+
+  showLoading = (tip) => {
+    this.setState({
+      loading: true,
+      loadingTip: tip,
+    });
+  }
+
+  closeLoading = () => {
+    this.setState({
+      loading: false,
+      loadingTip: 'Loading',
+    });
+  }
+
+  render() {
+    const { editor, imageHostingConfig, mediumConfig } = this.props;
+    const { loading, loadingTip } = this.state;
+    return (
+      <div className="settings-root">
+        <Title
+          title="Settings"
+          iconType="setting"
+        />
+        <SettingsToc />
+        <div className="modules" id="modules">
+          <General
+            key="general-config"
+            {...editor}
+            showLoading={this.showLoading}
+            closeLoading={this.closeLoading}
+          />
+          <ImageHosting
+            key="image-hosting-config"
+            id="anchor-image-hosting"
+            {...imageHostingConfig}
+          />
+          <MediumConfig
+            key="medium-config"
+            id="anchor-publish"
+            medium={mediumConfig.medium}
+          />
+
+          <About
+            key="about-config"
+            id="anchor-about"
+          />
+        </div>
+
+        {loading ? (
+          <Loading
+            className="settings-loading"
+            tip={loadingTip}
+          />
+        ) : null}
+      </div>
+    );
+  }
+}

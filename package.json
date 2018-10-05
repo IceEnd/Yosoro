@@ -1,7 +1,7 @@
 {
   "name": "yosoro",
   "productName": "Yosoro",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "Beautiful Cloud Drive Markdown NoteBook Desktop App.",
   "main": "./app/main/index.js",
   "scripts": {
@@ -94,10 +94,10 @@
     "devtron": "^1.4.0",
     "electron": "^3.0.2",
     "electron-installer-debian": "^0.8.1",
-    "electron-installer-dmg": "^1.0.0",
-    "electron-packager": "^9.1.0",
+    "electron-installer-dmg": "^2.0.0",
+    "electron-packager": "^12.2.0",
     "electron-watch": "^1.0.9",
-    "electron-winstaller": "^2.6.4",
+    "electron-winstaller": "^2.7.0",
     "eslint": "^4.10.0",
     "eslint-config-alchemy": "^0.1.13",
     "eslint-import-resolver-webpack": "^0.10.0",

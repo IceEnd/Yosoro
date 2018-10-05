@@ -38,7 +38,7 @@ You can read [Wiki](https://github.com/IceEnd/Yosoro/wiki) & [CHANGELOG](./CHANG
 
 ![2018-09-24.14.00.53-write.gif](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-09-24.14.00.53-write.gif)
 
-### Latex
+### LaTeX
 
 The editor converts LaTeX equations in double-dollars `$$`: $$ax^2+bx+c=0$$. All equations are rendered as block equations. If you need inline ones, you can add the prefix `\inline`: $$x_{1,2} = {-b\pm\sqrt{b^2 - 4ac} \over 2a}$$. But it is a good practice to place big equations on separate lines:
 
@@ -86,7 +86,7 @@ Drag the image into the editor or use the shortcut `ctrl+v` to upload the image.
 
 ### Windows
 
-![screenshot-window](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-26.17.43.22-image.png)
+![screenshot-window](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-10-05.11.19.18-image.png)
 
 ### linux
 
