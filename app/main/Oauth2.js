@@ -84,10 +84,6 @@ export default class Oauth2 {
         }
       }
 
-      // authWindow.webContents.on('will-navigate', (event, currentUrl) => {
-      //   onCallback(currentUrl);
-      // });
-
       authWindow.webContents.on('did-navigate', (event, currentUrl) => {
         onCallback(currentUrl);
       });
