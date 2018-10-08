@@ -24,6 +24,18 @@ export const SETTINGS_PATH = `${PROFILE_PATH}${splitFlag}settings.json`;
 // If the file exists, do nothing
 const settingsDB = new FSDB(SETTINGS_PATH);
 
+try {
+  if (!fs.existsSync(APP_DATA_PATH)) {
+    fs.mkdirSync(APP_DATA_PATH);
+  }
+  if (!fs.existsSync(PROFILE_PATH)) {
+    fs.mkdirSync(PROFILE_PATH); // 异步创建
+  }
+  settingsDB.defaults(SETTINGS_TEMP);
+} catch (ex) {
+  console.error(ex);
+}
+
 let DOCUMENTS_ROOT = settingsDB.data.documentsRoot || appDataPath;
 let DOCUMENTS_PATH = `${DOCUMENTS_ROOT}${splitFlag}documents`;
 let PROJECTS_PATH = `${DOCUMENTS_PATH}${splitFlag}projects`;
@@ -44,13 +56,6 @@ export const DESKTOP_PATH = app.getPath('desktop');
 
 export function initWorkSpace() {
   try {
-    if (!fs.existsSync(APP_DATA_PATH)) {
-      fs.mkdirSync(APP_DATA_PATH);
-    }
-    if (!fs.existsSync(PROFILE_PATH)) {
-      fs.mkdirSync(PROFILE_PATH); // 异步创建
-    }
-    settingsDB.defaults(SETTINGS_TEMP);
     if (!fs.existsSync(DOCUMENTS_PATH)) {
       fs.mkdirSync(DOCUMENTS_PATH);
     }
