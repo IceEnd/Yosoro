@@ -48,6 +48,7 @@ export default class Oauth2 {
     }
 
     const url = `${config.authorizationUrl}?${queryString.stringify(urlParams)}`;
+    // const url ="localhost"
 
     return new Promise((resolve, reject) => {
       const authWindow = new BrowserWindow(this.windowParams || { 'use-content-size': true });
@@ -64,8 +65,7 @@ export default class Oauth2 {
         const query = urlParts.query;
         const code = query.code;
         const error = query.error;
-
-        if (error !== undefined) {
+        if (typeof error !== 'undefined') {
           reject(error);
           authWindow.removeAllListeners('closed');
           setImmediate(() => {
@@ -84,7 +84,11 @@ export default class Oauth2 {
         }
       }
 
-      authWindow.webContents.on('will-navigate', (event, currentUrl) => {
+      // authWindow.webContents.on('will-navigate', (event, currentUrl) => {
+      //   onCallback(currentUrl);
+      // });
+
+      authWindow.webContents.on('did-navigate', (event, currentUrl) => {
         onCallback(currentUrl);
       });
 
