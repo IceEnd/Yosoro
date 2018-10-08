@@ -4,7 +4,7 @@ const oauthConfig = {
     authorizationUrl: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
     tokenUrl: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
     useBasicAuthorizationHeader: false,
-    redirectUri: 'http://localhost',
+    redirectUri: 'https://github.com/IceEnd/Yosoro',
     clientSecret: 'bcdfnjKNMK0$-!wHQO6656]',
   },
 };

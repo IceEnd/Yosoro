@@ -66,7 +66,7 @@ export default class OneDrive {
 
   getTokenByCode = (code) => {
     const encodeSecret = encodeURIComponent('bcdfnjKNMK0$-!wHQO6656]');
-    const body = `client_id=35730bb9-a23a-46f9-aebf-5c2b9d6fc06c&redirect_uri=http://localhost&client_secret=${encodeSecret}
+    const body = `client_id=35730bb9-a23a-46f9-aebf-5c2b9d6fc06c&redirect_uri=https://github.com/IceEnd/Yosoro&client_secret=${encodeSecret}
     &code=${encodeURIComponent(code)}&grant_type=authorization_code`;
     return new Promise((resolve, reject) =>
       fetch('https://login.microsoftonline.com/common/oauth2/v2.0/token', {
