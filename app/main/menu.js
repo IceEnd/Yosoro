@@ -8,6 +8,7 @@ const windowParams = {
   autoHideMenuBar: true,
   webPreferences: {
     nodeIntegration: false,
+    webSecurity: false,
   },
 };
 

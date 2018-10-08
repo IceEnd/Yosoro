@@ -3341,8 +3341,8 @@ electron-winstaller@^2.7.0:
     temp "^0.8.3"
 
 electron@^3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-3.0.2.tgz#0aed43a331b43dfe671ddb54d75fc4102d362959"
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-3.0.3.tgz#2857ed8d37c1b46e0a75a72684800252255f3243"
   dependencies:
     "@types/node" "^8.0.24"
     electron-download "^4.1.0"

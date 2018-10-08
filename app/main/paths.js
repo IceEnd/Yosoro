@@ -23,7 +23,6 @@ export const SETTINGS_PATH = `${PROFILE_PATH}${splitFlag}settings.json`;
 // Initialization settings file
 // If the file exists, do nothing
 const settingsDB = new FSDB(SETTINGS_PATH);
-settingsDB.defaults(SETTINGS_TEMP);
 
 let DOCUMENTS_ROOT = settingsDB.data.documentsRoot || appDataPath;
 let DOCUMENTS_PATH = `${DOCUMENTS_ROOT}${splitFlag}documents`;
@@ -49,8 +48,9 @@ export function initWorkSpace() {
       fs.mkdirSync(APP_DATA_PATH);
     }
     if (!fs.existsSync(PROFILE_PATH)) {
-      fs.mkdir(PROFILE_PATH); // 异步创建
+      fs.mkdirSync(PROFILE_PATH); // 异步创建
     }
+    settingsDB.defaults(SETTINGS_TEMP);
     if (!fs.existsSync(DOCUMENTS_PATH)) {
       fs.mkdirSync(DOCUMENTS_PATH);
     }
