@@ -112,7 +112,7 @@ yarn --ignore-paltform
 cp ./config/devconfig.example.json ./config/devconfig.json
 ```
 
-Edit `./config/devconfig.json`, Add Chrome extensions, for example:
+Edit `./config/devconfig.json`, add Chrome extensions, for example:
 
 ```json
 {
