@@ -100,10 +100,27 @@ Drag the image into the editor or use the shortcut `ctrl+v` to upload the image.
 yarn
 ```
 
+The installation failed in `Windows`, can try this command:
+
+```shell
+yarn --ignore-paltform
+```
+
 ### Dev Tools Extension
 
 ```shell
 cp ./config/devconfig.example.json ./config/devconfig.json
+```
+
+Edit `./config/devconfig.json`, Add Chrome extensions, for example:
+
+```json
+{
+    "extensions": [
+        "/Users/xxx/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.15.3_0",
+        "/Users/xxx/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.4.0_0"
+    ]
+}
 ```
 
 ### Run Main Process
