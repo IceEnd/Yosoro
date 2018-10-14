@@ -1,4 +1,4 @@
-import { remote } from 'electron';
+import { remote, ipcRenderer } from 'electron';
 import {
   APP_LOUNCH,
   APP_ADJUST_MARKDOWN,
@@ -46,6 +46,12 @@ const appendSettings = {
 const initMediumConfig = getAppMediumConfig();
 const initImageHosting = getAppImageHosting();
 const initSettings = assign({}, appendSettings, getAppSettings());
+
+// Sync View MenuItems
+if (initSettings.editorMode) {
+  ipcRenderer.send('app-switch-edit-mode', initSettings.editorMode);
+}
+
 if (typeof initSettings.defaultDrive === 'undefined') {
   initSettings.defaultDrive = 'oneDrive';
 }
@@ -77,10 +83,13 @@ export default function lounchApp(state = {
       return assign({}, state, app);
     }
     case APP_SWITCH_EDIT_MODE: {
-      const { mode } = action;
+      const { mode, fromApp } = action;
       const settings = state.settings;
       settings.editorMode = mode;
-      updateAppSettings(settings);
+      ipcRenderer.send('app-switch-edit-mode', mode);
+      if (!fromApp) {
+        updateAppSettings(settings);
+      }
       const newState = assign({}, state, {
         settings,
       });

@@ -108,7 +108,8 @@ export default class Editor extends Component {
     this.deleteCodeMirror();
   }
 
-  onWindowResize = () => {
+  @autobind
+  onWindowResize() {
     const { editorMode } = this.props;
     if (editorMode === 'edit') {
       const { editorWidthValue } = this.props;

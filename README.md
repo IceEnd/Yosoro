@@ -78,6 +78,10 @@ Drag the image into the editor or use the shortcut `ctrl+v` to upload the image.
 
 ![sync](https://t1.picb.cc/uploads/2018/05/13/2vBRbs.gif)
 
+## Shortcuts
+
+[Shortcuts Wiki](https://github.com/IceEnd/Yosoro/wiki/Shortcuts)
+
 ## Screenshots
 
 ### macOS
