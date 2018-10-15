@@ -328,6 +328,19 @@ export function getExplorerFileItemMenu(mainWindow) {
     type: 'separator',
   }));
   menu.append(new MenuItem({
+    label: 'Sort by',
+    submenu: [{
+      label: 'Create Date',
+      click: () => mainWindow.webContents.send('sort-note', 'createDate'),
+    }, {
+      label: 'Latest Date',
+      click: () => mainWindow.webContents.send('sort-note', 'latestDate'),
+    }],
+  }));
+  menu.append(new MenuItem({
+    type: 'separator',
+  }));
+  menu.append(new MenuItem({
     label: 'Upload to OneDrive',
     click: () => mainWindow.webContents.send('upload-note-onedrive'),
   }));
