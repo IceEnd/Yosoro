@@ -318,6 +318,10 @@ export function getExplorerFileItemMenu(mainWindow) {
     click: () => mainWindow.webContents.send('node-add-desc'),
   }));
   menu.append(new MenuItem({
+    label: 'Move to',
+    click: () => mainWindow.webContents.send('move-to'),
+  }));
+  menu.append(new MenuItem({
     type: 'separator',
   }));
   menu.append(new MenuItem({
