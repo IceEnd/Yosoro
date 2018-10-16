@@ -24,6 +24,7 @@ export default {
       Actions: path.resolve(__dirname, '../app/views/actions/'),
       Services: path.resolve(__dirname, '../app/views/services/'),
       Assets: path.resolve(__dirname, '../app/views/assets'),
+      Config: path.resolve(__dirname, '../app/views/config'),
     },
   },
 };

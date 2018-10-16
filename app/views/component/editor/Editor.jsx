@@ -80,8 +80,9 @@ export default class Editor extends Component {
   }
 
   componentDidMount() {
+    this.mounted = true;
     this.noteRoot = document.getElementById('note_root_cont');
-    window.addEventListener('resize', throttle(this.onWindowResize, 60));
+    window.addEventListener('resize', this.onWindowResize);
     this.container.addEventListener('resize', this.handleContainerResize);
     this.setCodeMirror();
     eventMD.on('sync-value', this.syncValue);
@@ -156,13 +157,9 @@ export default class Editor extends Component {
       gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
     });
     this.addChangeEvent();
-    // this.codeMirror.on('change', this.handleChange);
     this.codeMirror.on('scroll', this.handleScroll);
     this.codeMirror.on('keydown', this.handleKeyDown);
     this.codeMirror.on('focus', this.handleFocus);
-    // this.codeMirror.on('dragenter', this.handleDragEnter);
-    // this.codeMirror.on('dragleave', this.handleDragLeave);
-    // this.codeMirror.on('dragover', this.handleDragOver);
     this.codeMirror.on('drop', this.handleDrop);
     this.codeMirror.on('paste', this.handlePaste);
   }
@@ -282,22 +279,6 @@ export default class Editor extends Component {
   @autobind
   handleCodeMirrorResize() {
     this.containerResize();
-  }
-
-  // handleDragStart = (e) => {
-  //   e.preventDefault();
-  // }
-
-  // handleDragEnter = () => {
-  //   // console.log('enter');
-  // }
-
-  // handleDragLeave = () => {
-  //   // console.log('leave');
-  // }
-
-  handleDragOver = () => {
-    // console.log('over');
   }
 
   @autobind

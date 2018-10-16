@@ -400,7 +400,7 @@ export default class App extends Component {
                     <Settings
                       imageHostingConfig={app.imageHostingConfig}
                       mediumConfig={app.mediumConfig}
-                      editor={settings.editor}
+                      {...app.settings}
                     />
                   )}
                 />
