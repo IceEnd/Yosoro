@@ -84,5 +84,36 @@
 
 	.note-root {
 		background-color: rgba(37, 37, 38, 0.8);
+
+		.project-explorer {
+			border-color: rgba(56, 46, 56, 0.8);
+
+			.project-list {
+				padding: 0;
+				.project-list__li {
+					border-radius: 0;
+
+					&.cur {
+						background-color: #333333;
+
+						.project-list__item {
+							.project-list__item__name {
+								h3 {
+									color: #f7f8f9;
+								}
+							}
+						}
+					}
+
+					.project-list__item {
+						.project-list__item__name {
+							h3 {
+								color: #b3b3b3;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
