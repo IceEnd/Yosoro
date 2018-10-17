@@ -43,8 +43,9 @@ export default {
         test: /\.(eot|woff(2)?|ttf)$/,
         loader: 'file-loader',
         options: {
-          name: 'fonts/[path][name].[ext]',
-          useRelativePath: process.env.NODE_ENV === 'production',
+          name: '[name].[ext]',
+          outputPath: 'fonts/',
+          publicPath: '../../fonts',
         },
       },
     ],

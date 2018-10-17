@@ -108,7 +108,7 @@ function getMemuTemplete(mainWindow) {
       ...editMenuItems,
     ],
   });
-  // if (!app.isPackaged) {
+  if (!app.isPackaged) {
     menuTemplete.push({
       label: 'Debugger',
       submenu: [{
@@ -156,7 +156,7 @@ function getMemuTemplete(mainWindow) {
         },
       }],
     });
-  // }
+  }
   menuTemplete.push({
     label: 'Help',
     role: 'help',

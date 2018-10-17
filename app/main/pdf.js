@@ -35,7 +35,7 @@ export default class PDF {
       }
       fs.writeFileSync(file, pdfData);
       if (fs.existsSync(tempFile)) {
-        // fs.unlinkSync(tempFile);
+        fs.unlinkSync(tempFile);
       }
       resolve('done');
     });
@@ -84,7 +84,7 @@ export default class PDF {
       }
       const filePath = `${folderPath}/${note}`;
       const content = this.getHtml(filePath);
-      const tempFile = `${tempPath}/yosoro_pdf_${seed}.html`;
+      const tempFile = `${tempPath}yosoro_pdf_${seed}.html`;
       fs.writeFileSync(tempFile, content); // 写入临时html文件
       let windowToPDF = new BrowserWindow({
         show: false,

@@ -14,6 +14,7 @@ gulp.task('clean:web', () => {
     path.join(__dirname, '../lib/index*'),
     path.join(__dirname, '../lib/images/**'),
     path.join(__dirname, '../lib/webview/**'),
+    path.join(__dirname, '../lib/fonts/**'),
   ]);
 });
 
@@ -68,7 +69,11 @@ gulp.task('electron:resource', () => {
 });
 
 // 渲染进程打包
-gulp.task('build:web', ['webpack:web']);
+gulp.task('build:web', ['webpack:web'], () => {
+  del.sync([
+    path.join(__dirname, '../lib/webview/webview.js'),
+  ]);
+});
 
 // 主进程打包任务
 gulp.task('build:electron', ['webpack:electron', 'electron:resource']);
