@@ -35,7 +35,7 @@ export default class PDF {
       }
       fs.writeFileSync(file, pdfData);
       if (fs.existsSync(tempFile)) {
-        fs.unlinkSync(tempFile);
+        // fs.unlinkSync(tempFile);
       }
       resolve('done');
     });
@@ -46,16 +46,19 @@ export default class PDF {
       encoding: 'utf8',
     });
     content = markedToHtml(content);
-    return this.htmlTemplate.replace(/(<div\s+id="root"\s+class="\w+"\s*>)\s*(<\/div>\s*<\/body>)/, `$1${content}$2`);
+    return this.htmlTemplate
+      .replace(/(<div\s+id="?root"?\s+class="?\w+"?\s*>)\s*(<\/div>\s*<\/body>)/, `$1${content}$2`);
   }
 
   getHtmlTemplate() {
     let temp = fs.readFileSync(path.resolve(__dirname, './webview/webview.html'), {
       encoding: 'utf8',
     });
-    temp = temp.replace('<link rel="stylesheet" href="../resource/css/preview-reset.css">', '');
-    temp = temp.replace('../resource/css/marked.css', path.resolve(__dirname, './resource/css/marked.css'));
-    temp = temp.replace('../resource/css/kalex.css', path.resolve(__dirname, './resource/css/kalex.css'));
+    temp = temp.replace(/<style\s+data-for="?preview"?>(.|\r|\n)*<\/style>/, '');
+    if (app.isPackaged) {
+      // change link href
+      temp = temp.replace('../css/webview/webview.css', path.resolve(__dirname, './css/webview/webview.css'));
+    }
     this.htmlTemplate = temp;
   }
 

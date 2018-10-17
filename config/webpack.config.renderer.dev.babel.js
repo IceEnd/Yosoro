@@ -19,6 +19,10 @@ export default merge.smart(baseConfig, {
       'webpack/hot/only-dev-server',
       path.resolve(__dirname, '../app/webview/webview-pre.js'),
     ],
+    'webview/webview': [
+      'webpack/hot/only-dev-server',
+      path.resolve(__dirname, '../app/webview/webview.js'),
+    ],
   },
   output: {
     path: path.resolve(__dirname, '../build/'),
@@ -41,10 +45,6 @@ export default merge.smart(baseConfig, {
         ],
         exclude: /node_modules/,
         include: path.resolve(__dirname, '../'),
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.scss$/,

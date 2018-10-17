@@ -1,22 +1,10 @@
 import path from 'path';
 import merge from 'webpack-merge';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 // import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import baseConfig from './webpack.config.base.babel';
 
 process.traceDeprecation = true;
-
-const extractTextConf = (loaders = []) => ExtractTextPlugin.extract({
-  fallback: 'style-loader',
-  use: [
-    {
-      loader: 'css-loader',
-      options: { minimize: true },
-    },
-    ...loaders,
-  ],
-});
 
 export default merge.smart(baseConfig, {
   mode: 'production',
@@ -24,6 +12,10 @@ export default merge.smart(baseConfig, {
     index: path.join(__dirname, '../app/views/index.jsx'),
     'webview/webview-pre': [
       path.resolve(__dirname, '../app/webview/webview-pre.js'),
+    ],
+    'webview/webview': [
+      'webpack/hot/only-dev-server',
+      path.resolve(__dirname, '../app/webview/webview.js'),
     ],
   },
   output: {
@@ -45,23 +37,6 @@ export default merge.smart(baseConfig, {
         exclude: /node_modules/,
         include: path.resolve(__dirname, '../'),
       },
-      {
-        test: /\.css$/,
-        use: extractTextConf(),
-      },
-      {
-        test: /\.scss$/,
-        use: extractTextConf(['sass-loader']),
-      },
-      {
-        test: /\.less$/,
-        use: extractTextConf([{
-          loader: 'less-loader',
-          options: {
-            javascriptEnabled: true,
-          },
-        }]),
-      },
     ],
   },
   optimization: {
@@ -80,15 +55,12 @@ export default merge.smart(baseConfig, {
     },
   },
   plugins: [
-    new ExtractTextPlugin({
-      filename: 'css/[name].css',
-      allChunks: true,
-    }),
     // 生成html
     new HtmlWebpackPlugin({
       filename: path.resolve(__dirname, '../lib/index.html'),
       template: path.resolve(__dirname, '../templete/index.html'),
       inject: true,
+      chunks: ['index', 'vendor'],
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -99,8 +71,9 @@ export default merge.smart(baseConfig, {
     // webview html
     new HtmlWebpackPlugin({
       filename: path.resolve(__dirname, '../lib/webview/webview.html'),
-      template: path.resolve(__dirname, '../app/main/webview/webview.html'),
+      template: path.resolve(__dirname, '../templete/webview.html'),
       inject: false,
+      chunks: ['webview/webview'],
       minify: {
         removeComments: true,
         collapseWhitespace: true,

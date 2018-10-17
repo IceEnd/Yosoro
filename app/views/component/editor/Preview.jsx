@@ -9,7 +9,8 @@ import LoadingImg from '../../assets/images/loading.svg';
 
 import '../../assets/scss/preview.scss';
 
-const isDEV = process.env.NODE_ENV === 'development';
+// const isDEV = process.env.NODE_ENV === 'development';
+const isDEV = true;
 
 const preJSPath = getWebviewPreJSPath();
 
