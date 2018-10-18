@@ -99,18 +99,39 @@
 						.project-list__item {
 							.project-list__item__name {
 								h3 {
-									color: #f7f8f9;
+									color: $darkNoteCurColor;
 								}
 							}
 						}
 					}
 
 					.project-list__item {
+						color: $darkNoteColor;
+						border-color: rgba(255, 204, 204, .5);
 						.project-list__item__name {
 							h3 {
-								color: #b3b3b3;
+								color: $darkNoteColor;
 							}
 						}
+					}
+				}
+			}
+		}
+
+		.file-explorer {
+			.file-list {
+				padding: 0;
+				.file-list__item {
+					border-radius: 0;
+
+					.file-list__item__name {
+						h3 {
+							color: $darkNoteColor;
+						}
+					}
+
+					&.cur {
+						background-color: #333333;
 					}
 				}
 			}

@@ -46,23 +46,6 @@ export default merge.smart(baseConfig, {
         exclude: /node_modules/,
         include: path.resolve(__dirname, '../'),
       },
-      {
-        test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-      },
-      {
-        test: /\.less$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          {
-            loader: 'less-loader',
-            options: {
-              javascriptEnabled: true,
-            },
-          },
-        ],
-      },
     ],
   },
   devServer: {

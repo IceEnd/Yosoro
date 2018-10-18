@@ -222,6 +222,7 @@ export default class Preview extends PureComponent {
             className="preview-webview"
             webpreferences="contextIsolation=yes"
             disableblinkfeatures="Auxclick"
+            nodeintegration="true"
             src={webviewPath}
             preload={preJSPath}
             onDrop={e => e.preventDefault()}
