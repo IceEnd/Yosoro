@@ -4,7 +4,7 @@ export default {
   markdownSettings: {
     editorWidth: 0.6,
   },
-  defaultDriver: 'oneDrive',
+  defaultDrive: 'oneDrive',
   editor: {
     fontSize: 14,
     previewFontSize: 16,

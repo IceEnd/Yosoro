@@ -266,3 +266,23 @@ export function markedTOC(str) {
 export function trim(str) {
   return str.replace(/^\s+|\s+$/g, '');
 }
+
+/**
+ * inject value to Object
+ * @param {any} target inject target
+ * @param {Array} arr props name array
+ * @param {any} value value
+ */
+export function objectInject(target, arr, value) {
+  const res = target;
+  if (arr.length === 1) {
+    res[arr[0]] = value;
+  } else {
+    if (!res[arr[0]] || typeof res[arr[0]] !== 'object') {
+      res[arr[0]] = {};
+    }
+    const name = arr.shift();
+    res[name] = objectInject(res[name], arr, value);
+  }
+  return res;
+}

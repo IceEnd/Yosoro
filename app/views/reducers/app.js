@@ -28,7 +28,7 @@ import {
 } from 'Utils/db/app';
 import defaultSettings from 'Config/settings';
 import appInfo from '../../../package.json';
-import { compareVersion } from '../utils/utils';
+import { compareVersion, objectInject } from '../utils/utils';
 
 const assign = Object.assign;
 
@@ -154,10 +154,12 @@ export default function lounchApp(state = {
     }
     case CHANGE_APP_SETTINGS: {
       const { target, value } = action;
-      const settings = state.settings;
-      settings[target] = value;
+      const parts = target.split('.');
+      const settings = objectInject(state.settings, parts, value);
       updateAppSettings(settings);
-      return assign({}, state);
+      return assign({}, state, {
+        settings,
+      });
     }
     default:
       return state;

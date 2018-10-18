@@ -7,6 +7,7 @@ import {
   markedToHtml,
   checkFileName,
   markedTOC,
+  objectInject,
 } from '../../app/views/utils/utils';
 
 test('FormatDate new date', () => {
@@ -86,4 +87,19 @@ test('marked TOC', () => {
     }
   }
   expect(flag).toBe(true);
+});
+
+test('objectInject', () => {
+  let res = objectInject({}, ['a', 'b'], 2);
+  expect(res.a.b).toBe(2);
+
+  res = objectInject({ a: 0 }, ['a', 'b'], 2);
+  expect(res.a.b).toBe(2);
+
+  res = objectInject({ a: { c: 1 } }, ['a', 'b'], 2);
+  expect(res.a.b).toBe(2);
+  expect(res.a.c).toBe(1);
+
+  res = objectInject({ a: { b: 1 } }, ['a', 'b'], 2);
+  expect(res.a.b).toBe(2);
 });
