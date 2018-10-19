@@ -90,15 +90,26 @@
 
 			.project-list {
 				padding: 0;
+
 				.project-list__li {
 					border-radius: 0;
 
+					&:hover {
+						background-color: $darkNoteHoverBg;
+					}
+
 					&.cur {
-						background-color: #333333;
+						background-color: $darkNoteCurBg;
 
 						.project-list__item {
+							color: $darkNoteCurColor;
 							.project-list__item__name {
+								color: $darkNoteColor;
 								h3 {
+									color: $darkNoteCurColor;
+								}
+
+								.ant-input {
 									color: $darkNoteCurColor;
 								}
 							}
@@ -109,7 +120,12 @@
 						color: $darkNoteColor;
 						border-color: rgba(255, 204, 204, .5);
 						.project-list__item__name {
+							color: $darkNoteColor;
 							h3 {
+								color: $darkNoteColor;
+							}
+
+							.ant-input {
 								color: $darkNoteColor;
 							}
 						}
@@ -124,15 +140,124 @@
 				.file-list__item {
 					border-radius: 0;
 
+					.ant-input {
+						color: $darkNoteColor;
+					}
+
 					.file-list__item__name {
 						h3 {
 							color: $darkNoteColor;
 						}
 					}
 
-					&.cur {
-						background-color: #333333;
+					.file-list__item__info__desc {
+						p {
+							color: $darkNoteColor;
+						}
 					}
+
+					.file-list__item__icon {
+						svg {
+							fill: $darkNoteSvgFill;
+						}
+					}
+
+					&.cur {
+						background-color: $darkNoteCurBg;
+
+						.ant-input {
+							color: $darkNoteCurColor;
+						}
+
+						.file-list__item__name {
+							h3 {
+								color: $darkNoteCurColor;
+							}
+						}
+
+						.file-list__item__info__desc {
+							p {
+								color: $darkNoteCurColor;
+							}
+						}
+
+						.file-list__item__icon {
+							svg {
+								fill: $darkNoteCurColor;
+							}
+						}
+
+						&:hover {
+							background-color: $darkNoteCurBg;
+
+							.ant-input {
+								color: $darkNoteCurColor;
+							}
+
+							.file-list__item__name {
+								h3 {
+									color: $darkNoteCurColor;
+								}
+							}
+
+							.file-list__item__info__desc {
+								p {
+									color: $darkNoteCurColor;
+								}
+							}
+
+							.file-list__item__icon {
+								svg {
+									fill: $darkNoteCurColor;
+								}
+							}
+						}
+					}
+
+					&:hover {
+						background-color: $darkNoteHoverBg;
+
+						.ant-input {
+							color: $darkNoteColor;
+						}
+
+						.file-list__item__name {
+							h3 {
+								color: $darkNoteColor;
+							}
+						}
+
+						.file-list__item__info__desc {
+							p {
+								color: $darkNoteColor;
+							}
+						}
+
+						.file-list__item__icon {
+							svg {
+								fill: $darkNoteSvgFill;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		.editor-root {
+			background-color: #1e1e1e;
+
+			.code-container {
+				background-color: #1e1e1e;
+
+				.CodeMirror {
+					background-color: #1e1e1e;
+				}
+
+				.CodeMirror-gutters {
+					background-color: #1e1e1e;
+				}
+				.CodeMirror-linenumber {
+					color: rgba($color: #999, $alpha: 0.5);
 				}
 			}
 		}

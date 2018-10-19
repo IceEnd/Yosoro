@@ -1,4 +1,16 @@
 import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/blackboard.css';
+import 'codemirror/theme/base16-dark.css';
+import 'codemirror/theme/dracula.css';
+import 'codemirror/theme/duotone-dark.css';
+import 'codemirror/theme/erlang-dark.css';
+import 'codemirror/theme/hopscotch.css';
+import 'codemirror/theme/isotope.css';
+import 'codemirror/theme/lucario.css'; // 1
+import 'codemirror/theme/material.css'; // 2
+import 'codemirror/theme/monokai.css'; // 1
+import 'codemirror/theme/rubyblue.css';
+import 'codemirror/theme/shadowfox.css';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
@@ -10,7 +22,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import { UPLOAD_IMAGE } from 'Actions/imageHosting';
 import { updateMarkdownHtml } from 'Actions/markdown';
 import { throttle, debounce } from 'Utils/utils';
-import { withDispatch } from 'Components/HOC/context';
+import { withDispatch, withTheme } from 'Components/HOC/context';
 import Notification from '../share/Notification';
 import { eventMD, eventTOC } from '../../events/eventDispatch';
 
@@ -35,10 +47,12 @@ const sigleNotification = new Notification({
 });
 
 @withDispatch
+@withTheme
 export default class Editor extends Component {
   static displayName = 'MarkdownEditor';
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    theme: PropTypes.string.isRequired,
     uuid: PropTypes.string.isRequired,
     defaultContent: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
@@ -147,7 +161,20 @@ export default class Editor extends Component {
     return '100%';
   }
 
+  getTheme = () => {
+    const { theme } = this.props;
+    switch (theme) {
+      case 'light':
+        return 'default';
+      case 'dark':
+        return 'rubyblue';
+      default:
+        return 'default';
+    }
+  }
+
   setCodeMirror = () => {
+    const theme = this.getTheme();
     this.codeMirror = CodeMirror(this.container, {
       value: this.props.defaultContent,
       mode: 'markdown',
@@ -155,6 +182,7 @@ export default class Editor extends Component {
       lineWrapping: true,
       foldGutter: true,
       gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+      theme,
     });
     this.addChangeEvent();
     this.codeMirror.on('scroll', this.handleScroll);
