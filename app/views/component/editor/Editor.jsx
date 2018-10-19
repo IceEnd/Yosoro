@@ -11,6 +11,7 @@ import 'codemirror/theme/material.css'; // 2
 import 'codemirror/theme/monokai.css'; // 1
 import 'codemirror/theme/rubyblue.css';
 import 'codemirror/theme/shadowfox.css';
+import 'Assets/scss/code/dark.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
@@ -167,7 +168,7 @@ export default class Editor extends Component {
       case 'light':
         return 'default';
       case 'dark':
-        return 'rubyblue';
+        return 'dark';
       default:
         return 'default';
     }

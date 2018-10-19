@@ -135,6 +135,8 @@
 		}
 
 		.file-explorer {
+			// border-color: transparent;
+			border-color: rgba(56, 46, 56, 0.8);
 			.file-list {
 				padding: 0;
 				.file-list__item {
@@ -241,6 +243,10 @@
 					}
 				}
 			}
+		}
+
+		.markdown-content {
+			border-color: #1e1e1e;
 		}
 
 		.editor-root {
