@@ -77,4 +77,12 @@ if (module.hot) {
     const newApp = require('./container/App').default;
     render(newApp);
   });
+
+  const hotEmitter = require('webpack/hot/emitter');
+  hotEmitter.on('webpackHotUpdate', () => {
+    document.querySelectorAll('link[href][rel=stylesheet]').forEach((link) => {
+      const nextStyleHref = link.href.replace(/(\?\d+)?$/, `?${Date.now()}`);
+      link.href = nextStyleHref;
+    });
+  });
 }

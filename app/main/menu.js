@@ -3,6 +3,8 @@ import Oauth2 from './Oauth2';
 
 import oauthConfig from './oauthConfig';
 
+import { editorMode } from './config/shortcuts.json';
+
 const windowParams = {
   alwaysOnTop: true,
   autoHideMenuBar: true,
@@ -95,9 +97,20 @@ function getMemuTemplete(mainWindow) {
       },
     }],
   }];
-  if (process.env.NODE_ENV === 'development') {
+  const editMenuItems = [];
+  for (const item of editorMode) {
+    item.click = () => mainWindow.webContents.send('app-switch-edit-mode', item.label.toLocaleLowerCase());
+    editMenuItems.push(item);
+  }
+  menuTemplete.push({
+    label: 'View',
+    submenu: [
+      ...editMenuItems,
+    ],
+  });
+  if (!app.isPackaged) {
     menuTemplete.push({
-      label: 'View',
+      label: 'Debugger',
       submenu: [{
         label: 'Reload',
         accelerator: 'CmdOrCtrl+R',

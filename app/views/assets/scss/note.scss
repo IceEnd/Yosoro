@@ -336,18 +336,16 @@
 			&:hover {
 				background-color: $fileLiHoverBg;
 				.file-list__item__name {
+					.ant-input {
+						color: $noteLiActiveColor;
+					}
 					h3 {
 						color: $noteLiActiveColor;
 					}
-					.ant-input {
-						color: $noteLiActiveColor;
-					}
+
 				}
 				.file-list__item__info__desc {
 					p {
-						color: $noteLiActiveColor;
-					}
-					.ant-input {
 						color: $noteLiActiveColor;
 					}
 				}
@@ -369,19 +367,17 @@
 			}
 			&.cur {
 				background-color: $fileLiActiveBg;
+				.ant-input {
+					color: $noteLiActiveColor;
+				}
 				.file-list__item__name {
 					h3 {
 						color: $noteLiActiveColor;
 					}
-					.ant-input {
-						color: $noteLiActiveColor;
-					}
+
 				}
 				.file-list__item__info__desc {
 					p {
-						color: $noteLiActiveColor;
-					}
-					.ant-input {
 						color: $noteLiActiveColor;
 					}
 				}

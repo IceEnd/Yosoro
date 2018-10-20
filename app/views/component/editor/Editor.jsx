@@ -1,4 +1,5 @@
 import 'codemirror/lib/codemirror.css';
+import 'Assets/scss/code/dark.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
@@ -10,7 +11,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import { UPLOAD_IMAGE } from 'Actions/imageHosting';
 import { updateMarkdownHtml } from 'Actions/markdown';
 import { throttle, debounce } from 'Utils/utils';
-import { withDispatch } from 'Components/HOC/context';
+import { withDispatch, withTheme } from 'Components/HOC/context';
 import Notification from '../share/Notification';
 import { eventMD, eventTOC } from '../../events/eventDispatch';
 
@@ -35,10 +36,12 @@ const sigleNotification = new Notification({
 });
 
 @withDispatch
+@withTheme
 export default class Editor extends Component {
   static displayName = 'MarkdownEditor';
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    theme: PropTypes.string.isRequired,
     uuid: PropTypes.string.isRequired,
     defaultContent: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
@@ -80,8 +83,9 @@ export default class Editor extends Component {
   }
 
   componentDidMount() {
+    this.mounted = true;
     this.noteRoot = document.getElementById('note_root_cont');
-    window.addEventListener('resize', throttle(this.onWindowResize, 60));
+    window.addEventListener('resize', this.onWindowResize);
     this.container.addEventListener('resize', this.handleContainerResize);
     this.setCodeMirror();
     eventMD.on('sync-value', this.syncValue);
@@ -108,7 +112,8 @@ export default class Editor extends Component {
     this.deleteCodeMirror();
   }
 
-  onWindowResize = () => {
+  @autobind
+  onWindowResize() {
     const { editorMode } = this.props;
     if (editorMode === 'edit') {
       const { editorWidthValue } = this.props;
@@ -145,7 +150,20 @@ export default class Editor extends Component {
     return '100%';
   }
 
+  getTheme = () => {
+    const { theme } = this.props;
+    switch (theme) {
+      case 'light':
+        return 'default';
+      case 'dark':
+        return 'dark';
+      default:
+        return 'default';
+    }
+  }
+
   setCodeMirror = () => {
+    const theme = this.getTheme();
     this.codeMirror = CodeMirror(this.container, {
       value: this.props.defaultContent,
       mode: 'markdown',
@@ -153,15 +171,12 @@ export default class Editor extends Component {
       lineWrapping: true,
       foldGutter: true,
       gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+      theme,
     });
     this.addChangeEvent();
-    // this.codeMirror.on('change', this.handleChange);
     this.codeMirror.on('scroll', this.handleScroll);
     this.codeMirror.on('keydown', this.handleKeyDown);
     this.codeMirror.on('focus', this.handleFocus);
-    // this.codeMirror.on('dragenter', this.handleDragEnter);
-    // this.codeMirror.on('dragleave', this.handleDragLeave);
-    // this.codeMirror.on('dragover', this.handleDragOver);
     this.codeMirror.on('drop', this.handleDrop);
     this.codeMirror.on('paste', this.handlePaste);
   }
@@ -245,7 +260,8 @@ export default class Editor extends Component {
       return false;
     }
     const { top, height, clientHeight } = cm.getScrollInfo();
-    const ratio = (top + clientHeight) / height;
+    const scrollHeight = height - clientHeight || 1;
+    const ratio = top / scrollHeight;
     this.props.setPreiewScrollRatio(ratio);
   }
 
@@ -281,22 +297,6 @@ export default class Editor extends Component {
   @autobind
   handleCodeMirrorResize() {
     this.containerResize();
-  }
-
-  // handleDragStart = (e) => {
-  //   e.preventDefault();
-  // }
-
-  // handleDragEnter = () => {
-  //   // console.log('enter');
-  // }
-
-  // handleDragLeave = () => {
-  //   // console.log('leave');
-  // }
-
-  handleDragOver = () => {
-    // console.log('over');
   }
 
   @autobind

@@ -120,6 +120,7 @@ export default class Search extends PureComponent {
         style={style}
       >
         <Input
+          className="input-search"
           {...options}
           value={target}
           onChange={this.handleChange}

@@ -1,4 +1,5 @@
 import uuidv4 from 'uuid/v4';
+import defaultSettings from '../../config/settings';
 import DB from './DB';
 
 const db = new DB();
@@ -14,19 +15,7 @@ const MEDIUM_CONFIG = 'yosoroMediumConfig';
  * @description 设置默认配置
  */
 export function setDefaults() {
-  db.set(SETTINGS, {
-    theme: 'light',
-    editorMode: 'normal',
-    markdownSettings: {
-      editorWidth: 0.5,
-    },
-    defaultDriver: 'oneDrive',
-    editor: {
-      fontSize: 14,
-      previewFontSize: 16,
-      cursorPosition: false, // 是否根据光标定位
-    },
-  });
+  db.set(SETTINGS, defaultSettings);
   db.set(OAUTHTOKEN, {
     oneDrive: '',
   });
@@ -482,22 +471,4 @@ export function getNote(uuid) {
     return null;
   }
   return notes[0];
-}
-
-/**
- * 设置编辑器
- *
- * @param {String} target 目标
- * @param {Number} value
- */
-export function updateEditorSettings(target, value) {
-  const settings = db.get(SETTINGS).value();
-  if (settings.editor) {
-    settings.editor[target] = value;
-  } else {
-    settings.editor = {
-      [target]: value,
-    };
-  }
-  db.set(SETTINGS, settings);
 }

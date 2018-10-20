@@ -3,6 +3,8 @@ options:
 files:
   include:
     - './app/views/**/*.scss'
+  ignore:
+    - './app/views/assets/scss/code/*.scss'
 rules:
   # Extends
   extends-before-declarations: 2

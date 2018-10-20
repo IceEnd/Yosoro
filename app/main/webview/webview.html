@@ -3,12 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <title>Virtual Document</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src http: https: data: file:; media-src file: http: https: data:; script-src 'none';style-src 'unsafe-inline' data: file:; font-src file:;">
-  <link rel="stylesheet" href="../resource/css/preview-reset.css">
-  <link rel="stylesheet" href="../resource/css/marked.css">
-  <link rel="stylesheet" href="../resource/css/kalex.css">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src http: https: data: file:; media-src file: http: https: data:; script-src 'none';style-src 'unsafe-inline' data: file: http://localhost:3000; font-src file: data: http://localhost:3000;">
+  <link rel="stylesheet" href="http://localhost:3000/static/css/webview/webview.css">
+  <style data-for="preview">
+    html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    body {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+  </style>
 </head>
 <body>
-  <div id="root" class="light"></div>
+  <div id="root" class="wv-light"></div>
 </body>
 </html>

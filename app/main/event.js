@@ -20,6 +20,8 @@ import { markedToHtml } from '../views/utils/utils';
 import schedule from './schedule';
 import PDF from './pdf';
 
+import { editorMode } from './config/shortcuts.json';
+
 export function eventListener(menus) {
   const { explorerMenu, exploereFileMenu, projectItemMenu,
     fileItemMenu } = menus;
@@ -607,6 +609,23 @@ export function eventListener(menus) {
       }
     });
   });
+
+  ipcMain.on('app-switch-edit-mode', (event, args) => {
+    const cm = Menu.getApplicationMenu();
+    let target = 3;
+    if (process.platform === 'darwin') {
+      target = 4;
+    }
+    let index = 0;
+    for (const [i, item] of editorMode.entries()) {
+      if (item.label.toLocaleLowerCase() === args) {
+        index = i;
+        break;
+      }
+    }
+    cm.items[target].submenu.items[index].checked = true;
+    Menu.setApplicationMenu(cm);
+  });
 }
 
 export function removeEventListeners() {
@@ -639,6 +658,7 @@ export function removeEventListeners() {
     'save-user-avatar',
     'get-local-avatar',
     'get-docuemnts-save-path',
+    'app-switch-edit-mode',
   ];
   for (const listener of listeners) {
     ipcMain.removeAllListeners(listener);

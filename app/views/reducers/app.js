@@ -1,4 +1,4 @@
-import { remote } from 'electron';
+import { remote, ipcRenderer } from 'electron';
 import {
   APP_LOUNCH,
   APP_ADJUST_MARKDOWN,
@@ -13,7 +13,7 @@ import {
   CLOSE_UPDATE_NOTIFICATION,
   CHANGE_IMAGE_HOSTING,
   CHANGE_MEDIUM_CONFIG,
-  CHANGE_EDITOR_SETTINGS,
+  CHANGE_APP_SETTINGS,
 } from 'Actions/app';
 import {
   checkDefaults,
@@ -25,27 +25,25 @@ import {
   updateAppSettings,
   getAppMediumConfig,
   updateMediumConfig,
-  updateEditorSettings,
 } from 'Utils/db/app';
+import defaultSettings from 'Config/settings';
 import appInfo from '../../../package.json';
-import { compareVersion } from '../utils/utils';
+import { compareVersion, objectInject } from '../utils/utils';
 
 const assign = Object.assign;
 
 const first = checkDefaults();
 
-const appendSettings = {
-  editor: {
-    fontSize: 14,
-    previewFontSize: 16,
-    cursorPosition: false,
-  },
-  defaultDrive: 'oneDrive',
-};
-
 const initMediumConfig = getAppMediumConfig();
 const initImageHosting = getAppImageHosting();
-const initSettings = assign({}, appendSettings, getAppSettings());
+
+const initSettings = assign({}, defaultSettings, getAppSettings());
+
+// Sync View MenuItems
+if (initSettings.editorMode) {
+  ipcRenderer.send('app-switch-edit-mode', initSettings.editorMode);
+}
+
 if (typeof initSettings.defaultDrive === 'undefined') {
   initSettings.defaultDrive = 'oneDrive';
 }
@@ -77,10 +75,13 @@ export default function lounchApp(state = {
       return assign({}, state, app);
     }
     case APP_SWITCH_EDIT_MODE: {
-      const { mode } = action;
+      const { mode, fromApp } = action;
       const settings = state.settings;
       settings.editorMode = mode;
-      updateAppSettings(settings);
+      ipcRenderer.send('app-switch-edit-mode', mode);
+      if (!fromApp) {
+        updateAppSettings(settings);
+      }
       const newState = assign({}, state, {
         settings,
       });
@@ -151,11 +152,14 @@ export default function lounchApp(state = {
       updateMediumConfig(name, param);
       return assign({}, state, param);
     }
-    case CHANGE_EDITOR_SETTINGS: {
+    case CHANGE_APP_SETTINGS: {
       const { target, value } = action;
-      updateEditorSettings(target, value);
-      state.settings.editor[target] = value;
-      return assign({}, state);
+      const parts = target.split('.');
+      const settings = objectInject(state.settings, parts, value);
+      updateAppSettings(settings);
+      return assign({}, state, {
+        settings,
+      });
     }
     default:
       return state;

@@ -12,14 +12,15 @@ import Cloud from 'Components/cloud/Cloud';
 import Settings from 'Components/settings/Settings';
 import { Provider } from 'Components/HOC/context';
 import { getTokens } from 'Utils/db/app';
+
 import { GET_USER_AVATAR, SET_USER_LOCAL_AVATAR } from 'Actions/user';
+import { appLounch, appSwitchEditMode, FETCHING_ONEDRIVE_TOKEN, FETCHING_GITHUB_RELEASES, CLOSE_UPDATE_NOTIFICATION } from 'Actions/app';
+import { getProjectList, saveNote } from 'Actions/projects';
+import { EXPORT_INIT_QUEUE, EXPORT_COMPOLETE } from 'Actions/exportQueue';
 
-import { appLounch, FETCHING_ONEDRIVE_TOKEN, FETCHING_GITHUB_RELEASES, CLOSE_UPDATE_NOTIFICATION } from '../actions/app';
-import { getProjectList, saveNote } from '../actions/projects';
-import { EXPORT_INIT_QUEUE, EXPORT_COMPOLETE } from '../actions/exportQueue';
-
-import '../assets/scss/index.scss';
-import '../assets/scss/themes.scss';
+import 'Assets/scss/index.scss';
+import 'Assets/scss/theme/light.scss';
+import 'Assets/scss/theme/dark.scss';
 
 const { shell } = remote;
 
@@ -188,12 +189,18 @@ export default class App extends Component {
     if (this.props.app.allowShowUpdate) {
       ipcRenderer.send('stop-release-schedule');
     }
-    ipcRenderer.removeAllListeners('save-content');
-    ipcRenderer.removeAllListeners('onedriver-oauth-reply');
-    ipcRenderer.removeAllListeners('start-one-driver-upload-all');
-    ipcRenderer.removeAllListeners('fetch-releases');
-    ipcRenderer.removeAllListeners('async-export-file');
-    ipcRenderer.removeAllListeners('async-export-file-complete');
+    const listeners = [
+      'save-content',
+      'onedriver-oauth-reply',
+      'start-one-driver-upload-all',
+      'fetch-releases',
+      'async-export-file',
+      'async-export-file-complete',
+      'app-switch-edit-mode',
+    ];
+    for (const item of listeners) {
+      ipcRenderer.removeAllListeners(item);
+    }
   }
 
   // 获取本地存储的头像
@@ -261,6 +268,7 @@ export default class App extends Component {
 
   // 监听
   listenEvent = () => {
+    const { dispatch } = this.props;
     // 监听保存动作
     ipcRenderer.on('save-content', () => {
       const { projectName } = this.props.note;
@@ -275,7 +283,7 @@ export default class App extends Component {
       };
       const data = ipcRenderer.sendSync('save-content-to-file', param);
       if (parentsId && uuid) {
-        this.props.dispatch(saveNote(parentsId, uuid));
+        dispatch(saveNote(parentsId, uuid));
       }
       if (!data.success) { // 保存失败
         message.error('Save failed.');
@@ -285,7 +293,7 @@ export default class App extends Component {
     // 监听oneDriver 返回token
     ipcRenderer.on('onedrive-oauth-code-reply', (event, args) => {
       if (args.success) {
-        this.props.dispatch({
+        dispatch({
           type: FETCHING_ONEDRIVE_TOKEN,
           code: args.code,
         });
@@ -298,15 +306,21 @@ export default class App extends Component {
     });
     // 异步导出文件
     ipcRenderer.on('async-export-file', () => {
-      this.props.dispatch({
+      dispatch({
         type: EXPORT_INIT_QUEUE,
       });
     });
     // 异步导出文件完成
     ipcRenderer.on('async-export-file-complete', () => {
-      this.props.dispatch({
+      dispatch({
         type: EXPORT_COMPOLETE,
       });
+    });
+    // Switch editor mode
+    ipcRenderer.on('app-switch-edit-mode', (event, mode) => {
+      if (this.props.app.settings.editorMode !== mode) {
+        dispatch(appSwitchEditMode(mode, true));
+      }
     });
     // 监听onedriver 同步
     // ipcRenderer.on('start-one-driver-upload-all', () => {
@@ -326,7 +340,7 @@ export default class App extends Component {
     const { dispatch, history } = this.props;
     const notDarwin = platform === 'darwin' ? 'darwin' : 'not-darwin';
     return (
-      <Provider value={dispatch}>
+      <Provider value={{ dispatch, theme: app.settings.theme }}>
         <Fragment>
           <SVG />
           <Router history={history}>
@@ -387,7 +401,7 @@ export default class App extends Component {
                     <Settings
                       imageHostingConfig={app.imageHostingConfig}
                       mediumConfig={app.mediumConfig}
-                      editor={settings.editor}
+                      {...app.settings}
                     />
                   )}
                 />

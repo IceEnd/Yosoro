@@ -38,11 +38,11 @@ export function appMarkdownAdjust(param) {
 
 export const APP_SWITCH_EDIT_MODE = 'APP_SWITCH_EDIT_MODE';
 
-export function appSwitchEditMode(mode) {
+export function appSwitchEditMode(mode, fromApp = false) {
   return {
     type: APP_SWITCH_EDIT_MODE,
-    // currentMode,
     mode,
+    fromApp,
   };
 }
 
@@ -73,4 +73,4 @@ export const CHANGE_IMAGE_HOSTING = 'CHANGE_IMAGE_HOSTING';
 
 export const CHANGE_MEDIUM_CONFIG = 'CHANGE_MEDIUM_CONFIG';
 
-export const CHANGE_EDITOR_SETTINGS = 'CHANGE_EDITOR_SETTINGS';
+export const CHANGE_APP_SETTINGS = 'CHANGE_APP_SETTINGS';

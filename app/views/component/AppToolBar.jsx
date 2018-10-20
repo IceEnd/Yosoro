@@ -15,7 +15,7 @@ const cloudActive = (match, location) => {
   return false;
 };
 const AppToolBar = (props) => {
-  const defaultDriver = props.defaultDrive.toLowerCase();
+  const defaultDrive = props.defaultDrive.toLowerCase();
   const avatar = props.avatar;
 
   return (
@@ -43,7 +43,7 @@ const AppToolBar = (props) => {
         </li>
         <li className="menu-item">
           <NavLink
-            to={`/cloud/${defaultDriver}`}
+            to={`/cloud/${defaultDrive}`}
             activeClassName="cur"
             isActive={cloudActive}
           >

@@ -1,0 +1,25 @@
+{
+	"editorMode": [
+		{
+			"label": "Normal",
+			"accelerator": "CmdOrCtrl+1",
+			"type": "radio"
+    }, {
+      "label": "Write",
+			"accelerator": "CmdOrCtrl+2",
+			"type": "radio"
+    }, {
+      "label": "Edit",
+			"accelerator": "CmdOrCtrl+3",
+			"type": "radio"
+    }, {
+			"label": "Preview",
+			"accelerator": "CmdOrCtrl+4",
+			"type": "radio"
+    }, {
+      "label": "Immersion",
+			"accelerator": "CmdOrCtrl+5",
+			"type": "radio"
+    }
+	]
+}

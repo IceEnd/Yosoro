@@ -4,7 +4,7 @@ import { Anchor, Icon } from 'antd';
 import Title from 'Share/title/Title';
 import ImageHosting from './ImageHosting';
 import MediumConfig from './MediumConfig';
-import General from './general/General';
+import General from './General';
 import About from './About';
 import Loading from '../share/Loading';
 
@@ -72,6 +72,7 @@ SettingsToc.displayName = 'SettingsToc';
 export default class Settings extends Component {
   static displayName = 'YsosoroSettings';
   static propTypes = {
+    theme: PropTypes.string.isRequired,
     imageHostingConfig: PropTypes.shape({
       default: PropTypes.oneOf(['github']).isRequired,
       github: PropTypes.shape({
@@ -122,7 +123,7 @@ export default class Settings extends Component {
   }
 
   render() {
-    const { editor, imageHostingConfig, mediumConfig } = this.props;
+    const { editor, imageHostingConfig, mediumConfig, theme } = this.props;
     const { loading, loadingTip } = this.state;
     return (
       <div className="settings-root">
@@ -134,6 +135,7 @@ export default class Settings extends Component {
         <div className="modules" id="modules">
           <General
             key="general-config"
+            theme={theme}
             {...editor}
             showLoading={this.showLoading}
             closeLoading={this.closeLoading}

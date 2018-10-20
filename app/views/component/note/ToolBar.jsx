@@ -210,7 +210,7 @@ export default class Tool extends Component {
       );
       return this.renderDropDown(menu, type);
     }
-    if (type === 'upload') {
+    if (type === 'share-alt') {
       const menu = (
         <Menu onClick={this.handlePublic}>
           <MenuItem key="medium">Medium</MenuItem>
@@ -323,9 +323,9 @@ export default class Tool extends Component {
             <div className="tools">
               {this.renderIcon('cloud-upload-o', 'upload')}
               {this.renderIcon('export', 'export')}
-              {this.renderIcon('upload', 'public')}
               {this.renderIcon('bars', 'toc')}
               {this.renderIcon('layout', 'layout')}
+              {this.renderIcon('share-alt', 'public')}
             </div>
           </Fragment>
         ) : (null)}
