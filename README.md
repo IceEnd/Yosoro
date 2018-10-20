@@ -17,7 +17,7 @@
 
 ## Download
 
-The latest version of Yosoro for macOS, linux and Windows is available [here](https://github.com/IceEnd/Yosoro/releases).
+The latest version of Yosoro for macOS, linux and Windows is available [here](https://github.com/IceEnd/Yosoro/releases):zap:.
 
 **macOS 10.9+, Windows 7+ & Linux are supported.**
 
@@ -30,11 +30,9 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 - Export notes as markdown or html or pdf
 - Post article(Supports Medium)
 
-You can read [Wiki](https://github.com/IceEnd/Yosoro/wiki) & [CHANGELOG](./CHANGELOG.md) to get more information.
-
 ## Theme
 
-<p align="center">Mysterious `Dark`:high_brightness: and cute `Light`:crescent_moon:</p>
+<p align="center">Mysterious `Dark`:crescent_moon: & cute `Light`:high_brightness:</p>
 
 | Dark :crescent_moon:| Light :high_brightness: |
 |:-------:|:-----:|
@@ -42,68 +40,20 @@ You can read [Wiki](https://github.com/IceEnd/Yosoro/wiki) & [CHANGELOG](./CHANG
 
 ## Demo
 
-### Write
-
-![2018-09-24.14.00.53-write.gif](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-09-24.14.00.53-write.gif)
-
-### LaTeX
-
-The editor converts LaTeX equations in double-dollars `$$`: $$ax^2+bx+c=0$$. All equations are rendered as block equations. If you need inline ones, you can add the prefix `\inline`: $$x_{1,2} = {-b\pm\sqrt{b^2 - 4ac} \over 2a}$$. But it is a good practice to place big equations on separate lines:
-
-```
-$$
-x_{1,2} = {-b\pm\sqrt{b^2 - 4ac} \over 2a}.
-$$
-```
-```
-$$
-|\vec{A}|=\sqrt{A_x^2 + A_y^2 + A_z^2}.
-$$
-```
-
-```
-$$
-T^{\mu\nu}=\begin{pmatrix}
-\varepsilon&0&0&0\\
-0&\varepsilon/3&0&0\\
-0&0&\varepsilon/3&0\\
-0&0&0&\varepsilon/3
-\end{pmatrix}
-$$
-```
-
-Example:
-
-![2018-09-29.10.17.27-image.png](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-09-29.10.17.27-image.png)
-
-### Upload Image
-
-Drag the image into the editor or use the shortcut `ctrl+v` to upload the image.
-
-![image](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.47.27-image.gif)
-
-### File Syncing
-
-![sync](https://t1.picb.cc/uploads/2018/05/13/2vBRbs.gif)
-
-## Shortcuts
-
-[Shortcuts Wiki](https://github.com/IceEnd/Yosoro/wiki/Shortcuts)
-
+| Write:pencil2: | Upload Image:stars: | Sync Notes:cloud: |
+|:---:|:---:|:----:|
+|![2018-09-24.14.00.53-write.gif](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-09-24.14.00.53-write.gif)|![image](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.47.27-image.gif)|![image](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.47.27-image.gif)|
 
 ## Screenshots
 
-### macOS
+| Windows | Linux |
+|:-------:|:-----:|
+|![screenshot-window](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-10-05.11.19.18-image.png)|![screenshot-linux](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.22.40-linux.png)|
 
-![screenshot-osx](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-09-23.19.10.55-image.png)
+## Software Manuals
 
-### Windows
+Please read the [wikI](https://github.com/IceEnd/Yosoro/wiki) for more content.
 
-![screenshot-window](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-10-05.11.19.18-image.png)
-
-### linux
-
-![screenshot-linux](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.22.40-linux.png)
 
 ## Contributing Guide
 
