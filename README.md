@@ -32,7 +32,7 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 
 ## Theme
 
-<p align="center">Mysterious `Dark`:crescent_moon: & cute `Light`:high_brightness:</p>
+<p align="center">Mysterious Dark:crescent_moon: & cute Light:high_brightness:</p>
 
 | Dark :crescent_moon:| Light :high_brightness: |
 |:-------:|:-----:|
