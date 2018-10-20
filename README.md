@@ -52,7 +52,7 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 
 ## Software Manuals
 
-Please read the [wikI](https://github.com/IceEnd/Yosoro/wiki) for more content.
+Please read the [wiki](https://github.com/IceEnd/Yosoro/wiki) for more content.
 
 
 ## Contributing Guide
