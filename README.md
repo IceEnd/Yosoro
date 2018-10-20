@@ -42,7 +42,7 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 
 | Write:pencil2: | Upload Image:stars: | Sync Notes:cloud: |
 |:---:|:---:|:----:|
-|![2018-09-24.14.00.53-write.gif](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-09-24.14.00.53-write.gif)|![image](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.47.27-image.gif)|![image](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.47.27-image.gif)|
+|![2018-09-24.14.00.53-write.gif](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-09-24.14.00.53-write.gif)|![image](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.47.27-image.gif)|![sync](https://t1.picb.cc/uploads/2018/05/13/2vBRbs.gif)|
 
 ## Screenshots
 
