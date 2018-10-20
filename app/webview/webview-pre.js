@@ -29,6 +29,13 @@ function checkMode(editorMode) {
   }
 }
 
+function setTheme(theme) {
+  const value = theme ? `wv-${theme}` : 'wv-light';
+  if (nodeRoot) {
+    nodeRoot.className = nodeRoot.className.replace(/\bwv-\w*\b/, value);
+  }
+}
+
 function handleInnerClick(event) {
   if (!event) {
     return;
@@ -57,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 渲染预览页面
   ipcRenderer.on('wv-render-html', (event, args) => {
     let { html, editorMode } = args;
+    const { theme } = args;
     const { fontSize } = args;
     // 设置字体大小
     setFontSize(fontSize);
@@ -66,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
       nodeRoot = document.getElementById('root');
     }
     checkMode(editorMode);
+    setTheme(theme);
     nodeRoot.innerHTML = html;
   });
 

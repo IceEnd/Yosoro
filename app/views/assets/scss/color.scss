@@ -42,8 +42,11 @@ $lightBorderBg: #d9d9d9;
 
 $lightHeaderBorder: #eaecef;
 
-$darkNoteColor: #b3b3b3;
-$darkNoteCurColor: #f7f8f9;
+$darkContainerBg: unquote("#211e1cd9");
+$darkBarBg: #333333;
+$darkColor: #b3b3b3;
+$darkHighColor: #f7f8f9;
 $darkNoteCurBg: #333333;
 $darkNoteHoverBg: rgba($color: #333333, $alpha: .5);
 $darkNoteSvgFill: #ff6666;
+$darkEditorBg: #1e1e1e;

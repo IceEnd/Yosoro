@@ -1,0 +1,50 @@
+@import "../color.scss";
+
+.light {
+	&.not-darwin {
+		.tool-bar {
+			background: #e6e6e6;
+		}
+	}
+	.tool-bar {
+		background-color: $navBg;
+
+		.tool-bar-bg {
+			background-color: $navBg;
+		}
+
+		.menu-list {
+			.menu-svg {
+				fill: #ff9999;
+			}
+
+			.menu-item-radius {
+				background-color: rgba($color: #ccffff, $alpha: .5);
+			}
+			.menu-item .cur {
+				.menu-item-radius {
+					background-color: #ff9999;
+					box-shadow: 0 0 1.2rem .05rem #ffffff;
+					opacity: 1;
+				}
+				.menu-svg {
+					fill: #ffffff;
+				}
+			}
+		}
+		.setting {
+			fill: #555;
+			opacity: 0.7;
+		}
+	}
+
+	.note {
+		.project-list {
+			border-color: $lightBorderBg;
+		}
+	}
+
+	.settings-root {
+		background-color: #f8f8f8;
+	}
+}

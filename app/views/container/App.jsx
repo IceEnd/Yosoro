@@ -18,8 +18,9 @@ import { appLounch, appSwitchEditMode, FETCHING_ONEDRIVE_TOKEN, FETCHING_GITHUB_
 import { getProjectList, saveNote } from 'Actions/projects';
 import { EXPORT_INIT_QUEUE, EXPORT_COMPOLETE } from 'Actions/exportQueue';
 
-import '../assets/scss/index.scss';
-import '../assets/scss/themes.scss';
+import 'Assets/scss/index.scss';
+import 'Assets/scss/theme/light.scss';
+import 'Assets/scss/theme/dark.scss';
 
 const { shell } = remote;
 

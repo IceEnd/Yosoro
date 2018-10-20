@@ -1,11 +1,12 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import { ipcRenderer, remote } from 'electron';
 import classNames from 'classnames';
-import { getWebviewPreJSPath } from '../../utils/utils';
+import { withTheme } from 'Components/HOC/context';
+import { getWebviewPreJSPath } from 'Utils/utils';
+import LoadingImg from 'Assets/images/loading.svg';
 import { eventTOC } from '../../events/eventDispatch';
-import LoadingImg from '../../assets/images/loading.svg';
 
 import '../../assets/scss/preview.scss';
 
@@ -15,12 +16,13 @@ const preJSPath = getWebviewPreJSPath();
 
 const webviewPath = ipcRenderer.sendSync('get-webview-path');
 
-export default class Preview extends PureComponent {
+@withTheme
+export default class Preview extends Component {
   static displayName = 'MarkdownPreview';
   static propTypes = {
     html: PropTypes.string.isRequired,
+    theme: PropTypes.string.isRequired,
     editorMode: PropTypes.string.isRequired,
-    // editorWidth: PropTypes.string.isRequired,
     fontSize: PropTypes.number.isRequired,
     drag: PropTypes.bool.isRequired,
     editorWidthValue: PropTypes.number.isRequired,
@@ -47,10 +49,11 @@ export default class Preview extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { html, editorMode } = this.props;
+    const { html, editorMode, theme } = this.props;
     this.webview.send('wv-render-html', {
       html,
       editorMode,
+      theme,
     });
     if (this.props.editorMode !== prevProps.editorMode || this.props.editorWidthValue !== prevProps.editorWidthValue) {
       const bodyWidth = this.getBodyWidth(this.props);
@@ -81,13 +84,14 @@ export default class Preview extends PureComponent {
   @autobind
   onWVMessage(event) {
     const channel = event.channel;
-    const { html, editorMode, fontSize } = this.props;
+    const { html, editorMode, fontSize, theme } = this.props;
     switch (channel) {
       case 'wv-first-loaded': {
         this.webview.send('wv-render-html', {
           html,
           editorMode,
           fontSize,
+          theme,
         });
         this.setState({
           loading: false,

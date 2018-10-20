@@ -1,16 +1,4 @@
 import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/blackboard.css';
-import 'codemirror/theme/base16-dark.css';
-import 'codemirror/theme/dracula.css';
-import 'codemirror/theme/duotone-dark.css';
-import 'codemirror/theme/erlang-dark.css';
-import 'codemirror/theme/hopscotch.css';
-import 'codemirror/theme/isotope.css';
-import 'codemirror/theme/lucario.css'; // 1
-import 'codemirror/theme/material.css'; // 2
-import 'codemirror/theme/monokai.css'; // 1
-import 'codemirror/theme/rubyblue.css';
-import 'codemirror/theme/shadowfox.css';
 import 'Assets/scss/code/dark.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -272,7 +260,8 @@ export default class Editor extends Component {
       return false;
     }
     const { top, height, clientHeight } = cm.getScrollInfo();
-    const ratio = (top + clientHeight) / height;
+    const scrollHeight = height - clientHeight || 1;
+    const ratio = top / scrollHeight;
     this.props.setPreiewScrollRatio(ratio);
   }
 

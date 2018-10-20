@@ -32,6 +32,14 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 
 You can read [Wiki](https://github.com/IceEnd/Yosoro/wiki) & [CHANGELOG](./CHANGELOG.md) to get more information.
 
+## Theme
+
+<p align="center">Mysterious `Dark`:high_brightness: and cute `Light`:crescent_moon:</p>
+
+| Dark :crescent_moon:| Light :high_brightness: |
+|:-------:|:-----:|
+| ![](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-10-20.22.38.48-image.png) | ![](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-10-20.22.39.33-image.png) |
+
 ## Demo
 
 ### Write
@@ -81,6 +89,7 @@ Drag the image into the editor or use the shortcut `ctrl+v` to upload the image.
 ## Shortcuts
 
 [Shortcuts Wiki](https://github.com/IceEnd/Yosoro/wiki/Shortcuts)
+
 
 ## Screenshots
 

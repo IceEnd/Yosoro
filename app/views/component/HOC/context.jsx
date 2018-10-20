@@ -6,18 +6,23 @@ export const { Provider, Consumer } = dispatchContext;
 
 function hocCreator(propsName, displayName) {
   return (Component) => {
-    const HOC = props => (
-      <Consumer>
-        {(value) => {
-          const context = {
-            [propsName]: value[propsName],
-          };
-          return (<Component {...props} {...context} />);
-        }}
-      </Consumer>
-    );
+    const HOC = (props) => {
+      const { forwardedRef, ...rest } = props;
+      return (
+        <Consumer>
+          {(value) => {
+            const context = {
+              [propsName]: value[propsName],
+            };
+            return (<Component ref={forwardedRef} {...rest} {...context} />);
+          }}
+        </Consumer>
+      );
+    };
     HOC.displayName = displayName;
-    return HOC;
+    return React.forwardRef((props, ref) =>
+      <HOC {...props} forwardedRef={ref} />
+    );
   };
 }
 
