@@ -189,6 +189,7 @@ export default class Tool extends Component {
     <Dropdown
       overlay={menu}
       placement="bottomCenter"
+      className="test"
     >
       <span
         className="tools-item font-icon"

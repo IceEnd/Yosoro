@@ -157,11 +157,12 @@ export default class App extends Component {
     history: PropTypes.any,
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       updateNotification: false,
     };
+    document.body.className = props.app.settings.theme;
   }
 
   componentDidMount() {
@@ -173,6 +174,7 @@ export default class App extends Component {
     this.listenEvent();
     this.getLocalAvatar();
     this.fetchAvatar();
+    this.setTheme();
   }
 
   componentDidUpdate(prevProps) {
@@ -183,6 +185,7 @@ export default class App extends Component {
     if (prevProps.app.allowShowUpdate && !allowShowUpdate) {
       ipcRenderer.send('stop-release-schedule');
     }
+    this.setTheme();
   }
 
   componentWillUnmount() {
@@ -200,6 +203,13 @@ export default class App extends Component {
     ];
     for (const item of listeners) {
       ipcRenderer.removeAllListeners(item);
+    }
+  }
+
+  setTheme() {
+    const { theme } = this.props.app.settings;
+    if (document.body.className !== theme) {
+      document.body.className = theme;
     }
   }
 
@@ -336,15 +346,14 @@ export default class App extends Component {
   render() {
     const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash }, markdown, note, drive, exportQueue, user } = this.props;
     const { settings, platform } = app;
-    const { theme } = settings;
     const { dispatch, history } = this.props;
-    const notDarwin = platform === 'darwin' ? 'darwin' : 'not-darwin';
+    const notDarwin = platform === 'darwin' ? '' : 'not-darwin';
     return (
       <Provider value={{ dispatch, theme: app.settings.theme }}>
         <Fragment>
           <SVG />
           <Router history={history}>
-            <div className={`container ${notDarwin} ${theme} ${platform}`}>
+            <div className={`container ${notDarwin} ${platform}`}>
               <AppToolBar
                 defaultDrive={app.settings.defaultDrive}
                 avatar={user.avatar}

@@ -64,6 +64,19 @@
 		}
 	}
 
+	.ant-popover-inner, .ant-dropdown-menu {
+		background-color: $darkPopoverBg;
+		box-shadow: $darkBoxShadow;
+	}
+
+	.ant-popover-arrow {
+		background-color: $darkPopoverBg;
+	}
+
+	.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title, .ant-popover-inner-content {
+		color: $darkHighColor;
+	}
+
 	.page-title {
 		.title {
 			color: $darkHighColor;
