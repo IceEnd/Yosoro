@@ -90,13 +90,13 @@ let mainWindow;
 
 appPaths.initWorkSpace();
 
-// if (process.env.NODE_ENV === 'development') {
-//   require('electron-watch')(
-//     __dirname,
-//     'dev:main',
-//     process.cwd(),
-//   );
-// }
+if (process.env.NODE_ENV === 'development') {
+  require('electron-watch')(
+    __dirname,
+    'dev:main',
+    process.cwd(),
+  );
+}
 
 function createWindow() {
   // Create the browser window.

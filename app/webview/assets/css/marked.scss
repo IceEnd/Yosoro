@@ -6,11 +6,6 @@
 	padding: 0;
 }
 
-::-webkit-scrollbar {
-	width: 12px;
-	background-color: transparent;
-}
-
 .os-win32, .os-linux {
 	::-webkit-scrollbar {
 		width: 12px;
@@ -27,6 +22,11 @@
 
 	::-webkit-scrollbar-button {
 		display: none;
+	}
+
+	::-webkit-scrollbar {
+		width: 12px;
+		background-color: transparent;
 	}
 }
 
