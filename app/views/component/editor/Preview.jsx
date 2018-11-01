@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import { ipcRenderer, remote } from 'electron';
 import classNames from 'classnames';
-import { withTheme } from 'Components/HOC/context';
+import { withTheme, withPlatform } from 'Components/HOC/context';
 import { getWebviewPreJSPath } from 'Utils/utils';
 import LoadingImg from 'Assets/images/loading.svg';
 import { eventTOC } from '../../events/eventDispatch';
@@ -17,9 +17,11 @@ const preJSPath = getWebviewPreJSPath();
 const webviewPath = ipcRenderer.sendSync('get-webview-path');
 
 @withTheme
+@withPlatform
 export default class Preview extends Component {
   static displayName = 'MarkdownPreview';
   static propTypes = {
+    platform: PropTypes.string.isRequired,
     html: PropTypes.string.isRequired,
     theme: PropTypes.string.isRequired,
     editorMode: PropTypes.string.isRequired,
@@ -84,7 +86,7 @@ export default class Preview extends Component {
   @autobind
   onWVMessage(event) {
     const channel = event.channel;
-    const { html, editorMode, fontSize, theme } = this.props;
+    const { html, editorMode, fontSize, theme, platform } = this.props;
     switch (channel) {
       case 'wv-first-loaded': {
         this.webview.send('wv-render-html', {
@@ -92,6 +94,7 @@ export default class Preview extends Component {
           editorMode,
           fontSize,
           theme,
+          platform,
         });
         this.setState({
           loading: false,

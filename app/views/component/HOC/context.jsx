@@ -28,5 +28,6 @@ function hocCreator(propsName, displayName) {
 
 export const withDispatch = hocCreator('dispatch', 'WithDispatch');
 export const withTheme = hocCreator('theme', 'WithTheme');
+export const withPlatform = hocCreator('platform', 'WithPlatform');
 
 export default dispatchContext;

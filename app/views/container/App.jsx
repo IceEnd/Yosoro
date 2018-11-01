@@ -349,7 +349,7 @@ export default class App extends Component {
     const { dispatch, history } = this.props;
     const notDarwin = platform === 'darwin' ? '' : 'not-darwin';
     return (
-      <Provider value={{ dispatch, theme: app.settings.theme }}>
+      <Provider value={{ dispatch, theme: app.settings.theme, platform }}>
         <Fragment>
           <SVG />
           <Router history={history}>

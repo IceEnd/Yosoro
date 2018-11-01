@@ -66,7 +66,7 @@ yarn
 The installation failed in `Windows`, can try this command:
 
 ```shell
-yarn --ignore-paltform
+yarn --ignore-platform
 ```
 
 ### Dev Tools Extension

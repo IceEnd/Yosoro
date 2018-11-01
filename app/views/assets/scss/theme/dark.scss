@@ -1,6 +1,22 @@
 @import "../color.scss";
 
 .dark {
+
+	.not-darwin {
+		::-webkit-scrollbar {
+			width: 12px;
+			background-color: transparent;
+		}
+
+		::-webkit-scrollbar-track {
+			background-color: transparent;
+		}
+
+		::-webkit-scrollbar-thumb {
+			background-color: #333333;
+		}
+	}
+
 	h1, h2, h3, h4, h5, h6 {
 		color: $darkHighColor;
 	}

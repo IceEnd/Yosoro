@@ -29,11 +29,23 @@ function checkMode(editorMode) {
   }
 }
 
+function setPlatform(platform) {
+  if (!platform) return;
+  const value = platform ? `os-${platform}` : '';
+  const currentClass = document.documentElement.className;
+  if (/\bos-\w+\b/.test(currentClass)) {
+    document.documentElement.className = currentClass.replace(/\bos-\w+\b/, value);
+  } else {
+    document.documentElement.className = `${currentClass ? `${currentClass} ` : ''}${value}`;
+  }
+}
+
 function setTheme(theme) {
   const value = theme ? `wv-${theme}` : 'wv-light';
-  if (nodeRoot) {
-    nodeRoot.className = nodeRoot.className.replace(/\bwv-\w*\b/, value);
-  }
+  document.documentElement.className = document.documentElement.className.replace(/\bwv-\w*\b/, value);
+  // if (nodeRoot) {
+  //   nodeRoot.className = nodeRoot.className.replace(/\bwv-\w*\b/, value);
+  // }
 }
 
 function handleInnerClick(event) {
@@ -64,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 渲染预览页面
   ipcRenderer.on('wv-render-html', (event, args) => {
     let { html, editorMode } = args;
-    const { theme } = args;
+    const { theme, platform } = args;
     const { fontSize } = args;
     // 设置字体大小
     setFontSize(fontSize);
@@ -74,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
       nodeRoot = document.getElementById('root');
     }
     checkMode(editorMode);
+    setPlatform(platform);
     setTheme(theme);
     nodeRoot.innerHTML = html;
   });
