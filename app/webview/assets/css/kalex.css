@@ -1,120 +1,120 @@
 @font-face {
   font-family: 'KaTeX_AMS';
-  src: url(../fonts/KaTex_AMS-Regular.woff2) format('woff2');
+  src: url(../fonts/KaTeX_AMS-Regular.woff2) format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Caligraphic';
-  src: url(../fonts/KaTex_Caligraphic-Bold.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Caligraphic-Bold.woff2) format('woff2');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Caligraphic';
-  src: url(../fonts/KaTex_Caligraphic-Regular.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Caligraphic-Regular.woff2) format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Fraktur';
-  src: url(../fonts/KaTex_Fraktur-Bold.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Fraktur-Bold.woff2) format('woff2');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Fraktur';
-  src: url(../fonts/KaTex_Fraktur-Regular.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Fraktur-Regular.woff2) format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Main';
-  src: url(../fonts/KaTex_Main-Bold.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Main-Bold.woff2) format('woff2');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Main';
-  src: url(../fonts/KaTex_Main-BoldItalic.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Main-BoldItalic.woff2) format('woff2');
   font-weight: bold;
   font-style: italic;
 }
 @font-face {
   font-family: 'KaTeX_Main';
-  src: url(../fonts/KaTex_Main-Italic.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Main-Italic.woff2) format('woff2');
   font-weight: normal;
   font-style: italic;
 }
 @font-face {
   font-family: 'KaTeX_Main';
-  src: url(../fonts/KaTex_Main-Regular.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Main-Regular.woff2) format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Math';
-  src: url(../fonts/KaTex_Math-BoldItalic.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Math-BoldItalic.woff2) format('woff2');
   font-weight: bold;
   font-style: italic;
 }
 @font-face {
   font-family: 'KaTeX_Math';
-  src: url(../fonts/KaTex_Math-Italic.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Math-Italic.woff2) format('woff2');
   font-weight: normal;
   font-style: italic;
 }
 @font-face {
   font-family: 'KaTeX_SansSerif';
-  src: url(../fonts/KaTex_SansSerif-Bold.woff2) format('woff2');
+  src: url(../fonts/KaTeX_SansSerif-Bold.woff2) format('woff2');
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_SansSerif';
-  src: url(../fonts/KaTex_SansSerif-Italic.woff2) format('woff2');
+  src: url(../fonts/KaTeX_SansSerif-Italic.woff2) format('woff2');
   font-weight: normal;
   font-style: italic;
 }
 @font-face {
   font-family: 'KaTeX_SansSerif';
-  src: url(../fonts/KaTex_SansSerif-Regular.woff2) format('woff2');
+  src: url(../fonts/KaTeX_SansSerif-Regular.woff2) format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Script';
-  src: url(../fonts/KaTex_Script-Regular.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Script-Regular.woff2) format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Size1';
-  src: url(../fonts/KaTex_Size1-Regular.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Size1-Regular.woff2) format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Size2';
-  src: url(../fonts/KaTex_Size2-Regular.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Size2-Regular.woff2) format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Size3';
-  src: url(../fonts/KaTex_Size3-Regular.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Size3-Regular.woff2) format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Size4';
-  src: url(../fonts/KaTex_Size4-Regular.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Size4-Regular.woff2) format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: 'KaTeX_Typewriter';
-  src: url(../fonts/KaTex_Typewriter-Regular.woff2) format('woff2');
+  src: url(../fonts/KaTeX_Typewriter-Regular.woff2) format('woff2');
   font-weight: normal;
   font-style: normal;
 }
