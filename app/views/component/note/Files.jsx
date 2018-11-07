@@ -56,6 +56,7 @@ export default class Files extends Component {
         uuid: '',
         value: '',
       },
+      sortFn: undefined,
     });
     this.selectNew = false;
   }
@@ -112,6 +113,13 @@ export default class Files extends Component {
           this.titleIpt.focus();
         }
       });
+    });
+    ipcRenderer.on('sort-note', (event, type) => {
+      let { sortFn } = this.state;
+      if (type === 'createDate' || type === 'latestDate') {
+        sortFn = (current, next) => new Date(next[type]) - new Date(current[type]);
+      }
+      this.setState({ sortFn });
     });
     ipcRenderer.on('node-add-desc', () => {
       const { uuid, description } = this.state.contextNote;
@@ -198,6 +206,7 @@ export default class Files extends Component {
     ipcRenderer.removeAllListeners('new-file');
     ipcRenderer.removeAllListeners('delete-note');
     ipcRenderer.removeAllListeners('rename-note');
+    ipcRenderer.removeAllListeners('sort-note');
     ipcRenderer.removeAllListeners('node-add-desc');
     ipcRenderer.removeAllListeners('upload-note-onedrive');
     ipcRenderer.removeAllListeners('export-get-note-info');
@@ -526,7 +535,7 @@ export default class Files extends Component {
 
   render() {
     const { notes, currentUuid, editorMode } = this.props;
-    const { newFile, rename, desc } = this.state;
+    const { newFile, rename, desc, sortFn } = this.state;
     let rootClass = '';
     if (editorMode !== 'normal' && editorMode !== 'write') {
       rootClass = 'hide';
@@ -550,7 +559,7 @@ export default class Files extends Component {
           className="file-list"
         >
           {newFile ? this.renderNewFile() : (null) }
-          {notes.map((note) => {
+          {notes.sort(sortFn).map((note) => {
             const { uuid, status, name, description, oneDriver } = note;
             if (status === 0) { // 删除
               return null;

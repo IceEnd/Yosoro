@@ -331,11 +331,28 @@ export function getExplorerFileItemMenu(mainWindow) {
     click: () => mainWindow.webContents.send('node-add-desc'),
   }));
   menu.append(new MenuItem({
+    label: 'Move to',
+    click: () => mainWindow.webContents.send('move-to'),
+  }));
+  menu.append(new MenuItem({
     type: 'separator',
   }));
   menu.append(new MenuItem({
     label: 'New Note',
     click: () => mainWindow.webContents.send('new-file'),
+  }));
+  menu.append(new MenuItem({
+    type: 'separator',
+  }));
+  menu.append(new MenuItem({
+    label: 'Sort by',
+    submenu: [{
+      label: 'Create Date',
+      click: () => mainWindow.webContents.send('sort-note', 'createDate'),
+    }, {
+      label: 'Latest Date',
+      click: () => mainWindow.webContents.send('sort-note', 'latestDate'),
+    }],
   }));
   menu.append(new MenuItem({
     type: 'separator',

@@ -1,9 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { Modal, List } from 'antd';
+import { ipcRenderer } from 'electron';
 import { withDispatch } from 'Components/HOC/context';
+import { updateNoteParentsId } from 'Actions/projects';
 import Project from './Project';
 import Files from './Files';
 import { pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
+
+const ListItem = List.Item;
 
 @withDispatch
 export default class Explorer extends Component {
@@ -32,11 +37,25 @@ export default class Explorer extends Component {
     super();
     this.state = mergeStateFromStorage('noteExplorerState', {
       searchStatus: 0, // 0: 未搜索 1: 搜索中 2: 搜索完成
+      projectsModalVisible: false,
+    });
+  }
+
+  componentDidMount() {
+    ipcRenderer.on('move-to', () => {
+      this.setProjectsModalVisible(true);
     });
   }
 
   componentWillUnmount() {
+    ipcRenderer.removeAllListeners('move-to');
     pushStateToStorage('noteExplorerState', this.state);
+  }
+
+  setProjectsModalVisible = (visible) => {
+    this.setState({
+      projectsModalVisible: visible,
+    });
   }
 
   getNotes() {
@@ -51,8 +70,21 @@ export default class Explorer extends Component {
     return notes;
   }
 
+  moveFileToProject(e, project) {
+    const { dispatch, note: { fileUuid, fileName, projectUuid, projectName } } = this.props;
+    e.preventDefault();
+    ipcRenderer.sendSync('move-file-to-project', {
+      name: fileName,
+      projectName,
+      target: project.name,
+    });
+    dispatch(updateNoteParentsId(fileUuid, projectUuid, project.uuid));
+    this.setProjectsModalVisible(false);
+  }
+
   render() {
     const { editorMode, projects, dispatch, note: { projectUuid, fileUuid, projectName }, searchStatus, hasEdit } = this.props;
+    const { projectsModalVisible } = this.state;
     const notes = this.getNotes();
     return (
       <Fragment>
@@ -78,6 +110,23 @@ export default class Explorer extends Component {
             hasEdit={hasEdit}
           />
         )}
+        <Modal
+          title="Move to"
+          width={320}
+          mask={false}
+          footer={null}
+          centered
+          visible={projectsModalVisible}
+        >
+          <List
+            dataSource={projects}
+            renderItem={project => (
+              <ListItem>
+                <a onClick={e => this.moveFileToProject(e, project)}>{project.name}</a>
+              </ListItem>
+            )}
+          />
+        </Modal>
       </Fragment>
     );
   }
