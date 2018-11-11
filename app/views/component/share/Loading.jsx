@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import loadingImg from '../../assets/images/loading.svg';
 
-const Loading = (props) => {
+const Loading = React.memo((props) => {
   const { className, tip } = props;
   const classStr = className ? `loading-default ${className}` : 'loading-default';
   return (
@@ -11,7 +11,7 @@ const Loading = (props) => {
       <p className="loading-tips">{tip}</p>
     </div>
   );
-};
+});
 
 Loading.displayName = 'Loading';
 Loading.propTypes = {

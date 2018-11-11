@@ -7,7 +7,7 @@ const labelLayout = {
   span: 7,
 };
 
-const FontSize = (props) => {
+const FontSize = React.memo((props) => {
   const { fontSize, onChange, minSize, maxSize, type, title } = props;
   return (
     <Row className="font-size-row">
@@ -32,7 +32,7 @@ const FontSize = (props) => {
       </Col>
     </Row>
   );
-};
+});
 
 FontSize.displayName = 'SetingsFontSize';
 FontSize.propTypes = {

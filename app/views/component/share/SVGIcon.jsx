@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const SVGIcon = (props) => {
+const SVGIcon = React.memo((props) => {
   const { className, id, viewBox, useClassName, version } = props;
   const useHtml = `<use class="${useClassName}" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="${id}" />`;
   return (
@@ -12,7 +12,7 @@ const SVGIcon = (props) => {
       dangerouslySetInnerHTML={{ __html: useHtml }}
     />
   );
-};
+});
 
 SVGIcon.displayName = 'SVGIcon';
 SVGIcon.propTypes = {

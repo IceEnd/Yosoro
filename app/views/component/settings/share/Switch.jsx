@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Switch } from 'antd';
 
-const Index = (props) => {
+const Index = React.memo((props) => {
   const labelLayout = {
     offset: 0,
     span: 7,
@@ -30,7 +30,7 @@ const Index = (props) => {
       ) : null }
     </Fragment>
   );
-};
+});
 
 Index.displayName = 'SettingsSwitch';
 Index.propTypes = {

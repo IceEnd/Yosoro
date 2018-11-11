@@ -63,6 +63,7 @@ export default class App extends Component {
           cursorPosition: PropTypes.number.isRequired,
         },
         defaultDrive: PropTypes.string.isRequired,
+        sortBy: PropTypes.oneOf(['normal', 'create-date', 'latest-date']).isRequired,
       }).isRequired,
       oneDriveTokenStatus: PropTypes.number.isRequired,
       platform: PropTypes.string.isRequired,
@@ -375,6 +376,7 @@ export default class App extends Component {
                       editor={settings.editor}
                       exportQueue={exportQueue}
                       imageHostingConfig={app.imageHostingConfig}
+                      sortBy={app.settings.sortBy}
                     />
                   )}
                 />

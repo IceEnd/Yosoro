@@ -98,6 +98,7 @@ export default class Settings extends Component {
       previewFontSize: PropTypes.number.isRequired,
       cursorPosition: PropTypes.number.isRequired,
     }).isRequired,
+    sortBy: PropTypes.oneOf(['normal', 'create-date', 'latest-date']).isRequired,
   };
 
   constructor() {
@@ -123,7 +124,7 @@ export default class Settings extends Component {
   }
 
   render() {
-    const { editor, imageHostingConfig, mediumConfig, theme } = this.props;
+    const { editor, imageHostingConfig, mediumConfig, theme, sortBy } = this.props;
     const { loading, loadingTip } = this.state;
     return (
       <div className="settings-root">
@@ -139,6 +140,7 @@ export default class Settings extends Component {
             {...editor}
             showLoading={this.showLoading}
             closeLoading={this.closeLoading}
+            sortBy={sortBy}
           />
           <ImageHosting
             key="image-hosting-config"

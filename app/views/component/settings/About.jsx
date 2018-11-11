@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Button, Icon } from 'antd';
+import { Row, Col, Button } from 'antd';
 import { remote } from 'electron';
 import logo from 'Assets/images/logo.png';
 import Module from './Module';
@@ -47,11 +47,6 @@ const About = (props) => {
             className="btn"
             onClick={() => openLink('https://github.com/IceEnd/Yosoro')}
           >GitHub</Button>
-        </Col>
-      </Row>
-      <Row justify="center" type="flex">
-        <Col span="12" className="txt-center" style={{ padding: '2rem' }} >
-          <Icon type="mail" /> email: min@coolecho.net
         </Col>
       </Row>
     </Module>

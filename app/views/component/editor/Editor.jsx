@@ -9,6 +9,7 @@ import 'codemirror/addon/fold/markdown-fold';
 import 'codemirror/mode/markdown/markdown';
 import ReactResizeDetector from 'react-resize-detector';
 import { UPLOAD_IMAGE } from 'Actions/imageHosting';
+import { saveNote } from 'Actions/projects';
 import { updateMarkdownHtml } from 'Actions/markdown';
 import { throttle, debounce } from 'Utils/utils';
 import { withDispatch, withTheme } from 'Components/HOC/context';
@@ -189,12 +190,13 @@ export default class Editor extends Component {
 
   // 停止编辑500ms, 异步保存文件内容
   autoSave = debounce(() => {
-    const { note: { projectName, fileName }, defaultContent } = this.props;
+    const { note: { projectName, projectUuid, fileName, fileUuid }, defaultContent, dispatch } = this.props;
     ipcRenderer.send('auto-save-content-to-file', {
       projectName,
       fileName,
       content: defaultContent,
     });
+    dispatch(saveNote(projectUuid, fileUuid));
   }, 500);
 
   removeChangeEvent() {
@@ -233,6 +235,7 @@ export default class Editor extends Component {
       }
     }
   }
+
   handleChange = (cm) => {
     const content = cm.getValue();
     const { uuid } = this.props;

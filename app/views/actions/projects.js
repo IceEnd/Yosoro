@@ -97,17 +97,6 @@ export function updateNoteDesc(uuid, desc, parentsId) {
   };
 }
 
-export const UPDATE_NOTE_PARENTS_ID = 'UPDATE_NOTE_PARENTS_ID';
-
-export function updateNoteParentsId(uuid, parentsId, newParentsId) {
-  return {
-    type: UPDATE_NOTE_PARENTS_ID,
-    uuid,
-    parentsId,
-    newParentsId,
-  };
-}
-
 export const SEARCH_NOTES = 'SEARCH_NOTES';
 
 export function searchNotes(keyword) {

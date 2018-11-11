@@ -9,7 +9,7 @@ const labelLayout = {
 
 const Option = Select.Option;
 
-const Selector = (props) => {
+const Selector = React.memo((props) => {
   const { title, options, width, size, value, type, onChange } = props;
   return (
     <Row className="font-size-row">
@@ -28,7 +28,7 @@ const Selector = (props) => {
       </Col>
     </Row>
   );
-};
+});
 
 Selector.displayName = 'SetingsSelector';
 

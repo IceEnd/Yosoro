@@ -9,7 +9,6 @@ import {
   RENAME_NOTE,
   DELETE_NOTE,
   UPDATE_NOTE_DESCRIPTION,
-  UPDATE_NOTE_PARENTS_ID,
   SEARCH_NOTES,
   CLEAR_SEARCH_NOTES,
   REMOVE_NOTE_PERMANENTLY,
@@ -386,21 +385,6 @@ function projectReducer(state = {
         }
         return item;
       });
-      return assign({}, state);
-    }
-    case UPDATE_NOTE_PARENTS_ID: { // 更新笔记所属文件夹
-      const { parentsId, uuid, newParentsId } = action;
-      const { notes } = state.projects[state.hash[parentsId]];
-      const param = {
-        parentsId: newParentsId,
-      };
-      updateNoteInfo(uuid, param);
-      for (let i = notes.length - 1; i >= 0; i--) {
-        if (notes[i].uuid === uuid) {
-          state.projects[state.hash[newParentsId]].notes.push(notes[i]);
-          notes.splice(i, 1);
-        }
-      }
       return assign({}, state);
     }
     case SEARCH_NOTES: {

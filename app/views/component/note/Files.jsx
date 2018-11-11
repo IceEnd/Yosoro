@@ -33,6 +33,7 @@ export default class Files extends Component {
     editorMode: PropTypes.string.isRequired,
     searchStatus: PropTypes.number.isRequired,
     hasEdit: PropTypes.bool.isRequired,
+    sortBy: PropTypes.oneOf(['normal', 'create-date', 'latest-date']).isRequired,
   };
 
   constructor() {
@@ -56,7 +57,6 @@ export default class Files extends Component {
         uuid: '',
         value: '',
       },
-      sortFn: undefined,
     });
     this.selectNew = false;
   }
@@ -113,13 +113,6 @@ export default class Files extends Component {
           this.titleIpt.focus();
         }
       });
-    });
-    ipcRenderer.on('sort-note', (event, type) => {
-      let { sortFn } = this.state;
-      if (type === 'createDate' || type === 'latestDate') {
-        sortFn = (current, next) => new Date(next[type]) - new Date(current[type]);
-      }
-      this.setState({ sortFn });
     });
     ipcRenderer.on('node-add-desc', () => {
       const { uuid, description } = this.state.contextNote;
@@ -214,6 +207,24 @@ export default class Files extends Component {
       type: 'new-note',
       flag: false,
     });
+  }
+
+  getNotes = () => {
+    const { notes, sortBy } = this.props;
+    let type;
+    switch (sortBy) {
+      case 'create-date':
+        type = 'createDate';
+        break;
+      case 'latest-date':
+        type = 'latestDate';
+        break;
+      default:
+        type = 'normal';
+        break;
+    }
+    if (type === 'normal') return notes.sort((next, current) => new Date(next.createDate) - new Date(current.createDate));
+    return notes.sort((next, current) => new Date(current[type]) - new Date(next[type]));
   }
 
   newItemFocus = () => {
@@ -534,8 +545,9 @@ export default class Files extends Component {
   }
 
   render() {
-    const { notes, currentUuid, editorMode } = this.props;
-    const { newFile, rename, desc, sortFn } = this.state;
+    const { currentUuid, editorMode, sortBy } = this.props;
+    const { newFile, rename, desc } = this.state;
+    const notes = this.getNotes();
     let rootClass = '';
     if (editorMode !== 'normal' && editorMode !== 'write') {
       rootClass = 'hide';
@@ -558,8 +570,8 @@ export default class Files extends Component {
         <ul
           className="file-list"
         >
-          {newFile ? this.renderNewFile() : (null) }
-          {notes.sort(sortFn).map((note) => {
+          {newFile && sortBy !== 'normal' ? this.renderNewFile() : (null) }
+          {notes.map((note) => {
             const { uuid, status, name, description, oneDriver } = note;
             if (status === 0) { // 删除
               return null;
@@ -638,6 +650,7 @@ export default class Files extends Component {
               </li>
             );
           })}
+          {newFile && sortBy === 'normal' ? this.renderNewFile() : (null) }
         </ul>
       </div>
     );

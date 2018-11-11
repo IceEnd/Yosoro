@@ -248,33 +248,6 @@ export function eventListener(menus) {
     }
   });
 
-  // 将笔记移到其它文件夹
-  ipcMain.on('move-file-to-project', (event, args) => {
-    const { name, projectName, target } = args;
-    const oldPath = `${getProjectsPath()}/${projectName}/${name}.md`;
-    const newfolder = `${getProjectsPath()}/${target}`;
-    const newPath = `${newfolder}/${name}.md`;
-    try {
-      if (!fs.existsSync(newfolder)) {
-        fs.mkdirSync(newfolder);
-      }
-      fse.moveSync(oldPath, newPath, { overwrite: true });
-      if (fs.existsSync(oldPath)) {
-        fs.unlinkSync(oldPath);
-      }
-      event.returnValue = {
-        success: true,
-        folder: newPath,
-        code: 0,
-      };
-    } catch (ex) {
-      event.returnValue = {
-        success: false,
-        error: ex,
-      };
-    }
-  });
-
   // 将笔记移动到废纸篓中
   ipcMain.on('move-file-to-trash', (event, args) => {
     const { name, projectName } = args;

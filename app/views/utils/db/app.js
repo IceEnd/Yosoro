@@ -49,14 +49,7 @@ export function checkDefaults() {
     });
   }
   if (!settings) {
-    db.set(SETTINGS, {
-      theme: 'light',
-      editorMode: 'normal',
-      markdownSettings: {
-        editorWidth: 0.5,
-      },
-      defaultDrive: 'oneDrive',
-    });
+    db.set(SETTINGS, defaultSettings);
   }
   if (!imageHosting) {
     db.set(IMAGE_HOSTING, {
@@ -82,7 +75,10 @@ export function checkDefaults() {
       },
     });
   }
-  return projects && settings && notes && oauth && imageHosting;
+  if (projects && settings && notes && oauth && imageHosting && mediumConfig) {
+    return false;
+  }
+  return true;
 }
 
 /**

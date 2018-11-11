@@ -20,6 +20,7 @@ export default class General extends PureComponent {
     fontSize: PropTypes.number.isRequired,
     previewFontSize: PropTypes.number.isRequired,
     cursorPosition: PropTypes.number.isRequired,
+    sortBy: PropTypes.oneOf(['create-date', 'latest-date']),
     showLoading: PropTypes.func.isRequired,
     closeLoading: PropTypes.func.isRequired,
   }
@@ -41,7 +42,7 @@ export default class General extends PureComponent {
   }
 
   render() {
-    const { fontSize, previewFontSize, cursorPosition, showLoading, theme, closeLoading } = this.props;
+    const { fontSize, previewFontSize, cursorPosition, showLoading, theme, sortBy, closeLoading } = this.props;
     return (
       <Module
         title="General"
@@ -60,6 +61,24 @@ export default class General extends PureComponent {
             value: 'dark',
           }]}
           value={theme}
+          onChange={this.handleChange}
+        />
+
+        <Selector
+          type="sortBy"
+          title="Sort By"
+          options={[{
+            label: 'Normal',
+            value: 'normal',
+          }, {
+            label: 'Create Date',
+            value: 'create-date',
+          }, {
+            label: 'Update Date',
+            value: 'latest-date',
+          }]}
+          width={130}
+          value={sortBy}
           onChange={this.handleChange}
         />
 

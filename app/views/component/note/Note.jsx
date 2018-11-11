@@ -75,6 +75,7 @@ export default class NoteWorkspace extends Component {
       editorWidth: PropTypes.number.isRequired,
     }).isRequired,
     editorMode: PropTypes.string.isRequired,
+    sortBy: PropTypes.oneOf(['normal', 'create-date', 'latest-date']).isRequired,
     exportQueue: PropTypes.shape({
       status: PropTypes.number.isRequired,
     }).isRequired,
@@ -108,7 +109,7 @@ export default class NoteWorkspace extends Component {
   }
 
   render() {
-    const { projects, markdown, note, markdownSettings, editorMode, searchStatus, searchResult, exportQueue: { status: exportStatus }, imageHostingConfig, editor } = this.props;
+    const { projects, markdown, note, markdownSettings, editorMode, searchStatus, searchResult, exportQueue: { status: exportStatus }, imageHostingConfig, editor, sortBy } = this.props;
     let projectData;
     if (searchStatus === 0) {
       projectData = projects;
@@ -138,6 +139,7 @@ export default class NoteWorkspace extends Component {
             editorMode={editorMode}
             searchStatus={searchStatus}
             hasEdit={markdown.hasEdit}
+            sortBy={sortBy}
           />
           <Markdown
             imageHostingConfig={imageHostingConfig}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SVG = () => (
+const SVG = React.memo(() => (
   <svg display="none" version="1.1" xmlns="http://www.w3.org/2000/svg" >
     <symbol id="app_loading" viewBox="0 0 57 57">
       <g>
@@ -437,7 +437,7 @@ const SVG = () => (
       </g>
     </symbol>
   </svg>
-);
+));
 
 SVG.displayName = 'AppSVG';
 
