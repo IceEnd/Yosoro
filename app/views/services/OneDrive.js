@@ -57,7 +57,8 @@ export default class OneDrive {
               success: true,
             };
           }
-          throw new Error('Fetching Failed.');
+          const msg = response.statusText ? `${response.statusText}` : 'No message';
+          throw new Error(`Failed: ${msg}`);
         })
         .then(json => resolve(json))
         .catch(ex => reject(ex));

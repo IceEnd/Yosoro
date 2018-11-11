@@ -78,7 +78,7 @@ function* fetchProject(action) {
       list,
     });
   } catch (ex) {
-    message.error('Fetching failed');
+    message.error(ex.message || 'Failed to fetch.');
     console.warn(ex);
     yield put({
       type: DRIVE_FETCHING_PROJECRS_FAILED,
@@ -110,7 +110,7 @@ function* fetchNotes(action) {
       list,
     });
   } catch (ex) {
-    message.error('Fetching failed');
+    message.error(ex.message || 'Failed to fetch.');
     console.warn(ex);
     yield put({
       type: DRIVE_FETCHING_NOTES_FAILED,
@@ -156,7 +156,7 @@ function* downloadNote(action) {
       });
     }
   } catch (ex) {
-    message.error('Download note failed');
+    message.error(ex.message || 'Failed to Download.');
     console.warn(ex);
     yield put({
       type: DRIVE_DOWNLOAD_NOTE_FAILED,
