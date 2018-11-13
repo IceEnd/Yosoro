@@ -66,13 +66,6 @@ export default class Tool extends Component {
     });
   }
 
-  shouldComponentUpdate(nextProps) {
-    if (this.props.editorMode !== nextProps.editorMode) {
-      return false;
-    }
-    return true;
-  }
-
   componentWillUnmount() {
     pushStateToStorage('noteExplorerState', this.state);
   }

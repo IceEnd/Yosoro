@@ -44,7 +44,7 @@
 	}
 
 	.note-toolbar {
-		flex: 0 0 3rem;
+		flex: 0 0 2.4rem;
 		width: 100%;
 		@include display-flex;
 		-webkit-app-region: drag;
@@ -56,7 +56,7 @@
 		.search-root {
 			flex: 0 0 13rem;
 			text-align: center;
-			padding: 0.6rem 0;
+			padding: 0.3rem 0;
 
 			.ant-input {
 				height: 1.8rem;
@@ -67,7 +67,7 @@
 		.title {
 			flex: 1 1 auto;
 			@include text-ellipsis;
-			line-height: 3rem;
+			line-height: 2.4rem;
 			font-size: 1.2rem;
 			color: $noteTitleColor;
 			margin: 0;
@@ -76,7 +76,7 @@
 		.tools {
 			flex-basis: 40%;
 			text-align: right;
-			padding-right: 2rem;
+			padding-right: 1.4rem;
 
 			.tools-item {
 				position: relative;
@@ -85,7 +85,7 @@
 				width: 3rem;
 				height: 1.8rem;
 				line-height: 1.8rem;
-				margin: 0.6rem .2rem auto .2rem;
+				margin: 0.3rem .2rem auto .2rem;
 				text-align: center;
 				background-color: #ffffff;
 				border: 1px solid #d6d5d7;
@@ -699,7 +699,7 @@
 	user-select: none;
 
 	&::-webkit-scrollbar {
-		width: 0;
+		width: 0 !important;
 	}
 
 	.toc-list {
