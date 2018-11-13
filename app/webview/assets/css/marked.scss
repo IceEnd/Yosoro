@@ -6,9 +6,12 @@
 	padding: 0;
 }
 
+::-webkit-scrollbar {
+	width: 10px;
+}
+
 .os-win32, .os-linux {
 	::-webkit-scrollbar {
-		width: 12px;
 		background-color: transparent;
 	}
 
@@ -22,11 +25,6 @@
 
 	::-webkit-scrollbar-button {
 		display: none;
-	}
-
-	::-webkit-scrollbar {
-		width: 12px;
-		background-color: transparent;
 	}
 }
 
@@ -285,19 +283,16 @@ pre code {
 .wv-dark {
 	color: #cacaca;
 
-	&.os-win32, &.os-linux {
-		::-webkit-scrollbar {
-			width: 12px;
-			background-color: transparent;
-		}
+	::-webkit-scrollbar {
+		background-color: rgba($color: #000000, $alpha: 0.5);
+	}
 
-		::-webkit-scrollbar-track {
-			background-color: transparent;
-		}
+	::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
 
-		::-webkit-scrollbar-thumb {
-			background-color: #333333;
-		}
+	::-webkit-scrollbar-thumb {
+		background-color: rgba($color: #3f3f3f, $alpha: 0.6);
 	}
 
 	h1, h2, h3, h4, h5, h6 {
