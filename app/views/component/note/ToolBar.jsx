@@ -182,7 +182,6 @@ export default class Tool extends Component {
     <Dropdown
       overlay={menu}
       placement="bottomCenter"
-      className="test"
     >
       <span
         className="tools-item font-icon"
@@ -219,7 +218,7 @@ export default class Tool extends Component {
       return (
         <Popover
           overlayClassName="toc-popover"
-          trigger="click"
+          trigger="hover"
           placement="bottomRight"
           content={content}
           onVisibleChange={value => this.handleVisible('tocVisible', value)}
@@ -284,7 +283,7 @@ export default class Tool extends Component {
       <Popover
         key="modePopover"
         overlayClassName="edit-mode-popover"
-        trigger="click"
+        trigger="hover"
         placement="bottomRight"
         content={content}
       >
