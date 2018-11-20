@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Breadcrumb, message, Icon, Modal } from 'antd';
 import autobind from 'autobind-decorator';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { withDispatch } from 'Components/HOC/context';
 import Notebooks from './Notebooks';
 import Notes from './Notes';
@@ -236,26 +237,30 @@ export default class Drive extends Component {
   renderNotes(status, driveName, currentProjectName, blur) {
     const notes = this.getValidNotes();
     return (
-      <div className={`content ${blur}`} id="app_cloud">
-        <Notes
-          notes={notes}
-          downloadNote={this.downloadNote}
-          openRemove={this.openDelete}
-        />
-      </div>
+      <Scrollbars autoHide>
+        <div className={`content ${blur}`} id="app_cloud">
+          <Notes
+            notes={notes}
+            downloadNote={this.downloadNote}
+            openRemove={this.openDelete}
+          />
+        </div>
+      </Scrollbars>
     );
   }
 
   renderProject(status, driveName, currentProjectName, blur) {
     const { drive: { projects } } = this.props;
     return (
-      <div className={`content ${blur}`}>
-        <Notebooks
-          projects={projects}
-          chooseProject={this.chooseProject}
-          openRemove={this.openDelete}
-        />
-      </div>
+      <Scrollbars autoHide>
+        <div className={`content ${blur}`}>
+          <Notebooks
+            projects={projects}
+            chooseProject={this.chooseProject}
+            openRemove={this.openDelete}
+          />
+        </div>
+      </Scrollbars>
     );
   }
 

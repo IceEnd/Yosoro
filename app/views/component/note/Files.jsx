@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input, message, Icon } from 'antd';
 import { ipcRenderer } from 'electron';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { withDispatch } from 'Components/HOC/context';
 
 import { createFile, renameNote, deletNote, updateNoteDesc, trashBack, updateNoteUploadStatus, UPLOAD_NOTE_ONEDRIVE } from 'Actions/projects';
@@ -567,91 +568,95 @@ export default class Files extends Component {
     }
     return (
       <div className={`file-explorer fade-in ${rootClass}`} onContextMenu={this.handleContextMenu}>
-        <ul
-          className="file-list"
+        <Scrollbars
+          autoHide
         >
-          {newFile && sortBy !== 'normal' ? this.renderNewFile() : (null) }
-          {notes.map((note) => {
-            const { uuid, status, name, description, oneDriver } = note;
-            if (status === 0) { // 删除
-              return null;
-            }
-            let disabled = true;
-            let edit = '';
-            if (rename.uuid === uuid) {
-              disabled = false;
-              edit = 'edit';
-            }
-            let active = '';
-            if (uuid === currentUuid) {
-              active = 'cur';
-            }
-            return (
-              <li
-                key={`n-${uuid}`}
-                className={`file-list__item ${active}`}
-                onClick={() => this.handleChoose(note)}
-                onContextMenu={e => this.handleItemMenu(e, uuid, name, description, oneDriver)}
-                role="presentation"
-              >
-                <div className="file-list__item__root">
-                  <span className="file-list__item__icon">
-                    <SVGIcon
-                      className="file-list__item__icon__svg"
-                      viewBox="0 0 48 48"
-                      id="#icon_svg_markdown"
-                      useClassName="icon-us"
-                    />
-                  </span>
-                  <span className="file-list__item__name">
-                    {disabled ? (
-                      <h3>{name}</h3>
-                    ) : (
-                      <Input
-                        className={edit}
-                        value={rename.name}
-                        disabled={disabled}
-                        onChange={e => this.handleChange(e, 'edit')}
-                        onFocus={this.handleFocus}
-                        onBlur={e => this.handleBlur(e, 'edit')}
-                        onKeyDown={e => this.handleKeyDown(e, 'edit')}
-                        onClick={this.handleIptClick}
-                        ref={node => (this.titleIpt = node)}
+          <ul
+            className="file-list"
+          >
+            {newFile && sortBy !== 'normal' ? this.renderNewFile() : (null) }
+            {notes.map((note) => {
+              const { uuid, status, name, description, oneDriver } = note;
+              if (status === 0) { // 删除
+                return null;
+              }
+              let disabled = true;
+              let edit = '';
+              if (rename.uuid === uuid) {
+                disabled = false;
+                edit = 'edit';
+              }
+              let active = '';
+              if (uuid === currentUuid) {
+                active = 'cur';
+              }
+              return (
+                <li
+                  key={`n-${uuid}`}
+                  className={`file-list__item ${active}`}
+                  onClick={() => this.handleChoose(note)}
+                  onContextMenu={e => this.handleItemMenu(e, uuid, name, description, oneDriver)}
+                  role="presentation"
+                >
+                  <div className="file-list__item__root">
+                    <span className="file-list__item__icon">
+                      <SVGIcon
+                        className="file-list__item__icon__svg"
+                        viewBox="0 0 48 48"
+                        id="#icon_svg_markdown"
+                        useClassName="icon-us"
                       />
-                    )}
-                  </span>
-                </div>
-                <div className="file-list__item__info">
-                  <div className="file-list__item__info__desc">
-                    {desc.uuid === uuid ? (
-                      <Input
-                        value={desc.value}
-                        onFocus={this.handleFocus}
-                        onClick={this.handleIptClick}
-                        onChange={e => this.handleChange(e, 'desc')}
-                        onBlur={e => this.handleBlur(e, 'desc')}
-                        onKeyDown={e => this.handleKeyDown(e, 'desc')}
-                        maxLength="20"
-                        placeholder="Limit 20 chars."
-                        ref={node => (this.descIpt = node)}
-                      />
-                    ) : (
-                      <p>{note.description}</p>
-                    )}
+                    </span>
+                    <span className="file-list__item__name">
+                      {disabled ? (
+                        <h3>{name}</h3>
+                      ) : (
+                        <Input
+                          className={edit}
+                          value={rename.name}
+                          disabled={disabled}
+                          onChange={e => this.handleChange(e, 'edit')}
+                          onFocus={this.handleFocus}
+                          onBlur={e => this.handleBlur(e, 'edit')}
+                          onKeyDown={e => this.handleKeyDown(e, 'edit')}
+                          onClick={this.handleIptClick}
+                          ref={node => (this.titleIpt = node)}
+                        />
+                      )}
+                    </span>
                   </div>
-                  <div className="file-list__item__info__desc" />
-                  <div className="file-list__item__info__desc">
-                    <p className="date-p">{formatDate(note.latestDate)}</p>
+                  <div className="file-list__item__info">
+                    <div className="file-list__item__info__desc">
+                      {desc.uuid === uuid ? (
+                        <Input
+                          value={desc.value}
+                          onFocus={this.handleFocus}
+                          onClick={this.handleIptClick}
+                          onChange={e => this.handleChange(e, 'desc')}
+                          onBlur={e => this.handleBlur(e, 'desc')}
+                          onKeyDown={e => this.handleKeyDown(e, 'desc')}
+                          maxLength="20"
+                          placeholder="Limit 20 chars."
+                          ref={node => (this.descIpt = node)}
+                        />
+                      ) : (
+                        <p>{note.description}</p>
+                      )}
+                    </div>
+                    <div className="file-list__item__info__desc" />
+                    <div className="file-list__item__info__desc">
+                      <p className="date-p">{formatDate(note.latestDate)}</p>
+                    </div>
                   </div>
-                </div>
-                <ul className="clouds">
-                  {this.renderCloudIcon(note.oneDriver)}
-                </ul>
-              </li>
-            );
-          })}
-          {newFile && sortBy === 'normal' ? this.renderNewFile() : (null) }
-        </ul>
+                  <ul className="clouds">
+                    {this.renderCloudIcon(note.oneDriver)}
+                  </ul>
+                </li>
+              );
+            })}
+            {newFile && sortBy === 'normal' ? this.renderNewFile() : (null) }
+          </ul>
+        </Scrollbars>
       </div>
     );
   }

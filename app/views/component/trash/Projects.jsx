@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Scrollbars } from 'react-custom-scrollbars';
 import NoteItem from '../share/notebook/NoteItem';
 import HOCList from './HOCList';
 
@@ -30,27 +31,29 @@ export default class Projects extends Component {
       );
     }
     return (
-      <div className="content">
-        <ul className="list">
-          {this.props.projects.map((item) => {
-            const { uuid, name } = item;
-            return (
-              <NoteItem
-                key={`trash-project-${uuid}`}
-                className="list-item"
-                type="notebook"
-                hasRestore
-                hasLogin
-                hasRemove
-                itemClick={() => this.props.handleGoIn(uuid, name)}
-                restoreFn={this.props.openRestore}
-                removeFn={this.props.openRemove}
-                item={item}
-              />
-            );
-          })}
-        </ul>
-      </div>
+      <Scrollbars autoHide>
+        <div className="content">
+          <ul className="list">
+            {this.props.projects.map((item) => {
+              const { uuid, name } = item;
+              return (
+                <NoteItem
+                  key={`trash-project-${uuid}`}
+                  className="list-item"
+                  type="notebook"
+                  hasRestore
+                  hasLogin
+                  hasRemove
+                  itemClick={() => this.props.handleGoIn(uuid, name)}
+                  restoreFn={this.props.openRestore}
+                  removeFn={this.props.openRemove}
+                  item={item}
+                />
+              );
+            })}
+          </ul>
+        </div>
+      </Scrollbars>
     );
   }
 }

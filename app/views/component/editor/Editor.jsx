@@ -1,12 +1,16 @@
 import 'codemirror/lib/codemirror.css';
+import 'codemirror/addon/scroll/simplescrollbars.css';
 import 'Assets/scss/code/dark.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
+import { Scrollbars } from 'react-custom-scrollbars';
 import autobind from 'autobind-decorator';
 import CodeMirror from 'codemirror';
 import 'codemirror/addon/fold/markdown-fold';
 import 'codemirror/mode/markdown/markdown';
+import 'codemirror/addon/scroll/simplescrollbars';
+
 import ReactResizeDetector from 'react-resize-detector';
 import { UPLOAD_IMAGE } from 'Actions/imageHosting';
 import { saveNote } from 'Actions/projects';
@@ -173,6 +177,7 @@ export default class Editor extends Component {
       foldGutter: true,
       gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
       theme,
+      scrollbarStyle: 'overlay',
     });
     this.addChangeEvent();
     this.codeMirror.on('scroll', this.handleScroll);
@@ -375,11 +380,13 @@ export default class Editor extends Component {
         ref={node => (this.editorRoot = node)}
       >
         <ReactResizeDetector handleWidth onResize={this.handleCodeMirrorResize} />
-        <div
-          className="code-container"
-          style={{ width: textWidth, height: '100%' }}
-          ref={node => (this.container = node)}
-        />
+        <Scrollbars>
+          <div
+            className="code-container"
+            style={{ width: textWidth, height: '100%' }}
+            ref={node => (this.container = node)}
+          />
+        </Scrollbars>
         { split ? (
           <span
             className="resize-right"

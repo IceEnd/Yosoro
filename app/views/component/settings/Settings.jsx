@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Anchor, Icon } from 'antd';
+import { Scrollbars } from 'react-custom-scrollbars';
 import Title from 'Share/title/Title';
 import ImageHosting from './ImageHosting';
 import MediumConfig from './MediumConfig';
@@ -134,29 +135,31 @@ export default class Settings extends Component {
         />
         <SettingsToc />
         <div className="modules" id="modules">
-          <General
-            key="general-config"
-            theme={theme}
-            {...editor}
-            showLoading={this.showLoading}
-            closeLoading={this.closeLoading}
-            sortBy={sortBy}
-          />
-          <ImageHosting
-            key="image-hosting-config"
-            id="anchor-image-hosting"
-            {...imageHostingConfig}
-          />
-          <MediumConfig
-            key="medium-config"
-            id="anchor-publish"
-            medium={mediumConfig.medium}
-          />
+          <Scrollbars autoHide>
+            <General
+              key="general-config"
+              theme={theme}
+              {...editor}
+              showLoading={this.showLoading}
+              closeLoading={this.closeLoading}
+              sortBy={sortBy}
+            />
+            <ImageHosting
+              key="image-hosting-config"
+              id="anchor-image-hosting"
+              {...imageHostingConfig}
+            />
+            <MediumConfig
+              key="medium-config"
+              id="anchor-publish"
+              medium={mediumConfig.medium}
+            />
 
-          <About
-            key="about-config"
-            id="anchor-about"
-          />
+            <About
+              key="about-config"
+              id="anchor-about"
+            />
+          </Scrollbars>
         </div>
 
         {loading ? (

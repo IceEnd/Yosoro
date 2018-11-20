@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Input, message } from 'antd';
 import { ipcRenderer } from 'electron';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { withDispatch } from 'Components/HOC/context';
 import { createProject, deleteProject, renameProject, trashBack, updateNoteUploadStatus } from 'Actions/projects';
 import { beforeSwitchSave, clearMarkdown } from 'Actions/markdown';
@@ -376,58 +377,62 @@ export default class Project extends Component {
         className={`project-explorer ${rootClass}`}
         onContextMenu={this.handleExplorerMenu}
       >
-        <ul
-          className="project-list custom-scrollbar"
+        <Scrollbars
+          autoHide
         >
-          {projects.map((item) => {
-            const { uuid, name, status } = item;
-            if (status === 0) { // 删除
-              return null;
-            }
-            let disabled = true;
-            if (rename.uuid === uuid) {
-              disabled = false;
-            }
-            let active = '';
-            if (uuid === currentUuid) {
-              active = 'cur';
-            }
-            return (
-              <li
-                key={`p-${uuid}`}
-                className={`project-list__li ${active}`}
-                onClick={() => this.handleSelect(item.uuid, name)}
-                onContextMenu={e => this.handleItemMenu(e, uuid, name)}
-                role="presentation"
-              >
-                <div className="project-list__item">
-                  <div className="project-list__item__icon">
-                    <Icon type="book" />
+          <ul
+            className="project-list"
+          >
+            {projects.map((item) => {
+              const { uuid, name, status } = item;
+              if (status === 0) { // 删除
+                return null;
+              }
+              let disabled = true;
+              if (rename.uuid === uuid) {
+                disabled = false;
+              }
+              let active = '';
+              if (uuid === currentUuid) {
+                active = 'cur';
+              }
+              return (
+                <li
+                  key={`p-${uuid}`}
+                  className={`project-list__li ${active}`}
+                  onClick={() => this.handleSelect(item.uuid, name)}
+                  onContextMenu={e => this.handleItemMenu(e, uuid, name)}
+                  role="presentation"
+                >
+                  <div className="project-list__item">
+                    <div className="project-list__item__icon">
+                      <Icon type="book" />
+                    </div>
+                    <div className="project-list__item__name">
+                      {disabled ? (
+                        <h3>{name}</h3>
+                      ) : (
+                        <Input
+                          size="small"
+                          className="edit"
+                          value={rename.name}
+                          disabled={disabled}
+                          onChange={e => this.handleNewProjectTitle(e, 'rename')}
+                          onFocus={this.handleNewProjectFocus}
+                          onBlur={e => this.handleNewProjectBlur(e, 'rename')}
+                          onKeyDown={e => this.handleKeyDown(e, 'rename')}
+                          onClick={this.handleIptClick}
+                          ref={node => (this.titleIpt = node)}
+                        />
+                      )}
+                    </div>
                   </div>
-                  <div className="project-list__item__name">
-                    {disabled ? (
-                      <h3>{name}</h3>
-                    ) : (
-                      <Input
-                        size="small"
-                        className="edit"
-                        value={rename.name}
-                        disabled={disabled}
-                        onChange={e => this.handleNewProjectTitle(e, 'rename')}
-                        onFocus={this.handleNewProjectFocus}
-                        onBlur={e => this.handleNewProjectBlur(e, 'rename')}
-                        onKeyDown={e => this.handleKeyDown(e, 'rename')}
-                        onClick={this.handleIptClick}
-                        ref={node => (this.titleIpt = node)}
-                      />
-                    )}
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-          { newProject ? this.renderNewProject() : (null) }
-        </ul>
+                </li>
+              );
+            })}
+            { newProject ? this.renderNewProject() : (null) }
+          </ul>
+        </Scrollbars>
       </div>
     );
   }

@@ -1,4 +1,5 @@
 const ipcRenderer = require('electron').ipcRenderer;
+// const PerfectScrollbar = require('perfect-scrollbar');
 
 let nodeRoot = null;
 
@@ -72,6 +73,8 @@ document.addEventListener('click', handleInnerClick);
 
 document.addEventListener('DOMContentLoaded', () => {
   ipcRenderer.sendToHost('wv-first-loaded');
+
+  // PerfectScrollbar('#root');
 
   // 渲染预览页面
   ipcRenderer.on('wv-render-html', (event, args) => {
