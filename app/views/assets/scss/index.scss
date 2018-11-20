@@ -150,23 +150,6 @@ html, body, #root {
 /* linux or windows tool-bar */
 .not-darwin {
 
-	// ::-webkit-scrollbar {
-	// 	width: 12px;
-	// 	background-color: transparent;
-	// }
-
-	// ::-webkit-scrollbar-track {
-	// 	background-color: transparent;
-	// }
-
-	// ::-webkit-scrollbar-thumb {
-	// 	background-color: #e7e7e7;
-	// }
-
-	// ::-webkit-scrollbar-button {
-	// 	display: none;
-	// }
-
 	.tool-bar {
 		flex: 0 0 4rem;
 		width: 4rem;

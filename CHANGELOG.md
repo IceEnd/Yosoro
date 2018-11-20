@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v1.1.2
+
+### New Features
+
+- Dark Theme
+- Sort Note
+- Shortcuts for switch mode
+
+### Optimization
+
+- Export as PDF
+
 ## v1.1.0
 
 ### New Features
