@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Router, Route, Switch } from 'react-router-dom';
 import { ipcRenderer, remote } from 'electron';
 import { message, notification } from 'antd';
+import PerfectScrollbar from 'perfect-scrollbar';
 import AppToolBar from 'Components/AppToolBar';
 import SVG from 'Components/SVG';
 import Note from 'Components/note/Note';
@@ -21,6 +22,7 @@ import { EXPORT_INIT_QUEUE, EXPORT_COMPOLETE } from 'Actions/exportQueue';
 import 'Assets/scss/index.scss';
 import 'Assets/scss/theme/light.scss';
 import 'Assets/scss/theme/dark.scss';
+import 'Assets/scss/scrollbar.css';
 
 const { shell } = remote;
 
@@ -176,6 +178,9 @@ export default class App extends Component {
     this.getLocalAvatar();
     this.fetchAvatar();
     this.setTheme();
+    if (!this.ps) {
+      this.ps = new PerfectScrollbar('.custom-scrollbar');
+    }
   }
 
   componentDidUpdate(prevProps) {

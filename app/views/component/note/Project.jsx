@@ -377,7 +377,7 @@ export default class Project extends Component {
         onContextMenu={this.handleExplorerMenu}
       >
         <ul
-          className="project-list"
+          className="project-list custom-scrollbar"
         >
           {projects.map((item) => {
             const { uuid, name, status } = item;

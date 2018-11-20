@@ -1,17 +1,17 @@
 @import "../color.scss";
 
 .dark {
-	::-webkit-scrollbar {
-		width: 10px;
-		background-color: rgba($color: #000000, $alpha: 0.5);
-	}
-	::-webkit-scrollbar-track {
-		background-color: transparent;
-	}
+	// ::-webkit-scrollbar {
+	// 	width: 10px;
+	// 	background-color: rgba($color: #000000, $alpha: 0.5);
+	// }
+	// ::-webkit-scrollbar-track {
+	// 	background-color: transparent;
+	// }
 
-	::-webkit-scrollbar-thumb {
-		background-color: rgba($color: #3f3f3f, $alpha: 0.6);
-	}
+	// ::-webkit-scrollbar-thumb {
+	// 	background-color: rgba($color: #3f3f3f, $alpha: 0.6);
+	// }
 
 	h1, h2, h3, h4, h5, h6 {
 		color: $darkHighColor;
