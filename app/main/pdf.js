@@ -1,6 +1,7 @@
 import { BrowserWindow, app } from 'electron';
 import fs from 'fs';
 import path from 'path';
+import { splitFlag } from './paths';
 import { markedToHtml } from '../views/utils/utils';
 
 export default class PDF {
@@ -79,13 +80,13 @@ export default class PDF {
     const { folderPath, tempPath, exportPath, isBook } = this;
     return new Promise((resolve) => {
       const name = note.replace(/.md$/ig, '');
-      let file = `${exportPath}/${name}.pdf`;
+      let file = `${exportPath}${splitFlag}${name}.pdf`;
       if (!isBook) {
         file = exportPath;
       }
       const filePath = `${folderPath}/${note}`;
       const content = this.getHtml(filePath);
-      const tempFile = `${tempPath}yosoro_pdf_${seed}.html`;
+      const tempFile = `${tempPath}${splitFlag}yosoro_pdf_${seed}.html`;
       fs.writeFileSync(tempFile, content); // 写入临时html文件
       let windowToPDF = new BrowserWindow({
         show: false,
