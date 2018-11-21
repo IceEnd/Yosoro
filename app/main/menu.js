@@ -214,10 +214,6 @@ function getMemuTemplete(mainWindow) {
     });
   }
 
-  // if (process.platform === 'win32') {
-  //   const helpMenu = menuTemplete[menuTemplete.length - 1].submenu;
-  // }
-
   return menuTemplete;
 }
 

@@ -47,14 +47,15 @@ export default class PDF {
     });
     content = markedToHtml(content);
     return this.htmlTemplate
-      .replace(/(<div\s+id="?root"?\s+class="?\w+"?\s*>)\s*(<\/div>\s*<\/body>)/, `$1${content}$2`);
+      .replace(/(<div\s+id="?root"?\s+class="?[\w-_]+"?\s*>)\s*(<\/div>)/, `$1${content}$2`);
   }
 
   getHtmlTemplate() {
     let temp = fs.readFileSync(path.resolve(__dirname, './webview/webview.html'), {
       encoding: 'utf8',
     });
-    temp = temp.replace(/<style\s+data-for="?preview"?>(.|\r|\n)*<\/style>/, '');
+    temp = temp
+      .replace(/<style\s+data-for="?preview"?>(.|\r|\n)*<\/style>/, '');
     if (app.isPackaged) {
       // change link href
       temp = temp.replace('../css/webview/webview.css', path.resolve(__dirname, './css/webview/webview.css'));
@@ -96,7 +97,7 @@ export default class PDF {
       let timer = setTimeout(() => {
         console.warn('waiting time over');
         PDF.printPDF(windowToPDF, file, tempFile, resolve);
-      }, 5000);
+      }, 10000);
       windowToPDF.webContents.once('did-finish-load', () => {
         clearTimeout(timer);
         timer = null;
