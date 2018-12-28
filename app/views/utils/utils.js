@@ -258,16 +258,6 @@ export function markedTOC(str) {
 }
 
 /**
- * 去掉收尾空格
- *
- * @export
- * @param {String} str
- */
-export function trim(str) {
-  return str.replace(/^\s+|\s+$/g, '');
-}
-
-/**
  * inject value to Object
  * @param {any} target inject target
  * @param {Array} arr props name array
