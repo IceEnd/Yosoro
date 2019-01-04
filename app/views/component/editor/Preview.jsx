@@ -40,35 +40,42 @@ export default class Preview extends Component {
     this.state = {
       bodyWidth,
       loading: true,
+      webviewReady: false,
     };
   }
 
   componentDidMount() {
     this.noteRoot = document.getElementById('note_root_cont');
     window.addEventListener('resize', this.onWindowResize);
+    this.webview.addEventListener('dom-ready', this.setReady);
     this.webview.addEventListener('ipc-message', this.onWVMessage);
     eventTOC.on('toc-jump', this.handleTOCJump);
   }
 
   componentDidUpdate(prevProps) {
     const { html, editorMode, theme } = this.props;
-    this.webview.send('wv-render-html', {
-      html,
-      editorMode,
-      theme,
-    });
+    if (this.state.webviewReady) {
+      this.webview.send('wv-render-html', {
+        html,
+        editorMode,
+        theme,
+      });
+    }
     if (this.props.editorMode !== prevProps.editorMode || this.props.editorWidthValue !== prevProps.editorWidthValue) {
       const bodyWidth = this.getBodyWidth(this.props);
       this.setWidth(bodyWidth);
     }
     if (this.props.fontSize !== prevProps.fontSize) {
       const { fontSize } = this.props.fontSize;
-      this.webview.send('wv-change-fontsize', fontSize);
+      if (this.state.webviewReady) {
+        this.webview.send('wv-change-fontsize', fontSize);
+      }
     }
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onWindowResize);
+    this.webview.removeEventListener('dom-ready', this.setReady);
     this.webview.removeEventListener('ipc-message', this.onWVMessage);
     eventTOC.removeListener('toc-jump', this.handleTOCJump);
   }
@@ -114,6 +121,13 @@ export default class Preview extends Component {
       default:
         break;
     }
+  }
+
+  @autobind
+  setReady() {
+    this.setState({
+      webviewReady: true,
+    });
   }
 
   getBodyWidth(props) {

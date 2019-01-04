@@ -1,0 +1,84 @@
+.CodeMirror {
+	font-family: monospace, "BlinkMacSystemFont", "Helvetica Neue", Helvetica, "Microsoft YaHei", "微软雅黑", "Arial", "Lucida Grande", "Segoe UI", Ubuntu, Cantarell, sans-serif;
+	background-color: #fcfdfe;
+	height: 100%;
+
+	.CodeMirror-gutters {
+		background-color: #fcfdfe;
+		border-right: 0;
+	}
+
+	.CodeMirror-linenumber {
+		color: rgba($color: #999, $alpha: 0.5);
+	}
+
+	.CodeMirror-line {
+		// line-height: 2em;
+		&.header {
+			height: 2em;
+			line-height: 2em;
+		}
+	}
+
+	.cm-header {
+		font-size: 1.4em;
+
+		&.cm-header-hash {
+			font-size: 1.2em;
+			color: rgba(102, 128, 153, 0.4);
+		}
+	}
+
+	.cm-em, .cm-strong {
+		color: #fd9526;
+	}
+
+	.cm-inline-code {
+		vertical-align: baseline;
+		font-size: .85em;
+		margin: 0 .2em;
+		color: #29333d;
+    padding: .14em 0.4em;
+		background-color: rgba(128,128,128,0.075);
+		border-radius: 4px;
+		border: #ccc solid 1px;
+	}
+
+
+
+	.cm-inline-latex {
+		padding: 0 .4em;
+		color: #164;
+
+		&.cm-formatting-inline-latex {
+			padding: 0;
+			color: #caa;
+			font-style: italic;
+		}
+	}
+
+	.cm-block-latex {
+		padding: 0;
+		color: #caa;
+		font-style: italic;
+	}
+
+	.cheers-codeblock {
+		padding: .3em .5em;
+		font-size: .9em;
+	}
+
+	.cheers-codeblock-bg {
+		background-color: #F3F3F3;
+
+		&.cheers-codeblock-begin-bg {
+			border-top-left-radius: 10px;
+    	border-top-right-radius: 10px;
+		}
+
+		&.cheers-codeblock-end-bg {
+			border-bottom-left-radius: 10px;
+    	border-bottom-right-radius: 10px;
+		}
+	}
+}
