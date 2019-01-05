@@ -2,6 +2,30 @@
 
 	&.CodeMirror {
 		background: #1e1e1e; color: #ffffff;
+
+		.cm-inline-code {
+			background-color: #2e2d29;
+			color: #787878;
+		}
+
+		.cheers-codeblock-bg {
+			background-color: #000000;
+		}
+
+		.cm-inline-latex {
+			color: #cacaca;
+			&.cm-formatting-inline-latex {
+				color: #1188bc;
+				font-weight: bold;
+			}
+		}
+
+		.cm-block-latex {
+			&.cm-formatting-latex-block {
+				color: #1188bc;
+				font-weight: bold;
+			}
+		}
 	}
 
 	.cm-header {

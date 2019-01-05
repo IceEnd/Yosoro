@@ -1,5 +1,4 @@
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/addon/scroll/simplescrollbars.css';
+
 import 'Assets/scss/code/dark.scss';
 import 'Assets/scss/code/editor.scss';
 import React, { Component } from 'react';
@@ -7,11 +6,7 @@ import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import { Scrollbars } from 'react-custom-scrollbars';
 import autobind from 'autobind-decorator';
-import CodeMirror from 'codemirror';
-import 'codemirror/addon/fold/markdown-fold';
-import 'Utils/mode/CheerS';
-import 'codemirror/addon/scroll/simplescrollbars';
-
+import CheerS from 'Utils/cheers/CheerS';
 import ReactResizeDetector from 'react-resize-detector';
 import { UPLOAD_IMAGE } from 'Actions/imageHosting';
 import { saveNote } from 'Actions/projects';
@@ -170,10 +165,10 @@ export default class Editor extends Component {
 
   setCodeMirror = () => {
     const theme = this.getTheme();
-    this.codeMirror = CodeMirror(this.container, {
+    this.codeMirror = CheerS(this.container, {
       value: this.props.defaultContent,
       mode: {
-        name: 'CheerS',
+        name: 'markdown',
         highlightFormatting: true,
         strikethrough: true,
         fencedCodeBlockHighlighting: true,

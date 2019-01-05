@@ -2,7 +2,7 @@ import CodeMirror from 'codemirror';
 
 /* eslint no-cond-assign: 0 */
 
-CodeMirror.defineMode('CheerS', (cmCfg, modeCfg) => {
+CodeMirror.defineMode('markdown', (cmCfg, modeCfg) => {
   const htmlMode = CodeMirror.getMode(cmCfg, 'text/html');
   const htmlModeMissing = htmlMode.name === 'null';
 
@@ -63,6 +63,7 @@ CodeMirror.defineMode('CheerS', (cmCfg, modeCfg) => {
     headerTitle: 'header-title',
     inlineCode: 'inline-code',
     code: 'comment',
+    codeBG: 'line-background-cheers-codeblock-bg',
     inlineLatex: 'inline-latex',
     latex: 'block-latex',
     quote: 'quote',
@@ -193,9 +194,9 @@ CodeMirror.defineMode('CheerS', (cmCfg, modeCfg) => {
         if (state.inlineCode) {
           styles.push(tokenTypes.inlineCode);
         } else if (state.codeBegin) {
-          styles.push(tokenTypes.code, 'line-background-cheers-codeblock-bg line-background-cheers-codeblock-begin-bg line-cheers-codeblock');
+          styles.push(tokenTypes.code, tokenTypes.codeBG, 'line-background-cheers-codeblock-begin-bg line-cheers-codeblock');
         } else if (state.codeEnd) {
-          styles.push(tokenTypes.code, 'line-background-cheers-codeblock-bg line-background-cheers-codeblock-end-bg line-cheers-codeblock');
+          styles.push(tokenTypes.code, tokenTypes.codeBG, 'line-background-cheers-codeblock-end-bg line-cheers-codeblock');
         }
       }
       if (state.image) {
@@ -388,7 +389,6 @@ CodeMirror.defineMode('CheerS', (cmCfg, modeCfg) => {
         const types = getType(state);
         state.inlineLatex = false;
         return types;
-        // return getType(state);
       }
     }
 
@@ -702,10 +702,14 @@ CodeMirror.defineMode('CheerS', (cmCfg, modeCfg) => {
       state.fencedEndRE = new RegExp(`${match[1]}+ *$`);
       // try switching mode
       state.localMode = modeCfg.fencedCodeBlockHighlighting && getMode(match[2]);
-      if (state.localMode) state.localState = CodeMirror.startState(state.localMode);
+      if (state.localMode) {
+        state.localState = CodeMirror.startState(state.localMode);
+      }
       state.f = local; // eslint-disable-line
       state.block = local; // eslint-disable-line
-      if (modeCfg.highlightFormatting) state.formatting = 'code-block';
+      if (modeCfg.highlightFormatting) {
+        state.formatting = 'code-block';
+      }
       state.code = -1;
       state.codeBegin = true;
       state.codeEnd = false;
@@ -796,9 +800,9 @@ CodeMirror.defineMode('CheerS', (cmCfg, modeCfg) => {
     if (state.fencedEndRE && state.indentation <= maxFencedEndInd && (hasExitedList || stream.match(state.fencedEndRE))) {
       if (modeCfg.highlightFormatting) {
         if (state.latex) {
-          state.formatting = 'code-block';
-        } else if (state.code) {
           state.formatting = 'latex-block';
+        } else if (state.code) {
+          state.formatting = 'code-block';
         }
       }
       let returnType;
@@ -821,13 +825,21 @@ CodeMirror.defineMode('CheerS', (cmCfg, modeCfg) => {
       }
       return returnType;
     } else if (state.localMode) {
-      return state.localMode.token(stream, state.localState);
+      let block = '';
+      if (state.latex) {
+        state.formatting = 'latex-block';
+      } else if (state.code) {
+        state.formatting = 'code-block';
+        block += ` ${tokenTypes.codeBG}`;
+      }
+      const types = state.localMode.token(stream, state.localState);
+      return `${types}${block}`;
     }
     stream.skipToEnd();
     if (state.latex) {
       return `${tokenTypes.latex}-code`;
     } else if (state.code) {
-      return `${tokenTypes.code} line-background-cheers-codeblock-bg`;
+      return `${tokenTypes.code} ${tokenTypes.codeBG}`;
     }
     return tokenTypes.code;
   }
@@ -892,6 +904,9 @@ CodeMirror.defineMode('CheerS', (cmCfg, modeCfg) => {
     state.thisLine = {
       stream: null,
     };
+    if (state.code) {
+      return tokenTypes.codeBG;
+    }
     return null;
   }
 
@@ -1038,9 +1053,10 @@ CodeMirror.defineMode('CheerS', (cmCfg, modeCfg) => {
         state.headerHash = 0;
         state.hr = false;
 
+
         if (stream.match(/^\s*$/, true)) {
-          blankLine(state);
-          return null;
+          // blankLine(state);
+          // return null;
         }
 
         state.prevLine = state.thisLine;
@@ -1108,6 +1124,6 @@ CodeMirror.defineMode('CheerS', (cmCfg, modeCfg) => {
   return mode;
 }, 'xml');
 
-CodeMirror.defineMIME('text/CheerS', 'CheerS');
+CodeMirror.defineMIME('text/markdown', 'markdown');
 
-CodeMirror.defineMIME('text/x-CheerS', 'CheerS');
+CodeMirror.defineMIME('text/x-markdown', 'markdown');
