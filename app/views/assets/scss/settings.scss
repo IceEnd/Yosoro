@@ -11,6 +11,7 @@
 		position: absolute;
 		left: 5%;
 		top: 6rem;
+		@include zoom-in(99);
 
 		.ant-anchor-wrapper {
 			background-color: transparent;
@@ -76,6 +77,14 @@
 
 		.anticon-question-circle-o {
 			font-size: 18px;
+		}
+
+		.image-hosting-item {
+			margin-top: 1rem;
+			padding: 1rem 0;
+			border: 1px solid #efefef;
+			border-radius: .5rem;
+			box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, .2);
 		}
 	}
 

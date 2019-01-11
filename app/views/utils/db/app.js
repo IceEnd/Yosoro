@@ -61,6 +61,12 @@ export function checkDefaults() {
         path: '',
         domain: '',
       },
+      weibo: {
+        username: '',
+        password: '',
+        useCookie: false,
+        cookie: '',
+      },
     });
   }
   if (!mediumConfig) {
@@ -90,7 +96,18 @@ export function getAppSettings() {
 }
 
 export function getAppImageHosting() {
-  return db.get(IMAGE_HOSTING).value();
+  const images = db.get(IMAGE_HOSTING).value();
+  if (!images.weibo) {
+    const weibo = {
+      username: '',
+      password: '',
+      useCookie: false,
+      cookie: '',
+    };
+    images.weibo = weibo;
+    db.set(IMAGE_HOSTING, images);
+  }
+  return images;
 }
 
 /**
