@@ -45,7 +45,7 @@
     "icon": "./asstes/icons/win/app.ico"
   },
   "dependencies": {
-    "antd": "^3.9.2",
+    "antd": "^3.12.3",
     "autobind-decorator": "^2.1.0",
     "classnames": "^2.2.5",
     "codemirror": "^5.36.0",
@@ -131,6 +131,7 @@
   },
   "license": "GPL-3.0",
   "pre-commit": [
+    "lint",
     "test"
   ]
 }

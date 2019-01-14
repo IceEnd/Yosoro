@@ -11,7 +11,7 @@ const FontSize = React.memo((props) => {
   const { fontSize, onChange, minSize, maxSize, type, title } = props;
   return (
     <Row className="font-size-row">
-      <Col {...labelLayout} className="row-label">{title}:</Col>
+      <Col key="label" {...labelLayout} className="row-label">{title}:</Col>
       <Col span="10">
         <Slider
           min={minSize}
@@ -21,7 +21,7 @@ const FontSize = React.memo((props) => {
           step={1}
         />
       </Col>
-      <Col span="5" className="number-col">
+      <Col key="view" span="5" className="number-col">
         <InputNumber
           min={minSize}
           max={maxSize}

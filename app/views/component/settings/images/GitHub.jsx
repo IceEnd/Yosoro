@@ -5,6 +5,7 @@ import autobind from 'autobind-decorator';
 import { Form, Input, Icon, Row, Col, Button } from 'antd';
 import { CHANGE_IMAGE_HOSTING } from 'Actions/app';
 import { withDispatch } from 'Components/HOC/context';
+import formItemLayout from './layout';
 
 const FormItem = Form.Item;
 const { shell } = remote;
@@ -55,6 +56,7 @@ export default class GitHub extends Component {
           ...status,
         },
       },
+      hasEdit: false,
     };
   }
 
@@ -83,10 +85,10 @@ export default class GitHub extends Component {
   @autobind
   handleInput(e, key) {
     const githubForm = Object.assign({}, this.state.githubForm);
-    githubForm[key].value = e.target.value.replace(/(^\s|\s$)*/g, '');
+    githubForm[key].value = e.target.value.trim();
     this.setState({
       githubForm,
-      hasEidt: true,
+      hasEdit: true,
     });
   }
 
@@ -104,7 +106,7 @@ export default class GitHub extends Component {
     if (repoF && branchF && tokenF && pathF) {
       const githubForm = this.state.githubForm;
       this.setState({
-        hasEidt: false,
+        hasEdit: false,
       });
       this.props.dispatch({
         type: CHANGE_IMAGE_HOSTING,
@@ -178,15 +180,6 @@ export default class GitHub extends Component {
 
   render() {
     const { githubForm } = this.state;
-    const formItemLayout = {
-      labelCol: {
-        offset: 1,
-        span: 6,
-      },
-      wrapperCol: {
-        span: 12,
-      },
-    };
     return (
       <div className="image-hosting-item">
         <Row>

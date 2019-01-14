@@ -31,30 +31,38 @@ LinkTitle.propTypes = {
 
 const TOC_ITMES = [
   {
-    href: '#/settings#anchor-general',
+    href: '#anchor-general',
     title: 'General',
     type: 'layout',
   }, {
-    href: '#/settings#anchor-image-hosting',
+    href: '#anchor-image-hosting',
     title: 'Image Hosting',
     type: 'picture',
   }, {
-    href: '#/settings#anchor-publish',
+    href: '#anchor-publish',
     title: 'Publish',
     type: 'medium',
   },
   {
-    href: '#/settings#anchor-about',
+    href: '#anchor-about',
     title: 'About',
     type: 'copyright',
   },
 ];
 
+const tocClick = (e, link) => {
+  e.preventDefault();
+  const target = document.querySelector(link.href.replace(/^#\/settings/, ''));
+  target.scrollIntoView();
+};
+
 const SettingsToc = () => (
   <div className="settings-toc">
     <Anchor
       affix
-      getContainer={() => document.querySelector('#modules')}
+      getContainer={() => document.querySelector('#test')}
+      showInkInFixed
+      onClick={tocClick}
     >
       { TOC_ITMES.map(item => (
         <Link
@@ -71,7 +79,7 @@ const SettingsToc = () => (
 SettingsToc.displayName = 'SettingsToc';
 
 export default class Settings extends Component {
-  static displayName = 'YsosoroSettings';
+  static displayName = 'YosoroSettings';
   static propTypes = {
     theme: PropTypes.string.isRequired,
     imageHostingConfig: PropTypes.shape({
@@ -136,29 +144,31 @@ export default class Settings extends Component {
         <SettingsToc />
         <div className="modules" id="modules">
           <Scrollbars autoHide>
-            <General
-              key="general-config"
-              theme={theme}
-              {...editor}
-              showLoading={this.showLoading}
-              closeLoading={this.closeLoading}
-              sortBy={sortBy}
-            />
-            <ImageHosting
-              key="image-hosting-config"
-              id="anchor-image-hosting"
-              {...imageHostingConfig}
-            />
-            <MediumConfig
-              key="medium-config"
-              id="anchor-publish"
-              medium={mediumConfig.medium}
-            />
+            <div id="test">
+              <General
+                key="general-config"
+                theme={theme}
+                {...editor}
+                showLoading={this.showLoading}
+                closeLoading={this.closeLoading}
+                sortBy={sortBy}
+              />
+              <ImageHosting
+                key="image-hosting-config"
+                id="anchor-image-hosting"
+                {...imageHostingConfig}
+              />
+              <MediumConfig
+                key="medium-config"
+                id="anchor-publish"
+                medium={mediumConfig.medium}
+              />
 
-            <About
-              key="about-config"
-              id="anchor-about"
-            />
+              <About
+                key="about-config"
+                id="anchor-about"
+              />
+            </div>
           </Scrollbars>
         </div>
 

@@ -14,9 +14,9 @@ const ImageHosting = (props) => {
       title="Image Hosting"
       id={id}
     >
-      <GitHub {...github} />
+      <GitHub key="github" {...github} />
 
-      <Weibo {...weibo} />
+      <Weibo key="weibo" {...weibo} />
     </Module>
   );
 };

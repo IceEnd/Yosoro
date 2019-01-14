@@ -13,8 +13,12 @@ const Selector = React.memo((props) => {
   const { title, options, width, size, value, type, onChange } = props;
   return (
     <Row className="font-size-row">
-      <Col {...labelLayout} className="row-label">{title}:</Col>
-      <Col span="10">
+      <Col
+        key="label"
+        {...labelLayout}
+        className="row-label"
+      >{title}:</Col>
+      <Col key="view" span="10">
         <Select
           style={{ width }}
           size={size}
