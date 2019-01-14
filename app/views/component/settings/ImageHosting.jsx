@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Default from './images/Default';
 import GitHub from './images/GitHub';
 import Weibo from './images/Weibo';
 
@@ -8,12 +9,15 @@ import Module from './Module';
 
 
 const ImageHosting = (props) => {
-  const { id, github, weibo } = props;
+  const { id, default: defaultConfig, github, weibo } = props;
   return (
     <Module
       title="Image Hosting"
       id={id}
     >
+
+      <Default key="default" value={defaultConfig} />
+
       <GitHub key="github" {...github} />
 
       <Weibo key="weibo" {...weibo} />
@@ -23,6 +27,7 @@ const ImageHosting = (props) => {
 
 ImageHosting.displayName = 'SettingsImagesHosting';
 ImageHosting.propTypes = {
+  default: PropTypes.oneOf(['github', 'weibo']).isRequired,
   github: PropTypes.shape({
     repo: PropTypes.string.isRequired,
     branch: PropTypes.string.isRequired,

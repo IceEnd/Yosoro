@@ -69,7 +69,7 @@ export default class App extends Component {
       oneDriveTokenStatus: PropTypes.number.isRequired,
       platform: PropTypes.string.isRequired,
       imageHostingConfig: PropTypes.shape({
-        default: PropTypes.oneOf(['github']).isRequired,
+        default: PropTypes.oneOf(['github', 'weibo']).isRequired,
         github: PropTypes.shape({
           repo: PropTypes.string.isRequired,
           branch: PropTypes.string.isRequired,
