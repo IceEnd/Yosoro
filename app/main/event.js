@@ -16,6 +16,8 @@ import {
   setDocumentsPath,
   splitFlag,
 } from './paths';
+
+import uploder from './services/uploader/index';
 import { markedToHtml } from '../views/utils/utils';
 import schedule from './schedule';
 import PDF from './pdf';
@@ -626,6 +628,23 @@ export function eventListener(menus) {
     cm.items[target].submenu.items[index].checked = true;
     Menu.setApplicationMenu(cm);
   });
+
+  // upload picture
+  ipcMain.on('pic-upload', async (event, paylod) => {
+    try {
+      const res = await uploder(paylod);
+      event.returnValue = {
+        code: 0,
+        data: res,
+      };
+    } catch (ex) {
+      console.warn(ex);
+      event.returnValue = {
+        code: -1,
+        data: ex,
+      };
+    }
+  });
 }
 
 export function removeEventListeners() {
@@ -659,6 +678,7 @@ export function removeEventListeners() {
     'get-local-avatar',
     'get-docuemnts-save-path',
     'app-switch-edit-mode',
+    'pic-upload',
   ];
   for (const listener of listeners) {
     ipcMain.removeAllListeners(listener);

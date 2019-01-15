@@ -16,7 +16,7 @@ test('FormatDate new date', () => {
   expect(/^\d{4}-\d{2}-\d{2} {2}\d{2}:\d{2}:\d{2}$/g.test(resNormal)).toBe(true);
 
   const resUpload = formatDate(date, 'upload');
-  expect(/^\d{4}-\d{2}-\d{2}\.\d{2}\.\d{2}\.\d{2}$/g.test(resUpload)).toBe(true);
+  expect(/\d{14}/g.test(resUpload)).toBe(true);
 });
 
 

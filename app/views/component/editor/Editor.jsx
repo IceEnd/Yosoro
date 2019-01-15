@@ -11,6 +11,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import { UPLOAD_IMAGE } from 'Actions/imageHosting';
 import { saveNote } from 'Actions/projects';
 import { updateMarkdownHtml } from 'Actions/markdown';
+import { isCanUpload } from 'Utils/db/app';
 import { throttle, debounce } from 'Utils/utils';
 import { withDispatch, withTheme } from 'Components/HOC/context';
 import Notification from '../share/Notification';
@@ -339,16 +340,17 @@ export default class Editor extends Component {
   @autobind
   handleUpload(cm, files) {
     const { imageHostingConfig } = this.props;
-    const current = imageHostingConfig.default;
-    if (!imageHostingConfig[current].token) {
+    // const  = imageHostingConfig.default;
+    if (!isCanUpload()) {
       uploadNotification.show();
-      return null;
+      return;
     }
     const uuid = `${Date.now()}${key++}`;
     cm.doc.replaceSelection(`![Uploading ${uuid}]()`);
     this.props.dispatch({
       type: UPLOAD_IMAGE,
-      current,
+      // current,
+      imageHostingConfig,
       files,
       uuid,
       from: 'editor',

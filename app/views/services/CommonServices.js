@@ -20,6 +20,9 @@ export default class CommonServices {
     }
     fetch(targetUrl, {
       method,
+      header: {
+        'X-Custom-user-agent': 'Yosoro',
+      },
       body,
     })
       .then((response) => {

@@ -48,7 +48,7 @@ export function formatDate(date, type = 'normal') {
   if (type === 'normal') {
     return `${year}-${month}-${day}  ${hour}:${minutes}:${seconds}`;
   }
-  return `${year}-${month}-${day}.${hour}.${minutes}.${seconds}`;
+  return `${year}${month}${day}${hour}${minutes}${seconds}`;
 }
 
 /**
@@ -198,7 +198,7 @@ export function getWebviewPreJSPath() {
 }
 
 /**
- * @description blob to base6
+ * @description blob to base64
  */
 export function blobToBase64(blob) {
   const reader = new FileReader();

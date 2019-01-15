@@ -3,7 +3,8 @@ import {
   call,
   takeEvery,
 } from 'redux-saga/effects';
-import GitHub from 'Services/GitHub';
+import { ipcRenderer } from 'electron';
+import { blobToBase64 } from 'Utils/utils';
 
 import {
   UPLOAD_IMAGE,
@@ -28,27 +29,33 @@ const successNotification = new Notification({
   key: 'upload-image-success-notification',
 });
 
-const github = new GitHub();
-
 function* handleUpload(action) {
-  const { files, current, from, uuid } = action;
-  let services;
-  if (current === 'github') {
-    services = github;
-  }
+  const { files, imageHostingConfig, from, uuid } = action;
   try {
-    const res = yield call(services.upload, files);
+    const base64 = yield call(blobToBase64, files);
+    const name = files.name;
+    const res = ipcRenderer.sendSync('pic-upload', {
+      imageHostingConfig,
+      files: {
+        name,
+        base64,
+      },
+    });
+    if (res.code !== 0) {
+      throw res.data;
+    }
+    const data = res.data;
     successNotification.show();
     if (from === 'editor') {
       yield put({
         type: REPLACE_UPLOAD_IMAGE_TEXT,
-        res,
+        data,
         uuid,
       });
     }
     yield put({
       type: UPLOAD_IMAGE_SUCCESS,
-      res,
+      data,
       uuid,
     });
   } catch (ex) {

@@ -487,3 +487,23 @@ export function getNote(uuid) {
   }
   return notes[0];
 }
+
+/**
+ * 判断是否可以上传图片
+ */
+export function isCanUpload() {
+  const images = getAppImageHosting();
+  const { github, weibo, default: key } = images;
+  let res = false;
+  if (key === 'github' && github.token) {
+    res = true;
+  } else if (key === 'weibo') {
+    const { useCookie, cookie, username, password } = weibo;
+    if (useCookie && cookie) {
+      res = true;
+    } else if (!useCookie && username && password) {
+      res = true;
+    }
+  }
+  return res;
+}
