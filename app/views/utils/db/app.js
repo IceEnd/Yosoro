@@ -66,6 +66,7 @@ export function checkDefaults() {
         password: '',
         useCookie: false,
         cookie: '',
+        quality: 'large',
       },
     });
   }
@@ -103,6 +104,7 @@ export function getAppImageHosting() {
       password: '',
       useCookie: false,
       cookie: '',
+      quality: 'large',
     };
     images.weibo = weibo;
     db.set(IMAGE_HOSTING, images);

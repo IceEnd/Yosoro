@@ -138,15 +138,6 @@ export default class GitHub extends Component {
         }
         break;
       case 'branch':
-        if (value === '') {
-          this.changeWran(githubForm, key, 'empty');
-        } else if (!/\w+/ig.test(value)) {
-          this.changeWran(githubForm, key, 'error');
-        } else {
-          this.clearWran(githubForm, key);
-          flag = true;
-        }
-        break;
       case 'token':
         if (value === '') {
           this.changeWran(githubForm, key, 'empty');

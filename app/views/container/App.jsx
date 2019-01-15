@@ -77,6 +77,13 @@ export default class App extends Component {
           path: PropTypes.string.isRequired,
           domain: PropTypes.string.isRequired,
         }).isRequired,
+        weibo: PropTypes.shape({
+          username: PropTypes.string.isRequired,
+          password: PropTypes.string.isRequired,
+          cookie: PropTypes.string.isRequired,
+          useCookie: PropTypes.bool.isRequired,
+          quality: PropTypes.oneOf(['thumbnail', 'mw690', 'large']).isRequired,
+        }).isRequired,
       }),
       mediumConfig: PropTypes.shape({
         id: PropTypes.string.isRequired,

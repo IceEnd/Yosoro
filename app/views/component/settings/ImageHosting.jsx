@@ -40,7 +40,8 @@ ImageHosting.propTypes = {
     password: PropTypes.string.isRequired,
     cookie: PropTypes.string.isRequired,
     useCookie: PropTypes.bool.isRequired,
-  }),
+    quality: PropTypes.oneOf(['thumbnail', 'mw690', 'large']).isRequired,
+  }).isRequired,
   id: PropTypes.string.isRequired,
 };
 

@@ -91,6 +91,13 @@ export default class Settings extends Component {
         path: PropTypes.string.isRequired,
         domain: PropTypes.string.isRequired,
       }).isRequired,
+      weibo: PropTypes.shape({
+        username: PropTypes.string.isRequired,
+        password: PropTypes.string.isRequired,
+        cookie: PropTypes.string.isRequired,
+        useCookie: PropTypes.bool.isRequired,
+        quality: PropTypes.oneOf(['thumbnail', 'mw690', 'large']).isRequired,
+      }).isRequired,
     }).isRequired,
     mediumConfig: PropTypes.shape({
       medium: PropTypes.shape({

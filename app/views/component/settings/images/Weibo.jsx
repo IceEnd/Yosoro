@@ -3,11 +3,23 @@ import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
 import { CHANGE_IMAGE_HOSTING } from 'Actions/app';
 import { withDispatch } from 'Components/HOC/context';
-import { Form, Input, Icon, Row, Col, Switch, Button } from 'antd';
+import { Form, Input, Icon, Row, Col, Switch, Button, Radio } from 'antd';
 
 import formItemLayout from './layout';
 
 const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
+
+const qualities = [{
+  value: 'thumbnail',
+  label: 'Thumbnail',
+}, {
+  value: 'mw690',
+  label: 'mw690',
+}, {
+  value: 'large',
+  label: 'Large',
+}];
 
 @withDispatch
 export default class Weibo extends Component {
@@ -17,6 +29,7 @@ export default class Weibo extends Component {
     password: PropTypes.string.isRequired,
     cookie: PropTypes.string.isRequired,
     useCookie: PropTypes.bool.isRequired,
+    quality: PropTypes.oneOf(['thumbnail', 'mw690', 'large']).isRequired,
   };
 
   constructor(props) {
@@ -33,7 +46,7 @@ export default class Weibo extends Component {
           ...status,
         },
         password: {
-          value: props.username,
+          value: props.password,
           label: 'Password',
           ...status,
         },
@@ -44,6 +57,11 @@ export default class Weibo extends Component {
         cookie: {
           value: props.cookie,
           label: 'Cookie',
+          ...status,
+        },
+        quality: {
+          value: props.quality,
+          label: 'Quality',
           ...status,
         },
       },
@@ -87,6 +105,7 @@ export default class Weibo extends Component {
         }
         break;
       case 'password':
+      case 'cookie':
         if (value === '') {
           this.changeWran(form, key, 'empty');
         } else if (!/\w+/ig.test(value)) {
@@ -96,10 +115,10 @@ export default class Weibo extends Component {
           flag = true;
         }
         break;
-      case 'cookie':
+      case 'quality':
         if (value === '') {
           this.changeWran(form, key, 'empty');
-        } else if (!/\w+/ig.test(value)) {
+        } else if (['thumbnail', 'mw690', 'large'].indexOf(value) === -1) {
           this.changeWran(form, key, 'error');
         } else {
           this.clearWran(form, key);
@@ -114,13 +133,16 @@ export default class Weibo extends Component {
 
   @autobind
   handleSubmit() {
+    if (!this.state.hasEdit) {
+      return;
+    }
     const form = this.state.form;
     const useCookie = form.useCookie.value;
     let flag = false;
     if (useCookie) {
-      flag = this.checkValue('cookie');
+      flag = this.checkValue('cookie') && this.checkValue('quality');
     } else {
-      flag = this.checkValue('username') && this.checkValue('password');
+      flag = this.checkValue('username') && this.checkValue('password') && this.checkValue('quality');
     }
     if (flag) {
       this.props.dispatch({
@@ -131,6 +153,7 @@ export default class Weibo extends Component {
           password: form.password.value,
           useCookie: form.useCookie.value,
           cookie: form.cookie.value,
+          quality: form.quality.value,
         },
       });
     }
@@ -231,6 +254,27 @@ export default class Weibo extends Component {
               onChange={e => this.handleInput(e.target.value, 'cookie')}
               onBlur={() => this.handleBlur('cookie')}
             />
+          </FormItem>
+
+          <FormItem
+            key="quality"
+            label={form.quality.label}
+            help={form.quality.help}
+            validateStatus={form.quality.validateStatus}
+            required
+            {...formItemLayout}
+          >
+            <RadioGroup
+              value={form.quality.value}
+              onChange={e => this.handleInput(e.target.value, 'quality')}
+            >
+              {qualities.map(item => (
+                <Radio
+                  key={item.name}
+                  value={item.value}
+                >{item.label}</Radio>
+              ))}
+            </RadioGroup>
           </FormItem>
         </Form>
 
