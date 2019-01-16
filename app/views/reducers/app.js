@@ -78,10 +78,11 @@ export default function lounchApp(state = {
       const { mode, fromApp } = action;
       const settings = state.settings;
       settings.editorMode = mode;
-      ipcRenderer.send('app-switch-edit-mode', mode);
+      updateAppSettings(settings);
       if (!fromApp) {
-        updateAppSettings(settings);
+        ipcRenderer.send('app-switch-edit-mode', mode);
       }
+      updateAppSettings(settings);
       const newState = assign({}, state, {
         settings,
       });

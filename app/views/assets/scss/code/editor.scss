@@ -9,27 +9,82 @@
 	}
 
 	.CodeMirror-linenumber {
+		padding-right: 15px;
 		color: rgba($color: #999, $alpha: 0.5);
 	}
 
 	.CodeMirror-line {
 		&.header {
-			height: 2em;
-			line-height: 2em;
+			line-height: 2.2em !important;
+			height: 2.2em !important;
 		}
 	}
 
 	.cm-header {
-		font-size: 1.5em;
+
+		&.cm-header-1 {
+			font-size: 1.5em;
+
+			&.cm-header-hash {
+				font-size: 1.45em;
+			}
+		}
+
+		&.cm-header-2 {
+			font-size: 1.4em;
+
+			&.cm-header-hash {
+				font-size: 1.35em;
+			}
+		}
+
+		&.cm-header-3 {
+			font-size: 1.3em;
+
+			&.cm-header-hash {
+				font-size: 1.25em;
+			}
+		}
+
+		&.cm-header-4 {
+			font-size: 1.2em;
+
+			&.cm-header-hash {
+				font-size: 1.15em;
+			}
+		}
+
+		&.cm-header-5 {
+			font-size: 1.1em;
+
+			&.cm-header-hash {
+				font-size: 1.05em
+			}
+		}
+
+		&.cm-header-6 {
+			font-size: 1em;
+
+			&.cm-header-hash {
+				font-size: 1em;
+			}
+		}
 
 		&.cm-header-hash {
-			font-size: 1.2em;
 			color: rgba(102, 128, 153, 0.4);
 		}
 	}
 
 	.cm-em, .cm-strong {
 		color: #fd9526;
+	}
+
+	.cm-formatting-latex-block {
+		font-size: 1.2em;
+		font-weight: bold;
+		padding: 0;
+		color: #caa;
+		font-style: italic;
 	}
 
 	.cm-inline-code {

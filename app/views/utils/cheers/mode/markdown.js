@@ -109,6 +109,14 @@ CodeMirror.defineMode('markdown', (cmCfg, modeCfg) => {
     ']': /^(?:[^\\[\]]|\\.|\[(?:[^\\[\]]|\\.)*\])*?(?=\])/,
   };
 
+  // switch mode
+  function switchMode(state, mode) {
+    state.localMode = modeCfg.fencedCodeBlockHighlighting && getMode(mode);
+    if (state.localMode) {
+      state.localState = CodeMirror.startState(state.localMode);
+    }
+  }
+
   function switchInline(stream, state, f) {
     state.f = f;
     state.inline = f;
@@ -701,10 +709,8 @@ CodeMirror.defineMode('markdown', (cmCfg, modeCfg) => {
       state.quote = 0;
       state.fencedEndRE = new RegExp(`${match[1]}+ *$`);
       // try switching mode
-      state.localMode = modeCfg.fencedCodeBlockHighlighting && getMode(match[2]);
-      if (state.localMode) {
-        state.localState = CodeMirror.startState(state.localMode);
-      }
+      switchMode(state, getMode(match[2]));
+
       state.f = local; // eslint-disable-line
       state.block = local; // eslint-disable-line
       if (modeCfg.highlightFormatting) {
@@ -727,6 +733,10 @@ CodeMirror.defineMode('markdown', (cmCfg, modeCfg) => {
     ) { // latex block
       state.quote = 0;
       state.fencedEndRE = /^(\$+)\s*$/;
+
+      // try switching mode
+      switchMode(state, 'stex');
+
       state.f = local; // eslint-disable-line
       state.block = local; // eslint-disable-line
       if (modeCfg.highlightFormatting) {

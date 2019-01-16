@@ -26,7 +26,7 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 - Management notes
 - Support **Latex** math formulas.
 - File synchronization(OneDrive is supported)
-- Image upload (GitHub is supported)
+- Image upload (:white_check_mark: GitHub, :white_check_mark: Weibo)
 - Export notes as markdown or html or pdf
 - Post article(Supports Medium)
 
