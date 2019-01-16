@@ -4,7 +4,7 @@ import {
   takeEvery,
 } from 'redux-saga/effects';
 import { ipcRenderer } from 'electron';
-import { blobToBase64 } from 'Utils/utils';
+import { blobToBase64, formatDate } from 'Utils/utils';
 
 import {
   UPLOAD_IMAGE,
@@ -33,7 +33,7 @@ function* handleUpload(action) {
   const { files, imageHostingConfig, from, uuid } = action;
   try {
     const base64 = yield call(blobToBase64, files);
-    const name = files.name;
+    const name = `${formatDate(new Date(), 'upload')}-${files.name}`;
     const res = ipcRenderer.sendSync('pic-upload', {
       imageHostingConfig,
       files: {

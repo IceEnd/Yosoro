@@ -9,6 +9,7 @@ import formItemLayout from './layout';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
+const TextArea = Input.TextArea;
 
 const qualities = [{
   value: 'thumbnail',
@@ -234,7 +235,7 @@ export default class Weibo extends Component {
             {...formItemLayout}
           >
             <Switch
-              value={form.useCookie.value}
+              checked={form.useCookie.value}
               onChange={checked => this.handleInput(checked, 'useCookie')}
             />
           </FormItem>
@@ -247,7 +248,8 @@ export default class Weibo extends Component {
             required={useCookie}
             {...formItemLayout}
           >
-            <Input
+            <TextArea
+              rows={2}
               disabled={!useCookie}
               placeholder="Cookie"
               value={form.cookie.value}

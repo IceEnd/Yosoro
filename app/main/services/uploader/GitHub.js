@@ -1,5 +1,4 @@
-import request from 'request-promise-native';
-import { formatDate } from '../../../views/utils/utils';
+import Request from './Request';
 
 const root = 'https://api.github.com';
 
@@ -7,17 +6,16 @@ const upload = async (files, config) => {
   const { branch, path, repo, token } = config;
   const { name, base64 } = files;
   const content = base64.replace(/^data:image\/(png|jpe?g|svg|gif);base64,/ig, '');
-  const uploadName = `${formatDate(new Date(), 'upload')}-${name}`;
   const body = {
     message: 'Uploaded by Yosoro',
     content,
     branch,
-    path: `${path}/${encodeURI(uploadName)}`,
+    path: `${path}/${encodeURI(name)}`,
   };
-  const url = `${root}/repos/${repo}/contents${encodeURI(path)}/${encodeURI(uploadName)}`;
+  const url = `${root}/repos/${repo}/contents${encodeURI(path)}/${encodeURI(name)}`;
 
   try {
-    const res = await request({
+    const res = await Request({
       url,
       method: 'PUT',
       headers: {
@@ -29,7 +27,7 @@ const upload = async (files, config) => {
     });
     if (res.content) {
       return {
-        name: uploadName,
+        name,
         url: res.content.download_url,
       };
     }
