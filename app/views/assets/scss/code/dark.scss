@@ -3,9 +3,15 @@
 	&.CodeMirror {
 		background: #1e1e1e; color: #ffffff;
 
+		.cm-header {
+			&.cm-header-hash {
+				color: rgba(200, 200, 250, 0.4);
+			}
+		}
+
 		.cm-inline-code {
 			background-color: #2e2d29;
-			color: #787878;
+			color: #ffc000;
 		}
 
 		.cheers-codeblock-bg {

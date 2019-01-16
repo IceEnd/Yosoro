@@ -16,7 +16,6 @@ const login = (username, password) => Request({
   },
   json: true,
   resolveWithFullResponse: true,
-  jar: request.jar(),
 });
 
 const upload = async (files, config) => {

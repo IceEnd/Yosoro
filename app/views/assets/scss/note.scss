@@ -577,35 +577,6 @@
 			font-family: monospace, "BlinkMacSystemFont", "Helvetica Neue", Helvetica, "Microsoft YaHei", "微软雅黑", "Arial", "Lucida Grande", "Segoe UI", Ubuntu, Cantarell, sans-serif;
 			background-color: #fcfdfe;
 			height: 100%;
-
-			.CodeMirror-gutters {
-				background-color: #fcfdfe;
-				border-right: 0;
-			}
-			.CodeMirror-linenumber {
-				color: rgba($color: #999, $alpha: 0.5);
-			}
-
-			.cm-header {
-				&.cm-header-1 {
-					font-size: 1.25em;
-				}
-				&.cm-header-2 {
-					font-size: 1.2em;
-				}
-				&.cm-header-3 {
-					font-size: 1.15em;
-				}
-				&.cm-header-4 {
-					font-size: 1.1em;
-				}
-				&.cm-header-5 {
-					font-size: 1.05em;
-				}
-				&.cm-header-6 {
-					font-size: 1em;
-				}
-			}
 		}
 
 		&.drag {

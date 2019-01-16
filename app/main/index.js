@@ -40,7 +40,6 @@ function handleSquirrelEvent() {
   switch (squirrelEvent) {
     case '--squirrel-install':
     case '--squirrel-updated': {
-
       // Install desktop and start menu shortcuts
       spawnUpdate(['--createShortcut', exeName]);
       setTimeout(app.quit, 1000);
