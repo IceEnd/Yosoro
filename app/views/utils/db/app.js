@@ -504,6 +504,8 @@ export function isCanUpload() {
     } else if (!useCookie && username && password) {
       res = true;
     }
+  } else if (key === 'SM.MS') {
+    res = true;
   }
   return res;
 }

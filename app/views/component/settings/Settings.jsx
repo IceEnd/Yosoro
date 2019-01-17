@@ -83,7 +83,7 @@ export default class Settings extends Component {
   static propTypes = {
     theme: PropTypes.string.isRequired,
     imageHostingConfig: PropTypes.shape({
-      default: PropTypes.oneOf(['github', 'weibo']).isRequired,
+      default: PropTypes.oneOf(['github', 'weibo', 'SM.MS']).isRequired,
       github: PropTypes.shape({
         repo: PropTypes.string.isRequired,
         branch: PropTypes.string.isRequired,

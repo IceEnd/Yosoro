@@ -16,6 +16,10 @@ const hosts = [{
   icon: 'weibo-circle',
   label: 'Weibo',
   value: 'weibo',
+}, {
+  icon: '',
+  label: 'SM.MS',
+  value: 'SM.MS',
 }];
 
 @withDispatch
@@ -23,7 +27,7 @@ export default class DefaultHost extends PureComponent {
   static displayName = 'SettingsImagesHostingDefault';
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    value: PropTypes.oneOf(['github', 'weibo']).isRequired,
+    default: PropTypes.oneOf(['github', 'weibo', 'SM.MS']).isRequired,
   };
 
   onChange = (e) => {
@@ -53,7 +57,8 @@ export default class DefaultHost extends PureComponent {
               <Radio
                 key={item.name}
                 value={item.value}
-              ><Icon type={item.icon} /> {item.label}</Radio>
+              >
+                {item.icon ? (<Icon type={item.icon} />) : null} {item.label}</Radio>
             ))}
           </RadioGroup>
         </FormItem>
