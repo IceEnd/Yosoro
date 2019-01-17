@@ -103,6 +103,7 @@ export default class Editor extends Component {
     if (prevProps.uuid !== this.props.uuid) {
       this.removeChangeEvent(); // 取消change事件
       this.codeMirror.setValue(this.props.defaultContent);
+      this.codeMirror.clearHistory();
       this.addChangeEvent(); // 重新绑定change事件
     }
   }
