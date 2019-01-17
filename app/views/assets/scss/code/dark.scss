@@ -34,6 +34,24 @@
 		}
 	}
 
+	/* start---table */
+	.table-row {
+		.cm-table-sep {
+			color: rgba(200, 200, 250, 0.4) !important;
+		}
+
+		&.table-row-1 {
+			color: rgba(200, 200, 250, 0.4) !important;
+		}
+	}
+	/* end---table */
+
+	.CodeMirror-line {
+		&.header {
+			border-color: rgba(200, 200, 250, 0.2) !important;
+		}
+	}
+
 	.cm-header {
 		color: #1188bc;
 	}

@@ -3,6 +3,10 @@
 	background-color: #fcfdfe;
 	height: 100%;
 
+	.CodeMirror-gutters, .CodeMirror-lines {
+		padding-right: 10px;
+	}
+
 	.CodeMirror-gutters {
 		background-color: #fcfdfe;
 		border-right: 0;
@@ -13,15 +17,35 @@
 		color: rgba($color: #999, $alpha: 0.5);
 	}
 
+	/* start: CODE */
+	.cm-keyword {
+		font-weight: bold;
+	}
+	/* end: CODE */
+
+	/* start---table */
+	.table-row {
+		.cm-table-sep {
+			font-weight: bold;
+			color: #999;
+		}
+
+		&.table-row-1 {
+			font-weight: bold;
+			color: #999;
+		}
+	}
+	/* end---table */
+
 	.CodeMirror-line {
 		&.header {
-			line-height: 2.2em !important;
-			height: 2.2em !important;
+			height: 2.4em;
+			line-height: 2.4em;
+			border-bottom: 1px solid #eee;
 		}
 	}
 
 	.cm-header {
-
 		&.cm-header-1 {
 			font-size: 1.5em;
 
@@ -82,7 +106,7 @@
 	.cm-formatting-latex-block {
 		font-size: 1.2em;
 		font-weight: bold;
-		padding: 0;
+		padding: 0 !important;
 		color: #caa;
 		font-style: italic;
 	}
