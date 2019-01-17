@@ -1,5 +1,5 @@
 import queryString from 'querystring';
-import fetch from 'node-fetch';
+import request from 'request-promise-native';
 import nodeUrl from 'url';
 import electron from 'electron';
 
@@ -109,11 +109,12 @@ export default class Oauth2 {
       });
     }
 
-    return fetch(this.config.tokenUrl, {
-      method: 'POST',
+    return request({
+      url: this.config.tokenUrl,
       headers: header,
       body: queryString.stringify(data),
-    }).then(res => res.json());
+      json: true,
+    });
   }
 
   getAccessToken(opts) {
