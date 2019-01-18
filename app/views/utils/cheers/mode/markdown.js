@@ -203,7 +203,6 @@ CodeMirror.defineMode('markdown', (cmCfg, modeCfg) => {
         }
       }
       if (state.code) {
-        // debugger;
         if (state.inlineCode) {
           styles.push(tokenTypes.inlineCode);
         } else if (state.codeBegin) {
@@ -701,7 +700,7 @@ CodeMirror.defineMode('markdown', (cmCfg, modeCfg) => {
         // Reset inline styles which shouldn't propagate aross list items
         state.em = false;
         state.strong = false;
-        state.code = false;
+        state.code = 0;
         state.strikethrough = false;
 
         state.list = null;
@@ -858,7 +857,6 @@ CodeMirror.defineMode('markdown', (cmCfg, modeCfg) => {
     } else if (stream.peek() === '[') {
       return switchInline(stream, state, footnoteLink); // eslint-disable-line
     }
-
     return switchInline(stream, state, state.inline);
   }
 

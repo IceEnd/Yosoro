@@ -48,7 +48,9 @@
 
 	.CodeMirror-line {
 		&.header {
-			border-color: rgba(200, 200, 250, 0.2) !important;
+			&::after {
+				border-color: rgba(200, 200, 250, 0.2) !important;
+			}
 		}
 	}
 
