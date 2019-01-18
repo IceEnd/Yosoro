@@ -391,6 +391,7 @@ export default class Editor extends Component {
             ref={node => (this.container = node)}
           />
         </Scrollbars>
+        {drag ? (<div className="editor-layer" />) : null}
         { split ? (
           <span
             className="resize-right"

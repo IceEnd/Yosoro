@@ -570,6 +570,7 @@
 		overflow: hidden;
 
 		.code-container {
+			position: relative;
 			padding: 8px 0 0 8px;
 			background-color: #fcfdfe;
 		}
@@ -595,6 +596,15 @@
 
 		&.immersion-mode {
 			padding: 0.7rem;
+		}
+
+		.editor-layer {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			@include zoom-in(99);
 		}
 
 		.resize-right {

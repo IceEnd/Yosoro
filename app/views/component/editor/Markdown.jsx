@@ -143,7 +143,7 @@ export default class Markdown extends Component {
       return null;
     }
     return (
-      <div className="markdown">
+      <div className="markdown select-none">
         <div
           className="markdown-content"
           // onMouseDown={this.handleMouseDown}

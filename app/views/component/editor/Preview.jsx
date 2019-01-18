@@ -238,6 +238,7 @@ export default class Preview extends Component {
           style={{ width: bodyWidth }}
           ref={node => (this.previewBody = node)}
         >
+          {drag ? (<div className="preview-layer" />) : null}
           <webview
             id="webview"
             className="preview-webview"
