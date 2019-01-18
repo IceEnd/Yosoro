@@ -9,6 +9,7 @@ import SVG from 'Components/SVG';
 import Note from 'Components/note/Note';
 import Trash from 'Components/trash/Trash';
 import Cloud from 'Components/cloud/Cloud';
+import Images from 'Components/images/Images';
 import Settings from 'Components/settings/Settings';
 import { Provider } from 'Components/HOC/context';
 import { getTokens } from 'Utils/db/app';
@@ -401,12 +402,12 @@ export default class App extends Component {
                     />
                   )}
                 />
-                {/* <Route
+                <Route
                   path="/images"
                   render={() => (
-                    <ImageHosting dispatch={dispatch} />
+                    <Images />
                   )}
-                /> */}
+                />
                 {/* cloud dirve */}
                 <Route
                   path="/cloud"

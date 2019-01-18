@@ -58,6 +58,21 @@ const AppToolBar = (props) => {
           </NavLink>
         </li>
         <li className="menu-item">
+          <NavLink
+            to="/images"
+            activeClassName="cur"
+          >
+            <span className="menu-item-radius">
+              <SVGIcon
+                className="menu-svg"
+                viewBox="0 0 548.176 548.176"
+                id="#icon_svg_pictrue"
+                useClassName="menu-svg-use use-img"
+              />
+            </span>
+          </NavLink>
+        </li>
+        <li className="menu-item">
           <NavLink to="/trash" activeClassName="cur">
             <span className="menu-item-radius">
               <SVGIcon

@@ -1,0 +1,8 @@
+@import "common.scss";
+
+.images-root {
+	flex: 1 1 auto;
+	@include display-flex;
+	flex-direction: column;
+	position: relative;
+}
