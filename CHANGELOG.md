@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v1.1.4
+
+### Nwe Features
+
+- Image upload support Weibo, SMMS
+- Optimize editor
+
+### Bugfx
+
+- Fix mode switch bug
+- Fix settings page navigation
+
+----
+
 ## v1.1.2
 
 ### New Features
