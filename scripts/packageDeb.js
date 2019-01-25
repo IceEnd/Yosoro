@@ -4,7 +4,7 @@ import { productName, version } from '../package.json';
 
 const options = {
   bin: 'Yosoro',
-  // name: 'Yosoro',
+  version,
   productName,
   genericName: productName,
   categories: ['Utility'],

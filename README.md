@@ -29,6 +29,7 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 - Image upload (:white_check_mark: GitHub, :white_check_mark: Weibo, :white_check_mark: [SM.MS](https://sm.ms))
 - Export notes as markdown or html or pdf
 - Post article(Supports Medium)
+- Beautiful theme
 
 ## Theme
 
@@ -36,7 +37,7 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 
 | Dark :crescent_moon:| Light :high_brightness: |
 |:-------:|:-----:|
-| ![](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-10-20.22.38.48-image.png) | ![](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-10-20.22.39.33-image.png) |
+| ![](https://ws1.sinaimg.cn/large/dcaa3cb4ly1fzhr9q8zssj219t0u0e81.jpg) | ![](https://ws1.sinaimg.cn/large/dcaa3cb4ly1fzhr8m6kkfj219t0u0e81.jpg) |
 
 ## Demo
 
