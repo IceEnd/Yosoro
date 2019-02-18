@@ -133,15 +133,6 @@ function createWindow() {
     fileItemMenu,
   });
 
-  // Tray模块
-  // const iconPath = path.join(__dirname, './resource/tray-icon.png');
-  // tray = new Tray(iconPath);
-  // const contextMenu = Menu.buildFromTemplate([{
-  //   label: 'Tray',
-  // }]);
-  // tray.setToolTip('This is my yosoyo-dektop.');
-  // tray.setContextMenu(contextMenu);
-
   const webContents = mainWindow.webContents;
 
   webContents.on('will-navigate', (e, linkUrl) => {
@@ -192,21 +183,8 @@ if (!gotTheLock) {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  // if (tray) {
-  //   tray.destroy();
-  // }
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  app.quit();
 });
-
-// app.on('browser-window-created', (event, win) => {
-//   win.webContents.on('context-menu', (e, params) => {
-//     explorerMenu.popup(win, params.x, params.y)
-//   });
-// });
 
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
