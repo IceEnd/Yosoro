@@ -7,6 +7,7 @@ import { AUTH_MEDIUM, SIGN_OUT_MEDIUM } from 'Actions/medium';
 import { withDispatch } from 'Components/HOC/context';
 
 import Module from './Module';
+import formItemLayout from './layout';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -150,22 +151,13 @@ export default class MediumConfig extends Component {
   render() {
     const { mediumForm } = this.state;
     const { medium, id } = this.props;
-    const formItemLayout = {
-      labelCol: {
-        offset: 1,
-        span: 6,
-      },
-      wrapperCol: {
-        span: 12,
-      },
-    };
     return (
       <Module
         title="Publish Config"
         id={id}
       >
         <Row>
-          <Col span="4" offset="1">
+          <Col span={4} offset={1}>
             <h3>
               <Icon type="medium" /> Medium
             </h3>
@@ -212,13 +204,13 @@ export default class MediumConfig extends Component {
             {medium.username === ''
               ? 'You are not Sing in. Please add your token and save first.'
               : <Row>
-                <Col span="5">
+                <Col span={5}>
                   <a href={medium.url}>
                     <Avatar src={medium.imageUrl} />
                     <span>{medium.username}</span>
                   </a>
                 </Col>
-                <Col span="2">
+                <Col span={2}>
                   <Button
                     onClick={this.signout}
                   >Sign out</Button>
@@ -238,8 +230,8 @@ export default class MediumConfig extends Component {
             align="middle"
           >
             <Col
-              span="2"
-              offset="2"
+              span={2}
+              offset={2}
             >
               <Button
                 type="primary"
@@ -247,8 +239,8 @@ export default class MediumConfig extends Component {
               >Save</Button>
             </Col>
             <Col
-              span="2"
-              offset="1"
+              span={2}
+              offset={1}
             >
               <a onClick={this.handleOpenWiki}>
                 <Icon type="question-circle-o" />

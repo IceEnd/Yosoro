@@ -21,17 +21,17 @@ const About = (props) => {
       className="about-module"
     >
       <Row justify="center" type="flex">
-        <Col span="12" className="txt-center" style={{ paddingTop: '2rem' }} >
+        <Col span={12} className="txt-center" style={{ paddingTop: '2rem' }} >
           <img className="logo" src={logo} alt="logo" />
         </Col>
       </Row>
       <Row justify="center" type="flex">
-        <Col span="12" className="txt-center" style={{ paddingTop: '1rem' }} >
+        <Col span={12} className="txt-center" style={{ paddingTop: '1rem' }} >
           Current Version: {pkg.version}
         </Col>
       </Row>
       <Row justify="center" type="flex">
-        <Col span="24" className="txt-center" style={{ paddingTop: '1rem' }} >
+        <Col span={24} className="txt-center" style={{ paddingTop: '1rem' }} >
           <Button
             type="ghost"
             className="btn"

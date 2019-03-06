@@ -5,7 +5,7 @@ import { CHANGE_IMAGE_HOSTING } from 'Actions/app';
 import { withDispatch } from 'Components/HOC/context';
 import { Form, Input, Icon, Row, Col, Switch, Button, Radio } from 'antd';
 
-import formItemLayout from './layout';
+import formItemLayout from './../layout';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -185,7 +185,7 @@ export default class Weibo extends Component {
     return (
       <div className="image-hosting-item">
         <Row>
-          <Col span="4" offset="1">
+          <Col span={4} offset={1}>
             <h3>
               <Icon type="weibo" /> Weibo
             </h3>
@@ -272,7 +272,7 @@ export default class Weibo extends Component {
             >
               {qualities.map(item => (
                 <Radio
-                  key={item.name}
+                  key={item.label}
                   value={item.value}
                 >{item.label}</Radio>
               ))}
@@ -285,8 +285,8 @@ export default class Weibo extends Component {
           align="middle"
         >
           <Col
-            span="2"
-            offset="2"
+            span={2}
+            offset={2}
           >
             <Button
               type="primary"

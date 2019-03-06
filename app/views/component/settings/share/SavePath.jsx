@@ -58,10 +58,10 @@ export default class SavePath extends PureComponent {
     return (
       <Row className="font-size-row">
         <Col key="label" {...labelLayout} className="row-label">Note Save Path:</Col>
-        <Col key="view" span="10" style={{ padding: '0 .2em' }}>
+        <Col key="view" span={10} style={{ padding: '0 .2em' }}>
           <Input value={path} disabled />
         </Col>
-        <Col key="button" span="5" className="number-col">
+        <Col key="button" span={5} className="number-col">
           <Button
             onClick={this.handleClick}
           >

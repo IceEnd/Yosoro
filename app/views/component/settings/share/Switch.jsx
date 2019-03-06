@@ -16,7 +16,7 @@ const Index = React.memo((props) => {
     <Fragment>
       <Row className="font-size-row">
         <Col key="label" {...labelLayout} className="row-label">{title}:</Col>
-        <Col key="view" span="3" style={{ paddingLeft: '0.2em' }}>
+        <Col key="view" span={3} style={{ paddingLeft: '0.2em' }}>
           <Switch
             defaultChecked={value}
             onChange={v => onChange(type, v)}

@@ -1,6 +1,7 @@
 import path from 'path';
 import gulp from 'gulp';
 import gutil from 'gulp-util';
+import jeditor from 'gulp-json-editor';
 import del from 'del';
 import webpack from 'webpack';
 import webpackWeb from './webpack.config.renderer.prod.babel';
@@ -60,7 +61,10 @@ gulp.task('webpack:electron', ['clean:electron'], (cb) => {
 gulp.task('electron:resource', () => {
   gulp.src(path.join(__dirname, '../app/main/resource/**'))
     .pipe(gulp.dest(path.join(__dirname, '../lib/resource')));
-  gulp.src(path.join(__dirname, '../app/main/package.json'))
+  gulp.src(path.join(__dirname, '../package.json'))
+    .pipe(jeditor({
+      main: './main.js',
+    }))
     .pipe(gulp.dest(path.join(__dirname, '../lib')));
   gulp.src(path.join(__dirname, '../LICENSE'))
     .pipe(gulp.dest(path.join(__dirname, '../lib')));

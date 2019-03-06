@@ -69,7 +69,7 @@ export default class NoteWorkspace extends Component {
     editor: PropTypes.shape({
       fontSize: PropTypes.number.isRequired,
       previewFontSize: PropTypes.number.isRequired,
-      cursorPosition: PropTypes.number.isRequired,
+      cursorPosition: PropTypes.bool.isRequired,
     }).isRequired,
     markdownSettings: PropTypes.shape({
       editorWidth: PropTypes.number.isRequired,

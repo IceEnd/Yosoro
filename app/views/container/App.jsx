@@ -27,7 +27,7 @@ import 'Assets/scss/scrollbar.css';
 const { shell } = remote;
 
 function mapStateToProps(state) {
-  const { app, projects, markdown, note, drive, exportQueue, user, imageHosting, medium } = state;
+  const { app, projects, markdown, note, drive, exportQueue, user, imageHosting } = state;
   return {
     app,
     projectsData: projects,
@@ -37,7 +37,6 @@ function mapStateToProps(state) {
     exportQueue,
     user,
     imageHosting,
-    medium,
   };
 }
 
@@ -59,11 +58,11 @@ export default class App extends Component {
         markdownSettings: PropTypes.shape({
           editorWidth: PropTypes.number.isRequired,
         }).isRequired,
-        editor: {
+        editor: PropTypes.shape({
           fontSize: PropTypes.number.isRequired,
           previewFontSize: PropTypes.number.isRequired,
-          cursorPosition: PropTypes.number.isRequired,
-        },
+          cursorPosition: PropTypes.bool.isRequired,
+        }),
         defaultDrive: PropTypes.string.isRequired,
         sortBy: PropTypes.oneOf(['normal', 'create-date', 'latest-date']).isRequired,
       }).isRequired,
@@ -87,12 +86,14 @@ export default class App extends Component {
         }).isRequired,
       }),
       mediumConfig: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        username: PropTypes.string.isRequired,
-        token: PropTypes.string.isRequired,
-        url: PropTypes.string.isRequired,
-        imageUrl: PropTypes.string.isRequired,
-        publishStatus: PropTypes.string.isRequired,
+        medium: PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          username: PropTypes.string.isRequired,
+          token: PropTypes.string.isRequired,
+          url: PropTypes.string.isRequired,
+          imageUrl: PropTypes.string.isRequired,
+          publishStatus: PropTypes.string.isRequired,
+        }).isRequired,
       }).isRequired,
     }),
     projectsData: PropTypes.shape({
@@ -152,18 +153,18 @@ export default class App extends Component {
       notes: PropTypes.array.isRequired,
       currentProjectName: PropTypes.string.isRequired,
     }).isRequired,
-    // 文件导出队列
+    // // 文件导出队列
     exportQueue: PropTypes.shape({
       status: PropTypes.number.isRequired,
     }).isRequired,
-    // 用户信息
+    // // 用户信息
     user: PropTypes.shape({
       avatar: PropTypes.string.isRequired,
     }).isRequired,
     // 图床
-    // imageHosting: PropTypes.shape({
-    //   uploadQueue: PropTypes.any,
-    // }).isRequired,
+    imageHosting: PropTypes.shape({
+      uploadQueue: PropTypes.any,
+    }).isRequired,
     history: PropTypes.any,
   };
 

@@ -35,7 +35,7 @@ export default merge.smart(baseConfig, {
       {
         test: /\.(js|jsx)$/,
         use: [
-          'react-hot-loader/webpack',
+          // 'react-hot-loader/webpack',
           {
             loader: 'babel-loader',
             options: {
@@ -59,6 +59,11 @@ export default merge.smart(baseConfig, {
     historyApiFallback: {
       verbose: true,
       disableDotRule: false,
+    },
+  },
+  resolve: {
+    alias: {
+      'react-dom': '@hot-loader/react-dom',
     },
   },
   devtool: 'cheap-eval-source-map',

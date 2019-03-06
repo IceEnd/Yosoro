@@ -51,7 +51,7 @@ export default class Editor extends Component {
     setDrag: PropTypes.func.isRequired,
     editorMode: PropTypes.string.isRequired,
     fontSize: PropTypes.number.isRequired,
-    cursorPosition: PropTypes.number.isRequired,
+    cursorPosition: PropTypes.bool.isRequired,
     editorWidthValue: PropTypes.number.isRequired,
     drag: PropTypes.bool.isRequired,
     setPreiewScrollRatio: PropTypes.func.isRequired,

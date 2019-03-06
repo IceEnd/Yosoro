@@ -6,12 +6,14 @@ env:
 parserOptions:
   ecmaVersion: 6
   sourceType: 'module'
+  ecmaFeatures:
+    legacyDecorators: true
 parser: 'babel-eslint'
 extends: alchemy
 settings:
   react:
     pragma: "React"
-    version: "16.3.0"
+    version: "16.8.0"
   import/resolver:
     webpack:
       config: './config/webpack.config.eslint.js'
@@ -30,3 +32,5 @@ rules:
       - 'info'
   import/no-extraneous-dependencies: 0
   import/no-unresolved: 0
+  import/no-named-as-default: 0
+  import/no-named-as-default-member: 0

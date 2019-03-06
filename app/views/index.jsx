@@ -3,9 +3,7 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import { createLogger } from 'redux-logger';
-import { AppContainer } from 'react-hot-loader';
 import createSagaMiddleware from 'redux-saga';
-// import { hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { createHashHistory } from 'history';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -54,18 +52,14 @@ for (let i = 0; i < sagaLen; i++) {
 
 const history = createHashHistory();
 syncHistoryWithStore(createHashHistory(), store);
-// const history = syncHistoryWithStore(createHashHistory(), store);
-// const history = syncHistoryWithStore(hashHistory, store);
 
 const render = (Component) => {
   ReactDOM.render(
-    <AppContainer>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <Component history={history} />
-        </PersistGate>
-      </Provider>
-    </AppContainer>,
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Component history={history} />
+      </PersistGate>
+    </Provider>,
     document.querySelector('#root')
   );
 };

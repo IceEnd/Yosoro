@@ -18,7 +18,7 @@ const Selector = React.memo((props) => {
         {...labelLayout}
         className="row-label"
       >{title}:</Col>
-      <Col key="view" span="10">
+      <Col key="view" span={10}>
         <Select
           style={{ width }}
           size={size}
@@ -43,8 +43,9 @@ Selector.propTypes = {
     value: PropTypes.any,
   })).isRequired,
   width: PropTypes.number.isRequired,
-  size: PropTypes.number.isRequired,
-  type: PropTypes.number.isRequired,
+  size: PropTypes.oneOf(['small', 'default', 'large']),
+  type: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 
   onChange: PropTypes.func.isRequired,
 };

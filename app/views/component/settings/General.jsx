@@ -19,14 +19,14 @@ export default class General extends PureComponent {
     theme: PropTypes.string.isRequired,
     fontSize: PropTypes.number.isRequired,
     previewFontSize: PropTypes.number.isRequired,
-    cursorPosition: PropTypes.number.isRequired,
+    cursorPosition: PropTypes.bool.isRequired,
     sortBy: PropTypes.oneOf(['create-date', 'latest-date']),
     showLoading: PropTypes.func.isRequired,
     closeLoading: PropTypes.func.isRequired,
   }
 
   handleChange = (type, value) => {
-    if (type === 'fontSize' || type === 'previewFontSize') {
+    if (type === 'editor.fontSize' || type === 'editor.previewFontSize') {
       if (typeof value !== 'number') {
         return;
       }

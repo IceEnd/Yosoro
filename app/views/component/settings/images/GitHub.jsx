@@ -5,7 +5,7 @@ import autobind from 'autobind-decorator';
 import { Form, Input, Icon, Row, Col, Button } from 'antd';
 import { CHANGE_IMAGE_HOSTING } from 'Actions/app';
 import { withDispatch } from 'Components/HOC/context';
-import formItemLayout from './layout';
+import formItemLayout from './../layout';
 
 const FormItem = Form.Item;
 const { shell } = remote;
@@ -116,6 +116,7 @@ export default class GitHub extends Component {
           branch: githubForm.branch.value,
           token: githubForm.token.value,
           path: githubForm.path.value,
+          domain: '',
         },
       });
     }
@@ -174,7 +175,7 @@ export default class GitHub extends Component {
     return (
       <div className="image-hosting-item">
         <Row>
-          <Col span="4" offset="1">
+          <Col span={4} offset={1}>
             <h3>
               <Icon type="github" /> GitHub
             </h3>
@@ -247,8 +248,8 @@ export default class GitHub extends Component {
             align="middle"
           >
             <Col
-              span="2"
-              offset="2"
+              span={2}
+              offset={2}
             >
               <Button
                 type="primary"
@@ -256,21 +257,14 @@ export default class GitHub extends Component {
               >Save</Button>
             </Col>
             <Col
-              span="2"
-              offset="1"
+              span={2}
+              offset={1}
             >
               <a onClick={this.handleOpenWiki}>
                 <Icon type="question-circle-o" />
               </a>
             </Col>
           </Row>
-          {/* <FormItem key="submit" {...wrapFormItemLayout}>
-            <Row>
-            ...tailFormItemLayout
-
-            </Row>
-
-          </FormItem> */}
         </Form>
       </div>
     );

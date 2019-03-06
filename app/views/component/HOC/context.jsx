@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const dispatchContext = React.createContext();
 
@@ -20,6 +21,9 @@ function hocCreator(propsName, displayName) {
       );
     };
     HOC.displayName = displayName;
+    HOC.propTypes = {
+      forwardedRef: PropTypes.any,
+    };
     return React.forwardRef((props, ref) =>
       <HOC {...props} forwardedRef={ref} />
     );

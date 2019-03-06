@@ -64,11 +64,12 @@ const SettingsToc = () => (
       showInkInFixed
       onClick={tocClick}
     >
-      { TOC_ITMES.map(item => (
+      { TOC_ITMES.map(({ title, href, type }) => (
         <Link
-          href={item.href}
+          key={title}
+          href={href}
           title={(
-            <LinkTitle type={item.type} title={item.title} />
+            <LinkTitle type={type} title={title} />
           )}
         />
       ))}
@@ -112,7 +113,7 @@ export default class Settings extends Component {
     editor: PropTypes.shape({
       fontSize: PropTypes.number.isRequired,
       previewFontSize: PropTypes.number.isRequired,
-      cursorPosition: PropTypes.number.isRequired,
+      cursorPosition: PropTypes.bool.isRequired,
     }).isRequired,
     sortBy: PropTypes.oneOf(['normal', 'create-date', 'latest-date']).isRequired,
   };

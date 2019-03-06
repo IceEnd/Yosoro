@@ -1,48 +1,48 @@
 {
   "presets": [
-    ["env", {
+    ["@babel/preset-env", {
       "targets": {
-        "node": 8,
-        "modules": false
+        "node": 10,
+        "esmodules": false
       }
-    }],
-    "flow"
+    }]
   ],
   "env": {
     "main": {
       "presets": [
-        ["env", {
+        ["@babel/preset-env", {
           "targets": {
-            "node": 8,
-            "modules": false
+            "node": 10,
+            "esmodules": false,
           }
-        }],
-        "flow"
-      ]
+        }]
+			]
     },
     "renderer": {
       "presets": [
-        ["env", {
+        ["@babel/preset-env", {
           "targets": {
-            "chrome": 61,
-            "modules": false
+           "chrome": 69,
+            "esmodules": false
           },
           "loose": true
         }],
-        "react",
-        "react-optimize",
-        "stage-0",
-        "flow"
+        "@babel/preset-react",
+        "@babel/preset-flow"
       ],
       "plugins": [
-        "transform-decorators-legacy",
-        "transform-async-to-generator",
-        ["import", { "libraryName": "antd", "style": "css" }]
+				"@babel/plugin-transform-async-to-generator",
+				["@babel/plugin-proposal-decorators", { "legacy": true }],
+				["@babel/plugin-proposal-class-properties", { "loose": true }],
+        ["import", {
+          "libraryName": "antd",
+          "style": "css"
+        }]
       ]
     },
     "test": {
-      "presets": [["env"], "react", "flow"]
+      "presets": ["@babel/preset-env"]
     }
   },
-  "plugins": ["transform-runtime"]
+  "plugins": ["@babel/plugin-transform-runtime"]
 }

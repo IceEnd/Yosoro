@@ -43,7 +43,7 @@ export default class Markdown extends Component {
     editor: PropTypes.shape({
       fontSize: PropTypes.number.isRequired,
       previewFontSize: PropTypes.number.isRequired,
-      cursorPosition: PropTypes.number.isRequired,
+      cursorPosition: PropTypes.bool.isRequired,
     }).isRequired,
     editorMode: PropTypes.string.isRequired,
   };

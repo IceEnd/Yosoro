@@ -13,7 +13,7 @@ export default class TOC extends PureComponent {
   static displayName = 'MarkdownTOC';
   static propTypes = {
     visible: PropTypes.bool.isRequired,
-    // content: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
   };
   static defaultProps = {
     visible: false,

@@ -6,9 +6,6 @@ const extractTextConf = (loaders = []) => ExtractTextPlugin.extract({
   use: [
     {
       loader: 'css-loader',
-      options: {
-        minimize: process.env.NODE_ENV !== 'development',
-      },
     },
     ...loaders,
   ],

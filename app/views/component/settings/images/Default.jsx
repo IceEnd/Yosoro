@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Form, Radio, Icon } from 'antd';
 import { withDispatch } from 'Components/HOC/context';
 import { CHANGE_IMAGE_HOSTING } from 'Actions/app';
-import formItemLayout from './layout';
+import formItemLayout from './../layout';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -27,7 +27,7 @@ export default class DefaultHost extends PureComponent {
   static displayName = 'SettingsImagesHostingDefault';
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    default: PropTypes.oneOf(['github', 'weibo', 'SM.MS']).isRequired,
+    value: PropTypes.oneOf(['github', 'weibo', 'SM.MS']).isRequired,
   };
 
   onChange = (e) => {
@@ -40,7 +40,7 @@ export default class DefaultHost extends PureComponent {
   }
 
   render() {
-    const { value } = this.props;
+    const value = this.props.value;
     return (
       <Form>
         <FormItem
@@ -55,7 +55,7 @@ export default class DefaultHost extends PureComponent {
           >
             {hosts.map(item => (
               <Radio
-                key={item.name}
+                key={item.label}
                 value={item.value}
               >
                 {item.icon ? (<Icon type={item.icon} />) : null} {item.label}</Radio>
