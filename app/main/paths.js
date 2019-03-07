@@ -1,7 +1,7 @@
 import { app } from 'electron';
 import fs from 'fs';
 import FSDB from './utils/FSDB';
-// import { initConfig } from './utils/config';
+import Database from './utils/Database';
 
 export const splitFlag = process.platform === 'win32' ? '\\' : '/';
 
@@ -36,6 +36,8 @@ try {
   console.error(ex);
 }
 
+export const IMAGES_DB_PATH = `${settingsDB.data.documentsRoot}${splitFlag}IMAGES_DB.ysrdb`;
+
 let DOCUMENTS_ROOT = settingsDB.data.documentsRoot || appDataPath;
 let DOCUMENTS_PATH = `${DOCUMENTS_ROOT}${splitFlag}documents`;
 let PROJECTS_PATH = `${DOCUMENTS_PATH}${splitFlag}projects`;
@@ -54,6 +56,15 @@ export function setDocumentsPath(rootPath) {
 
 export const DESKTOP_PATH = app.getPath('desktop');
 
+function initDB() {
+  global.yosoroDB = {
+    image: new Database({
+      filename: IMAGES_DB_PATH,
+      autoload: true,
+    }),
+  };
+}
+
 export function initWorkSpace() {
   try {
     if (!fs.existsSync(DOCUMENTS_PATH)) {
@@ -65,6 +76,7 @@ export function initWorkSpace() {
     if (!fs.existsSync(TRASH_PATH)) {
       fs.mkdirSync(TRASH_PATH);
     }
+    initDB();
   } catch (ex) {
     console.warn(ex);
   }
