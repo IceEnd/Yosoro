@@ -647,6 +647,11 @@ export function eventListener(menus) {
       });
     }
   });
+
+  ipcMain.on('get-images-list', async (event) => {
+    const list = await global.RUNTIME.imageDB.findAll({}, { date: -1 });
+    event.sender.send('get-images-list', list);
+  });
 }
 
 export function removeEventListeners() {
@@ -681,6 +686,7 @@ export function removeEventListeners() {
     'get-docuemnts-save-path',
     'app-switch-edit-mode',
     'pic-upload',
+    'get-images-list',
   ];
   for (const listener of listeners) {
     ipcMain.removeAllListeners(listener);

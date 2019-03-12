@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Empty } from 'antd';
+import { Scrollbars } from 'react-custom-scrollbars';
 import NoteItem from '../share/notebook/NoteItem';
 import HOCList from './HOCList';
 
@@ -23,30 +25,32 @@ export default class TestList extends Component {
     if (notes.length === 0) {
       return (
         <div className="content">
-          <p className="tips">Notebook is empty.</p>
+          <Empty className="tips" />
         </div>
       );
     }
     return (
-      <div className="content">
-        <ul className="list">
-          {this.props.notes.map((item) => {
-            const { uuid } = item;
-            return (
-              <NoteItem
-                key={`trash-note-${uuid}`}
-                className="list-item"
-                type="note"
-                hasRestore
-                hasRemove
-                restoreFn={this.props.openRestore}
-                removeFn={this.props.openRemove}
-                item={item}
-              />
-            );
-          })}
-        </ul>
-      </div>
+      <Scrollbars autoHide>
+        <div className="content">
+          <ul className="list">
+            {this.props.notes.map((item) => {
+              const { uuid } = item;
+              return (
+                <NoteItem
+                  key={`trash-note-${uuid}`}
+                  className="list-item"
+                  type="note"
+                  hasRestore
+                  hasRemove
+                  restoreFn={this.props.openRestore}
+                  removeFn={this.props.openRemove}
+                  item={item}
+                />
+              );
+            })}
+          </ul>
+        </div>
+      </Scrollbars>
     );
   }
 }

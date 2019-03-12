@@ -27,7 +27,11 @@ import {
 } from 'Actions/app';
 import { getProjectList, saveNote } from 'Actions/projects';
 import { EXPORT_INIT_QUEUE, EXPORT_COMPOLETE } from 'Actions/exportQueue';
-import { UPLOAD_IMAGE_SUCCESS, UPLOAD_IMAGE_FAILED } from 'Actions/imageHosting';
+import {
+  UPLOAD_IMAGE_SUCCESS,
+  UPLOAD_IMAGE_FAILED,
+  IMAGES_GET_LIST,
+} from 'Actions/imageHosting';
 import {
   REPLACE_UPLOAD_IMAGE_TEXT,
 } from 'Actions/markdown';
@@ -176,7 +180,7 @@ export default class App extends Component {
     }).isRequired,
     // 图床
     imageHosting: PropTypes.shape({
-      uploadQueue: PropTypes.any,
+      images: PropTypes.array.isRequired,
     }).isRequired,
     history: PropTypes.any,
   };
@@ -190,7 +194,6 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    ipcRenderer.send('start-release-schedule');
     const { dispatch } = this.props;
     dispatch(appLounch());
     dispatch(getProjectList());
@@ -199,6 +202,9 @@ export default class App extends Component {
     this.getLocalAvatar();
     this.fetchAvatar();
     this.setTheme();
+
+    ipcRenderer.send('start-release-schedule');
+    ipcRenderer.send('get-images-list');
     // if (!this.ps) {
     //   this.ps = new PerfectScrollbar('.custom-scrollbar');
     // }
@@ -228,6 +234,7 @@ export default class App extends Component {
       'async-export-file-complete',
       'app-switch-edit-mode',
       'pic-upload',
+      'get-images-list',
     ];
     for (const item of listeners) {
       ipcRenderer.removeAllListeners(item);
@@ -360,6 +367,7 @@ export default class App extends Component {
         dispatch(appSwitchEditMode(mode, true));
       }
     });
+    // image uploaded
     ipcRenderer.on('pic-upload', (event, payload) => {
       const { code, data } = payload;
       if (code !== 0) {
@@ -378,11 +386,13 @@ export default class App extends Component {
         data,
       });
     });
-    // 监听onedriver 同步
-    // ipcRenderer.on('start-one-driver-upload-all', () => {
-    //   const { app: { oAuthToken: { oneDriver } } } = this.props;
-    //   this.props.dispatch({ type: ONEDRIVER_ALL_UPLOAD, tokenInfo: oneDriver });
-    // });
+
+    ipcRenderer.on('get-images-list', (event, payload) => {
+      dispatch({
+        type: IMAGES_GET_LIST,
+        payload,
+      });
+    });
   }
 
   openReleases = () => {
@@ -438,7 +448,7 @@ export default class App extends Component {
                 <Route
                   path="/images"
                   render={() => (
-                    <Images />
+                    <Images list={this.props.imageHosting.images} />
                   )}
                 />
                 {/* cloud dirve */}

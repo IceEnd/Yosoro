@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { Empty } from 'antd';
 import NoteItem from '../share/notebook/NoteItem';
 import HOCList from './HOCList';
 
@@ -26,7 +27,7 @@ export default class Projects extends Component {
     if (projects.length === 0) {
       return (
         <div className="content">
-          <p className="tips">Trash can is empty.</p>
+          <Empty className="tips" />
         </div>
       );
     }

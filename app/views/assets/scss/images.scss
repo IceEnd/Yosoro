@@ -5,4 +5,20 @@
 	@include display-flex;
 	flex-direction: column;
 	position: relative;
+	background-color: rgba(248, 248, 248, 1);
+	color: rgba(0, 0, 0, 0.5);
+
+	.content {
+		flex: 1 1 auto;
+		padding: 0 5%;
+		overflow-y: auto;
+		position: relative;
+
+		.empty {
+			position: absolute;
+			top: 30%;
+			left: 0;
+			width: 100%;
+		}
+	}
 }

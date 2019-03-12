@@ -17,9 +17,15 @@ export default class Database {
     });
   }
 
-  // find(param) {
-  //   return new Promise((resolve, reject) => {
-  //     this.db.find(param, (err))
-  //   })
-  // }
+  findAll(param = {}, sort = {}) {
+    return new Promise((resolve, reject) => {
+      this.db.find(param).sort(sort).exec((err, docs) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(docs);
+        }
+      });
+    });
+  }
 }
