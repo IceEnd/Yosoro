@@ -14,10 +14,23 @@ import Settings from 'Components/settings/Settings';
 import { Provider } from 'Components/HOC/context';
 import { getTokens } from 'Utils/db/app';
 
-import { GET_USER_AVATAR, SET_USER_LOCAL_AVATAR } from 'Actions/user';
-import { appLounch, appSwitchEditMode, FETCHING_ONEDRIVE_TOKEN, FETCHING_GITHUB_RELEASES, CLOSE_UPDATE_NOTIFICATION } from 'Actions/app';
+import {
+  GET_USER_AVATAR,
+  SET_USER_LOCAL_AVATAR,
+} from 'Actions/user';
+import {
+  appLounch,
+  appSwitchEditMode,
+  FETCHING_ONEDRIVE_TOKEN,
+  FETCHING_GITHUB_RELEASES,
+  CLOSE_UPDATE_NOTIFICATION,
+} from 'Actions/app';
 import { getProjectList, saveNote } from 'Actions/projects';
 import { EXPORT_INIT_QUEUE, EXPORT_COMPOLETE } from 'Actions/exportQueue';
+import { UPLOAD_IMAGE_SUCCESS, UPLOAD_IMAGE_FAILED } from 'Actions/imageHosting';
+import {
+  REPLACE_UPLOAD_IMAGE_TEXT,
+} from 'Actions/markdown';
 
 import 'Assets/scss/index.scss';
 import 'Assets/scss/theme/light.scss';
@@ -214,6 +227,7 @@ export default class App extends Component {
       'async-export-file',
       'async-export-file-complete',
       'app-switch-edit-mode',
+      'pic-upload',
     ];
     for (const item of listeners) {
       ipcRenderer.removeAllListeners(item);
@@ -345,6 +359,24 @@ export default class App extends Component {
       if (this.props.app.settings.editorMode !== mode) {
         dispatch(appSwitchEditMode(mode, true));
       }
+    });
+    ipcRenderer.on('pic-upload', (event, payload) => {
+      const { code, data } = payload;
+      if (code !== 0) {
+        dispatch({
+          type: UPLOAD_IMAGE_FAILED,
+          data,
+        });
+        return;
+      }
+      dispatch({
+        type: REPLACE_UPLOAD_IMAGE_TEXT,
+        data,
+      });
+      dispatch({
+        type: UPLOAD_IMAGE_SUCCESS,
+        data,
+      });
     });
     // 监听onedriver 同步
     // ipcRenderer.on('start-one-driver-upload-all', () => {

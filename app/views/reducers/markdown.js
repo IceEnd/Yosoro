@@ -146,13 +146,11 @@ function updateMarkdown(state = initState, action) {
       });
     }
     case REPLACE_UPLOAD_IMAGE_TEXT: { // 替换上传后的图片文本
-      const { uuid, data } = action;
+      const { data } = action;
       if (data) {
-        /* eslint-disable camelcase */
-        const { name, url } = data;
+        const { name, url, uuid } = data;
         const reg = new RegExp(`!\\[Uploading\\s*${uuid}\\s*\\]\\s*\\(\\w*\\)`, 'ig');
         state.content = state.content.replace(reg, `![${name}](${url})`);
-        /* eslint-ensable camelcase */
         state.html = markedToHtml(state.content);
         setTimeout(() => {
           eventMD.emit('sync-value');

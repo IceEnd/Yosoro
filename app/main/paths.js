@@ -29,67 +29,87 @@ try {
     fs.mkdirSync(APP_DATA_PATH);
   }
   if (!fs.existsSync(PROFILE_PATH)) {
-    fs.mkdirSync(PROFILE_PATH); // 异步创建
+    fs.mkdirSync(PROFILE_PATH);
   }
   settingsDB.defaults(SETTINGS_TEMP);
 } catch (ex) {
   console.error(ex);
 }
 
-export const IMAGES_DB_PATH = `${settingsDB.data.documentsRoot}${splitFlag}IMAGES_DB.ysrdb`;
-
-let DOCUMENTS_ROOT = settingsDB.data.documentsRoot || appDataPath;
-let DOCUMENTS_PATH = `${DOCUMENTS_ROOT}${splitFlag}documents`;
-let PROJECTS_PATH = `${DOCUMENTS_PATH}${splitFlag}projects`;
-let TRASH_PATH = `${DOCUMENTS_PATH}${splitFlag}trash`;
+function initRunTime() {
+  const DOCUMENTS_ROOT = settingsDB.data.documentsRoot || appDataPath;
+  const DOCUMENTS_PATH = `${DOCUMENTS_ROOT}${splitFlag}documents`;
+  const PROJECTS_PATH = `${DOCUMENTS_PATH}${splitFlag}projects`;
+  const TRASH_PATH = `${DOCUMENTS_PATH}${splitFlag}trash`;
+  const IMAGES_DB_PATH = `${settingsDB.data.documentsRoot}${splitFlag}IMAGES_DB.ysrdb`;
+  global.RUNTIME = {
+    imageDB: new Database({
+      filename: IMAGES_DB_PATH,
+      autoload: true,
+    }),
+    paths: {
+      DOCUMENTS_ROOT,
+      DOCUMENTS_PATH,
+      PROJECTS_PATH,
+      TRASH_PATH,
+      IMAGES_DB_PATH,
+    },
+  };
+}
 
 export function setDocumentsPath(rootPath) {
-  DOCUMENTS_ROOT = rootPath;
-  DOCUMENTS_PATH = `${DOCUMENTS_ROOT}${splitFlag}documents`;
-  PROJECTS_PATH = `${DOCUMENTS_PATH}${splitFlag}projects`;
-  TRASH_PATH = `${DOCUMENTS_PATH}${splitFlag}trash`;
   const temp = Object.assign({}, settingsDB.data, {
     documentsRoot: rootPath,
   });
   settingsDB.update(temp);
+
+  const DOCUMENTS_ROOT = rootPath;
+  const DOCUMENTS_PATH = `${DOCUMENTS_ROOT}${splitFlag}documents`;
+  const PROJECTS_PATH = `${DOCUMENTS_PATH}${splitFlag}projects`;
+  const TRASH_PATH = `${DOCUMENTS_PATH}${splitFlag}trash`;
+  const IMAGES_DB_PATH = `${settingsDB.data.documentsRoot}${splitFlag}IMAGES_DB.ysrdb`;
+
+  global.RUNTIME.paths = {
+    DOCUMENTS_ROOT,
+    DOCUMENTS_PATH,
+    PROJECTS_PATH,
+    TRASH_PATH,
+    IMAGES_DB_PATH,
+  };
+
+  global.RUNTIME.imageDB = new Database({
+    filename: IMAGES_DB_PATH,
+    autoload: true,
+  });
 }
 
 export const DESKTOP_PATH = app.getPath('desktop');
 
-function initDB() {
-  global.yosoroDB = {
-    image: new Database({
-      filename: IMAGES_DB_PATH,
-      autoload: true,
-    }),
-  };
-}
-
 export function initWorkSpace() {
+  initRunTime();
   try {
-    if (!fs.existsSync(DOCUMENTS_PATH)) {
-      fs.mkdirSync(DOCUMENTS_PATH);
+    if (!fs.existsSync(global.RUNTIME.paths.DOCUMENTS_PATH)) {
+      fs.mkdirSync(global.RUNTIME.paths.DOCUMENTS_PATH);
     }
-    if (!fs.existsSync(PROJECTS_PATH)) {
-      fs.mkdirSync(PROJECTS_PATH);
+    if (!fs.existsSync(global.RUNTIME.paths.PROJECTS_PATH)) {
+      fs.mkdirSync(global.RUNTIME.paths.PROJECTS_PATH);
     }
-    if (!fs.existsSync(TRASH_PATH)) {
-      fs.mkdirSync(TRASH_PATH);
+    if (!fs.existsSync(global.RUNTIME.paths.TRASH_PATH)) {
+      fs.mkdirSync(global.RUNTIME.paths.TRASH_PATH);
     }
-    initDB();
   } catch (ex) {
     console.warn(ex);
   }
 }
 
 export function getDocumentsPath() {
-  return DOCUMENTS_PATH;
+  return global.RUNTIME.paths.DOCUMENTS_PATH;
 }
 
 export function getProjectsPath() {
-  return PROJECTS_PATH;
+  return global.RUNTIME.paths.PROJECTS_PATH;
 }
 
 export function getTrashPath() {
-  return TRASH_PATH;
+  return global.RUNTIME.paths.TRASH_PATH;
 }

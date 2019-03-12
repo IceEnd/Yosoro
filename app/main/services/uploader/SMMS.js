@@ -2,10 +2,12 @@ import Request from './Request';
 
 const url = 'https://sm.ms/api/upload';
 
-const upload = async (files) => {
+const upload = async (files, current) => {
   const { name, base64 } = files;
   try {
     const content = Buffer.from(base64.replace(/^data:image\/(png|jpe?g|svg|gif);base64,/ig, ''), 'base64');
+
+    const date = Date.parse(new Date());
     const result = await Request({
       method: 'POST',
       url,
@@ -28,6 +30,8 @@ const upload = async (files) => {
       return {
         name,
         url: body.data.url,
+        platform: current,
+        date,
       };
     }
     throw new Error('Upload Failed');

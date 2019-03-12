@@ -2,7 +2,7 @@ import Request from './Request';
 
 const root = 'https://api.github.com';
 
-const upload = async (files, config) => {
+const upload = async (files, config, current) => {
   const { branch, path, repo, token } = config;
   const { name, base64 } = files;
   const content = base64.replace(/^data:image\/(png|jpe?g|svg|gif);base64,/ig, '');
@@ -15,6 +15,7 @@ const upload = async (files, config) => {
   const url = `${root}/repos/${repo}/contents${encodeURI(path)}/${encodeURI(name)}`;
 
   try {
+    const date = Date.parse(new Date());
     const res = await Request({
       url,
       method: 'PUT',
@@ -29,6 +30,8 @@ const upload = async (files, config) => {
       return {
         name,
         url: res.content.download_url,
+        platform: current,
+        date,
       };
     }
     throw new Error('Upload Fail');

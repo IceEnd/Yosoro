@@ -21,7 +21,7 @@ export default class NoteWorkspace extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     imageHostingConfig: PropTypes.shape({
-      default: PropTypes.oneOf(['github']).isRequired,
+      default: PropTypes.oneOf(['github', 'weibo', 'SM.MS']).isRequired,
       github: PropTypes.shape({
         repo: PropTypes.string.isRequired,
         branch: PropTypes.string.isRequired,

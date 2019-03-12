@@ -18,7 +18,7 @@ const login = (username, password) => Request({
   resolveWithFullResponse: true,
 });
 
-const upload = async (files, config) => {
+const upload = async (files, config, current) => {
   const { username, password, quality, useCookie, cookie } = config;
   const { base64, name } = files;
   let res;
@@ -46,6 +46,9 @@ const upload = async (files, config) => {
           Cookie: cookie,
         };
       }
+
+      const date = Date.parse(new Date());
+
       let result = await Request.post(UPLOAD_URL, options);
       result = result.replace(/<.*?\/>/, '').replace(/<(\w+).*?>.*?<\/\1>/, '');
 
@@ -63,6 +66,8 @@ const upload = async (files, config) => {
       return {
         name,
         url,
+        platform: current,
+        date,
       };
     }
   } catch (ex) {

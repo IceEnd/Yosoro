@@ -4,22 +4,25 @@ import {
   UPLOAD_IMAGE_SUCCESS,
 } from 'Actions/imageHosting';
 
-const assign = Object.assign;
+import * as notifications from 'Components/share/notifications';
 
 export default function imageHosting(state = {
-  uploadQueue: new Set(),
+  images: [],
 }, action) {
   switch (action.type) {
-    case UPLOAD_IMAGE: {
-      const { uuid } = action;
-      if (state.uploadQueue.has(uuid)) {
-        return state;
-      }
-      state.uploadQueue.add(uuid);
-      return assign({}, state);
+    case UPLOAD_IMAGE:
+      return state;
+    case UPLOAD_IMAGE_FAILED: {
+      notifications.uploadNotification.show();
+      return state;
     }
-    case UPLOAD_IMAGE_FAILED:
-    case UPLOAD_IMAGE_SUCCESS:
+    case UPLOAD_IMAGE_SUCCESS: {
+      const data = action.data;
+      notifications.successNotification.show();
+      delete data.uuid;
+      state.images.unshift(data);
+      return state;
+    }
     default:
       return state;
   }

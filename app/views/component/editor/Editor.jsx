@@ -14,28 +14,10 @@ import { updateMarkdownHtml } from 'Actions/markdown';
 import { isCanUpload } from 'Utils/db/app';
 import { throttle, debounce } from 'Utils/utils';
 import { withDispatch, withTheme } from 'Components/HOC/context';
-import Notification from '../share/Notification';
+import * as notifications from '../share/notifications';
 import { eventMD, eventTOC } from '../../events/eventDispatch';
 
 let key = 0;
-
-const uploadNotification = new Notification({
-  title: 'Image upload failed',
-  body: 'Please check the network or configuration',
-  key: 'editor-upload-notification',
-});
-
-const invaildNotification = new Notification({
-  title: 'Only support uploading images',
-  body: 'Support upload jpg, jpeg, png, svg, webp',
-  key: 'editor-invaild-notification',
-});
-
-const sigleNotification = new Notification({
-  title: 'Image upload failed',
-  body: 'Uploading multiple files is not supported',
-  key: 'editor-single-file-notification',
-});
 
 @withDispatch
 @withTheme
@@ -62,7 +44,7 @@ export default class Editor extends Component {
       fileName: PropTypes.string.isRequired,
     }).isRequired,
     imageHostingConfig: PropTypes.shape({
-      default: PropTypes.oneOf(['github']).isRequired,
+      default: PropTypes.oneOf(['github', 'weibo', 'SM.MS']).isRequired,
       github: PropTypes.shape({
         repo: PropTypes.string.isRequired,
         branch: PropTypes.string.isRequired,
@@ -325,11 +307,11 @@ export default class Editor extends Component {
     const dataTransfer = e[type];
     if (dataTransfer && dataTransfer.files.length > 0) {
       if (dataTransfer.files.length !== 1) { // 只允许一次上传一个图片
-        sigleNotification.show();
+        notifications.sigleNotification.show();
         return null;
       }
       if (!/.(png|jpg|jpeg|gif|webp|svg)$/ig.test(dataTransfer.files[0].name)) { // 文件类型不对
-        invaildNotification.show();
+        notifications.invaildNotification.show();
         return null;
       }
       e.preventDefault();
@@ -343,14 +325,13 @@ export default class Editor extends Component {
     const { imageHostingConfig } = this.props;
     // const  = imageHostingConfig.default;
     if (!isCanUpload()) {
-      uploadNotification.show();
+      notifications.uploadNotification.show();
       return;
     }
     const uuid = `${Date.now()}${key++}`;
     cm.doc.replaceSelection(`![Uploading ${uuid}]()`);
     this.props.dispatch({
       type: UPLOAD_IMAGE,
-      // current,
       imageHostingConfig,
       files,
       uuid,

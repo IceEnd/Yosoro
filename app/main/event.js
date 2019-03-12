@@ -633,16 +633,18 @@ export function eventListener(menus) {
   ipcMain.on('pic-upload', async (event, paylod) => {
     try {
       const res = await uploder(paylod);
-      event.returnValue = {
+      const doc = await global.RUNTIME.imageDB.insert(res);
+      const { uuid, from } = paylod;
+      event.sender.send('pic-upload', {
         code: 0,
-        data: res,
-      };
+        data: { ...doc, uuid, from },
+      });
     } catch (ex) {
       console.warn(ex);
-      event.returnValue = {
+      event.sender.send('pic-upload', {
         code: -1,
         data: ex,
-      };
+      });
     }
   });
 }
