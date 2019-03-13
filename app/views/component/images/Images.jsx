@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Empty } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Title from 'Share/title/Title';
+import YoImage from 'Share/YoImage';
 
 import 'Assets/scss/images.scss';
 /* eslint-disable no-underscore-dangle */
@@ -25,7 +26,11 @@ const Images = ({ list }) => (
                 key={item._id}
                 className="item"
               >
-                {item._id}
+                <div className="image-wrap">
+                  <YoImage
+                    src={item.url}
+                  />
+                </div>
               </li>
             ))}
           </ul>
@@ -35,9 +40,11 @@ const Images = ({ list }) => (
   </div>
 );
 
-Images.displayName = 'Images';
+Images.displayName = 'ImagesRouter';
 Images.propTypes = {
-  list: PropTypes.array.isRequired,
+  list: PropTypes.arrayOf(PropTypes.shape({
+    url: PropTypes.string.isRequired,
+  })).isRequired,
 };
 
 export default Images;

@@ -20,5 +20,20 @@
 			left: 0;
 			width: 100%;
 		}
+
+		.list {
+			@include display-flex;
+			margin: 1.5rem .5rem;
+			flex-wrap: wrap;
+
+			.item {
+				flex: 0 0 10rem;
+				padding: 1rem;
+
+				.image-wrap {
+					height: 8rem;
+				}
+			}
+		}
 	}
 }
