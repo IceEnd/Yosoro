@@ -27,11 +27,32 @@
 			flex-wrap: wrap;
 
 			.item {
-				flex: 0 0 10rem;
-				padding: 1rem;
+				flex: 0 0 11rem;
+				padding: 1.5rem;
 
 				.image-wrap {
 					height: 8rem;
+				}
+			}
+
+			.image-options {
+				margin-top: .6rem;
+
+				.anticon {
+					margin-right: .5rem;
+					transition: transform, color .2s ease-in-out;
+
+					&:hover {
+						transform: scale(1.2, 1.2);
+					}
+
+					&:active {
+						color: #333;
+					}
+
+					&:last-child {
+						margin-right: 0;
+					}
 				}
 			}
 		}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const YoImage = ({ src, title, alt }) => {
+const YoImage = ({ src, title, alt, onSuccess, onError }) => {
   const [loading, setLoading] = useState(0);
   const [width, setWidth] = useState('0px');
   const [height, setHeight] = useState('0px');
@@ -29,15 +29,25 @@ const YoImage = ({ src, title, alt }) => {
         }
       }
       setLoading(1);
+      if (onSuccess) {
+        onSuccess();
+      }
     };
-    img.onerror = () => setLoading(-1);
-    img.src = src;
+    img.onerror = () => {
+      setLoading(-1);
+      if (onError) {
+        onError();
+      }
+    };
+    if (src) {
+      img.src = src;
+    }
   }
 
   const imgClass = classNames('yo-img', {
     show: loading === 1,
   });
-  const shadowClass = classNames('yo-image', {
+  const shadowClass = classNames('shadow', {
     hide: loading === 1,
   });
   return (
@@ -59,6 +69,9 @@ YoImage.propTypes = {
   src: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
+
+  onSuccess: PropTypes.func,
+  onError: PropTypes.func,
 };
 YoImage.defaultProps = {
   title: 'yo-image',

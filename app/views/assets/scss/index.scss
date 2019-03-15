@@ -300,9 +300,14 @@ html, body, #root {
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		transform: translate(-50%, -50%);
+		transform: scale(1, 1) translate(-50%, -50%);
 		visibility: hidden;
 		display: block;
+		transition: transform .15s ease-in-out;
+
+		&:hover {
+			transform: scale(1.2, 1.2) translate(-40%, -40%);
+		}
 
 		&.show {
 			visibility: visible;
