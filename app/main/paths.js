@@ -41,7 +41,7 @@ function initRunTime() {
   const DOCUMENTS_PATH = `${DOCUMENTS_ROOT}${splitFlag}documents`;
   const PROJECTS_PATH = `${DOCUMENTS_PATH}${splitFlag}projects`;
   const TRASH_PATH = `${DOCUMENTS_PATH}${splitFlag}trash`;
-  const IMAGES_DB_PATH = `${settingsDB.data.documentsRoot}${splitFlag}IMAGES_DB.ysrdb`;
+  const IMAGES_DB_PATH = `${DOCUMENTS_ROOT}${splitFlag}yodb{splitFlag}IMAGES_DB.ysrdb`;
   global.RUNTIME = {
     imageDB: new Database({
       filename: IMAGES_DB_PATH,

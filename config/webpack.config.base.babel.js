@@ -1,15 +1,5 @@
 import path from 'path';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-
-const extractTextConf = (loaders = []) => ExtractTextPlugin.extract({
-  fallback: 'style-loader',
-  use: [
-    {
-      loader: 'css-loader',
-    },
-    ...loaders,
-  ],
-});
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 export default {
   target: 'electron-renderer',
@@ -21,20 +11,31 @@ export default {
       },
       {
         test: /\.css$/,
-        use: extractTextConf(),
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+        ],
       },
       {
         test: /\.scss$/,
-        use: extractTextConf(['sass-loader']),
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.less$/,
-        use: extractTextConf([{
-          loader: 'less-loader',
-          options: {
-            javascriptEnabled: true,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'less-loader',
+            options: {
+              javascriptEnabled: true,
+            },
           },
-        }]),
+        ],
       },
       {
         test: /\.(eot|woff(2)?|ttf)$/,
@@ -61,9 +62,8 @@ export default {
     },
   },
   plugins: [
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: 'css/[name].css',
-      allChunks: true,
     }),
   ],
 };

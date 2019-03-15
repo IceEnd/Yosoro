@@ -1,6 +1,7 @@
 import path from 'path';
 import merge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 // import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import baseConfig from './webpack.config.base.babel';
 
@@ -41,12 +42,14 @@ export default merge.smart(baseConfig, {
   },
   optimization: {
     minimize: true,
+    minimizer: [
+      new OptimizeCSSAssetsPlugin({}),
+    ],
     occurrenceOrder: true,
     splitChunks: {
       cacheGroups: {
         commons: {
           name: 'vendor',
-          // test: /react|react-dom|redux|redux-saga|redux-logger|history|prop-types|antd|moment|whatwg-fetch/,
           test: /node_modules/,
           chunks: 'initial',
           enforce: true,

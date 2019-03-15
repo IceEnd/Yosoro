@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Empty } from 'antd';
+import { Empty, Button } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import Title from 'Share/title/Title';
 import YoImage from 'Share/YoImage';
@@ -30,6 +30,10 @@ const Images = ({ list }) => (
                   <YoImage
                     src={item.url}
                   />
+                </div>
+                <div className="image-options">
+                  <Button type="dashed" icon="copy" />
+                  <Button type="dashed" icon="delete" />
                 </div>
               </li>
             ))}

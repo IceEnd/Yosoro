@@ -28,4 +28,16 @@ export default class Database {
       });
     });
   }
+
+  remove(query = {}, options = {}) {
+    return new Promise((resolve, reject) => {
+      this.db.remove(query, options, (err, numRemoved) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(numRemoved);
+        }
+      });
+    });
+  }
 }

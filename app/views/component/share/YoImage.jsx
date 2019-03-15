@@ -50,8 +50,6 @@ const YoImage = ({ src, title, alt }) => {
         alt={alt}
         style={{ width, height }}
       />
-      {/* {loading}
-      {src} */}
     </div>
   );
 };
