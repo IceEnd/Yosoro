@@ -38,10 +38,11 @@ try {
 
 function initRunTime() {
   const DOCUMENTS_ROOT = settingsDB.data.documentsRoot || appDataPath;
+  const DBS_PATH = `${DOCUMENTS_ROOT}${splitFlag}yodbs`;
   const DOCUMENTS_PATH = `${DOCUMENTS_ROOT}${splitFlag}documents`;
   const PROJECTS_PATH = `${DOCUMENTS_PATH}${splitFlag}projects`;
   const TRASH_PATH = `${DOCUMENTS_PATH}${splitFlag}trash`;
-  const IMAGES_DB_PATH = `${DOCUMENTS_ROOT}${splitFlag}yodb{splitFlag}IMAGES_DB.ysrdb`;
+  const IMAGES_DB_PATH = `${DBS_PATH}${splitFlag}IMAGES_DB.ysrdb`;
   global.RUNTIME = {
     imageDB: new Database({
       filename: IMAGES_DB_PATH,
@@ -49,6 +50,7 @@ function initRunTime() {
     }),
     paths: {
       DOCUMENTS_ROOT,
+      DBS_PATH,
       DOCUMENTS_PATH,
       PROJECTS_PATH,
       TRASH_PATH,
