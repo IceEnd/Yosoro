@@ -28,7 +28,7 @@ export default function imageHosting(state = {
       notifications.successNotification.show();
       delete data.uuid;
       state.images.unshift(data);
-      return state;
+      return { ...state };
     }
     case IMAGES_DELETE: { // delete image
       const { id, index } = action;

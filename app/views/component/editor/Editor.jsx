@@ -323,7 +323,6 @@ export default class Editor extends Component {
   @autobind
   handleUpload(cm, files) {
     const { imageHostingConfig } = this.props;
-    // const  = imageHostingConfig.default;
     if (!isCanUpload()) {
       notifications.uploadNotification.show();
       return;
@@ -340,7 +339,6 @@ export default class Editor extends Component {
   }
 
   render() {
-    // const { textWidth } = this.state;
     const { editorWidth, editorMode, editorWidthValue, drag, fontSize } = this.props;
     let width = editorWidth;
     let rootClass = '';
