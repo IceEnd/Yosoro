@@ -127,6 +127,7 @@
     "sass-lint": "^1.12.1",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.23.1",
+    "terser-webpack-plugin": "^1.2.3",
     "url-loader": "^0.6.2",
     "webpack": "^4.29.2",
     "webpack-bundle-analyzer": "^3.1.0",

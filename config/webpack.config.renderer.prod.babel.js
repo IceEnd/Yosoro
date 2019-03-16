@@ -2,6 +2,7 @@ import path from 'path';
 import merge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 // import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import baseConfig from './webpack.config.base.babel';
 
@@ -9,6 +10,10 @@ process.traceDeprecation = true;
 
 export default merge.smart(baseConfig, {
   mode: 'production',
+  // stats: {
+  //   entrypoints: false,
+  //   // children: false,
+  // },
   entry: {
     index: path.join(__dirname, '../app/views/index.jsx'),
     'webview/webview-pre': [
@@ -41,8 +46,8 @@ export default merge.smart(baseConfig, {
     ],
   },
   optimization: {
-    minimize: true,
     minimizer: [
+      new TerserPlugin(),
       new OptimizeCSSAssetsPlugin({}),
     ],
     occurrenceOrder: true,
