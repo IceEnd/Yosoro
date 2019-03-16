@@ -333,7 +333,7 @@
 		}
 	}
 
-	.cloud, .trash, .settings-root {
+	.cloud, .trash, .settings-root, .images-root {
 		background-color: #212223;
 		color: $darkColor;
 
@@ -359,6 +359,19 @@
 					color: $darkColor;
 				}
 			}
+		}
+	}
+
+	.images-root {
+		.content .list .image-options .anticon:active {
+			color: #fff;
+		}
+	}
+
+	.loading-default {
+		background-color: rgba(0, 0, 0, .8);
+		.loading-tips {
+			color: #aaa;
 		}
 	}
 }

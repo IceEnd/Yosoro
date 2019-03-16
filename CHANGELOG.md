@@ -1,8 +1,16 @@
 # CHANGELOG
 
+## v1.1.5
+
+Add image management.
+
+### Fixes
+
+[#75](https://github.com/IceEnd/Yosoro/issues/75), [#90](https://github.com/IceEnd/Yosoro/issues/90), [#93](https://github.com/IceEnd/Yosoro/issues/93)
+
 ## v1.1.4
 
-### Nwe Features
+### New Features
 
 - Image upload support Weibo, SMMS
 - Optimize editor
