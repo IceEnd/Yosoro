@@ -33,26 +33,32 @@ try {
   console.error(ex);
 }
 
-function initRunTime() {
-  const DOCUMENTS_ROOT = settingsDB.data.documentsRoot || appDataPath;
+function getGlobalPath(rootPath) {
+  const DOCUMENTS_ROOT = rootPath || appDataPath;
   const DBS_PATH = `${DOCUMENTS_ROOT}${splitFlag}yodbs`;
   const DOCUMENTS_PATH = `${DOCUMENTS_ROOT}${splitFlag}documents`;
   const PROJECTS_PATH = `${DOCUMENTS_PATH}${splitFlag}projects`;
   const TRASH_PATH = `${DOCUMENTS_PATH}${splitFlag}trash`;
   const IMAGES_DB_PATH = `${DBS_PATH}${splitFlag}IMAGES_DB.ysrdb`;
+
+  return {
+    DOCUMENTS_ROOT,
+    DBS_PATH,
+    DOCUMENTS_PATH,
+    PROJECTS_PATH,
+    TRASH_PATH,
+    IMAGES_DB_PATH,
+  };
+}
+
+function initRunTime() {
+  const paths = getGlobalPath(settingsDB.data.documentsRoot);
   global.RUNTIME = {
     imageDB: new Database({
-      filename: IMAGES_DB_PATH,
+      filename: paths.IMAGES_DB_PATH,
       autoload: true,
     }),
-    paths: {
-      DOCUMENTS_ROOT,
-      DBS_PATH,
-      DOCUMENTS_PATH,
-      PROJECTS_PATH,
-      TRASH_PATH,
-      IMAGES_DB_PATH,
-    },
+    paths,
   };
 }
 
@@ -62,22 +68,12 @@ export function setDocumentsPath(rootPath) {
   });
   settingsDB.update(temp);
 
-  const DOCUMENTS_ROOT = rootPath;
-  const DOCUMENTS_PATH = `${DOCUMENTS_ROOT}${splitFlag}documents`;
-  const PROJECTS_PATH = `${DOCUMENTS_PATH}${splitFlag}projects`;
-  const TRASH_PATH = `${DOCUMENTS_PATH}${splitFlag}trash`;
-  const IMAGES_DB_PATH = `${settingsDB.data.documentsRoot}${splitFlag}IMAGES_DB.ysrdb`;
+  const paths = getGlobalPath(rootPath);
 
-  global.RUNTIME.paths = {
-    DOCUMENTS_ROOT,
-    DOCUMENTS_PATH,
-    PROJECTS_PATH,
-    TRASH_PATH,
-    IMAGES_DB_PATH,
-  };
+  global.RUNTIME.paths = paths;
 
   global.RUNTIME.imageDB = new Database({
-    filename: IMAGES_DB_PATH,
+    filename: paths.IMAGES_DB_PATH,
     autoload: true,
   });
 }

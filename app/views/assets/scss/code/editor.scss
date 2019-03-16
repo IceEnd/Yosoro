@@ -52,6 +52,9 @@
 		&.header {
 			position: relative;
 			padding-bottom: 10px;
+			word-break: break-all;
+			word-wrap: break-word;
+			hyphens: auto;
 
 			&::after {
 				content: "";

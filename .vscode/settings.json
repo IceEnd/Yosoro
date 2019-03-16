@@ -1,5 +1,6 @@
 {
   "flow.useNPMPackagedFlow": true,
   "javascript.validate.enable": false,
-  "search.followSymlinks": false
+  "search.followSymlinks": false,
+  "editor.renderWhitespace": "boundary"
 }

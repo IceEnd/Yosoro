@@ -10,7 +10,6 @@ import url from 'url';
 import {
   PROFILE_PATH,
   DESKTOP_PATH,
-  getDocumentsPath,
   getProjectsPath,
   getTrashPath,
   setDocumentsPath,
@@ -576,7 +575,7 @@ export function eventListener(menus) {
 
   // get yosoro documents save path
   ipcMain.on('get-docuemnts-save-path', (event) => {
-    event.returnValue = getDocumentsPath();
+    event.returnValue = global.RUNTIME.paths.DOCUMENTS_ROOT;
   });
 
   ipcMain.on('open-file-dialog', (event, args) => {
@@ -586,20 +585,19 @@ export function eventListener(menus) {
       properties,
     }, (filePaths) => {
       if (filePaths) {
-        const oldDocPath = getDocumentsPath();
+        const { DOCUMENTS_ROOT, DOCUMENTS_PATH, DBS_PATH } = global.RUNTIME.paths;
         const newDocRoot = filePaths[0];
         const newDocPath = `${newDocRoot}${splitFlag}documents`;
-        if (oldDocPath !== newDocPath) {
+        const newDBPath = `${newDocRoot}${splitFlag}yodbs`;
+        if (DOCUMENTS_ROOT !== newDocRoot) {
           event.sender.send(cbChannel);
           try {
-            fse.moveSync(oldDocPath, newDocPath);
-            if (fs.existsSync(oldDocPath)) {
-              fse.removeSync(oldDocPath);
-            }
+            fse.moveSync(DOCUMENTS_PATH, newDocPath, { overwrite: true });
+            fse.moveSync(DBS_PATH, newDBPath, { overwrite: true });
             setDocumentsPath(newDocRoot);
             event.sender.send(cbOver, {
               code: true,
-              res: newDocPath,
+              res: newDocRoot,
             });
           } catch (ex) {
             console.error(ex);
@@ -691,6 +689,7 @@ export function removeEventListeners() {
     'app-switch-edit-mode',
     'pic-upload',
     'get-images-list',
+    'images-delete',
   ];
   for (const listener of listeners) {
     ipcMain.removeAllListeners(listener);
