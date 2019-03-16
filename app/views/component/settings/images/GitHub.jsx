@@ -21,6 +21,9 @@ export default class GitHub extends Component {
     path: PropTypes.string.isRequired,
     domain: PropTypes.string.isRequired,
   };
+  static defaultProps = {
+    domain: '',
+  };
 
   constructor(props) {
     super(props);

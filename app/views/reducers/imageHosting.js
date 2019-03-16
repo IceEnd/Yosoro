@@ -3,7 +3,9 @@ import {
   UPLOAD_IMAGE_FAILED,
   UPLOAD_IMAGE_SUCCESS,
   IMAGES_GET_LIST,
+  IMAGES_DELETE,
 } from 'Actions/imageHosting';
+import { ipcRenderer } from 'electron';
 
 import * as notifications from 'Components/share/notifications';
 
@@ -27,6 +29,12 @@ export default function imageHosting(state = {
       delete data.uuid;
       state.images.unshift(data);
       return state;
+    }
+    case IMAGES_DELETE: { // delete image
+      const { id, index } = action;
+      state.images.splice(index, 1);
+      ipcRenderer.send('images-delete', id);
+      return { ...state };
     }
     default:
       return state;

@@ -9,10 +9,7 @@ const dataPath = app.getPath('appData');
 
 const SETTINGS_TEMP = {};
 
-let appDataPath = `${dataPath}${splitFlag}Yosoro`;
-if (process.env.NODE_ENV === 'development') {
-  appDataPath += 'Test';
-}
+const appDataPath = `${dataPath}${splitFlag}Yosoro`;
 
 export const APP_DATA_PATH = appDataPath;
 export const PROFILE_PATH = `${appDataPath}${splitFlag}profiledata`;

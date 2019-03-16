@@ -1,7 +1,5 @@
 import {
   EXPORT_INIT_QUEUE,
-  // EXPORT_SUCCESS_SINGLE,
-  // EXPORT_FAILED_SINGLE,
   EXPORT_COMPOLETE,
 } from '../actions/exportQueue';
 
@@ -15,8 +13,6 @@ export default function exportQueue(state = {
       return assign({}, state, {
         status: 1,
       });
-    // case EXPORT_SUCCESS_SINGLE:
-    // case EXPORT_FAILED_SINGLE:
     case EXPORT_COMPOLETE:
       return assign({}, state, {
         status: 0,

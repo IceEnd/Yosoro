@@ -652,6 +652,10 @@ export function eventListener(menus) {
     const list = await global.RUNTIME.imageDB.findAll({}, { date: -1 });
     event.sender.send('get-images-list', list);
   });
+
+  ipcMain.on('images-delete', (event, payload) => {
+    global.RUNTIME.imageDB.remove({ _id: payload });
+  });
 }
 
 export function removeEventListeners() {

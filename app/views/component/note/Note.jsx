@@ -64,7 +64,6 @@ export default class NoteWorkspace extends Component {
       projectUuid: PropTypes.string.isRequired,
       projectName: PropTypes.string.isRequired,
       fileUuid: PropTypes.string.isRequired,
-      exportStatus: PropTypes.number.isRequired,
     }).isRequired,
     editor: PropTypes.shape({
       fontSize: PropTypes.number.isRequired,

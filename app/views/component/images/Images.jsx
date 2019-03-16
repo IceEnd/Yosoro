@@ -5,6 +5,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { clipboard } from 'electron';
 import Title from 'Share/title/Title';
 import YoImage from 'Share/YoImage';
+import { IMAGES_DELETE } from 'Actions/imageHosting';
 
 import 'Assets/scss/images.scss';
 /* eslint-disable no-underscore-dangle */
@@ -17,7 +18,7 @@ const copy = (url) => {
   }
 };
 
-const Images = ({ list }) => (
+const Images = ({ list, dispatch }) => (
   <div className="images-root">
     <Title
       title="Images"
@@ -31,7 +32,7 @@ const Images = ({ list }) => (
       <Scrollbars autoHide className="yo-scrollbar">
         <div className="content">
           <ul className="list">
-            {list.map(item => (
+            {list.map((item, index) => (
               <li
                 key={item._id}
                 className="item"
@@ -45,7 +46,14 @@ const Images = ({ list }) => (
                 </div>
                 <div className="image-options">
                   <Icon type="copy" onClick={() => copy(item.url)} />
-                  <Icon type="delete" />
+                  <Icon
+                    type="delete"
+                    onClick={() => dispatch({
+                      type: IMAGES_DELETE,
+                      id: item._id,
+                      index,
+                    })}
+                  />
                 </div>
               </li>
             ))}
@@ -58,6 +66,7 @@ const Images = ({ list }) => (
 
 Images.displayName = 'ImagesRouter';
 Images.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   list: PropTypes.arrayOf(PropTypes.shape({
     _id: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,

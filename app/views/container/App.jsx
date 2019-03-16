@@ -162,7 +162,6 @@ export default class App extends Component {
       projectName: PropTypes.string.isRequired,
       fileUuid: PropTypes.string.isRequired,
       fileName: PropTypes.string.isRequired,
-      exportStatus: PropTypes.number.isRequired,
     }).isRequired,
     drive: PropTypes.shape({
       status: PropTypes.number.isRequired,
@@ -448,7 +447,10 @@ export default class App extends Component {
                 <Route
                   path="/images"
                   render={() => (
-                    <Images list={this.props.imageHosting.images} />
+                    <Images
+                      list={this.props.imageHosting.images}
+                      dispatch={this.props.dispatch}
+                    />
                   )}
                 />
                 {/* cloud dirve */}

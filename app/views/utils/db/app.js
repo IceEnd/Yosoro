@@ -98,6 +98,9 @@ export function getAppSettings() {
 
 export function getAppImageHosting() {
   const images = db.get(IMAGE_HOSTING).value();
+  if (!images.github.domain) { // 兼容旧版
+    images.github.domain = '';
+  }
   if (!images.weibo) {
     const weibo = {
       username: '',
