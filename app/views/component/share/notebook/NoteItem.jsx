@@ -9,15 +9,15 @@ export default class NoteItem extends PureComponent {
     type: PropTypes.oneOf(['notebook', 'note']).isRequired,
     className: PropTypes.string.isRequired,
     item: PropTypes.object.isRequired,
-    isCloud: false, // 是否来自Cloud
+    isCloud: PropTypes.bool.isRequired, // 是否来自Cloud
     title: PropTypes.string,
     hasRestore: PropTypes.bool.isRequired, // 是否有还原按钮
-    restoreFn: PropTypes.func.isRequired, // 复原按钮事件
+    restoreFn: PropTypes.func, // 复原按钮事件
     hasLogin: PropTypes.bool.isRequired, // 是否有进入按钮
     hasDownload: PropTypes.bool.isRequired, // 是否有下载按钮
-    downloadFn: PropTypes.func.isRequired, // 下载按钮事件
+    downloadFn: PropTypes.func, // 下载按钮事件
     hasRemove: PropTypes.bool.isRequired, // 是否有删除按钮
-    removeFn: PropTypes.func.isRequired, // 删除按钮事件
+    removeFn: PropTypes.func, // 删除按钮事件
     itemClick: PropTypes.func.isRequired,
   };
   static defaultProps = {

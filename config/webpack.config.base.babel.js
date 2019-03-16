@@ -1,25 +1,37 @@
 import path from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
+const miniCssLoader = {
+  loader: MiniCssExtractPlugin.loader,
+  options: {
+    publicPath: process.env.NODE_ENV === 'production' ? '../' : '../../',
+  },
+};
+
 export default {
   target: 'electron-renderer',
   module: {
     rules: [
       {
         test: /\.(png|jpg|jpeg|gif|svg)$/,
-        loader: 'url-loader?limit=10000&name=images/[name].[ext]',
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: '[name].[ext]',
+          outputPath: 'images/',
+        },
       },
       {
         test: /\.css$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          { ...miniCssLoader },
           'css-loader',
         ],
       },
       {
         test: /\.scss$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          { ...miniCssLoader },
           'css-loader',
           'sass-loader',
         ],
@@ -27,7 +39,7 @@ export default {
       {
         test: /\.less$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          { ...miniCssLoader },
           'css-loader',
           {
             loader: 'less-loader',
