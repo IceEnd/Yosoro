@@ -8,6 +8,8 @@ import {
   checkFileName,
   markedTOC,
   objectInject,
+  throttle,
+  debounce,
 } from '../../app/views/utils/utils';
 
 test('FormatDate new date', () => {
@@ -102,4 +104,40 @@ test('objectInject', () => {
 
   res = objectInject({ a: { b: 1 } }, ['a', 'b'], 2);
   expect(res.a.b).toBe(2);
+});
+
+test('debounce: should be called after waiting for expected time', () => {
+  let n = 0;
+  const debouncedIncrement = debounce(() => n++, 50);
+  debouncedIncrement();
+  debouncedIncrement();
+  setTimeout(() => debouncedIncrement(), 10);
+  setTimeout(() => {
+    debouncedIncrement();
+    expect(n).toBe(1);
+  }, 100);
+});
+
+test('debounce: should pass correct context and arguments for handler', () => {
+  let n = 0;
+  const debouncedIncrement = debounce(() => n++, 50);
+  debouncedIncrement();
+  setTimeout(() => debouncedIncrement(), 10);
+  expect(n).toBe(0);
+  setTimeout(() => {
+    debouncedIncrement();
+    expect(n).toBe(1);
+  }, 100);
+});
+
+test('throttle', () => {
+  let n = 0;
+  const throttleIncrement = throttle(() => n++, 50);
+  throttleIncrement();
+  setTimeout(() => throttleIncrement(), 10);
+  expect(n).toBe(0);
+  setTimeout(() => {
+    throttleIncrement();
+    expect(n).toBe(1);
+  }, 100);
 });

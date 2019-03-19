@@ -139,21 +139,17 @@ export function markedToHtml(string) {
  */
 export function throttle(func, wait = 100) {
   let timer = null;
-  let previous; // 上次执行时间
+
   return function (...args) { // 闭包
     const context = this;
     const currentArgs = args;
-    const now = +new Date();
 
-    if (previous && now < previous + wait) {
-      clearTimeout(timer);
+    if (!timer) {
       timer = setTimeout(() => {
-        previous = now;
+        clearTimeout(timer);
+        timer = null;
         func.apply(context, currentArgs);
       }, wait);
-    } else {
-      previous = now;
-      func.apply(context, currentArgs);
     }
   };
 }
