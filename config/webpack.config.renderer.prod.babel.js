@@ -10,10 +10,10 @@ process.traceDeprecation = true;
 
 export default merge.smart(baseConfig, {
   mode: 'production',
-  // stats: {
-  //   entrypoints: false,
-  //   // children: false,
-  // },
+  stats: {
+    entrypoints: false,
+    children: false,
+  },
   entry: {
     index: path.join(__dirname, '../app/views/index.jsx'),
     'webview/webview-pre': [

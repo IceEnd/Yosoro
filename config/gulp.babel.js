@@ -1,13 +1,13 @@
 import path from 'path';
-import gulp from 'gulp';
-import gutil from 'gulp-util';
+import { src, dest, series } from 'gulp';
 import jeditor from 'gulp-json-editor';
 import del from 'del';
 import webpack from 'webpack';
 import webpackWeb from './webpack.config.renderer.prod.babel';
 import webpackElectron from './webpack.config.electron.babel';
 
-gulp.task('clean:web', () => {
+// clear renderer process files
+function cleanRenderer() {
   del.sync([
     path.join(__dirname, '../lib/css/**'),
     path.join(__dirname, '../lib/vendor*'),
@@ -17,88 +17,82 @@ gulp.task('clean:web', () => {
     path.join(__dirname, '../lib/webview/**'),
     path.join(__dirname, '../lib/fonts/**'),
   ]);
-});
+}
 
-gulp.task('clean:electron', () => {
+// after renderer process builded
+function afterBuildRenderer() {
+  del.sync([
+    path.join(__dirname, '../lib/webview/webview.js'),
+  ]);
+}
+
+// build renderer process
+function buildRenderer(cb) {
+  cleanRenderer();
+  webpack(webpackWeb, (err) => {
+    if (err) {
+      throw err;
+    }
+    afterBuildRenderer();
+    cb();
+  });
+}
+
+// clear main process files
+function cleanMain() {
   del.sync([
     path.join(__dirname, '../lib/main.js'),
     path.join(__dirname, '../lib/main.js.map'),
     path.join(__dirname, '../lib/resource'),
     path.join(__dirname, '../lib/assets'),
   ]);
-});
+}
 
-gulp.task('webpack:web', ['clean:web'], (cb) => {
-  webpack(webpackWeb, (err, stats) => {
-    if (err) {
-      throw new gutil.PluginError('webpack:web', err);
-    }
-    gutil.log('[webpack:web]', stats.toString({
-      colors: true,
-    }));
-    cb(null);
-  });
-});
-
-/**
- * @description electron 主进程
- */
-gulp.task('webpack:electron', ['clean:electron'], (cb) => {
-  webpack(webpackElectron, (err, stats) => {
-    if (err) {
-      throw new gutil.PluginError('webpack:electron', err);
-    }
-    gutil.log('[webpack:electron]', stats.toString({
-      colors: true,
-    }));
-    cb(null);
-  });
-});
-
-/**
- * @description electron 主进程静态资源
- */
-gulp.task('electron:resource', () => {
-  gulp.src(path.join(__dirname, '../app/main/resource/**'))
-    .pipe(gulp.dest(path.join(__dirname, '../lib/resource')));
-  gulp.src(path.join(__dirname, '../package.json'))
+// Copy Main process resource
+function copyMainResource() {
+  src(path.join(__dirname, '../app/main/resource/**'))
+    .pipe(dest(path.join(__dirname, '../lib/resource')));
+  src(path.join(__dirname, '../package.json'))
     .pipe(jeditor({
       main: './main.js',
     }))
-    .pipe(gulp.dest(path.join(__dirname, '../lib')));
-  gulp.src(path.join(__dirname, '../LICENSE'))
-    .pipe(gulp.dest(path.join(__dirname, '../lib')));
-  gulp.src(path.join(__dirname, ('../assets/**')))
-    .pipe(gulp.dest(path.join(__dirname, '../lib/assets')));
-});
+    .pipe(dest(path.join(__dirname, '../lib')));
+  src(path.join(__dirname, '../LICENSE'))
+    .pipe(dest(path.join(__dirname, '../lib')));
+  src(path.join(__dirname, ('../assets/**')))
+    .pipe(dest(path.join(__dirname, '../lib/assets')));
+}
 
-// 渲染进程打包
-gulp.task('build:web', ['webpack:web'], () => {
-  del.sync([
-    path.join(__dirname, '../lib/webview/webview.js'),
-  ]);
-});
+// builld main process
+function buildMain(cb) {
+  cleanMain();
+  webpack(webpackElectron, (err) => {
+    if (err) {
+      throw err;
+    }
+    copyMainResource();
+    cb();
+  });
+}
 
-// 主进程打包任务
-gulp.task('build:electron', ['webpack:electron', 'electron:resource']);
 
 const index = process.argv.findIndex(value => value === '--mode');
-let taskArr = ['clean', 'webpack:web'];
-if (index === -1) {
-  taskArr = ['clean', 'build:web'];
-} else {
+
+let build = series(buildRenderer, buildMain);
+
+if (index !== -1) {
   const mode = process.argv[index + 1];
   switch (mode) {
     case 'renderer':
-      taskArr = ['build:web'];
+      build = buildRenderer;
       break;
     case 'main':
-      taskArr = ['build:electron'];
+      build = buildMain;
       break;
     default:
-      taskArr = ['build:web'];
+      build = series(buildRenderer, buildMain);
       break;
   }
 }
 
-gulp.task('default', taskArr);
+exports.default = build;
