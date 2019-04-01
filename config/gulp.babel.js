@@ -3,11 +3,12 @@ import { src, dest, series } from 'gulp';
 import jeditor from 'gulp-json-editor';
 import del from 'del';
 import webpack from 'webpack';
+import merge from 'merge-stream';
 import webpackWeb from './webpack.config.renderer.prod.babel';
 import webpackElectron from './webpack.config.electron.babel';
 
 // clear renderer process files
-function cleanRenderer() {
+const cleanRenderer = (cb) => {
   del.sync([
     path.join(__dirname, '../lib/css/**'),
     path.join(__dirname, '../lib/vendor*'),
@@ -17,82 +18,76 @@ function cleanRenderer() {
     path.join(__dirname, '../lib/webview/**'),
     path.join(__dirname, '../lib/fonts/**'),
   ]);
-}
+  cb();
+};
+cleanRenderer.displayName = 'clean:renderer';
+
 
 // after renderer process builded
-function afterBuildRenderer() {
+const afterBuildRenderer = (cb) => {
   del.sync([
     path.join(__dirname, '../lib/webview/webview.js'),
   ]);
-}
+  cb();
+};
+afterBuildRenderer.displayName = 'after:buildRenderer';
 
 // build renderer process
-function buildRenderer(cb) {
-  cleanRenderer();
+const buildRenderer = (cb) => {
   webpack(webpackWeb, (err) => {
     if (err) {
       throw err;
     }
-    afterBuildRenderer();
     cb();
   });
-}
+};
+buildRenderer.displayName = 'build:renderer';
 
 // clear main process files
-function cleanMain() {
+const cleanMain = (cb) => {
   del.sync([
     path.join(__dirname, '../lib/main.js'),
     path.join(__dirname, '../lib/main.js.map'),
     path.join(__dirname, '../lib/resource'),
     path.join(__dirname, '../lib/assets'),
   ]);
-}
+  cb();
+};
+cleanMain.displayName = 'clean:main';
 
 // Copy Main process resource
-function copyMainResource() {
-  src(path.join(__dirname, '../app/main/resource/**'))
+const copyMainResource = () => {
+  const resource = src(path.join(__dirname, '../app/main/resource/**'))
     .pipe(dest(path.join(__dirname, '../lib/resource')));
-  src(path.join(__dirname, '../package.json'))
+  const pkg = src(path.join(__dirname, '../package.json'))
     .pipe(jeditor({
       main: './main.js',
     }))
     .pipe(dest(path.join(__dirname, '../lib')));
-  src(path.join(__dirname, '../LICENSE'))
+  const license = src(path.join(__dirname, '../LICENSE'))
     .pipe(dest(path.join(__dirname, '../lib')));
-  src(path.join(__dirname, ('../assets/**')))
+  const assets = src(path.join(__dirname, ('../assets/**')))
     .pipe(dest(path.join(__dirname, '../lib/assets')));
-}
+  return merge(
+    resource,
+    pkg,
+    license,
+    assets,
+  );
+};
+copyMainResource.displayName = 'after:buildMain';
 
 // builld main process
-function buildMain(cb) {
-  cleanMain();
+const buildMain = (cb) => {
   webpack(webpackElectron, (err) => {
     if (err) {
       throw err;
     }
-    copyMainResource();
     cb();
   });
-}
+};
+buildMain.displayName = 'build:main';
 
 
-const index = process.argv.findIndex(value => value === '--mode');
-
-let build = series(buildRenderer, buildMain);
-
-if (index !== -1) {
-  const mode = process.argv[index + 1];
-  switch (mode) {
-    case 'renderer':
-      build = buildRenderer;
-      break;
-    case 'main':
-      build = buildMain;
-      break;
-    default:
-      build = series(buildRenderer, buildMain);
-      break;
-  }
-}
-
-exports.default = build;
+exports.main = series(cleanMain, buildMain, copyMainResource);
+exports.renderer = series(cleanRenderer, buildRenderer, afterBuildRenderer);

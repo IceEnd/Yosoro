@@ -7,8 +7,8 @@
   "scripts": {
     "dev:main": "cross-env NODE_ENV='development' BABEL_ENV=main electron -r @babel/register .",
     "dev:renderer": "cross-env NODE_ENV='development' BABEL_ENV=renderer webpack-dev-server --config config/webpack.config.renderer.dev.babel.js --colors --progress",
-    "build:renderer": "cross-env NODE_ENV='production' BABEL_ENV=renderer gulp --gulpfile config/gulp.babel.js --cwd . --mode renderer",
-    "build:main": "cross-env NODE_ENV='production' BABEL_ENV=main gulp --gulpfile config/gulp.babel.js --cwd . --mode main",
+    "build:renderer": "cross-env NODE_ENV='production' BABEL_ENV=renderer gulp --gulpfile config/gulp.babel.js --cwd . renderer",
+    "build:main": "cross-env NODE_ENV='production' BABEL_ENV=main gulp --gulpfile config/gulp.babel.js --cwd . main",
     "build:all": "concurrently \"npm run build:renderer\" \"npm run build:main\"",
     "packager:mac:app": "electron-packager ./lib Yosoro --overwrite --platform=darwin --arch=x64 --out=out --icon=assets/icons/osx/app.icns",
     "packager:mac:dmg": "babel-node ./scripts/packageDMG.js",
@@ -119,6 +119,7 @@
     "jest": "^24.1.0",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
+    "merge-stream": "^1.0.1",
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
     "pre-commit": "1.2.2",
