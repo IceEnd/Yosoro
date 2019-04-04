@@ -1,0 +1,43 @@
+.CodeMirror-overlayscroll {
+	.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
+		display: none;
+	}
+}
+
+.CodeMirror-overlayscroll-horizontal, .CodeMirror-overlayscroll-vertical {
+	position: absolute;
+	z-index: 6;
+	opacity: 0;
+	transition: opacity .2s ease-out;
+
+	& > div {
+		position: absolute;
+		background-color: rgba(0, 0, 0, 0.2);
+		border-radius: 3px;
+	}
+
+	&.show {
+		opacity: 1;
+	}
+}
+
+.CodeMirror-overlayscroll-horizontal {
+	bottom: 0;
+	left: 0;
+	height: 6px;
+
+	& > div {
+		bottom: 0;
+		height: 100%;
+	}
+}
+
+.CodeMirror-overlayscroll-vertical {
+	right: 0;
+	top: 0;
+	width: 6px;
+	& > div {
+		right: 0;
+		width: 100%;
+	}
+}

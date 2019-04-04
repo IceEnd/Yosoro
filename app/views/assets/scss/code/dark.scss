@@ -176,4 +176,14 @@
 	&.CodeMirror-activeline-background {
 		background: #173047;
 	}
+	.yo-track-vertical, .yo-track-horizontal {
+		position: absolute;
+		border-radius: 3px;
+	}
+
+	.CodeMirror-overlayscroll-vertical, .CodeMirror-overlayscroll-horizontal {
+		& > div {
+			background-color: rgba($color: #fff, $alpha: .2);
+		}
+	}
 }

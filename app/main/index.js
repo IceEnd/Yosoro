@@ -143,7 +143,11 @@ function createWindow() {
   // Emitted when the window is closed.
   mainWindow.on('close', () => {
     mainWindow = null;
-    removeEventListeners();
+    try {
+      removeEventListeners();
+    } catch (err) {
+      // err
+    }
   });
 
   // 配置插件

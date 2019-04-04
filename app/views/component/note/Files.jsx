@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input, message, Icon } from 'antd';
 import { ipcRenderer } from 'electron';
-import { Scrollbars } from 'react-custom-scrollbars';
+import Scrollbars from 'Share/Scrollbars';
 import { withDispatch } from 'Components/HOC/context';
 
 import { createFile, renameNote, deletNote, updateNoteDesc, trashBack, updateNoteUploadStatus, UPLOAD_NOTE_ONEDRIVE } from 'Actions/projects';
@@ -568,9 +568,7 @@ export default class Files extends Component {
     }
     return (
       <div className={`file-explorer fade-in ${rootClass}`} onContextMenu={this.handleContextMenu}>
-        <Scrollbars
-          autoHide
-        >
+        <Scrollbars>
           <ul
             className="file-list"
           >

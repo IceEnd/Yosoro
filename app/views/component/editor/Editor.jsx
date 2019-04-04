@@ -4,7 +4,7 @@ import 'Assets/scss/code/editor.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
-import { Scrollbars } from 'react-custom-scrollbars';
+import Scrollbars from 'Share/Scrollbars';
 import autobind from 'autobind-decorator';
 import CheerS from 'Utils/cheers/CheerS';
 import ReactResizeDetector from 'react-resize-detector';

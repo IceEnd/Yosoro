@@ -2,6 +2,12 @@
 
 .dark {
 
+	.yo-track-vertical, .yo-track-horizontal {
+		& > div {
+			background-color: rgba($color: #fff, $alpha: .2) !important;
+		}
+	}
+
 	h1, h2, h3, h4, h5, h6 {
 		color: $darkHighColor;
 	}

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Anchor, Icon } from 'antd';
-import { Scrollbars } from 'react-custom-scrollbars';
+import Scrollbars from 'Share/Scrollbars';
 import Title from 'Share/title/Title';
 import ImageHosting from './ImageHosting';
 import MediumConfig from './MediumConfig';
@@ -60,7 +60,7 @@ const SettingsToc = () => (
   <div className="settings-toc">
     <Anchor
       affix
-      getContainer={() => document.querySelector('#test')}
+      getContainer={() => document.querySelector('#settings-wrapper')}
       showInkInFixed
       onClick={tocClick}
     >
@@ -151,8 +151,8 @@ export default class Settings extends Component {
         />
         <SettingsToc />
         <div className="modules" id="modules">
-          <Scrollbars autoHide>
-            <div id="test">
+          <Scrollbars>
+            <div id="settings-wrapper">
               <General
                 key="general-config"
                 theme={theme}

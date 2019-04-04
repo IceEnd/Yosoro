@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Scrollbars } from 'react-custom-scrollbars';
+import Scrollbars from 'Share/Scrollbars';
 import { Empty } from 'antd';
 import NoteItem from '../share/notebook/NoteItem';
 import HOCList from './HOCList';
@@ -32,7 +32,7 @@ export default class Projects extends Component {
       );
     }
     return (
-      <Scrollbars autoHide>
+      <Scrollbars>
         <div className="content">
           <ul className="list">
             {this.props.projects.map((item) => {

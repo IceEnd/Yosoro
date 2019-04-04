@@ -69,6 +69,32 @@ html, body, #root {
 	cursor: default;
 }
 
+/* scrollbars */
+.yo-track-vertical, .yo-track-horizontal {
+	position: absolute;
+	border-radius: 3px;
+
+	& > div {
+		background-color: rgba($color: #000000, $alpha: .2);
+	}
+}
+
+.yo-track-vertical {
+	width: 6px;
+	right: 2px;
+	bottom: 2px;
+	top: 2px;
+}
+
+.yo-track-horizontal {
+	height: 6px;
+	right: 2px;
+	bottom: 2px;
+	left: 2px;
+}
+
+/* scrollbars end */
+
 /* 工具栏 */
 .tool-bar {
 	flex: 0 0 4.5rem;

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Empty, Icon } from 'antd';
-import { Scrollbars } from 'react-custom-scrollbars';
+import Scrollbars from 'Share/Scrollbars';
 import { clipboard } from 'electron';
 import Title from 'Share/title/Title';
 import YoImage from 'Share/YoImage';
@@ -29,7 +29,7 @@ const Images = ({ list, dispatch }) => (
         <Empty className="empty" />
       </div>
     ) : (
-      <Scrollbars autoHide className="yo-scrollbar">
+      <Scrollbars className="yo-scrollbar">
         <div className="content">
           <ul className="list">
             {list.map((item, index) => (

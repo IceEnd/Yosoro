@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Input, message } from 'antd';
 import { ipcRenderer } from 'electron';
-import { Scrollbars } from 'react-custom-scrollbars';
+import Scrollbars from 'Share/Scrollbars';
 import { withDispatch } from 'Components/HOC/context';
 import { createProject, deleteProject, renameProject, trashBack, updateNoteUploadStatus } from 'Actions/projects';
 import { beforeSwitchSave, clearMarkdown } from 'Actions/markdown';
@@ -377,9 +377,7 @@ export default class Project extends Component {
         className={`project-explorer ${rootClass}`}
         onContextMenu={this.handleExplorerMenu}
       >
-        <Scrollbars
-          autoHide
-        >
+        <Scrollbars>
           <ul
             className="project-list"
           >

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Scrollbars } from 'react-custom-scrollbars';
+import Scrollbars from 'Share/Scrollbars';
 import { markedTOC } from 'Utils/utils';
 import { eventTOC } from '../../events/eventDispatch';
 
@@ -51,7 +51,7 @@ export default class TOC extends PureComponent {
       return (
         <div className="toc-content">
           { visible && headers.length > 0 ? (
-            <Scrollbars autoHide>
+            <Scrollbars>
               <ul className="toc-list">
                 {headers.map((head) => {
                   const { depth, text } = head;
