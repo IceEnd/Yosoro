@@ -60,7 +60,7 @@ const SettingsToc = () => (
   <div className="settings-toc">
     <Anchor
       affix
-      getContainer={() => document.querySelector('#settings-wrapper')}
+      getContainer={() => document.querySelector('#settings-wrapper').parentNode}
       showInkInFixed
       onClick={tocClick}
     >
