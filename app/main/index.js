@@ -91,14 +91,17 @@ function createWindow() {
     minWidth: 1200,
     minHeight: 600,
     titleBarStyle: 'default',
+    webPreferences: {
+      nodeIntegration: true,
+      webviewTag: true,
+    },
   };
   if (process.platform === 'linux') {
     options.icon = path.join(__dirname, './resource/app.png');
   }
   if (process.platform === 'darwin') {
     options.transparent = true;
-    options.frame = true;
-    // options.titleBarStyle = 'hiddenInset';
+    options.frame = false;
     options.titleBarStyle = 'hidden';
   }
   mainWindow = new BrowserWindow(options);

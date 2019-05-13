@@ -204,9 +204,6 @@ export default class App extends Component {
 
     ipcRenderer.send('start-release-schedule');
     ipcRenderer.send('get-images-list');
-    // if (!this.ps) {
-    //   this.ps = new PerfectScrollbar('.custom-scrollbar');
-    // }
   }
 
   componentDidUpdate(prevProps) {

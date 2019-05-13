@@ -260,6 +260,14 @@ pre code {
   font-weight: bold;
 }
 
+.platform-pdf {
+	pre {
+		white-space: pre-wrap;
+		word-wrap: break-word;
+		overflow: hidden !important;
+	}
+}
+
 .wv-dark {
 	color: #cacaca;
 

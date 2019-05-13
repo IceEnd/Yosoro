@@ -1,5 +1,4 @@
 const ipcRenderer = require('electron').ipcRenderer;
-// const PerfectScrollbar = require('perfect-scrollbar');
 
 let nodeRoot = null;
 
@@ -44,9 +43,6 @@ function setPlatform(platform) {
 function setTheme(theme) {
   const value = theme ? `wv-${theme}` : 'wv-light';
   document.documentElement.className = document.documentElement.className.replace(/\bwv-\w*\b/, value);
-  // if (nodeRoot) {
-  //   nodeRoot.className = nodeRoot.className.replace(/\bwv-\w*\b/, value);
-  // }
 }
 
 function handleInnerClick(event) {
@@ -87,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     editorMode = editorMode || 'normal';
     if (!nodeRoot) {
       nodeRoot = document.getElementById('root');
+      nodeRoot.classList.remove('platform-pdf');
     }
     checkMode(editorMode);
     setPlatform(platform);

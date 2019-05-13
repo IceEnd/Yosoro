@@ -48,7 +48,7 @@ export default class PDF {
     });
     content = markedToHtml(content);
     return this.htmlTemplate
-      .replace(/(<div\s+id="?root"?\s+class="?[\w-_]+"?\s*>)\s*(<\/div>)/, `$1${content}$2`);
+      .replace(/(<div\s+id="?root".*>)\s*(<\/div>)/, `$1${content}$2`);
   }
 
   getHtmlTemplate() {
