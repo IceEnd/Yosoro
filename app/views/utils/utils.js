@@ -190,7 +190,7 @@ export function getWebviewPreJSPath() {
   if (process.env.NODE_ENV === 'development') {
     return '../webview/webview-pre.js';
   }
-  return './webview/webview-pre.js';
+  return './webview-pre.js';
 }
 
 /**

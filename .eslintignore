@@ -2,5 +2,6 @@ dist
 node_modules
 lib
 app/views/utils/highlight.min.js
+app/views/utils/muya
 out
 releases

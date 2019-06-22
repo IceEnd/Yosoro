@@ -35,7 +35,6 @@ export default merge.smart(baseConfig, {
       {
         test: /\.(js|jsx)$/,
         use: [
-          // 'react-hot-loader/webpack',
           {
             loader: 'babel-loader',
             options: {
@@ -50,7 +49,7 @@ export default merge.smart(baseConfig, {
   },
   devServer: {
     hot: true,
-    contentBase: path.resolve(__dirname, '../app/renderer'),
+    contentBase: path.resolve(__dirname, '../app/views'),
     publicPath: 'http://localhost:3000/static/',
     port: 3000,
     compress: true,
@@ -58,7 +57,7 @@ export default merge.smart(baseConfig, {
     inline: true,
     historyApiFallback: {
       verbose: true,
-      disableDotRule: false,
+      disableDotRule: true,
     },
   },
   resolve: {
@@ -72,6 +71,6 @@ export default merge.smart(baseConfig, {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
+    // new webpack.NoEmitOnErrorsPlugin(),
   ],
 });

@@ -288,6 +288,10 @@ html, body, #root {
 	left: 0;
 	top: 0;
 	background-color: rgba($color: #ffffff, $alpha: 0.7);
+
+	&.loading-fullscreen {
+		position: fixed;
+	}
 	img {
 		margin-top: 25%;
 	}

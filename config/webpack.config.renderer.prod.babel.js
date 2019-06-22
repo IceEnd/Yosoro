@@ -16,16 +16,12 @@ export default merge.smart(baseConfig, {
   },
   entry: {
     index: path.join(__dirname, '../app/views/index.jsx'),
-    'webview/webview-pre': [
-      path.resolve(__dirname, '../app/webview/webview-pre.js'),
-    ],
-    'webview/webview': [
-      'webpack/hot/only-dev-server',
-      path.resolve(__dirname, '../app/webview/webview.js'),
-    ],
+    'webview-pre': path.resolve(__dirname, '../app/webview/webview-pre.js'),
+    webview: path.resolve(__dirname, '../app/webview/webview.js'),
   },
   output: {
     filename: '[name].js',
+    chunkFilename: 'deps/[name].bundle.js',
     path: path.resolve(__dirname, '../lib'),
   },
   module: {
@@ -78,10 +74,10 @@ export default merge.smart(baseConfig, {
     }),
     // webview html
     new HtmlWebpackPlugin({
-      filename: path.resolve(__dirname, '../lib/webview/webview.html'),
+      filename: path.resolve(__dirname, '../lib/webview.html'),
       template: path.resolve(__dirname, '../templete/webview.html'),
       inject: false,
-      chunks: ['webview/webview'],
+      chunks: ['webview'],
       minify: {
         removeComments: true,
         collapseWhitespace: true,

@@ -353,7 +353,7 @@ export default class Project extends Component {
     if (searchStatus === 1) {
       noResultTip = 'No notes were found.';
     }
-    if (editorMode !== 'normal' && editorMode !== 'write') {
+    if (editorMode !== 'normal') {
       rootClass = 'hide';
     }
     if (projects.length === 0) {

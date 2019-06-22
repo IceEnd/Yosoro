@@ -61,4 +61,5 @@ typings/
 config/devconfig.json
 yosoro-darwin-x64/
 lib/
+!app/views/utils/muya/lib
 out/

@@ -646,6 +646,23 @@ export function eventListener(menus) {
     }
   });
 
+  ipcMain.on('pic-upload-sync', async (event, paylod) => {
+    const seed = paylod.seed;
+    try {
+      const res = await uploder(paylod);
+      const doc = await global.RUNTIME.imageDB.insert(res);
+      event.sender.send(`pic-upload-sync-cb-${seed}`, {
+        code: 0,
+        data: doc,
+      });
+    } catch (ex) {
+      event.sender.send(`pic-upload-sync-cb-${seed}`, {
+        code: -1,
+        data: ex,
+      });
+    }
+  });
+
   ipcMain.on('get-images-list', async (event) => {
     const list = await global.RUNTIME.imageDB.findAll({}, { date: -1 });
     event.sender.send('get-images-list', list);

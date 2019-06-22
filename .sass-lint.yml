@@ -5,6 +5,7 @@ files:
     - './app/views/**/*.scss'
   ignore:
     - './app/views/assets/scss/code/*.scss'
+    - './app/views/utils/muya/**/*.scss'
 rules:
   # Extends
   extends-before-declarations: 2

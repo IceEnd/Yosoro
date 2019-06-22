@@ -10,13 +10,15 @@ import webpackElectron from './webpack.config.electron.babel';
 // clear renderer process files
 const cleanRenderer = (cb) => {
   del.sync([
-    path.join(__dirname, '../lib/css/**'),
-    path.join(__dirname, '../lib/vendor*'),
+    path.join(__dirname, '../lib/index.html'),
+    path.join(__dirname, '../lib/deps/**'),
     path.join(__dirname, '../lib/*.html'),
-    path.join(__dirname, '../lib/index*'),
     path.join(__dirname, '../lib/images/**'),
-    path.join(__dirname, '../lib/webview/**'),
+    path.join(__dirname, '../lib/webview.js'),
+    path.join(__dirname, '../lib/webview-pre.js'),
+    path.join(__dirname, '../lib/index.js'),
     path.join(__dirname, '../lib/fonts/**'),
+    path.join(__dirname, '../lib/css/**'),
   ]);
   cb();
 };
@@ -26,7 +28,7 @@ cleanRenderer.displayName = 'clean:renderer';
 // after renderer process builded
 const afterBuildRenderer = (cb) => {
   del.sync([
-    path.join(__dirname, '../lib/webview/webview.js'),
+    path.join(__dirname, '../lib/webview.js'),
   ]);
   cb();
 };

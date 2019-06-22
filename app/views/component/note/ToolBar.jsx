@@ -18,7 +18,7 @@ import SVGIcon from '../share/SVGIcon';
 
 const MenuItem = Menu.Item;
 
-const VIEWS = ['normal', 'write', 'edit', 'preview', 'immersion'];
+const VIEWS = ['normal', 'write'];
 
 @withDispatch
 export default class Tool extends Component {
@@ -184,7 +184,7 @@ export default class Tool extends Component {
       placement="bottomCenter"
     >
       <span
-        className="tools-item font-icon"
+        className="tools-item y-font-icon"
       >
         <Icon type={type} style={style} />
       </span>
@@ -218,12 +218,12 @@ export default class Tool extends Component {
       return (
         <Popover
           overlayClassName="toc-popover"
-          trigger="hover"
+          trigger="click"
           placement="bottomRight"
           content={content}
           onVisibleChange={value => this.handleVisible('tocVisible', value)}
         >
-          <span className="tools-item font-icon">
+          <span className="tools-item y-font-icon">
             <Icon type="bars" />
           </span>
         </Popover>
@@ -234,7 +234,7 @@ export default class Tool extends Component {
     }
     return (
       <span
-        className="tools-item font-icon"
+        className="tools-item y-font-icon"
         onClick={() => this.handleClick(type)}
       >
         <Tooltip
@@ -287,7 +287,7 @@ export default class Tool extends Component {
         placement="bottomRight"
         content={content}
       >
-        <span className="tools-item font-icon">
+        <span className="tools-item y-font-icon">
           <Icon type="layout" />
         </span>
       </Popover>

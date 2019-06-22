@@ -1,23 +1,28 @@
 
-import 'Assets/scss/code/dark.scss';
-import 'Assets/scss/code/editor.scss';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import Scrollbars from 'Share/Scrollbars';
 import autobind from 'autobind-decorator';
-import CheerS from 'Utils/cheers/CheerS';
-import ReactResizeDetector from 'react-resize-detector';
-import { UPLOAD_IMAGE } from 'Actions/imageHosting';
+import Muya from 'Utils/muya/index';
+import {
+  UPLOAD_IMAGE,
+  UPLOAD_IMAGE_SUCCESS,
+  UPLOAD_IMAGE_FAILED,
+} from 'Actions/imageHosting';
 import { saveNote } from 'Actions/projects';
 import { updateMarkdownHtml } from 'Actions/markdown';
 import { isCanUpload } from 'Utils/db/app';
-import { throttle, debounce } from 'Utils/utils';
+import {
+  debounce,
+} from 'Utils/utils';
 import { withDispatch, withTheme } from 'Components/HOC/context';
 import * as notifications from '../share/notifications';
-import { eventMD, eventTOC } from '../../events/eventDispatch';
+import { eventTOC } from '../../events/eventDispatch';
 
 let key = 0;
+let seed = 0;
+
 
 @withDispatch
 @withTheme
@@ -25,18 +30,14 @@ export default class Editor extends Component {
   static displayName = 'MarkdownEditor';
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    theme: PropTypes.string.isRequired,
+    // theme: PropTypes.string.isRequired,
     uuid: PropTypes.string.isRequired,
     defaultContent: PropTypes.string.isRequired,
     start: PropTypes.number.isRequired,
-    editorWidth: PropTypes.string.isRequired,
-    setDrag: PropTypes.func.isRequired,
     editorMode: PropTypes.string.isRequired,
     fontSize: PropTypes.number.isRequired,
-    cursorPosition: PropTypes.bool.isRequired,
     editorWidthValue: PropTypes.number.isRequired,
     drag: PropTypes.bool.isRequired,
-    setPreiewScrollRatio: PropTypes.func.isRequired,
     note: PropTypes.shape({
       projectUuid: PropTypes.string.isRequired,
       projectName: PropTypes.string.isRequired,
@@ -57,22 +58,16 @@ export default class Editor extends Component {
 
   constructor() {
     super();
-    this.codeMirror = null;
-    this.containerResize = debounce(() => {
-      this.codeMirror.refresh();
-    }, 100);
+    this.muya = null;
     this.state = {
-      listenScroll: true,
+      uploading: false,
     };
   }
 
   componentDidMount() {
     this.mounted = true;
     this.noteRoot = document.getElementById('note_root_cont');
-    window.addEventListener('resize', this.onWindowResize);
-    this.container.addEventListener('resize', this.handleContainerResize);
-    this.setCodeMirror();
-    eventMD.on('sync-value', this.syncValue);
+    this.setMuya();
     eventTOC.on('toc-jump', this.handleTOCJump);
   }
 
@@ -83,99 +78,25 @@ export default class Editor extends Component {
       this.editor.selectionEnd = start + 1;
     }
     if (prevProps.uuid !== this.props.uuid) {
-      this.removeChangeEvent(); // 取消change事件
-      this.codeMirror.setValue(this.props.defaultContent);
-      this.codeMirror.clearHistory();
-      this.addChangeEvent(); // 重新绑定change事件
+      this.muya.setMarkdown(this.props.defaultContent);
     }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', throttle(this.onWindowResize, 60));
-    eventMD.removeAllListeners('sync-value');
     eventTOC.removeListener('toc-jump', this.handleTOCJump);
-    this.deleteCodeMirror();
+    this.destroyMuya();
   }
 
-  @autobind
-  onWindowResize() {
-    const { editorMode } = this.props;
-    if (editorMode === 'edit') {
-      const { editorWidthValue } = this.props;
-      const textWidth = this.getTextWidth(editorMode, editorWidthValue);
-      this.setState({
-        textWidth,
-      });
-    }
-  }
-
-  getRatio = (cm) => {
-    const currentLine = cm.getCursor().line;
-    const lines = cm.lineCount();
-    return currentLine / lines;
-  }
-
-  getTextWidth(editorMode, editorWidthValue) {
-    if (editorMode === 'normal' || editorMode === 'immersion' || editorMode === 'write') {
-      return '100%';
-    }
-    if (this.editorRoot) {
-      let parentWidth;
-      if (editorMode === 'edit') {
-        parentWidth = this.noteRoot.offsetWidth;
-      } else {
-        parentWidth = this.editorRoot.offsetParent.offsetWidth;
-      }
-      let res = '100%';
-      if (editorWidthValue && parentWidth) {
-        res = `${parentWidth * editorWidthValue}px`;
-      }
-      return res;
-    }
-    return '100%';
-  }
-
-  getTheme = () => {
-    const { theme } = this.props;
-    switch (theme) {
-      case 'light':
-        return 'default';
-      case 'dark':
-        return 'dark';
-      default:
-        return 'default';
-    }
-  }
-
-  setCodeMirror = () => {
-    const theme = this.getTheme();
-    this.codeMirror = CheerS(this.container, {
-      value: this.props.defaultContent,
-      mode: {
-        name: 'markdown',
-        highlightFormatting: true,
-        strikethrough: true,
-        fencedCodeBlockHighlighting: true,
-      },
-      lineNumbers: true,
-      lineWrapping: true,
-      foldGutter: true,
-      gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
-      theme,
-      scrollbarStyle: 'overlay',
+  setMuya = () => {
+    this.muya = new Muya(this.container, {
+      focusMode: true,
+      markdown: this.props.defaultContent,
+      imageAction: this.imageAction,
+      imageUploadAction: this.imageUploadAction,
+      // imagePathPicker
     });
+    window.muya = this.muya;
     this.addChangeEvent();
-    this.codeMirror.on('scroll', this.handleScroll);
-    this.codeMirror.on('keydown', this.handleKeyDown);
-    this.codeMirror.on('focus', this.handleFocus);
-    this.codeMirror.on('drop', this.handleDrop);
-    this.codeMirror.on('paste', this.handlePaste);
-  }
-
-  syncValue = () => {
-    const { top } = this.codeMirror.getScrollInfo();
-    this.codeMirror.setValue(this.props.defaultContent);
-    this.codeMirror.scrollTo(0, top);
   }
 
   // 停止编辑500ms, 异步保存文件内容
@@ -189,15 +110,9 @@ export default class Editor extends Component {
     dispatch(saveNote(projectUuid, fileUuid));
   }, 500);
 
-  removeChangeEvent() {
-    if (this.codeMirror) {
-      this.codeMirror.off('change', this.handleChange);
-    }
-  }
-
   addChangeEvent() {
-    if (this.codeMirror) {
-      this.codeMirror.on('change', this.handleChange);
+    if (this.muya) {
+      this.muya.on('change', this.handleChange);
     }
   }
 
@@ -226,10 +141,9 @@ export default class Editor extends Component {
     }
   }
 
-  handleChange = (cm) => {
-    const content = cm.getValue();
+  handleChange = ({ markdown }) => {
     const { uuid } = this.props;
-    this.props.dispatch(updateMarkdownHtml(content, uuid, -1));
+    this.props.dispatch(updateMarkdownHtml(markdown, uuid, -1));
     this.autoSave();
   }
 
@@ -242,64 +156,44 @@ export default class Editor extends Component {
     });
   }
 
-  deleteCodeMirror = () => {this.codeMirror = null;}
-
-  handleScroll = (cm) => {
-    const { listenScroll } = this.state;
-    if (!listenScroll) {
-      this.setState({
-        listenScroll: true,
-      });
-      return false;
+  destroyMuya = () => {
+    if (this.muya) {
+      this.muya.destroy();
+      this.muya = null;
     }
-    const { top, height, clientHeight } = cm.getScrollInfo();
-    const scrollHeight = height - clientHeight || 1;
-    const ratio = top / scrollHeight;
-    this.props.setPreiewScrollRatio(ratio);
   }
 
-  handleFocus = (cm) => {
-    this.handleNeedScroll(cm);
-  }
+  imageAction = image => image;
 
-  handleKeyDown = (cm) => {
-    this.setState({
-      listenScroll: false,
+  imageUploadAction = (image, cb) => {
+    const { imageHostingConfig } = this.props;
+    if (!isCanUpload()) {
+      notifications.uploadNotification.show();
+      return;
+    }
+    ipcRenderer.once(`pic-upload-sync-cb-${++seed}`, (event, args) => {
+      const { code, data } = args;
+      if (code === 0) {
+        this.props.dispatch({
+          type: UPLOAD_IMAGE_SUCCESS,
+          data,
+        });
+        if (cb) {
+          cb(data);
+        }
+      } else {
+        this.props.dispatch({
+          type: UPLOAD_IMAGE_FAILED,
+        });
+      }
     });
-    this.handleNeedScroll(cm);
-  }
-
-  handleNeedScroll = (cm) => {
-    const { cursorPosition } = this.props;
-    if (cursorPosition) {
-      const ratio = this.getRatio(cm);
-      this.props.setPreiewScrollRatio(ratio);
-    }
-  }
-
-  @autobind
-  handleMouseDown() {
-    this.props.setDrag(true);
-  }
-
-  @autobind
-  handleMouseUp() {
-    this.props.setDrag(false);
-  }
-
-  @autobind
-  handleCodeMirrorResize() {
-    this.containerResize();
-  }
-
-  @autobind
-  handleDrop(cm, e) {
-    this.handleDragAndPaste(cm, e, 'dataTransfer');
-  }
-
-  @autobind
-  handlePaste(cm, e) {
-    this.handleDragAndPaste(cm, e, 'clipboardData');
+    ipcRenderer.send('pic-upload-sync', {
+      files: {
+        filePath: image,
+      },
+      seed,
+      imageHostingConfig,
+    });
   }
 
   @autobind
@@ -339,45 +233,24 @@ export default class Editor extends Component {
   }
 
   render() {
-    const { editorWidth, editorMode, editorWidthValue, drag, fontSize } = this.props;
-    let width = editorWidth;
+    const { editorMode, drag, fontSize } = this.props;
     let rootClass = '';
-    let split = true;
-    let noBorder = '';
-    if (editorMode === 'preview') {
-      width = '0';
-      rootClass = 'hide';
-      split = false;
-      noBorder = 'no-border';
-    } else if (editorMode === 'immersion' || editorMode === 'write') {
-      width = '100%';
-      split = false;
-      noBorder = 'no-border';
+    if (editorMode === 'write') {
       rootClass = `${editorMode}-mode'`;
     }
-    const textWidth = this.getTextWidth(editorMode, editorWidthValue);
     return (
       <div
-        className={`editor-root ${rootClass} ${noBorder} ${drag ? 'drag' : ''}`}
-        style={{ flexBasis: width, fontSize: `${fontSize}px` }}
+        className={`editor-root ${rootClass} ${drag ? 'drag' : ''}`}
+        style={{ fontSize: `${fontSize}px` }}
         ref={node => (this.editorRoot = node)}
       >
-        <ReactResizeDetector handleWidth onResize={this.handleCodeMirrorResize} />
         <Scrollbars>
           <div
             className="code-container"
-            style={{ width: textWidth, height: '100%' }}
+            style={{ width: '100%', minHeight: '100%' }}
             ref={node => (this.container = node)}
           />
         </Scrollbars>
-        {drag ? (<div className="editor-layer" />) : null}
-        { split ? (
-          <span
-            className="resize-right"
-            onMouseDown={this.handleMouseDown}
-            onMouseUp={this.handleMouseUp}
-          />
-        ) : null}
       </div>
     );
   }

@@ -143,6 +143,11 @@ function createWindow() {
     shell.openExternal(linkUrl);
   });
 
+  webContents.on('new-window', (e, linkUrl) => {
+    e.preventDefault();
+    shell.openExternal(linkUrl);
+  });
+
   // Emitted when the window is closed.
   mainWindow.on('close', () => {
     mainWindow = null;

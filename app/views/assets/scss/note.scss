@@ -95,7 +95,7 @@
 					margin-right: 0;
 				}
 
-				&.font-icon {
+				&.y-font-icon {
 					vertical-align: bottom;
 					.anticon {
 						font-size: 1.25em;
@@ -562,7 +562,7 @@
 	.editor-root {
 		position: relative;
 		flex: 0 0 auto;
-		width: 0;
+		width: 100%;
 		border-right: 1px solid #d9d9d9;
 		min-width: 10rem;
 		transition: width, flex-basis ease 0.5s;
@@ -594,7 +594,7 @@
 			border: 0;
 		}
 
-		&.immersion-mode {
+		&.write-mode {
 			padding: 0.7rem;
 		}
 
@@ -716,12 +716,12 @@
 .edit-mode-popover {
 	.mode-wrap {
 		position: relative;
-		width: 12rem;
+		width: 6rem;
 	}
 
 	.mode-list {
 		@include display-flex;
-		width: 12rem;
+		width: 6rem;
 		margin: 0 auto;
 
 		.mode-item {

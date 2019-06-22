@@ -53,10 +53,11 @@ export default class TOC extends PureComponent {
           { visible && headers.length > 0 ? (
             <Scrollbars>
               <ul className="toc-list">
-                {headers.map((head) => {
+                {headers.map((head, index) => {
                   const { depth, text } = head;
                   return (
                     <li
+                      key={`${index}-text`}
                       className="toc-item"
                       onClick={() => this.handleClick(depth, text)}
                       role="presentation"

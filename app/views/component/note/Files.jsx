@@ -550,7 +550,7 @@ export default class Files extends Component {
     const { newFile, rename, desc } = this.state;
     const notes = this.getNotes();
     let rootClass = '';
-    if (editorMode !== 'normal' && editorMode !== 'write') {
+    if (editorMode !== 'normal') {
       rootClass = 'hide';
     }
     if (notes.length === 0) {

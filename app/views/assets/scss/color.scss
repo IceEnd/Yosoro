@@ -54,3 +54,57 @@ $darkNoteCurBg: #333333;
 $darkNoteHoverBg: rgba($color: #333333, $alpha: .5);
 $darkNoteSvgFill: #ff6666;
 $darkEditorBg: #1e1e1e;
+
+
+:root {
+	--titleBarHeight: 32px;
+	--editorAreaWidth: 750px;
+
+	/*editor*/
+	/*Theme color cluster*/
+	--themeColor: rgba(33, 181, 111, 1);
+	--themeColor90: rgba(33, 181, 111, .9);
+	--themeColor80: rgba(33, 181, 111, .8);
+	--themeColor70: rgba(33, 181, 111, .7);
+	--themeColor60: rgba(33, 181, 111, .6);
+	--themeColor50: rgba(33, 181, 111, .5);
+	--themeColor40: rgba(33, 181, 111, .4);
+	--themeColor30: rgba(33, 181, 111, .3);
+	--themeColor20: rgba(33, 181, 111, .2);
+	--themeColor10: rgba(33, 181, 111, .1);
+
+	--highlightColor: rgba(33, 181, 111, .4);
+	--selectionColor: rgba(0, 0, 0, .1);
+	--editorColor: rgba(0, 0, 0, .7);
+	--editorColor80: rgba(0, 0, 0, .8);
+	--editorColor60: rgba(0, 0, 0, .6);
+	--editorColor50: rgba(0, 0, 0, .5);
+	--editorColor40: rgba(0, 0, 0, .4);
+	--editorColor30: rgba(0, 0, 0, .3);
+	--editorColor10: rgba(0, 0, 0, .1);
+	--editorColor04: rgba(0, 0, 0, .03);
+	--editorBgColor: rgba(255, 255, 255, 1);
+	--deleteColor: #ff6969;
+	--iconColor: #6b737b;
+	--codeBgColor: rgba(216, 216, 216, .4);
+	--codeBlockBgColor: rgba(0, 0, 0, 0.03);
+	--inputBgColor: rgba(0, 0, 0, .06);
+	--buttonBgColor: #ffffff;
+	--buttonBorderColor: rgba(0, 0, 0, 0.2);
+	--buttonShadow: rgba(0, 0, 0, 0.12);
+	--buttonHover: #f2f2f2;
+	--buttonActive: #e5e5e5;
+
+	/*marktext*/
+	--sideBarColor: rgba(0, 0, 0, .6);
+	--sideBarTitleColor: rgba(0, 0, 0, 1);
+	--sideBarTextColor: rgba(0, 0, 0, .4);
+	--sideBarBgColor: rgba(242, 242, 242, 0.9);
+	--sideBarItemHoverBgColor: rgba(0, 0, 0, .03);
+	--itemBgColor: rgba(255, 255, 255, 0.6);
+	--floatBgColor: #fff;
+	--floatHoverColor: rgba(0, 0, 0, .04);
+	--floatBorderColor: rgba(0, 0, 0, .1);
+	--floatShadow: rgba(15, 15, 15, 0.03) 0 0 0 1px, rgba(15, 15, 15, 0.04) 0 3px 6px, rgba(15, 15, 15, 0.05) 0 9px 24px;
+	--maskColor: rgba(255, 255, 255, .7);
+}

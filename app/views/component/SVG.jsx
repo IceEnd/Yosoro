@@ -108,7 +108,7 @@ const SVG = React.memo(() => (
     </symbol>
 
     {/* svg - preview mode */}
-    <symbol id="icon_svg_preview_mode" viewBox="0 0 640 640">
+    {/* <symbol id="icon_svg_preview_mode" viewBox="0 0 640 640">
       <rect
         x="40"
         y="80"
@@ -143,10 +143,10 @@ const SVG = React.memo(() => (
         width="380"
         height="50"
       />
-    </symbol>
+    </symbol> */}
 
     {/* svg - write mode */}
-    <symbol id="icon_svg_write_mode" viewBox="0 0 640 640">
+    <symbol id="icon_svg_normal_mode" viewBox="0 0 640 640">
       <rect
         x="40"
         y="80"
@@ -211,7 +211,7 @@ const SVG = React.memo(() => (
     </symbol>
 
     {/* svg - edit mode */}
-    <symbol id="icon_svg_edit_mode" viewBox="0 0 640 640">
+    {/* <symbol id="icon_svg_edit_mode" viewBox="0 0 640 640">
       <rect
         x="40"
         y="80"
@@ -230,10 +230,10 @@ const SVG = React.memo(() => (
         y2="560"
         style={{ strokeWidth: 50 }}
       />
-    </symbol>
+    </symbol> */}
 
     {/* svg - normal mode */}
-    <symbol id="icon_svg_normal_mode" viewBox="0 0 640 640">
+    {/* <symbol id="icon_svg_normal_mode" viewBox="0 0 640 640">
       <rect
         x="40"
         y="80"
@@ -276,10 +276,10 @@ const SVG = React.memo(() => (
         y2="560"
         style={{ strokeWidth: 50 }}
       />
-    </symbol>
+    </symbol> */}
 
     {/* svg - immersion mode */}
-    <symbol id="icon_svg_immersion_mode" viewBox="0 0 640 640">
+    <symbol id="icon_svg_write_mode" viewBox="0 0 640 640">
       <rect
         x="40"
         y="80"
