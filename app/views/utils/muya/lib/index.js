@@ -171,8 +171,8 @@ class Muya {
 
   setFocusMode (bool) {
     const { container } = this
-    const { focusMode } = this.options
-    if (bool && !focusMode) {
+    // const { focusMode } = this.options
+    if (bool) {
       container.classList.add(CLASS_OR_ID['AG_FOCUS_MODE'])
     } else {
       container.classList.remove(CLASS_OR_ID['AG_FOCUS_MODE'])

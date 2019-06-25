@@ -33,11 +33,8 @@ export default class Editor extends Component {
     // theme: PropTypes.string.isRequired,
     uuid: PropTypes.string.isRequired,
     defaultContent: PropTypes.string.isRequired,
-    start: PropTypes.number.isRequired,
     editorMode: PropTypes.string.isRequired,
     fontSize: PropTypes.number.isRequired,
-    editorWidthValue: PropTypes.number.isRequired,
-    drag: PropTypes.bool.isRequired,
     note: PropTypes.shape({
       projectUuid: PropTypes.string.isRequired,
       projectName: PropTypes.string.isRequired,
@@ -73,11 +70,6 @@ export default class Editor extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { start } = this.props;
-    if (start !== -1) {
-      this.editor.selectionStart = start + 1;
-      this.editor.selectionEnd = start + 1;
-    }
     if (prevProps.uuid !== this.props.uuid) {
       this.muya.setMarkdown(this.props.defaultContent);
     }
@@ -92,7 +84,7 @@ export default class Editor extends Component {
   setMuya = () => {
     const { fontSize, defaultContent } = this.props;
     this.muya = new Muya(this.container, {
-      focusMode: true,
+      focusMode: false,
       fontSize,
       markdown: defaultContent,
       imageAction: this.imageAction,
@@ -136,15 +128,6 @@ export default class Editor extends Component {
     const { uuid } = this.props;
     this.props.dispatch(updateMarkdownHtml(markdown, uuid, -1));
     this.autoSave();
-  }
-
-  updateCode = () => {
-    const { editorMode, editorWidthValue, defaultContent } = this.props;
-    const textWidth = this.getTextWidth(editorMode, editorWidthValue);
-    this.setState({
-      content: defaultContent,
-      textWidth,
-    });
   }
 
   destroyMuya = () => {
@@ -224,14 +207,14 @@ export default class Editor extends Component {
   }
 
   render() {
-    const { editorMode, drag, fontSize } = this.props;
+    const { editorMode, fontSize } = this.props;
     let rootClass = '';
     if (editorMode === 'write') {
       rootClass = `${editorMode}-mode'`;
     }
     return (
       <div
-        className={`editor-root ${rootClass} ${drag ? 'drag' : ''}`}
+        className={`editor-root ${rootClass}`}
         style={{ fontSize: `${fontSize}px` }}
         ref={node => (this.editorRoot = node)}
       >

@@ -2,11 +2,13 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withDispatch } from 'Components/HOC/context';
 import { CHANGE_APP_SETTINGS } from 'Actions/app';
+import setTheme from 'Utils/theme';
 import Module from './Module';
 import FontSize from './share/FontSize';
-import Switch from './share/Switch';
+// import Switch from './share/Switch';
 import SavePath from './share/SavePath';
 import Selector from './share/Selector';
+
 
 const MIN_SIZE = 12;
 const MAX_SIZE = 36;
@@ -19,7 +21,7 @@ export default class General extends PureComponent {
     theme: PropTypes.string.isRequired,
     fontSize: PropTypes.number.isRequired,
     previewFontSize: PropTypes.number.isRequired,
-    cursorPosition: PropTypes.bool.isRequired,
+    // cursorPosition: PropTypes.bool.isRequired,
     sortBy: PropTypes.oneOf(['create-date', 'latest-date']),
     showLoading: PropTypes.func.isRequired,
     closeLoading: PropTypes.func.isRequired,
@@ -34,6 +36,9 @@ export default class General extends PureComponent {
         return;
       }
     }
+    if (type === 'theme') {
+      setTheme(value);
+    }
     this.props.dispatch({
       type: CHANGE_APP_SETTINGS,
       target: type,
@@ -42,7 +47,7 @@ export default class General extends PureComponent {
   }
 
   render() {
-    const { fontSize, previewFontSize, cursorPosition, showLoading, theme, sortBy, closeLoading } = this.props;
+    const { fontSize, previewFontSize, showLoading, theme, sortBy, closeLoading } = this.props;
     return (
       <Module
         title="General"
@@ -105,13 +110,13 @@ export default class General extends PureComponent {
           closeLoading={closeLoading}
         />
 
-        <Switch
+        {/* <Switch
           type="cursorPosition"
           title="Cursor Position"
           value={cursorPosition}
           onChange={this.handleChange}
           tips="View positioning based on the cursor position of the editor."
-        />
+        /> */}
 
       </Module>
     );

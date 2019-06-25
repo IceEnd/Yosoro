@@ -13,6 +13,7 @@ import Images from 'Components/images/Images';
 import Settings from 'Components/settings/Settings';
 import { Provider } from 'Components/HOC/context';
 import { getTokens } from 'Utils/db/app';
+import setTheme from 'Utils/theme';
 
 import {
   GET_USER_AVATAR,
@@ -200,7 +201,7 @@ export default class App extends Component {
     this.listenEvent();
     this.getLocalAvatar();
     this.fetchAvatar();
-    this.setTheme();
+    setTheme(this.props.app.settings.theme);
 
     ipcRenderer.send('start-release-schedule');
     ipcRenderer.send('get-images-list');
@@ -214,7 +215,6 @@ export default class App extends Component {
     if (prevProps.app.allowShowUpdate && !allowShowUpdate) {
       ipcRenderer.send('stop-release-schedule');
     }
-    this.setTheme();
   }
 
   componentWillUnmount() {
@@ -234,13 +234,6 @@ export default class App extends Component {
     ];
     for (const item of listeners) {
       ipcRenderer.removeAllListeners(item);
-    }
-  }
-
-  setTheme() {
-    const { theme } = this.props.app.settings;
-    if (document.body.className !== theme) {
-      document.body.className = theme;
     }
   }
 

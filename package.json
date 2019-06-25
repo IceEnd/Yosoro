@@ -87,12 +87,12 @@
     "turndown": "^5.0.3",
     "turndown-plugin-gfm": "^1.0.2",
     "underscore": "^1.9.1",
+    "uuid": "^3.1.0",
     "vega": "^5.4.0",
     "vega-embed": "^4.2.0",
     "vega-lite": "^3.3.0",
     "view-image": "^0.0.1",
-    "vscode-ripgrep": "^1.2.5",
-    "uuid": "^3.1.0"
+    "vscode-ripgrep": "^1.2.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -145,6 +145,7 @@
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
     "pre-commit": "1.2.2",
+    "raw-loader": "^3.0.0",
     "react-hot-loader": "^4.7.2",
     "sass-lint": "^1.12.1",
     "sass-loader": "^6.0.6",

@@ -27,6 +27,14 @@ export default {
           { ...miniCssLoader },
           'css-loader',
         ],
+        exclude: [
+          path.resolve(__dirname, '../app/views/assets/scss/theme/dark.theme.css'),
+          path.resolve(__dirname, '../app/views/assets/scss/theme/light.theme.css'),
+        ],
+      },
+      {
+        test: /\.theme\.css$/i,
+        use: 'raw-loader',
       },
       {
         test: /\.scss$/,
@@ -55,7 +63,6 @@ export default {
         options: {
           name: '[name].[ext]',
           outputPath: 'fonts/',
-          // publicPath: '../../fonts',
         },
       },
     ],

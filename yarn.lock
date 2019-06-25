@@ -382,13 +382,6 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
-"@babel/plugin-syntax-import-meta@^7.2.0":
-  version "7.2.0"
-  resolved "http://r.cnpmjs.org/@babel/plugin-syntax-import-meta/download/@babel/plugin-syntax-import-meta-7.2.0.tgz#2333ef4b875553a3bcd1e93f8ebc09f5b9213a40"
-  integrity sha1-IzPvS4dVU6O80ek/jrwJ9bkhOkA=
-  dependencies:
-    "@babel/helper-plugin-utils" "^7.0.0"
-
 "@babel/plugin-syntax-json-strings@^7.2.0":
   version "7.2.0"
   resolved "http://r.cnpmjs.org/@babel/plugin-syntax-json-strings/download/@babel/plugin-syntax-json-strings-7.2.0.tgz#72bd13f6ffe1d25938129d2a186b11fd62951470"
@@ -10078,6 +10071,14 @@ raw-body@2.4.0:
     http-errors "1.7.2"
     iconv-lite "0.4.24"
     unpipe "1.0.0"
+
+raw-loader@^3.0.0:
+  version "3.0.0"
+  resolved "http://registry.npm.baidu-int.com/raw-loader/-/raw-loader-3.0.0.tgz#9a660dc9cfbfb8324eede3ea3511454d2a5d0389"
+  integrity sha512-FsELYliOpX5HdPdxa7PzTmEc5OTchmLUs/r4f8oLDGCYE+xC2FjVbDXzdyLcBrdlDnvkx1x5wzphixcWpxJG5w==
+  dependencies:
+    loader-utils "^1.1.0"
+    schema-utils "^1.0.0"
 
 rc-align@^2.4.0, rc-align@^2.4.1:
   version "2.4.5"
