@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Scrollbars from 'Share/Scrollbars';
-import { markedTOC } from 'Utils/utils';
 import { eventTOC } from '../../events/eventDispatch';
 
 const renderLabel = (depth) => {
@@ -13,22 +12,10 @@ export default class TOC extends PureComponent {
   static displayName = 'MarkdownTOC';
   static propTypes = {
     visible: PropTypes.bool.isRequired,
-    content: PropTypes.string.isRequired,
   };
   static defaultProps = {
     visible: false,
   };
-
-  static getDerivedStateFromProps(props) {
-    const { visible, content } = props;
-    let headers = [];
-    if (visible && content) {
-      headers = markedTOC(content);
-    }
-    return {
-      headers,
-    };
-  }
 
   constructor() {
     super();
@@ -37,11 +24,31 @@ export default class TOC extends PureComponent {
     };
   }
 
-  handleClick = (depth, text) => {
-    eventTOC.emit('toc-jump', {
-      depth,
-      text,
+  componentDidMount() {
+    eventTOC.on('return-toc', this.setTOC);
+    if (this.props.visible) {
+      eventTOC.emit('get-toc');
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.visible && this.props.visible) {
+      eventTOC.emit('get-toc');
+    }
+  }
+
+  componentWillUnmount() {
+    eventTOC.removeListener('return-toc', this.setTOC);
+  }
+
+  setTOC = (headers) => {
+    this.setState({
+      headers,
     });
+  }
+
+  handleClick = (id) => {
+    eventTOC.emit('toc-jump', id);
   }
 
   render() {
@@ -53,17 +60,17 @@ export default class TOC extends PureComponent {
           { visible && headers.length > 0 ? (
             <Scrollbars>
               <ul className="toc-list">
-                {headers.map((head, index) => {
-                  const { depth, text } = head;
+                {headers.map((head) => {
+                  const { content, lvl, slug } = head;
                   return (
                     <li
-                      key={`${index}-text`}
+                      key={slug}
                       className="toc-item"
-                      onClick={() => this.handleClick(depth, text)}
+                      onClick={() => this.handleClick(slug)}
                       role="presentation"
                     >
-                      {renderLabel(depth)}
-                      {text}
+                      {renderLabel(lvl)}
+                      {content}
                     </li>
                   );
                 })}

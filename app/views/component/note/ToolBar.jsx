@@ -212,9 +212,9 @@ export default class Tool extends Component {
       return this.renderDropDown(menu, type);
     }
     if (type === 'bars') { // 打开TOC
-      const { markdown } = this.props;
+      // const { markdown } = this.props;
       const { tocVisible } = this.state;
-      const content = (<TOC {...markdown} visible={tocVisible} />);
+      const content = (<TOC visible={tocVisible} />);
       return (
         <Popover
           overlayClassName="toc-popover"

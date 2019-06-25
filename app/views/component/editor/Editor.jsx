@@ -69,6 +69,7 @@ export default class Editor extends Component {
     this.noteRoot = document.getElementById('note_root_cont');
     this.setMuya();
     eventTOC.on('toc-jump', this.handleTOCJump);
+    eventTOC.on('get-toc', this.getTOC);
   }
 
   componentDidUpdate(prevProps) {
@@ -84,6 +85,7 @@ export default class Editor extends Component {
 
   componentWillUnmount() {
     eventTOC.removeListener('toc-jump', this.handleTOCJump);
+    eventTOC.removeListener('get-toc', this.getTOC);
     this.destroyMuya();
   }
 
@@ -97,6 +99,11 @@ export default class Editor extends Component {
     });
     window.muya = this.muya;
     this.addChangeEvent();
+  }
+
+  getTOC = () => {
+    const res = this.muya.getTOC();
+    eventTOC.emit('return-toc', res);
   }
 
   // 停止编辑500ms, 异步保存文件内容
@@ -116,28 +123,10 @@ export default class Editor extends Component {
     }
   }
 
-  handleTOCJump = (data) => {
-    if (this.codeMirror) {
-      const { defaultContent } = this.props;
-      const { depth, text } = data;
-      const reg = new RegExp(`^\\s*${'#'.repeat(depth)}\\s+${text}\\s*`, 'ig');
-      const lines = defaultContent.split('\n');
-      const length = lines.length;
-      let targetLineNum = -1;
-      for (let i = 0; i < length; i++) {
-        if (reg.test(lines[i])) {
-          targetLineNum = i;
-          break;
-        }
-      }
-      if (targetLineNum >= 0) {
-        this.codeMirror.off('scroll', this.handleScroll);
-        const height = this.codeMirror.heightAtLine(targetLineNum, 'local');
-        this.codeMirror.scrollTo(null, height);
-        setTimeout(() => {
-          this.codeMirror.on('scroll', this.handleScroll);
-        }, 100);
-      }
+  handleTOCJump = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView();
     }
   }
 
