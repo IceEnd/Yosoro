@@ -75,7 +75,7 @@ class ContentState {
     this.historyTimer = null
     this.history = new History(this)
     this.turndownConfig = Object.assign(DEFAULT_TURNDOWN_CONFIG, { bulletListMarker })
-    this.fontSize = 16
+    this.fontSize = options.fontSize || 16
     this.lineHeight = 1.6
     this.init()
   }

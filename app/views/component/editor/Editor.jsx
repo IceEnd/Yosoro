@@ -90,9 +90,11 @@ export default class Editor extends Component {
   }
 
   setMuya = () => {
+    const { fontSize, defaultContent } = this.props;
     this.muya = new Muya(this.container, {
       focusMode: true,
-      markdown: this.props.defaultContent,
+      fontSize,
+      markdown: defaultContent,
       imageAction: this.imageAction,
       imageUploadAction: this.imageUploadAction,
       // imagePathPicker

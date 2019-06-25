@@ -236,6 +236,7 @@ export const EXPORT_DOMPURIFY_CONFIG = {
 }
 
 export const MUYA_DEFAULT_OPTION = {
+  fontSize: 16,
   focusMode: false,
   markdown: '',
   preferLooseListItem: true,
