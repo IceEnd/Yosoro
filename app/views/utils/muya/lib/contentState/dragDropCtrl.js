@@ -171,7 +171,7 @@ const dragDropCtrl = ContentState => {
             src: nSrc
           })
 
-          this.muya.options.imageUploadAction && this.muya.options.imageUploadAction(path, ({name, url}) => {
+          this.muya.options.imageUploadAction && this.muya.options.imageUploadAction({filePath: path}, ({name, url}) => {
             this.replaceImage(imageInfo, {
               alt: name,
               src: url

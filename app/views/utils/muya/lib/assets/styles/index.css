@@ -763,7 +763,7 @@ span.ag-warn.ag-emoji-marked-text {
   position: relative;
   background: var(--codeBlockBgColor);
   border-radius: 3px;
-  overflow: hidden;
+  /* overflow: hidden; */
   margin: 0 auto;
   justify-content: space-around;
 }

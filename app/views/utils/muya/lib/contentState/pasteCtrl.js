@@ -125,7 +125,8 @@ const pasteCtrl = ContentState => {
 
     // handle paste to create inline image
     if (file) {
-      const id = `loading-${getUniqueId()}`
+      const uniqueId = getUniqueId()
+      const id = `loading-${uniqueId}`
       if (this.selectedImage) {
         this.replaceImage(this.selectedImage, {
           alt: id,
@@ -144,12 +145,16 @@ const pasteCtrl = ContentState => {
         const imageWrapper = this.muya.container.querySelector(`span[data-id=${id}]`)
         const imageContainer = this.muya.container.querySelector(`span[data-id=${id}] .ag-image-container`)
         this.stateRender.urlMap.set(id, base64)
-        if (imageContainer) {
-          imageWrapper.classList.remove('ag-empty-image')
-          imageWrapper.classList.add('ag-image-success')
-          const image = document.createElement('img')
-          image.src = base64
-          imageContainer.appendChild(image)
+        if (imageWrapper) {
+          this.muya.options.imageUploadAction && this.muya.options.imageUploadAction({ base64 }, ({name, url}) => {
+            const imageInfo = getImageInfo(imageWrapper)
+            this.replaceImage(imageInfo, {
+              alt: name,
+              src: url
+            })
+            // need dispatch `change`
+            this.muya.dispatchChange()
+          })
         }
       }
       reader.readAsDataURL(file)
@@ -162,12 +167,12 @@ const pasteCtrl = ContentState => {
       }
       const imageWrapper = this.muya.container.querySelector(`span[data-id=${id}]`)
 
-      if (imageWrapper) {
-        const imageInfo = getImageInfo(imageWrapper)
-        this.replaceImage(imageInfo, {
-          src: nSrc
-        })
-      }
+      // if (imageWrapper) {
+      //   const imageInfo = getImageInfo(imageWrapper)
+      //   this.replaceImage(imageInfo, {
+      //     src: nSrc
+      //   })
+      // }
       return file
     }
     return null

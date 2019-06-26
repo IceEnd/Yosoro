@@ -18,6 +18,9 @@ function formatFile(files) {
     files.name = `${formatDate(new Date(), 'upload')}-${path.basename(files.filePath)}`;
     files.base64 = base64Encode(files.filePath);
   }
+  if (!files.name) {
+    files.name = `${formatDate(new Date(), 'upload')}-image.png`;
+  }
 }
 
 export default async function uploder(payload) {
