@@ -83,6 +83,7 @@ class FrontMenu extends BaseFloat {
       return h(itemSelector, {
         on: {
           click: event => {
+            console.log(label)
             this.selectItem(event, { label })
           }
         }

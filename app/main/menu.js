@@ -3,7 +3,7 @@ import Oauth2 from './Oauth2';
 
 import oauthConfig from './oauthConfig';
 
-import { editorMode } from './config/shortcuts.json';
+import { editorMode, paragraph } from './config/shortcuts.json';
 
 const windowParams = {
   alwaysOnTop: true,
@@ -97,6 +97,25 @@ function getMemuTemplete(mainWindow) {
       },
     }],
   }];
+
+  const paragraphItems = paragraph.map((item) => {
+    if (item.label === 'paragraphHtmlBlock' && process.platform !== 'darwin') {
+      item.accelerator = 'CmdOrCtrl+Alt+H';
+    }
+    const { type, value } = item;
+    if (type !== 'separator') {
+      item.click = () => mainWindow.webContents.send('Editor:Paragraph', value);
+    }
+    return item;
+  });
+  menuTemplete.push({
+    label: 'Paragraph',
+    submenu: [
+      ...paragraphItems,
+    ],
+  });
+
+
   const editMenuItems = [];
   for (const item of editorMode) {
     item.click = () => mainWindow.webContents.send('app-switch-edit-mode', item.label.toLocaleLowerCase());

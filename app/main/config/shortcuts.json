@@ -2,12 +2,142 @@
 	"editorMode": [
 		{
 			"label": "Normal",
-			"accelerator": "CmdOrCtrl+1",
+			"accelerator": "Shift+CmdOrCtrl+1",
 			"type": "radio"
-    }, {
+		},
+		{
       "label": "Write",
-			"accelerator": "CmdOrCtrl+2",
+			"accelerator": "Shift+CmdOrCtrl+2",
 			"type": "radio"
     }
+	],
+	"paragraph": [
+		{
+			"label": "Heading 1",
+			"accelerator": "CmdOrCtrl+1",
+			"value": "heading 1"
+		},
+		{
+			"label": "Heading 2",
+			"accelerator": "CmdOrCtrl+2",
+			"value": "heading 2"
+		},
+		{
+			"label": "Heading 3",
+			"accelerator": "CmdOrCtrl+3",
+			"value": "heading 3"
+		},
+		{
+			"label": "Heading 4",
+			"accelerator": "CmdOrCtrl+4",
+			"value": "heading 4"
+		},
+		{
+			"label": "Heading 5",
+			"accelerator": "CmdOrCtrl+5",
+			"value": "heading 5"
+		},
+		{
+			"label": "Heading 6",
+			"accelerator": "CmdOrCtrl+6",
+			"value": "heading 6"
+		},
+
+		{
+			"type": "separator"
+		},
+
+		{
+			"label": "Upgrade Heading",
+			"accelerator": "CmdOrCtrl+=",
+			"value": "upgrade heading"
+		},
+		{
+			"label": "Degrade Heading",
+			"accelerator": "CmdOrCtrl+-",
+			"value": "degrade heading"
+		},
+
+		{
+			"type": "separator"
+		},
+
+		{
+			"label": "Table",
+			"accelerator": "CmdOrCtrl+T",
+			"value": "table"
+		},
+		{
+			"label": "Code Fence",
+			"accelerator": "CmdOrCtrl+Alt+C",
+			"value": "pre"
+		},
+		{
+			"label": "Quote Block",
+			"accelerator": "CmdOrCtrl+Alt+Q",
+			"value": "blockquote"
+		},
+		{
+			"label": "Math Block",
+			"accelerator": "CmdOrCtrl+Alt+M",
+			"value": "mathblock"
+		},
+		{
+			"label": "Html Block",
+			"accelerator": "CmdOrCtrl+Alt+J",
+			"value": "html"
+		},
+
+		{
+			"type": "separator"
+		},
+
+		{
+			"label": "Order List",
+			"accelerator": "CmdOrCtrl+Alt+O",
+			"value": "ol-order"
+		},
+		{
+			"label": "Bullet List",
+			"accelerator": "CmdOrCtrl+Alt+U",
+			"value": "ul-bullet"
+		},
+		{
+			"label": "Task List",
+			"accelerator": "CmdOrCtrl+Alt+X",
+			"value": "ul-task"
+		},
+
+		{
+			"type": "separator"
+		},
+
+		{
+			"label": "Loose List Item",
+			"accelerator": "CmdOrCtrl+Alt+L",
+			"value": "loose-list-item"
+		},
+
+		{
+			"type": "separator"
+		},
+
+		{
+			"label": "Paragraph",
+			"accelerator": "CmdOrCtrl+0",
+			"value": "paragraph"
+		},
+
+		{
+			"label": "Horizontal Line",
+			"accelerator": "CmdOrCtrl+Alt+-",
+			"value": "hr"
+		},
+
+		{
+			"label": "YAML Front Matter",
+			"accelerator": "CmdOrCtrl+Alt+Y",
+			"value": "front-matter"
+		}
 	]
 }

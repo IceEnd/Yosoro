@@ -67,6 +67,8 @@ export default class Editor extends Component {
     this.setMuya();
     eventTOC.on('toc-jump', this.handleTOCJump);
     eventTOC.on('get-toc', this.getTOC);
+    // bind keybord events
+    ipcRenderer.on('Editor:Paragraph', this.handleParagraph);
   }
 
   componentDidUpdate(prevProps) {
@@ -78,6 +80,7 @@ export default class Editor extends Component {
   componentWillUnmount() {
     eventTOC.removeListener('toc-jump', this.handleTOCJump);
     eventTOC.removeListener('get-toc', this.getTOC);
+    ipcRenderer.removeListener('Editor:Paragraph', this.handleParagraph);
     this.destroyMuya();
   }
 
@@ -128,6 +131,12 @@ export default class Editor extends Component {
     const { uuid } = this.props;
     this.props.dispatch(updateMarkdownHtml(markdown, uuid, -1));
     this.autoSave();
+  }
+
+  handleParagraph = (e, type) => {
+    if (this.muya && type) {
+      this.muya.updateParagraph(type);
+    }
   }
 
   destroyMuya = () => {
