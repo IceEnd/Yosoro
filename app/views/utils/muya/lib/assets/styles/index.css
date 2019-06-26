@@ -279,7 +279,8 @@ figure {
 
 .ag-container-icon {
   position: absolute;
-  top: 0px;
+	top: 0px;
+	font-size: 12px;
   right: 10px;
   width: 20px;
   height: 20px;
@@ -372,7 +373,8 @@ li.ag-task-list-item > input[type=checkbox] {
   cursor: pointer;
   width: 12px;
   height: 12px;
-  top: 5px;
+	top: 50%;
+	transform: translateY(-50%);
   left: -23px;
   transform-origin: center;
   transition: all .2s ease;
@@ -583,7 +585,8 @@ pre.ag-active.ag-multiple-math::after {
   color: var(--editorColor30);
   position: absolute;
   font-weight: 100;
-  left: 0;
+	left: 0;
+	font-size: 16px;
 }
 
 pre.ag-active.ag-front-matter::before,
@@ -591,9 +594,12 @@ pre.ag-active[data-role="mermaid"]::before,
 pre.ag-active[data-role="flowchart"]::before,
 pre.ag-active[data-role="sequence"]::before,
 pre.ag-active[data-role="vega-lite"]::before,
-pre.ag-active.ag-multiple-math::before,
+pre.ag-active.ag-multiple-math::before {
+  top: -1.5em;
+}
+
 pre.ag-active.ag-fence-code::before {
-  top: -20px;
+	top: -20px;
 }
 
 pre.ag-active.ag-front-matter::after,
@@ -603,7 +609,7 @@ pre.ag-active[data-role="sequence"]::after,
 pre.ag-active[data-role="vega-lite"]::after,
 pre.ag-active.ag-multiple-math::after,
 pre.ag-active.ag-fence-code::after {
-  bottom: -23px;
+  bottom: -1.6em;
 }
 
 figure.ag-container-block div.ag-container-preview {

@@ -120,7 +120,7 @@ export default class NoteWorkspace extends Component {
       'note-blur': blur,
     });
     return (
-      <div className="note-root">
+      <div className={`note-root ${editorMode}`}>
         {blur ? (
           <Loading tip="Exporting..." />
         ) : null}

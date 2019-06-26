@@ -39,6 +39,12 @@
 	background-color: $rootBg;
 	position: relative;
 
+	&.write {
+		.markdown {
+			margin-left: 28rem;
+		}
+	}
+
 	h3 {
 		font-weight: normal;
 	}
@@ -49,6 +55,15 @@
 		@include display-flex;
 		-webkit-app-region: drag;
 
+		&.write {
+			.search-root, .title {
+				flex: 0 0 0;
+			}
+			.tools {
+				flex-basis: 100%;
+			}
+		}
+
 		.search-wrapper {
 			width: 12rem;
 		}
@@ -57,6 +72,8 @@
 			flex: 0 0 13rem;
 			text-align: center;
 			padding: 0.3rem 0;
+			overflow: hidden;
+			transition: flex-basis ease 0.5s;
 
 			.ant-input {
 				height: 1.8rem;
@@ -71,6 +88,7 @@
 			font-size: 1.2rem;
 			color: $noteTitleColor;
 			margin: 0;
+			transition: flex-basis ease 0.5s;
 		}
 
 		.tools {
@@ -128,9 +146,9 @@
 		flex: 0 0 13rem;
 		overflow: auto;
 		border-right: 1px solid #d9d9d9;
-		transition: flex-basis ease 0.5s;
+		transition: margin-left ease 0.5s;
 		&.hide {
-			flex-basis: 0;
+			margin-left: -28rem;
 			border: 0;
 		}
 
@@ -239,10 +257,11 @@
 		flex: 0 0 15rem;
 		overflow: auto;
 		border-right: 1px solid rgb(217, 217, 217);
-		transition: flex-basis ease 0.5s;
+		transition: margin-left ease 0.5s;
 
 		&.hide {
-			flex-basis: 0;
+			margin-left: -28rem;
+			// flex-basis: 0;
 			border: 0;
 		}
 
@@ -498,6 +517,7 @@
 		@include display-flex;
 		flex-direction: column;
 		width: 100%;
+		transition: margin-left ease 0.5s;
 	}
 
 	.markdown-content {

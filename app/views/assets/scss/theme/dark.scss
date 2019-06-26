@@ -21,6 +21,15 @@
 		color: #b9babb;
 	}
 
+	.ant-dropdown-menu-item {
+		&:hover {
+			background-color: rgba(46, 128, 254, 0.8);
+			color: rgb(255, 255, 255);
+		}
+	}
+
+	background-color: rgb(51, 51, 51);
+
 	.ant-input, .ant-select-selection, .ant-input-number {
 		background-color: #1f2022;
 		border-color: #2a2d2e;
@@ -33,6 +42,12 @@
 
 	.ant-input-number-handler-up-inner, .ant-input-number-handler-down-inner {
 		color: #b9babb;
+	}
+
+	.ant-popover-placement-bottomRight > .ant-popover-content > .ant-popover-arrow {
+		border-top-color: #0c0500;
+		border-left-color: #0c0500;
+		box-shadow: -2px -2px 5px rgba(0, 0, 0, .2);
 	}
 
 	.ant-select-arrow {
@@ -151,7 +166,7 @@
 		}
 
 		.project-explorer {
-			border-color: rgba(56, 46, 56, 0.8);
+			border-color: #272727;
 
 			.project-list {
 				padding: 0;

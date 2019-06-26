@@ -158,6 +158,10 @@
 		fill: var(--editorColor);
 	}
 
+	pre.ag-active.ag-front-matter::after, pre.ag-active[data-role="mermaid"]::after, pre.ag-active[data-role="flowchart"]::after, pre.ag-active[data-role="sequence"]::after, pre.ag-active[data-role="vega-lite"]::after, pre.ag-active.ag-multiple-math::after, pre.ag-active.ag-fence-code::after {
+		bottom: -1.5em;
+	}
+
 	/*
 	* Prism.js theme
 	*/

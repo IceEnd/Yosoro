@@ -296,8 +296,8 @@ export default class Tool extends Component {
 
   render() {
     const { searchStatus } = this.state;
-    const { markdown: { name, status }, blur } = this.props;
-    const classStr = classnames('note-toolbar', {
+    const { markdown: { name, status }, blur, editorMode } = this.props;
+    const classStr = classnames(`note-toolbar ${editorMode}`, {
       'note-blur': blur,
     });
     return (

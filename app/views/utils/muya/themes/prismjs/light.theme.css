@@ -82,9 +82,10 @@ pre.ag-paragraph {
 .token.url,
 .language-css .token.string,
 .style .token.string {
-  color: #9a6e3a;
+	color: #9a6e3a;
+	background: none;
 }
-  
+
 .token.atrule,
 .token.attr-value,
 .token.keyword {
