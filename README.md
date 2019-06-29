@@ -6,12 +6,20 @@
     <img src="https://img.shields.io/badge/platform-masOS%20%7C%20Linux%20%7C%20Windows-lightgrey.svg?style=flat-square" />
   </p>
   <p align="center">
-    <img src="https://img.shields.io/github/release/iceend/yosoro.svg?style=flat-square" />
-    <img src="https://img.shields.io/travis/IceEnd/Yosoro.svg?style=flat-square">
-    <img src="https://img.shields.io/github/license/IceEnd/Yosoro.svg?style=flat-square" />
+    <a target="__blank" href="https://github.com/IceEnd/Yosoro/releases">
+      <img src="https://img.shields.io/github/release/iceend/yosoro.svg?style=flat-square" />
+    </a>
+    <a target="__blank" href="https://travis-ci.org/IceEnd/Yosoro">
+      <img src="https://img.shields.io/travis/IceEnd/Yosoro.svg?style=flat-square">
+    </a>
+    <a target="__blank" href="https://github.com/IceEnd/Yosoro/blob/master/LICENSE">
+      <img src="https://img.shields.io/github/license/IceEnd/Yosoro.svg?style=flat-square" />
+    </a>
   </p>
   <p align="center">
-    <img src="https://img.shields.io/github/downloads/IceEnd/Yosoro/total.svg?style=flat-square">
+    <a target="__blank" href="https://github.com/IceEnd/Yosoro/releases">
+      <img src="https://img.shields.io/github/downloads/IceEnd/Yosoro/total.svg?style=flat-square">
+    </a>
   </p>
 </p>
 
@@ -31,6 +39,10 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 - Post article(Supports Medium)
 - Beautiful theme
 
+### ScreenShot
+
+![](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/20190629193507-image.png)
+
 ## Theme
 
 <p align="center">Mysterious Dark:crescent_moon: & Cute Light:high_brightness:</p>
@@ -38,18 +50,6 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 | Dark :crescent_moon:| Light :high_brightness: |
 |:-------:|:-----:|
 | ![](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/20190629190549-image.png) | ![](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/20190629190325-image.png) |
-
-## Demo
-
-| Write:pencil2: | Upload Image:stars: | Sync Notes:cloud: |
-|:---:|:---:|:----:|
-|![2018-09-24.14.00.53-write.gif](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-09-24.14.00.53-write.gif)|![image](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.47.27-image.gif)|![sync](https://t1.picb.cc/uploads/2018/05/13/2vBRbs.gif)|
-
-## Screenshots
-
-| Windows | Linux |
-|:-------:|:-----:|
-|![screenshot-window](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-10-05.11.19.18-image.png)|![screenshot-linux](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/2018-07-27.00.22.40-linux.png)|
 
 ## Software Manuals
 
