@@ -656,6 +656,7 @@ export function eventListener(menus) {
         data: doc,
       });
     } catch (ex) {
+      console.warn(ex);
       event.sender.send(`pic-upload-sync-cb-${seed}`, {
         code: -1,
         data: ex,
@@ -705,6 +706,7 @@ export function removeEventListeners() {
     'get-docuemnts-save-path',
     'app-switch-edit-mode',
     'pic-upload',
+    'pic-upload-sync',
     'get-images-list',
     'images-delete',
   ];

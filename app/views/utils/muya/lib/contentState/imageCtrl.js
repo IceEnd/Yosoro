@@ -125,6 +125,9 @@ const imageCtrl = ContentState => {
       start: { key, offset: start },
       end: { key, offset: start }
     }
+    setTimeout(() => {
+      this.muya.dispatchChange()
+    }, 0)
     return this.singleRender(block)
   }
 

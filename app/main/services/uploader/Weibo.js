@@ -30,7 +30,16 @@ const upload = async (files, config, current) => {
       if (res) { // login success
         const queue = [];
         for (const i in res.body.data.crossdomainlist) {
-          queue.push(Request.get(res.body.data.crossdomainlist[i]));
+          queue.push(
+            Request.get(res.body.data.crossdomainlist[i])
+              .then(() => {
+                Promise.resolve(true);
+              })
+              .catch(() => {
+                // do nothing
+                Promise.resolve(false);
+              })
+          );
         }
         await Promise.all(queue);
       }

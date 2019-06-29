@@ -61,7 +61,6 @@
     "history": "^4.7.2",
     "html-tags": "^3.0.0",
     "katex": "^0.10.0-rc.1",
-    "keyboard-layout": "^2.0.16",
     "mermaid": "^8.0.0",
     "nedb": "^1.8.0",
     "node-schedule": "^1.3.0",
