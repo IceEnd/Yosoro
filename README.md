@@ -24,7 +24,7 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 ## Features
 
 - Management notes
-- Support **Latex** math formulas.
+- Support **Latex** math formulas and draw diagrams.
 - File synchronization(OneDrive is supported)
 - Image upload (:white_check_mark: GitHub, :white_check_mark: Weibo, :white_check_mark: [SM.MS](https://sm.ms))
 - Export notes as markdown or html or pdf
@@ -37,7 +37,7 @@ The latest version of Yosoro for macOS, linux and Windows is available [here](ht
 
 | Dark :crescent_moon:| Light :high_brightness: |
 |:-------:|:-----:|
-| ![](https://ws1.sinaimg.cn/large/dcaa3cb4ly1fzhr9q8zssj219t0u0e81.jpg) | ![](https://ws1.sinaimg.cn/large/dcaa3cb4ly1fzhr8m6kkfj219t0u0e81.jpg) |
+| ![](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/20190629190549-image.png) | ![](https://raw.githubusercontent.com/IceEnd/Yosoro-Img/img/yosoro/20190629190325-image.png) |
 
 ## Demo
 
@@ -110,6 +110,10 @@ npm run build:all|main|renderer
 ```
 npm run packager:mac|win|win:64|linux
 ```
+
+### Thanks
+
+Thanks [muya](https://github.com/marktext/marktext), this is a great editor!
 
 ## Contributors
 

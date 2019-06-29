@@ -30,7 +30,6 @@ export default class Editor extends Component {
   static displayName = 'MarkdownEditor';
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    // theme: PropTypes.string.isRequired,
     uuid: PropTypes.string.isRequired,
     defaultContent: PropTypes.string.isRequired,
     editorMode: PropTypes.string.isRequired,
@@ -57,7 +56,7 @@ export default class Editor extends Component {
     super();
     this.muya = null;
     this.state = {
-      uploading: false,
+      uploadfor: null,
     };
   }
 
@@ -160,11 +159,14 @@ export default class Editor extends Component {
   }
 
   imageUploadAction = ({ filePath, base64 }, cb) => {
-    const { imageHostingConfig } = this.props;
+    const { imageHostingConfig, uuid } = this.props;
     if (!isCanUpload()) {
       notifications.uploadNotification.show();
       return;
     }
+    this.setState({
+      uploadfor: uuid,
+    });
     ipcRenderer.once(`pic-upload-sync-cb-${++seed}`, (event, args) => {
       const { code, data } = args;
       if (code === 0) {
@@ -172,7 +174,7 @@ export default class Editor extends Component {
           type: UPLOAD_IMAGE_SUCCESS,
           data,
         });
-        if (cb) {
+        if (cb && this.state.uploadfor === this.props.uuid) {
           cb(data);
         }
       } else {
