@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" class="wv-light">
+<head>
+  <meta charset="UTF-8">
+  <title>Virtual Document</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src http: https: data: file:; media-src file: http: https: data:; script-src 'nonce-WW9zb3Jv';style-src 'unsafe-inline' data: file: http://localhost:3000; font-src file: data: http://localhost:3000;">
+  <link rel="stylesheet" href="http://localhost:3000/static/css/webview/webview.css">
+  <style data-for="preview">
+    html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    body {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+    }
+  </style>
+
+</head>
+<body>
+  <div id="root" class="platform-pdf wv-light"></div>
+</body>
+</html>

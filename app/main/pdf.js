@@ -52,14 +52,14 @@ export default class PDF {
   }
 
   getHtmlTemplate() {
-    let temp = fs.readFileSync(path.resolve(__dirname, './webview/webview.html'), {
+    let temp = fs.readFileSync(path.resolve(__dirname, './webview.html'), {
       encoding: 'utf8',
     });
     temp = temp
       .replace(/<style\s+data-for="?preview"?>(.|\r|\n)*<\/style>/, '');
     if (app.isPackaged) {
       // change link href
-      temp = temp.replace('../css/webview/webview.css', path.resolve(__dirname, './css/webview/webview.css'));
+      temp = temp.replace('../css/webview.css', path.resolve(__dirname, './css/webview.css'));
     }
     this.htmlTemplate = temp;
   }
