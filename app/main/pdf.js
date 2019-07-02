@@ -48,7 +48,7 @@ export default class PDF {
     });
     content = markedToHtml(content);
     return this.htmlTemplate
-      .replace(/(<div\s+id="?root".*>)\s*(<\/div>)/, `$1${content}$2`);
+      .replace(/(<div\s+id="?root"?.*>)\s*(<\/div>)/, `$1${content}$2`);
   }
 
   getHtmlTemplate() {
@@ -59,7 +59,7 @@ export default class PDF {
       .replace(/<style\s+data-for="?preview"?>(.|\r|\n)*<\/style>/, '');
     if (app.isPackaged) {
       // change link href
-      temp = temp.replace('../css/webview.css', path.resolve(__dirname, './css/webview.css'));
+      temp = temp.replace('./css/webview.css', path.resolve(__dirname, './css/webview.css'));
     }
     this.htmlTemplate = temp;
   }

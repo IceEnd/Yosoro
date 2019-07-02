@@ -52,6 +52,8 @@ const cleanMain = (cb) => {
     path.join(__dirname, '../lib/main.js.map'),
     path.join(__dirname, '../lib/resource'),
     path.join(__dirname, '../lib/assets'),
+    path.join(__dirname, '../lib/LICENSE'),
+    path.join(__dirname, '../lib/package.json'),
   ]);
   cb();
 };
