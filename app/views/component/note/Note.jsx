@@ -54,7 +54,6 @@ export default class NoteWorkspace extends Component {
       latestDate: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,
-      html: PropTypes.string.isRequired,
       status: PropTypes.number.isRequired,
       start: PropTypes.number.isRequired,
       hasEdit: PropTypes.bool.isRequired,

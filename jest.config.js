@@ -4,6 +4,7 @@
 module.exports = {
   clearMocks: true,
   coverageDirectory: 'coverage',
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
+  verbose: true,
   coveragePathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/lib/', '<rootDir>/out/'],
 };

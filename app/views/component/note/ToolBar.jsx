@@ -32,7 +32,6 @@ export default class Tool extends Component {
       latestDate: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,
-      html: PropTypes.string.isRequired,
       status: PropTypes.number.isRequired,
       start: PropTypes.number.isRequired,
       uploadStatus: PropTypes.number.isRequired,
@@ -146,19 +145,11 @@ export default class Tool extends Component {
     });
   }
 
-  handleExport = ({ key }) => {
-    const { markdown: { content, name, html }, note: { projectName } } = this.props;
-    let data;
-    if (key === 'md') {
-      data = content;
-    } else if (key === 'html') {
-      data = html;
-    } else if (key === 'pdf') {
-      data = html;
-    }
+  handleExport = async ({ key }) => {
+    const { markdown: { content, name }, note: { projectName } } = this.props;
+    const data = content;
     ipcRenderer.send('export-note', {
       content,
-      html,
       type: key,
       fileName: name,
       projectName,

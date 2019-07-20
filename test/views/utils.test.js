@@ -1,12 +1,8 @@
-import fs from 'fs';
-import path from 'path';
 import {
   formatDate,
   compareVersion,
   checkSpecial,
-  markedToHtml,
   checkFileName,
-  markedTOC,
   objectInject,
   throttle,
   debounce,
@@ -50,45 +46,6 @@ test('str checkSpecial', () => {
   expect(checkFileName('file,')).toBe(true);
   expect(checkFileName('‘file’')).toBe(true);
   expect(checkFileName('file/')).toBe(true);
-});
-
-test('markdown to html: Header', () => {
-  const html = markedToHtml('# h1');
-  const target = /<h1 id="h1">h1<\/h1>/ig;
-  expect(target.test(html)).toBe(true);
-});
-
-test('markdwon to html: TODO LIST', () => {
-  let html = markedToHtml('- [ ] a');
-  let target = /<ul>\s*<li class="task-list-li"><input class="task-list-item-checkbox" disabled type="checkbox" \/> a<\/li>\s*<\/ul>/ig;
-  expect(target.test(html)).toBe(true);
-
-  html = markedToHtml('- [x] a');
-  target = /<ul>\s*<li class="task-list-li"><input class="task-list-item-checkbox" checked disabled type="checkbox" \/> a<\/li>\s*<\/ul>/ig;
-  expect(target.test(html)).toBe(true);
-});
-
-test('markdwon to html: Code', () => {
-  const html = markedToHtml('```js\r\nconsole.log(\'2333\');\r\n```');
-  const target = /<pre>\s*<code class="language-js"><span class="hljs-built_in">console<\/span>.log\(<span class="hljs-string">'2333'<\/span>\);\s*<\/code><\/pre>/ig;
-  expect(target.test(html)).toBe(true);
-});
-
-test('marked TOC', () => {
-  const str = fs.readFileSync(path.resolve(__dirname, '../../README.md'), {
-    encoding: 'utf8',
-  });
-  const headers = markedTOC(str);
-  const length = headers.length;
-  expect(length > 0).toBe(true);
-  let flag = true;
-  for (let i = 0; i < length; i++) {
-    if (headers[i].type !== 'heading') {
-      flag = false;
-      break;
-    }
-  }
-  expect(flag).toBe(true);
 });
 
 test('objectInject', () => {

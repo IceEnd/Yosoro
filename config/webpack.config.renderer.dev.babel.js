@@ -15,14 +15,6 @@ export default merge.smart(baseConfig, {
       'webpack/hot/only-dev-server',
       path.resolve(__dirname, '../app/views/index.jsx'),
     ],
-    'webview/webview-pre': [
-      'webpack/hot/only-dev-server',
-      path.resolve(__dirname, '../app/webview/webview-pre.js'),
-    ],
-    'webview/webview': [
-      'webpack/hot/only-dev-server',
-      path.resolve(__dirname, '../app/webview/webview.js'),
-    ],
   },
   output: {
     path: path.resolve(__dirname, '../build/'),

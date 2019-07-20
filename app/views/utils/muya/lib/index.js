@@ -13,9 +13,11 @@ import './assets/styles/index.css'
 
 class Muya {
   static plugins = []
+
   static use (plugin) {
     this.plugins.push(plugin)
   }
+
   constructor (container, options) {
     this.options = Object.assign({}, MUYA_DEFAULT_OPTION, options)
     const { markdown } = this.options
@@ -63,8 +65,8 @@ class Muya {
     const config = { childList: true, subtree: true }
 
     // Callback function to execute when mutations are observed
-    const callback = function(mutationsList, observer) {
-      for(const mutation of mutationsList) {
+    const callback = (mutationsList, observer) => {
+      for (const mutation of mutationsList) {
         if (mutation.type === 'childList') {
           const { removedNodes, target } = mutation
           // If the code executes any of the following `if` statements, the editor has gone wrong.
@@ -99,6 +101,18 @@ class Muya {
     const history = this.getHistory()
     const toc = this.getTOC()
     eventCenter.dispatch('change', { markdown, wordCount, cursor, history, toc })
+  }
+
+  dispatchSelectionChange = () => {
+    const selectionChanges = this.contentState.selectionChange()
+
+    this.eventCenter.dispatch('selectionChange', selectionChanges)
+  }
+
+  dispatchSelectionFormats = () => {
+    const { formats } = this.contentState.selectionFormats()
+
+    this.eventCenter.dispatch('selectionFormats', formats)
   }
 
   getMarkdown () {
@@ -143,11 +157,14 @@ class Muya {
 
   setMarkdown (markdown, cursor, isRenderCursor = true) {
     let newMarkdown = markdown
+    let isValid = false
     if (cursor) {
-      newMarkdown = this.contentState.addCursorToMarkdown(markdown, cursor)
+      const cursorInfo = this.contentState.addCursorToMarkdown(markdown, cursor)
+      newMarkdown = cursorInfo.markdown
+      isValid = cursorInfo.isValid
     }
     this.contentState.importMarkdown(newMarkdown)
-    this.contentState.importCursor(cursor)
+    this.contentState.importCursor(cursor && isValid)
     this.contentState.render(isRenderCursor)
     setTimeout(() => {
       this.dispatchChange()
@@ -171,8 +188,8 @@ class Muya {
 
   setFocusMode (bool) {
     const { container } = this
-    // const { focusMode } = this.options
-    if (bool) {
+    const { focusMode } = this.options
+    if (bool && !focusMode) {
       container.classList.add(CLASS_OR_ID['AG_FOCUS_MODE'])
     } else {
       container.classList.remove(CLASS_OR_ID['AG_FOCUS_MODE'])
@@ -281,10 +298,18 @@ class Muya {
 
   undo () {
     this.contentState.history.undo()
+
+    this.dispatchSelectionChange()
+    this.dispatchSelectionFormats()
+    this.dispatchChange()
   }
 
   redo () {
     this.contentState.history.redo()
+
+    this.dispatchSelectionChange()
+    this.dispatchSelectionFormats()
+    this.dispatchChange()
   }
 
   selectAll () {

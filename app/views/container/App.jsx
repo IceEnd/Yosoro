@@ -14,6 +14,7 @@ import Settings from 'Components/settings/Settings';
 import { Provider } from 'Components/HOC/context';
 import { getTokens } from 'Utils/db/app';
 import setTheme from 'Utils/theme';
+import { generateHtml } from 'Utils/complex';
 
 import {
   GET_USER_AVATAR,
@@ -152,7 +153,6 @@ export default class App extends Component {
       latestDate: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,
-      html: PropTypes.string.isRequired,
       status: PropTypes.number.isRequired,
       start: PropTypes.number.isRequired,
       hasEdit: PropTypes.bool.isRequired,
@@ -381,6 +381,10 @@ export default class App extends Component {
         type: IMAGES_GET_LIST,
         payload,
       });
+    });
+
+    ipcRenderer.on('generate-html', (event, payload) => {
+      generateHtml(payload);
     });
   }
 

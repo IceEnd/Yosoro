@@ -16,8 +16,6 @@ export default merge.smart(baseConfig, {
   },
   entry: {
     index: path.join(__dirname, '../app/views/index.jsx'),
-    'webview-pre': path.resolve(__dirname, '../app/webview/webview-pre.js'),
-    webview: path.resolve(__dirname, '../app/webview/webview.js'),
   },
   output: {
     filename: '[name].js',
@@ -71,19 +69,6 @@ export default merge.smart(baseConfig, {
         removeAttributeQuotes: true,
       },
       chunksSortMode: 'dependency',
-    }),
-    // webview html
-    new HtmlWebpackPlugin({
-      filename: path.resolve(__dirname, '../lib/webview.html'),
-      template: path.resolve(__dirname, '../templete/webview.html'),
-      inject: false,
-      chunks: ['webview'],
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeAttributeQuotes: true,
-        minifyCSS: true,
-      },
     }),
     // new BundleAnalyzerPlugin(),
   ],

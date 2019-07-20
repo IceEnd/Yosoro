@@ -1,33 +1,4 @@
 import { message } from 'antd';
-import marked from './marked/marked';
-
-const renderer = new marked.Renderer();
-
-renderer.listitem = function (text) {
-  if (/^\s*<input class="task-list-item-checkbox"/.test(text)) {
-    return `<li class="task-list-li">${text}</li>`;
-  }
-  return `<li>${text}</li>`;
-};
-
-renderer.checkbox = function (checked) {
-  return `<input class="task-list-item-checkbox" ${checked ? 'checked ' : ''}disabled type="checkbox" /> `;
-};
-
-marked.setOptions({
-  renderer,
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: false,
-  smartLists: true,
-  smartypants: false,
-  highlight: (code) => {
-    const value = require('./highlight.min.js').highlightAuto(code).value;
-    return value;
-  },
-});
 
 function formatNumber(number) {
   if (number < 10) {
@@ -116,17 +87,6 @@ export function compareVersion(localVersion, latestVersion) {
     return true;
   }
   return false;
-}
-
-/**
- * @desc markdown to html
- *
- * @export
- * @param {String} string markdown内容
- * @returns html
- */
-export function markedToHtml(string) {
-  return marked(string);
 }
 
 /**
@@ -240,17 +200,6 @@ export function checkSpecial(str, showMessage = true) {
     return false;
   }
   return true;
-}
-
-/**
- * 根据Markdown内容生成TOC
- *
- * @param {String} str
- */
-export function markedTOC(str) {
-  const tokens = marked.lexer(str);
-  const headers = tokens.filter(token => token.type === 'heading');
-  return headers;
 }
 
 /**

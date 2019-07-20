@@ -3,7 +3,7 @@ import fs from 'fs';
 import github from './GitHub';
 import weibo from './Weibo';
 import smms from './SMMS';
-import { formatDate } from '../../../views/utils/utils';
+import { formatDate } from '../../utils/utils';
 
 function base64Encode(filePath) {
   const bitmap = fs.readFileSync(filePath);

@@ -14,8 +14,6 @@ const cleanRenderer = (cb) => {
     path.join(__dirname, '../lib/deps/**'),
     path.join(__dirname, '../lib/*.html'),
     path.join(__dirname, '../lib/images/**'),
-    path.join(__dirname, '../lib/webview.js'),
-    path.join(__dirname, '../lib/webview-pre.js'),
     path.join(__dirname, '../lib/index.js'),
     path.join(__dirname, '../lib/fonts/**'),
     path.join(__dirname, '../lib/css/**'),

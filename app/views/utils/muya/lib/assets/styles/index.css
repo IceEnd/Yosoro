@@ -97,13 +97,16 @@ div.ag-show-quick-insert-hint p.ag-paragraph.ag-active > span.ag-paragraph-conte
 figure.ag-container-block pre {
   width: 0;
   height: 0;
-  overflow: hidden;
   opacity: 0;
   z-index: -1;
   position: absolute;
   margin-top: 0;
   margin-bottom: 0;
   overflow: visible;
+}
+
+figure:not(.ag-active).ag-container-block pre {
+  overflow: hidden;
 }
 
 figure.ag-active.ag-container-block pre {
@@ -364,7 +367,7 @@ table {
 }
 
 li.ag-task-list-item {
-  list-style-type: none !important;
+  list-style-type: none;
   position: relative;
 }
 
@@ -372,7 +375,7 @@ li.ag-task-list-item > input[type=checkbox] {
   position: absolute;
   cursor: pointer;
   width: 12px;
-  height: 12px;
+	height: 12px;
 	top: 50%;
 	transform: translateY(-50%);
   left: -23px;
@@ -585,8 +588,7 @@ pre.ag-active.ag-multiple-math::after {
   color: var(--editorColor30);
   position: absolute;
   font-weight: 100;
-	left: 0;
-	font-size: 16px;
+  left: 0;
 }
 
 pre.ag-active.ag-front-matter::before,
@@ -595,11 +597,11 @@ pre.ag-active[data-role="flowchart"]::before,
 pre.ag-active[data-role="sequence"]::before,
 pre.ag-active[data-role="vega-lite"]::before,
 pre.ag-active.ag-multiple-math::before {
-  top: -1.5em;
+	top: -1.5em;
 }
 
 pre.ag-active.ag-fence-code::before {
-	top: -20px;
+  top: -20px;
 }
 
 pre.ag-active.ag-front-matter::after,
@@ -609,7 +611,7 @@ pre.ag-active[data-role="sequence"]::after,
 pre.ag-active[data-role="vega-lite"]::after,
 pre.ag-active.ag-multiple-math::after,
 pre.ag-active.ag-fence-code::after {
-  bottom: -1.6em;
+	bottom: -1.6em;
 }
 
 figure.ag-container-block div.ag-container-preview {
@@ -763,7 +765,7 @@ span.ag-warn.ag-emoji-marked-text {
   position: relative;
   background: var(--codeBlockBgColor);
   border-radius: 3px;
-  /* overflow: hidden; */
+  overflow: hidden;
   margin: 0 auto;
   justify-content: space-around;
 }
