@@ -42,7 +42,12 @@
       ]
     },
     "test": {
-      "presets": ["@babel/preset-env"]
+      "presets": ["@babel/preset-env"],
+      "plugins": [
+        "@babel/plugin-transform-runtime",
+        "@babel/plugin-syntax-dynamic-import",
+        ["@babel/plugin-proposal-class-properties", { "loose": true }],
+      ]
     }
   },
   "plugins": ["@babel/plugin-transform-runtime"]

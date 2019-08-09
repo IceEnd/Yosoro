@@ -132,7 +132,7 @@ export default class Files extends Component {
       this.handleUpload();
     });
     // 收集将要导出的笔记的信息
-    ipcRenderer.on('export-get-note-info', (event, type) => {
+    ipcRenderer.on('export-get-note-info', async (event, type) => {
       const { projectName } = this.props;
       const { name } = this.state.contextNote;
       ipcRenderer.send('export-note', {

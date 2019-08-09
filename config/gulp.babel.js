@@ -14,8 +14,6 @@ const cleanRenderer = (cb) => {
     path.join(__dirname, '../lib/deps/**'),
     path.join(__dirname, '../lib/*.html'),
     path.join(__dirname, '../lib/images/**'),
-    path.join(__dirname, '../lib/webview.js'),
-    path.join(__dirname, '../lib/webview-pre.js'),
     path.join(__dirname, '../lib/index.js'),
     path.join(__dirname, '../lib/fonts/**'),
     path.join(__dirname, '../lib/css/**'),
@@ -52,6 +50,8 @@ const cleanMain = (cb) => {
     path.join(__dirname, '../lib/main.js.map'),
     path.join(__dirname, '../lib/resource'),
     path.join(__dirname, '../lib/assets'),
+    path.join(__dirname, '../lib/LICENSE'),
+    path.join(__dirname, '../lib/package.json'),
   ]);
   cb();
 };

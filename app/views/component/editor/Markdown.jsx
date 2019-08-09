@@ -13,7 +13,6 @@ export default class Markdown extends Component {
       latestDate: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,
-      html: PropTypes.string.isRequired,
       status: PropTypes.number.isRequired,
       start: PropTypes.number.isRequired,
     }).isRequired,
@@ -65,15 +64,6 @@ export default class Markdown extends Component {
             start={start}
             editorMode={editorMode}
           />
-          {/* <Preview
-            html={html}
-            drag={drag}
-            editorMode={editorMode}
-            editorWidth={editorWidth}
-            editorWidthValue={editorWidthValue}
-            fontSize={previewFontSize}
-            ref={node => (this.preview = node)}
-          /> */}
         </div>
       </div>
     );

@@ -125,10 +125,8 @@ const imageCtrl = ContentState => {
       start: { key, offset: start },
       end: { key, offset: start }
     }
-    setTimeout(() => {
-      this.muya.dispatchChange()
-    }, 0)
-    return this.singleRender(block)
+    this.singleRender(block)
+    return this.muya.dispatchChange()
   }
 
   ContentState.prototype.selectImage = function (imageInfo) {

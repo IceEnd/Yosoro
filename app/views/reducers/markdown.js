@@ -15,7 +15,6 @@ import {
   // READ_FILE_FARILED,
 } from '../actions/markdown';
 import { updateNoteInfo } from '../utils/db/app';
-import { markedToHtml } from '../utils/utils';
 import { eventMD } from '../events/eventDispatch';
 
 const assign = Object.assign;
@@ -27,7 +26,6 @@ const initState = {
   createDate: '',
   latestDate: '',
   content: '',
-  html: '',
   status: 0, // 0 ：无 1：读取成功 2：读取失败
   start: -1,
   oneDriver: 0,
@@ -39,8 +37,6 @@ function updateMarkdown(state = initState, action) {
   switch (action.type) {
     case READ_FILE: {
       const info = action.param;
-      const html = markedToHtml(info.content);
-      info.html = html;
       return assign({}, info, {
         status: 1,
         start: -1,
@@ -50,21 +46,17 @@ function updateMarkdown(state = initState, action) {
     }
     case JUST_UPDATE_MARKDWON_HTML: {
       const { content } = action;
-      const html = markedToHtml(action.content);
       return assign({}, state, {
         content,
-        html,
       });
     }
     case UPDATE_MARKDOWN_HTML: {
       let hasEdit = true;
-      const html = markedToHtml(action.content);
       if (state.uuid !== action.uuid) {
         hasEdit = false;
       }
       return assign({}, state, {
         content: action.content,
-        html,
         start: action.start,
         hasEdit,
       });
@@ -151,7 +143,6 @@ function updateMarkdown(state = initState, action) {
         const { name, url, uuid } = data;
         const reg = new RegExp(`!\\[Uploading\\s*${uuid}\\s*\\]\\s*\\(\\w*\\)`, 'ig');
         state.content = state.content.replace(reg, `![${name}](${url})`);
-        state.html = markedToHtml(state.content);
         setTimeout(() => {
           eventMD.emit('sync-value');
         }, 0);

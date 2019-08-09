@@ -15,11 +15,10 @@ import {
   setDocumentsPath,
   splitFlag,
 } from './paths';
+import { generateHtml, exportPDF } from './utils/utils';
 
 import uploder from './services/uploader/index';
-import { markedToHtml } from '../views/utils/utils';
 import schedule from './schedule';
-import PDF from './pdf';
 
 import { editorMode } from './config/shortcuts.json';
 
@@ -438,9 +437,8 @@ export function eventListener(menus) {
     schedule.cancelReleases();
   });
 
-  ipcMain.on('export-note', (event, args) => {
+  ipcMain.on('export-note', async (event, args) => {
     const { projectName, fileName, type, data } = args;
-    const folderPath = `${getProjectsPath()}/${projectName}`;
     const filePath = `${getProjectsPath()}/${projectName}/${fileName}.md`;
     try {
       let content;
@@ -456,9 +454,6 @@ export function eventListener(menus) {
         title = 'Export as Markdown';
       } else if (type === 'html') {
         title = 'Export as Html';
-        if (!data) {
-          content = markedToHtml(content, false);
-        }
       } else if (type === 'pdf') {
         title = 'Export as PDF';
       }
@@ -474,10 +469,12 @@ export function eventListener(menus) {
           if (!reg.test(fname)) {
             file += `.${type}`;
           }
+          if (type === 'html' || type === 'pdf') {
+            content = await generateHtml(content);
+          }
           if (type === 'pdf') {
             event.sender.send('async-export-file');
-            const pdf = new PDF([`${fileName}.md`], folderPath, file, false);
-            await pdf.start();
+            await exportPDF(file, content);
             event.sender.send('async-export-file-complete');
           } else {
             fs.writeFileSync(file, content);
@@ -486,6 +483,7 @@ export function eventListener(menus) {
       });
     } catch (error) {
       console.warn(error);
+      event.sender.send('async-export-file-complete');
     }
   });
 
@@ -496,7 +494,6 @@ export function eventListener(menus) {
   ipcMain.on('export-notebook', async (event, args) => {
     const { notebook, type } = args;
     try {
-      event.sender.send('async-export-file');
       const folderPath = `${getProjectsPath()}/${notebook}`;
       const exportPath = `${DESKTOP_PATH}/${notebook}`;
       if (!fs.existsSync(exportPath)) {
@@ -504,31 +501,29 @@ export function eventListener(menus) {
       }
       if (type === 'md') {
         fse.copySync(folderPath, exportPath);
-      } else if (type === 'pdf') {
-        const notes = fs.readdirSync(folderPath);
-        const pdf = new PDF(notes, folderPath, exportPath);
-        await pdf.start();
       } else {
-        const promiseArr = [];
         const notes = fs.readdirSync(folderPath);
+        if (type === 'pdf') {
+          event.sender.send('async-export-file');
+        }
+        /* eslint-disable no-await-in-loop */
         for (const note of notes) {
           let content = fs.readFileSync(`${folderPath}/${note}`, {
             encoding: 'utf8',
           });
-          content = markedToHtml(content, false);
+          content = await generateHtml(content);
           const name = note.replace(/\.md/ig, '');
-          promiseArr.push(new Promise((resolve) => {
-            fs.writeFile(`${exportPath}/${name}.${type}`, content, (err) => {
-              if (err) {
-                console.warn(err);
-              }
-              resolve('done');
-            });
-          }));
+          const fileName = `${exportPath}/${name}.${type}`;
+          if (type === 'html') {
+            fs.writeFileSync(fileName, content);
+          } else if (type === 'pdf') {
+            await exportPDF(fileName, content);
+          }
         }
-        await Promise.all(promiseArr);
       }
-      event.sender.send('async-export-file-complete');
+      if (type === 'pdf') {
+        event.sender.send('async-export-file-complete');
+      }
       shell.openExternal(`file://${exportPath}`);
     } catch (ex) {
       console.warn(ex);
