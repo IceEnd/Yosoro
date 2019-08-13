@@ -8,7 +8,7 @@ const defaultOptions = {
   placement: 'top',
   modifiers: {
     offset: {
-      offset: '20, 5'
+      offset: '0, 5'
     }
   },
   showArrow: false
@@ -16,6 +16,7 @@ const defaultOptions = {
 
 class FormatPicker extends BaseFloat {
   static pluginName = 'formatPicker'
+
   constructor (muya, options = {}) {
     const name = 'ag-format-picker'
     const opts = Object.assign({}, defaultOptions, options)

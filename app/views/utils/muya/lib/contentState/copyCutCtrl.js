@@ -6,7 +6,10 @@ import marked from '../parser/marked/index'
 
 const copyCutCtrl = ContentState => {
   ContentState.prototype.cutHandler = function () {
-    const { start, end } = this.cursor
+    const { start, end } = selection.getCursorRange()
+    if (!start || !end) {
+      return
+    }
     const startBlock = this.getBlock(start.key)
     const endBlock = this.getBlock(end.key)
     startBlock.text = startBlock.text.substring(0, start.offset) + endBlock.text.substring(end.offset)
@@ -32,7 +35,9 @@ const copyCutCtrl = ContentState => {
       .${CLASS_OR_ID['AG_HTML_PREVIEW']},
       .${CLASS_OR_ID['AG_MATH_PREVIEW']},
       .${CLASS_OR_ID['AG_COPY_REMOVE']},
-      .${CLASS_OR_ID['AG_LANGUAGE_INPUT']}`
+      .${CLASS_OR_ID['AG_LANGUAGE_INPUT']},
+      .${CLASS_OR_ID['AG_HTML_TAG']} br,
+      .${CLASS_OR_ID['AG_FRONT_ICON']}`
     )
 
     for (const e of removedElements) {
@@ -181,7 +186,7 @@ const copyCutCtrl = ContentState => {
         const table = this.getTableBlock()
         if (!table) return
         const listIndentation = this.listIndentation
-        const markdown = new ExportMarkdown([ table ], listIndentation).generate()
+        const markdown = new ExportMarkdown([table], listIndentation).generate()
         event.clipboardData.setData('text/html', '')
         event.clipboardData.setData('text/plain', markdown)
         break

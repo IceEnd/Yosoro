@@ -54,6 +54,13 @@ const pasteCtrl = ContentState => {
   }
 
   ContentState.prototype.standardizeHTML = function (html) {
+    // Only extract the `body.innerHTML` when the `html` is a full HTML Document.
+    if (/<body>[\s\S]*<\/body>/.test(html)) {
+      const match = /<body>([\s\S]*)<\/body>/.exec(html)
+      if (match && typeof match[1] === 'string') {
+        html = match[1]
+      }
+    }
     const sanitizedHtml = sanitize(html, PREVIEW_DOMPURIFY_CONFIG)
     const tempWrapper = document.createElement('div')
     tempWrapper.innerHTML = sanitizedHtml
@@ -73,6 +80,14 @@ const pasteCtrl = ContentState => {
         const span = document.createElement('span')
         span.innerHTML = p.innerHTML
         p.replaceWith(span)
+      }
+
+      const tds = table.querySelectorAll('td')
+      for (const td of tds) {
+        const rawHtml = td.innerHTML
+        if (/<br>/.test(rawHtml)) {
+          td.innerHTML = rawHtml.replace(/<br>/g, '&lt;br&gt;')
+        }
       }
     }
 
@@ -191,6 +206,7 @@ const pasteCtrl = ContentState => {
     event.stopPropagation()
     const text = rawText || event.clipboardData.getData('text/plain')
     let html = rawHtml || event.clipboardData.getData('text/html')
+
     html = this.standardizeHTML(html)
     const copyType = this.checkCopyType(html, text)
     const { start, end } = this.cursor
@@ -382,9 +398,9 @@ const pasteCtrl = ContentState => {
           // No matter copy loose list to tight list or vice versa, the result is one loose list.
           if (targetListType !== originListType) {
             if (!targetListType) {
-              firstFragment.children.forEach(item => item.isLooseListItem = true)
+              firstFragment.children.forEach(item => (item.isLooseListItem = true))
             } else {
-              originList.children.forEach(item => item.isLooseListItem = true)
+              originList.children.forEach(item => (item.isLooseListItem = true))
             }
           }
 
@@ -468,6 +484,9 @@ const pasteCtrl = ContentState => {
     }
     this.checkInlineUpdate(cursorBlock)
     this.partialRender()
+    this.muya.dispatchSelectionChange()
+    this.muya.dispatchSelectionFormats()
+    return this.muya.dispatchChange()
   }
 }
 
