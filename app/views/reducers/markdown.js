@@ -11,8 +11,6 @@ import {
   MARKDWON_UPLADING_FAILED,
   JUST_UPDATE_MARKDWON_HTML,
   REPLACE_UPLOAD_IMAGE_TEXT,
-  // READ_FILE_SUCCESS,
-  // READ_FILE_FARILED,
 } from '../actions/markdown';
 import { updateNoteInfo } from '../utils/db/app';
 import { eventMD } from '../events/eventDispatch';
