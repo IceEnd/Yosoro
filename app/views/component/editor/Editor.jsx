@@ -72,6 +72,8 @@ export default class Editor extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.uuid !== this.props.uuid) {
+      // 先解除 change 事件
+      this.removeChangeEvent();
       this.muya.setMarkdown(this.props.defaultContent, {
         anchor: {
           ch: 0,
@@ -85,6 +87,8 @@ export default class Editor extends Component {
       // clear history
       this.muya.clearHistory();
       this.scrollToCursor(0);
+      // 再次绑定 change 事件
+      this.addChangeEvent();
     }
   }
 
@@ -140,7 +144,7 @@ export default class Editor extends Component {
 
   addChangeEvent() {
     if (this.muya) {
-      this.muya.on('change', this.handleChange);
+      setTimeout(() => this.muya.on('change', this.handleChange), 0);
     }
   }
 

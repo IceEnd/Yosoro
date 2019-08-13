@@ -240,6 +240,7 @@ export default class Files extends Component {
     const { parentsId, projectName, dispatch } = this.props;
     dispatch({
       type: MARKDOWN_UPLOADING,
+      target: uuid,
     });
     dispatch({
       type: UPLOAD_NOTE_ONEDRIVE,
