@@ -16,9 +16,6 @@ export default class Markdown extends Component {
       status: PropTypes.number.isRequired,
       start: PropTypes.number.isRequired,
     }).isRequired,
-    markdownSettings: PropTypes.shape({
-      editorWidth: PropTypes.number.isRequired,
-    }).isRequired,
     note: PropTypes.shape({
       projectUuid: PropTypes.string.isRequired,
       projectName: PropTypes.string.isRequired,
@@ -37,7 +34,6 @@ export default class Markdown extends Component {
     }).isRequired,
     editor: PropTypes.shape({
       fontSize: PropTypes.number.isRequired,
-      previewFontSize: PropTypes.number.isRequired,
       cursorPosition: PropTypes.bool.isRequired,
     }).isRequired,
     editorMode: PropTypes.string.isRequired,

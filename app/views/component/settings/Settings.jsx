@@ -112,7 +112,6 @@ export default class Settings extends Component {
     }).isRequired,
     editor: PropTypes.shape({
       fontSize: PropTypes.number.isRequired,
-      previewFontSize: PropTypes.number.isRequired,
       cursorPosition: PropTypes.bool.isRequired,
     }).isRequired,
     sortBy: PropTypes.oneOf(['normal', 'create-date', 'latest-date']).isRequired,

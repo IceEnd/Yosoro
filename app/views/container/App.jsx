@@ -74,12 +74,8 @@ export default class App extends Component {
       settings: PropTypes.shape({
         theme: PropTypes.string.isRequired,
         editorMode: PropTypes.string.isRequired,
-        markdownSettings: PropTypes.shape({
-          editorWidth: PropTypes.number.isRequired,
-        }).isRequired,
         editor: PropTypes.shape({
           fontSize: PropTypes.number.isRequired,
-          previewFontSize: PropTypes.number.isRequired,
           cursorPosition: PropTypes.bool.isRequired,
         }),
         defaultDrive: PropTypes.string.isRequired,
@@ -419,7 +415,6 @@ export default class App extends Component {
                       searchStatus={searchStatus}
                       markdown={markdown}
                       note={note}
-                      markdownSettings={app.settings.markdownSettings}
                       editorMode={app.settings.editorMode}
                       editor={settings.editor}
                       exportQueue={exportQueue}
