@@ -481,6 +481,12 @@ export default class Files extends Component {
     ipcRenderer.send('show-context-menu-file-item');
   }
 
+  handleDragStart = (e, note) => {
+    e.dataTransfer.setData('application/json', JSON.stringify(note));
+  }
+  handleDragEnd = (e, note) => {
+    //console.log('完成元素拖动handleDragEnd');
+  }
   renderCloudIcon = (status) => {
     if (status === 0) { // 未上传过
       return null;
@@ -590,10 +596,13 @@ export default class Files extends Component {
               }
               return (
                 <li
+                  draggable="true"
                   key={`n-${uuid}`}
                   className={`file-list__item ${active}`}
                   onClick={() => this.handleChoose(note)}
-                  onContextMenu={e => this.handleItemMenu(e, uuid, name, description, oneDriver)}
+                  onDragStart={ e => this.handleDragStart(e, note)}
+                  onDragEnd={e => this.handleDragEnd(e, note)}
+                  onContextMenu={ e => this.handleItemMenu(e, uuid, name, description, oneDriver)}
                   role="presentation"
                 >
                   <div className="file-list__item__root">

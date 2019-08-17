@@ -4,9 +4,9 @@ import { Icon, Input, message } from 'antd';
 import { ipcRenderer } from 'electron';
 import Scrollbars from 'Share/Scrollbars';
 import { withDispatch } from 'Components/HOC/context';
-import { createProject, deleteProject, renameProject, trashBack, updateNoteUploadStatus } from 'Actions/projects';
+import { createFile, createProject, deletNote, deleteProject, renameProject, trashBack, updateNoteUploadStatus } from 'Actions/projects';
 import { beforeSwitchSave, clearMarkdown } from 'Actions/markdown';
-import { switchProject, switchFile, clearWorkspace, updateNoteProjectName } from 'Actions/note';
+import { switchProject, switchFile, clearNote, clearWorkspace, updateNoteProjectName } from 'Actions/note';
 import { pushStateToStorage, mergeStateFromStorage, checkSpecial } from 'Utils/utils';
 import { getNote } from 'Utils/db/app';
 
@@ -320,6 +320,51 @@ export default class Project extends Component {
     e.preventDefault();
   }
 
+  handleDragEnter = () => {
+    //console.log('拖拽进入handleDragEnter');
+  }
+  handleDragOver = (e) => {
+    // eslint-disable-next-line no-console
+    //console.log('拖拽浮上（多次）handleDragOver');
+    e.preventDefault();
+  }
+  handleDragLeave = (e) => {
+    //console.log('拖拽移出handleDragLeave');
+    e.preventDefault();
+  }
+  handleDrop = (e, item) => {
+    const data = JSON.parse(e.dataTransfer.getData('application/json'));
+    const arr = item.notes.filter(i => i.name === data.name);
+    if (arr.length !== 0) {
+      message.error('Name repeat.');
+      return false;
+    }
+    const fromProjectName = this.props.projectName;
+    const { uuid, parentsId, name, projectName } = data;
+    const createDate = (new Date()).toString();
+    const transResult = ipcRenderer.sendSync('move-note', {
+      fromProjectName,
+      from: data,
+      to: item,
+      file: data,
+    });
+    if (!transResult.success) {
+      message.error('move notebook failed.');
+      return false;
+    }
+    this.props.dispatch(createFile({
+      name,
+      createDate,
+      parentsId: item.uuid,
+    }));
+    this.props.dispatch(deletNote(uuid, parentsId, name, projectName, true));
+    if (uuid === this.props.currentUuid) {
+      this.props.dispatch(clearMarkdown());
+      this.props.dispatch(clearNote());
+    }
+    e.preventDefault();
+  }
+
   renderNewProject = () => {
     const { newProjectTitle } = this.state;
     return (
@@ -399,6 +444,10 @@ export default class Project extends Component {
                   key={`p-${uuid}`}
                   className={`project-list__li ${active}`}
                   onClick={() => this.handleSelect(item.uuid, name)}
+                  onDragEnter={ e => this.handleDragEnter(e)}
+                  onDragOver={ e => this.handleDragOver(e)}
+                  onDragLeave={ e => this.handleDragLeave(e)}
+                  onDrop={ e => this.handleDrop(e, item) }
                   onContextMenu={e => this.handleItemMenu(e, uuid, name)}
                   role="presentation"
                 >

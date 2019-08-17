@@ -74,6 +74,29 @@ export function eventListener(menus) {
     }
   });
 
+  // 移动笔记
+  ipcMain.on('move-note', (event, args) => {
+    // eslint-disable-next-line no-unused-vars
+    const { from, fromProjectName, file, to } = args;
+    const newPath = `${getProjectsPath()}/${to.name}/${file.name}.md`;
+    const oldPath = `${getProjectsPath()}/${fromProjectName}/${file.name}.md`;
+    try {
+      fse.moveSync(oldPath, newPath, { overwrite: true });
+      if (fs.existsSync(oldPath)) {
+        fs.unlinkSync(oldPath);
+      }
+      event.returnValue = {
+        newPath,
+        success: true,
+      };
+    } catch (ex) {
+      event.returnValue = {
+        success: false,
+        error: ex,
+      };
+    }
+  });
+
   ipcMain.on('rename-project', (event, args) => {
     const { oldName, newName } = args;
     const oldfolder = `${getProjectsPath()}/${oldName}`;
@@ -676,6 +699,7 @@ export function removeEventListeners() {
     'show-context-menu-explorer-file',
     'show-context-menu-file-item',
     'show-context-menu-file-item',
+    'move-note',
     'create-project',
     'rename-project',
     'move-project-to-trash',
