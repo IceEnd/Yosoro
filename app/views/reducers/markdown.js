@@ -1,7 +1,7 @@
 import { ipcRenderer } from 'electron';
 import {
   READ_FILE,
-  UPDATE_MARKDOWN_HTML,
+  UPDATE_MARKDOWN_CONTENT,
   BEFORE_SWITCH_SAVE,
   CLEAR_MARKDOWN,
   UPDATE_CURRENT_MARKDOWN_TITLE,
@@ -11,8 +11,6 @@ import {
   MARKDWON_UPLADING_FAILED,
   JUST_UPDATE_MARKDWON_HTML,
   REPLACE_UPLOAD_IMAGE_TEXT,
-  // READ_FILE_SUCCESS,
-  // READ_FILE_FARILED,
 } from '../actions/markdown';
 import { updateNoteInfo } from '../utils/db/app';
 import { eventMD } from '../events/eventDispatch';
@@ -50,7 +48,7 @@ function updateMarkdown(state = initState, action) {
         content,
       });
     }
-    case UPDATE_MARKDOWN_HTML: {
+    case UPDATE_MARKDOWN_CONTENT: {
       let hasEdit = true;
       if (state.uuid !== action.uuid) {
         hasEdit = false;
@@ -112,7 +110,8 @@ function updateMarkdown(state = initState, action) {
       return assign({}, initState);
     case MARKDOWN_UPLOADING: {
       const { uuid } = state;
-      if (uuid === '' || uuid === '-1') { // 不更新
+      const { target } = action;
+      if (uuid === '' || uuid === '-1' || uuid !== target) { // 不更新
         return state;
       }
       return assign({}, state, {
@@ -121,6 +120,7 @@ function updateMarkdown(state = initState, action) {
     }
     case MARKDWON_UPLADING_SUCCESS: {
       const { uuid } = state;
+      state.hasEdit = false;
       if (uuid === '' || uuid === '-1') { // 不更新
         return state;
       }

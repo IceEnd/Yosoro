@@ -366,12 +366,12 @@ table {
   margin-top: 0;
 }
 
-li.ag-task-list-item {
+.ag-task-list li.ag-task-list-item {
   list-style-type: none;
   position: relative;
 }
 
-li.ag-task-list-item > input[type=checkbox] {
+.ag-task-list li.ag-task-list-item > input[type=checkbox] {
   position: absolute;
   cursor: pointer;
   width: 12px;

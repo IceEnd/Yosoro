@@ -7,11 +7,11 @@ export function readFile(param) {
   };
 }
 
-export const UPDATE_MARKDOWN_HTML = 'UPDATE_MARKDOWN_HTML';
+export const UPDATE_MARKDOWN_CONTENT = 'UPDATE_MARKDOWN_CONTENT';
 
 export function updateMarkdownHtml(content, uuid, start) {
   return {
-    type: UPDATE_MARKDOWN_HTML,
+    type: UPDATE_MARKDOWN_CONTENT,
     content,
     uuid,
     start,

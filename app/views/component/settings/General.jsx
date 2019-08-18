@@ -20,7 +20,6 @@ export default class General extends PureComponent {
     dispatch: PropTypes.func.isRequired,
     theme: PropTypes.string.isRequired,
     fontSize: PropTypes.number.isRequired,
-    previewFontSize: PropTypes.number.isRequired,
     // cursorPosition: PropTypes.bool.isRequired,
     sortBy: PropTypes.oneOf(['create-date', 'latest-date']),
     showLoading: PropTypes.func.isRequired,
@@ -28,7 +27,7 @@ export default class General extends PureComponent {
   }
 
   handleChange = (type, value) => {
-    if (type === 'editor.fontSize' || type === 'editor.previewFontSize') {
+    if (type === 'editor.fontSize') {
       if (typeof value !== 'number') {
         return;
       }
@@ -47,7 +46,7 @@ export default class General extends PureComponent {
   }
 
   render() {
-    const { fontSize, previewFontSize, showLoading, theme, sortBy, closeLoading } = this.props;
+    const { fontSize, showLoading, theme, sortBy, closeLoading } = this.props;
     return (
       <Module
         title="General"
@@ -93,15 +92,6 @@ export default class General extends PureComponent {
           minSize={MIN_SIZE}
           maxSize={MAX_SIZE}
           fontSize={fontSize}
-          onChange={this.handleChange}
-        />
-
-        <FontSize
-          type="editor.previewFontSize"
-          title="Preview Font Size"
-          minSize={MIN_SIZE}
-          maxSize={MAX_SIZE}
-          fontSize={previewFontSize}
           onChange={this.handleChange}
         />
 

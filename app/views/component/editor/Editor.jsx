@@ -13,15 +13,15 @@ import {
 import { saveNote } from 'Actions/projects';
 import { updateMarkdownHtml } from 'Actions/markdown';
 import { isCanUpload } from 'Utils/db/app';
-import {
-  debounce,
-} from 'Utils/utils';
+import { debounce, animatedScrollTo } from 'Utils/utils';
 import { withDispatch, withTheme } from 'Components/HOC/context';
 import * as notifications from '../share/notifications';
 import { eventTOC } from '../../events/eventDispatch';
 
 let key = 0;
 let seed = 0;
+
+const STANDAR_Y = 70;
 
 
 @withDispatch
@@ -72,7 +72,23 @@ export default class Editor extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.uuid !== this.props.uuid) {
-      this.muya.setMarkdown(this.props.defaultContent);
+      // 先解除 change 事件
+      this.removeChangeEvent();
+      this.muya.setMarkdown(this.props.defaultContent, {
+        anchor: {
+          ch: 0,
+          line: 0,
+        },
+        focus: {
+          ch: 0,
+          line: 0,
+        },
+      });
+      // clear history
+      this.muya.clearHistory();
+      this.scrollToCursor(0);
+      // 再次绑定 change 事件
+      this.addChangeEvent();
     }
   }
 
@@ -102,6 +118,19 @@ export default class Editor extends Component {
     eventTOC.emit('return-toc', res);
   }
 
+  scrollToCursor(duration = 300) {
+    setImmediate(() => {
+      if (!this.editorContainer) {
+        this.editorContainer = document.querySelector('#editorContainer');
+      }
+      const container = this.muya.container.parentElement;
+      if (container) {
+        const { y } = this.muya.getSelection().cursorCoords;
+        animatedScrollTo(container, (container.scrollTop + y) - STANDAR_Y, duration);
+      }
+    });
+  }
+
   // 停止编辑500ms, 异步保存文件内容
   autoSave = debounce(() => {
     const { note: { projectName, projectUuid, fileName, fileUuid }, defaultContent, dispatch } = this.props;
@@ -115,7 +144,7 @@ export default class Editor extends Component {
 
   addChangeEvent() {
     if (this.muya) {
-      this.muya.on('change', this.handleChange);
+      setTimeout(() => this.muya.on('change', this.handleChange), 0);
     }
   }
 

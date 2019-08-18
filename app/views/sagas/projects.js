@@ -7,7 +7,6 @@ import {
   UPLOAD_NOTE_ONEDRIVE_FAILED,
 } from '../actions/projects';
 import {
-  // MARKDOWN_UPLOADING,
   MARKDWON_UPLADING_SUCCESS,
   MARKDWON_UPLADING_FAILED,
 } from '../actions/markdown';

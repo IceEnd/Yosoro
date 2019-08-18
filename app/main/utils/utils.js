@@ -10,7 +10,6 @@ const tempPath = app.getPath('temp');
 
 function printPDF(win, file, tempFile, resolve) {
   win.webContents.printToPDF({
-    pageSize: 'A4',
     printBackground: true,
   }, (err, pdfData) => {
     win.removeAllListeners('did-finish-load');

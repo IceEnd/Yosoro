@@ -63,9 +63,9 @@ class ContentState {
 
     // Use to cache the keys which you don't want to remove.
     this.exemption = new Set()
-    this.blocks = [ this.createBlockP() ]
+    this.blocks = [this.createBlockP()]
     this.stateRender = new StateRender(muya)
-    this.renderRange = [ null, null ]
+    this.renderRange = [null, null]
     this.currentCursor = null
     // you'll select the outmost block of current cursor when you click the front icon.
     this.selectedBlock = null
@@ -75,7 +75,7 @@ class ContentState {
     this.historyTimer = null
     this.history = new History(this)
     this.turndownConfig = Object.assign(DEFAULT_TURNDOWN_CONFIG, { bulletListMarker })
-    this.fontSize = options.fontSize || 16
+    this.fontSize = 16
     this.lineHeight = 1.6
     this.init()
   }
@@ -166,7 +166,7 @@ class ContentState {
     const startOutMostBlock = this.findOutMostBlock(startBlock)
     const endOutMostBlock = this.findOutMostBlock(endBlock)
 
-    this.renderRange = [ startOutMostBlock.preSibling, endOutMostBlock.nextSibling ]
+    this.renderRange = [startOutMostBlock.preSibling, endOutMostBlock.nextSibling]
   }
 
   postRender () {
@@ -193,7 +193,7 @@ class ContentState {
   partialRender (isRenderCursor = true) {
     const { blocks, searchMatches: { matches, index } } = this
     const activeBlocks = this.getActiveBlocks()
-    const [ startKey, endKey ] = this.renderRange
+    const [startKey, endKey] = this.renderRange
     matches.forEach((m, i) => {
       m.active = i === index
     })
@@ -326,6 +326,7 @@ class ContentState {
     }
     return null
   }
+
   // return block and its parents
   getParents (block) {
     const result = []
@@ -399,6 +400,7 @@ class ContentState {
       this.removeBlock(block)
     }
   }
+
   // help func in removeBlocks
   findFigure (block) {
     if (block.type === 'figure') {
@@ -490,7 +492,7 @@ class ContentState {
   }
 
   getActiveBlocks () {
-    let result = []
+    const result = []
     let block = this.getBlock(this.cursor.start.key)
     if (block) result.push(block)
     while (block && block.parent) {
@@ -674,9 +676,8 @@ class ContentState {
     const { fontSize, lineHeight } = this
     const { start } = this.cursor
     const block = this.getBlock(start.key)
-    const { x, y } = selection.getCursorCoords()
+    const { x, y, width } = selection.getCursorCoords()
     const height = fontSize * lineHeight
-    const width = 0
     const bottom = y + height
     const right = x + width
     const left = x

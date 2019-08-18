@@ -7,4 +7,5 @@ module.exports = {
   testEnvironment: 'jsdom',
   verbose: true,
   coveragePathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/lib/', '<rootDir>/out/'],
+  modulePathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/lib/', '<rootDir>/out/'],
 };

@@ -131,6 +131,7 @@ export default class Tool extends Component {
     }
     this.props.dispatch({
       type: MARKDOWN_UPLOADING,
+      target: uuid,
     });
     this.props.dispatch({
       type: UPLOAD_NOTE_ONEDRIVE,

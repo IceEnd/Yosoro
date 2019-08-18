@@ -38,7 +38,7 @@ const turnSoftBreakToSpan = html => {
           const params = []
           let i = 0
           const len = tokens.length
-          for (; i< len; i++) {
+          for (; i < len; i++) {
             let text = tokens[i]
             if (i === 0 && startLen !== 0) {
               text = '\n'.repeat(startLen) + text
@@ -81,7 +81,7 @@ const importRegister = ContentState => {
     let token
     let block
     let value
-    let parentList = [ rootState ]
+    const parentList = [rootState]
     const languageLoaded = new Set()
 
     while ((token = tokens.shift())) {
@@ -133,7 +133,7 @@ const importRegister = ContentState => {
 
           const headingContent = this.createBlock('span', {
             text: value,
-            functionType: headingStyle === 'atx'? 'atxLine' : 'paragraphContent'
+            functionType: headingStyle === 'atx' ? 'atxLine' : 'paragraphContent'
           })
 
           this.appendChild(block, headingContent)
@@ -340,11 +340,11 @@ const importRegister = ContentState => {
     return rootState.children.length ? rootState.children : [this.createBlockP()]
   }
 
-  ContentState.prototype.htmlToMarkdown = function (html) {
+  ContentState.prototype.htmlToMarkdown = function (html, keeps = []) {
     // turn html to markdown
     const { turndownConfig } = this
     const turndownService = new TurndownService(turndownConfig)
-    usePluginAddRules(turndownService)
+    usePluginAddRules(turndownService, keeps)
     // fix #752, but I don't know why the &nbsp; vanlished.
     html = html.replace(/<span>&nbsp;<\/span>/g, ' ')
     html = turnSoftBreakToSpan(html)
@@ -354,7 +354,8 @@ const importRegister = ContentState => {
 
   // turn html to blocks
   ContentState.prototype.html2State = function (html) {
-    const markdown = this.htmlToMarkdown(html)
+    const markdown = this.htmlToMarkdown(html, ['ruby', 'rt', 'u', 'br'])
+
     return this.markdownToState(markdown)
   }
 
@@ -363,8 +364,8 @@ const importRegister = ContentState => {
     const { anchor, focus } = this.cursor
     const anchorBlock = this.getBlock(anchor.key)
     const focusBlock = this.getBlock(focus.key)
-    let { text: anchorText } = anchorBlock
-    let { text: focusText } = focusBlock
+    const { text: anchorText } = anchorBlock
+    const { text: focusText } = focusBlock
     if (anchor.key === focus.key) {
       const minOffset = Math.min(anchor.offset, focus.offset)
       const maxOffset = Math.max(anchor.offset, focus.offset)
@@ -418,10 +419,18 @@ const importRegister = ContentState => {
 
   ContentState.prototype.addCursorToMarkdown = function (markdown, cursor) {
     const { anchor, focus } = cursor
+    if (!anchor || !focus) {
+      return
+    }
     const lines = markdown.split('\n')
     const anchorText = lines[anchor.line]
     const focusText = lines[focus.line]
-
+    if (!anchorText || !focusText) {
+      return {
+        markdown: lines.join('\n'),
+        isValid: false
+      }
+    }
     if (anchor.line === focus.line) {
       const minOffset = Math.min(anchor.ch, focus.ch)
       const maxOffset = Math.max(anchor.ch, focus.ch)
@@ -438,7 +447,10 @@ const importRegister = ContentState => {
       lines[focus.line] = focusText.substring(0, focus.ch) + CURSOR_FOCUS_DNA + focusText.substring(focus.ch)
     }
 
-    return lines.join('\n')
+    return {
+      markdown: lines.join('\n'),
+      isValid: true
+    }
   }
 
   ContentState.prototype.importCursor = function (hasCursor) {
