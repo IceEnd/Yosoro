@@ -5,6 +5,7 @@
   "description": "Beautiful Markdown NoteBook Desktop App.",
   "main": "./app/main/index.js",
   "scripts": {
+    "dev": "concurrently \"yarn dev:renderer\" \"yarn dev:main\"",
     "dev:main": "cross-env NODE_ENV='development' BABEL_ENV=main electron -r @babel/register .",
     "dev:renderer": "cross-env NODE_ENV='development' BABEL_ENV=renderer webpack-dev-server --config config/webpack.config.renderer.dev.babel.js --colors --progress",
     "build:renderer": "cross-env NODE_ENV='production' BABEL_ENV=renderer gulp --gulpfile config/gulp.babel.js --cwd . renderer",
