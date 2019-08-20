@@ -68,6 +68,8 @@ export default class Editor extends Component {
     eventTOC.on('get-toc', this.getTOC);
     // bind keybord events
     ipcRenderer.on('Editor:Paragraph', this.handleParagraph);
+    ipcRenderer.on('Editor:undo', this.handleUndo);
+    ipcRenderer.on('Editor:redo', this.handleRedo);
   }
 
   componentDidUpdate(prevProps) {
@@ -96,6 +98,8 @@ export default class Editor extends Component {
     eventTOC.removeListener('toc-jump', this.handleTOCJump);
     eventTOC.removeListener('get-toc', this.getTOC);
     ipcRenderer.removeListener('Editor:Paragraph', this.handleParagraph);
+    ipcRenderer.removeListener('Editor:undo', this.handleUndo);
+    ipcRenderer.removeListener('Editor:redo', this.handleRedo);
     this.destroyMuya();
   }
 
@@ -170,6 +174,18 @@ export default class Editor extends Component {
   handleParagraph = (e, type) => {
     if (this.muya && type) {
       this.muya.updateParagraph(type);
+    }
+  }
+
+  handleUndo = () => {
+    if (this.muya) {
+      this.muya.undo();
+    }
+  }
+
+  handleRedo = () => {
+    if (this.muya) {
+      this.muya.redo();
     }
   }
 

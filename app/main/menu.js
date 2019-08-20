@@ -48,11 +48,13 @@ function getMemuTemplete(mainWindow) {
     submenu: [{
       label: 'Undo',
       accelerator: 'CmdOrCtrl+Z',
-      role: 'undo',
+      // role: 'undo',
+      click: () => mainWindow.webContents.send('Editor:undo'),
     }, {
       label: 'Redo',
       accelerator: 'Shift+CmdOrCtrl+Z',
-      role: 'redo',
+      // role: 'redo',
+      click: () => mainWindow.webContents.send('Editor:redo'),
     }, {
       type: 'separator',
     }, {
