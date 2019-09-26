@@ -1,6 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
+import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
 import baseConfig from './webpack.config.base.babel';
 
 export default merge.smart(baseConfig, {
@@ -63,6 +64,7 @@ export default merge.smart(baseConfig, {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new HardSourceWebpackPlugin(),
     // new webpack.NoEmitOnErrorsPlugin(),
   ],
 });

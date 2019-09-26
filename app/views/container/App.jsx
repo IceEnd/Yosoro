@@ -166,15 +166,15 @@ export default class App extends Component {
       notes: PropTypes.array.isRequired,
       currentProjectName: PropTypes.string.isRequired,
     }).isRequired,
-    // // 文件导出队列
+    // 文件导出队列
     exportQueue: PropTypes.shape({
       status: PropTypes.number.isRequired,
     }).isRequired,
-    // // 用户信息
+    // User info
     user: PropTypes.shape({
       avatar: PropTypes.string.isRequired,
     }).isRequired,
-    // 图床
+    // images
     imageHosting: PropTypes.shape({
       images: PropTypes.array.isRequired,
     }).isRequired,
@@ -192,7 +192,7 @@ export default class App extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(appLounch());
-    dispatch(getProjectList());
+    dispatch(getProjectList()); // sync
     this.fetchReleases();
     this.listenEvent();
     this.getLocalAvatar();

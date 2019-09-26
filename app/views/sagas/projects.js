@@ -1,4 +1,4 @@
-import { put, call, takeLatest } from 'redux-saga/effects';
+import { put, call, takeLatest, all } from 'redux-saga/effects';
 import { ipcRenderer } from 'electron';
 import { message } from 'antd';
 import {
@@ -97,10 +97,10 @@ function* oneDriveUpload(action) {
   }
 }
 
-function* noteToOneDrive() {
-  yield takeLatest(UPLOAD_NOTE_ONEDRIVE, oneDriveUpload);
+function* saga() {
+  yield all([
+    takeLatest(UPLOAD_NOTE_ONEDRIVE, oneDriveUpload),
+  ]);
 }
 
-export default [
-  noteToOneDrive,
-];
+export default saga;

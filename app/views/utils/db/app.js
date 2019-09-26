@@ -27,18 +27,18 @@ export function setDefaults() {
  * @description 检查本地信息是否初始化
  */
 export function checkDefaults() {
-  const projects = db.has(PROJECTS).value();
+  // const projects = db.has(PROJECTS).value();
   const settings = db.has(SETTINGS).value();
-  const notes = db.has(FILES).value();
+  // const notes = db.has(FILES).value();
   const oauth = db.has(OAUTHTOKEN).value();
   const imageHosting = db.has(IMAGE_HOSTING).value();
   const mediumConfig = db.has(MEDIUM_CONFIG).value();
-  if (!projects) {
-    db.set(PROJECTS, []);
-  }
-  if (!notes) {
-    db.set(FILES, []);
-  }
+  // if (!projects) {
+  //   db.set(PROJECTS, []);
+  // }
+  // if (!notes) {
+  //   db.set(FILES, []);
+  // }
   if (!oauth) {
     db.set(OAUTHTOKEN, {
       oneDriver: {
@@ -82,7 +82,10 @@ export function checkDefaults() {
       },
     });
   }
-  if (projects && settings && notes && oauth && imageHosting && mediumConfig) {
+  // if (projects && settings && notes && oauth && imageHosting && mediumConfig) {
+  //   return false;
+  // }
+  if (settings && oauth && imageHosting && mediumConfig) {
     return false;
   }
   return true;

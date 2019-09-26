@@ -3,6 +3,7 @@ import {
   call,
   takeEvery,
   takeLatest,
+  all,
 } from 'redux-saga/effects';
 import Medium from 'Services/Medium';
 
@@ -74,10 +75,6 @@ function* handleAuth(action) {
   }
 }
 
-function* auth() {
-  yield takeEvery(AUTH_MEDIUM, handleAuth);
-}
-
 function* handlePost(action) {
   const { title, markdown } = action;
   try {
@@ -97,10 +94,6 @@ function* handlePost(action) {
   }
 }
 
-function* post() {
-  yield takeLatest(POST_MEDIUM, handlePost);
-}
-
 function* handleSignOut() {
   const mediumUser = {
     id: '',
@@ -117,12 +110,10 @@ function* handleSignOut() {
   });
 }
 
-function* signOut() {
-  yield takeLatest(SIGN_OUT_MEDIUM, handleSignOut);
+export default function* () {
+  yield all([
+    takeLatest(SIGN_OUT_MEDIUM, handleSignOut),
+    takeLatest(POST_MEDIUM, handlePost),
+    takeEvery(AUTH_MEDIUM, handleAuth),
+  ]);
 }
-
-export default [
-  auth,
-  post,
-  signOut,
-];

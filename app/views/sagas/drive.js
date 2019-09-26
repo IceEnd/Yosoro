@@ -86,10 +86,6 @@ function* fetchProject(action) {
   }
 }
 
-function* fetchProjectList() {
-  yield takeLatest(DRIVE_FETCHING_PROJECTS, fetchProject);
-}
-
 function* fetchNotes(action) {
   const { folder, driveName } = action;
   let cloudDrive;
@@ -116,10 +112,6 @@ function* fetchNotes(action) {
       type: DRIVE_FETCHING_NOTES_FAILED,
     });
   }
-}
-
-function* fetchNotesList() {
-  yield takeLatest(DRIVE_FETCHING_NOTES, fetchNotes);
 }
 
 function* downloadNote(action) {
@@ -164,11 +156,6 @@ function* downloadNote(action) {
   }
 }
 
-function* handleDownloadNote() {
-  yield takeLatest(DRIVE_DOWNLOAD_NOTE, downloadNote);
-}
-
-
 function* deleteItem(action) {
   const { itemId, parentReference, driveName, jsonItemId, deleteType } = action;
   const { cloudDrive, driveType } = getDrive(driveName);
@@ -208,10 +195,6 @@ function* deleteItem(action) {
   }
 }
 
-function* handleDeleteItem() {
-  yield takeLatest(DRIVE_DELETE_ITEM, deleteItem);
-}
-
 // 获取用户头像
 function* getUserAvatar(action) {
   const { driveName } = action;
@@ -238,14 +221,12 @@ function* getUserAvatar(action) {
   }
 }
 
-function* handleGetUserAvatar() {
-  yield takeLatest(GET_USER_AVATAR, getUserAvatar);
+export default function* () {
+  yield all([
+    takeLatest(GET_USER_AVATAR, getUserAvatar),
+    takeLatest(DRIVE_DELETE_ITEM, deleteItem),
+    takeLatest(DRIVE_DOWNLOAD_NOTE, downloadNote),
+    takeLatest(DRIVE_FETCHING_NOTES, fetchNotes),
+    takeLatest(DRIVE_FETCHING_PROJECTS, fetchProject),
+  ]);
 }
-
-export default [
-  fetchProjectList,
-  fetchNotesList,
-  handleDownloadNote,
-  handleDeleteItem,
-  handleGetUserAvatar,
-];

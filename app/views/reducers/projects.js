@@ -2,6 +2,8 @@
 import { ipcRenderer } from 'electron';
 import {
   GET_PROJECT_LIST,
+  GET_PROJECT_LIST_SUCCESS,
+  GET_PROJECT_LIST_FAIL,
   CREATE_PROJECT,
   CREATE_FILE,
   DELETE_PROJECT,
@@ -25,7 +27,7 @@ import {
   SAVE_NOTE_FROM_DRIVE,
 } from '../actions/projects';
 import {
-  getProjectList,
+  // getProjectList,
   createProject,
   createFile,
   deleteProject,
@@ -45,10 +47,11 @@ import {
 const assign = Object.assign;
 
 function projectReducer(state = {
+  status: 0, // 0: request 1: success 2: failed
   projects: [],
   trashProjects: [],
-  hash: {},
-  trashHash: {},
+  hash: {}, // del
+  trashHash: {}, // del
   trash: {
     projectUuid: '-1',
     projectName: '',
@@ -73,20 +76,40 @@ function projectReducer(state = {
       return assign({}, state);
     }
     case GET_PROJECT_LIST: {
-      const { projects, trashProjects, hash, trashHash } = getProjectList();
-      return assign({}, {
+      state.status = 0;
+      return state;
+      // const { projects, trashProjects, hash, trashHash } = getProjectList();
+      // return assign({}, {
+      //   projects,
+      //   trashProjects,
+      //   hash,
+      //   trashHash,
+      //   searchResult: [],
+      //   searchStatus: 0, // 0：normal 1: search
+      //   trash: {
+      //     projectUuid: '-1',
+      //     projectName: '',
+      //   },
+      // });
+    }
+    case GET_PROJECT_LIST_SUCCESS: {
+      const { projects, trashProjects } = action.payload;
+      return assign({}, state, {
+        status: 1,
         projects,
         trashProjects,
-        hash,
-        trashHash,
-        searchResult: [],
-        searchStatus: 0, // 0：normal 1: search
-        trash: {
-          projectUuid: '-1',
-          projectName: '',
-        },
+        // hash,
+        // trashHash,
+        // searchResult: [],
+        // searchStatus: 0, // 0：normal 1: search
+        // trash: {
+        //   projectUuid: '-1',
+        //   projectName: '',
+        // },
       });
     }
+    case GET_PROJECT_LIST_FAIL:
+      return state;
     case CREATE_PROJECT: { // 创建项目
       const { param: { name, createDate } } = action;
       const project = createProject(name, createDate);

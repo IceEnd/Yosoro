@@ -2,6 +2,7 @@ import {
   put,
   call,
   takeEvery,
+  all,
 } from 'redux-saga/effects';
 import { ipcRenderer } from 'electron';
 import { blobToBase64, formatDate } from 'Utils/utils';
@@ -33,10 +34,8 @@ function* handleUpload(action) {
   }
 }
 
-function* upload() {
-  yield takeEvery(UPLOAD_IMAGE, handleUpload);
+export default function* () {
+  yield all([
+    takeEvery(UPLOAD_IMAGE, handleUpload),
+  ]);
 }
-
-export default [
-  upload,
-];

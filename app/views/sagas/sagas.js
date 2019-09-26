@@ -5,9 +5,9 @@ import imageHosting from './imageHosting';
 import medium from './medium';
 
 export default [
-  ...app,
-  ...projects,
-  ...drive,
-  ...imageHosting,
-  ...medium,
+  app,
+  projects,
+  drive,
+  imageHosting,
+  medium,
 ];

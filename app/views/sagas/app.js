@@ -1,4 +1,4 @@
-import { put, call, takeLatest } from 'redux-saga/effects';
+import { put, call, takeLatest, all } from 'redux-saga/effects';
 import { message } from 'antd';
 // import { ipcRenderer } from 'electron';
 import {
@@ -39,10 +39,6 @@ function* oneDriveToken(action) {
   }
 }
 
-function* fetchingOneDriveToken() {
-  yield takeLatest(FETCHING_ONEDRIVE_TOKEN, oneDriveToken);
-}
-
 function* handleReleaseFetch() {
   try {
     const latestVersion = yield call(commonServices.getLatestVersion);
@@ -52,11 +48,11 @@ function* handleReleaseFetch() {
   }
 }
 
-function* getReleases() {
-  yield takeLatest(FETCHING_GITHUB_RELEASES, handleReleaseFetch);
+function* saga() {
+  yield all([
+    takeLatest(FETCHING_ONEDRIVE_TOKEN, oneDriveToken),
+    takeLatest(FETCHING_GITHUB_RELEASES, handleReleaseFetch),
+  ]);
 }
 
-export default [
-  fetchingOneDriveToken,
-  getReleases,
-];
+export default saga;
