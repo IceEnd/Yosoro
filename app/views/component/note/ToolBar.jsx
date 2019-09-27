@@ -149,7 +149,7 @@ export default class Tool extends Component {
   handleExport = async ({ key }) => {
     const { markdown: { content, name }, note: { projectName } } = this.props;
     const data = content;
-    ipcRenderer.send('export-note', {
+    ipcRenderer.send('NOTES:export-note', {
       content,
       type: key,
       fileName: name,

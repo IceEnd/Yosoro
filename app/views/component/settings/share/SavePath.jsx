@@ -17,7 +17,7 @@ export default class SavePath extends PureComponent {
 
   constructor() {
     super();
-    const path = ipcRenderer.sendSync('get-docuemnts-save-path');
+    const path = ipcRenderer.sendSync('COMMON:get-docuemnts-save-path');
     this.state = {
       path,
     };
@@ -46,7 +46,7 @@ export default class SavePath extends PureComponent {
   }
 
   handleClick = () => {
-    ipcRenderer.send('open-file-dialog', {
+    ipcRenderer.send('NOTES:open-file-dialog', {
       properties: ['openDirectory'],
       cbChannel: 'change-documents-save-path',
       cbOver: 'change-documents-save-path-over',

@@ -174,7 +174,11 @@ export function getUploadData() {
   };
 }
 
-/**
+export function checkProjects() {
+  return db.has(PROJECTS).value();
+}
+
+/*
  * @description 读取项目信息
  */
 export function getProjectList() {

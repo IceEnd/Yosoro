@@ -5,12 +5,16 @@ import {
   UPLOAD_NOTE_ONEDRIVE,
   UPLOAD_NOTE_ONEDRIVE_SUCCESS,
   UPLOAD_NOTE_ONEDRIVE_FAILED,
-} from '../actions/projects';
+  GET_PROJECT_LIST,
+  GET_PROJECT_LIST_SUCCESS,
+  // GET_PROJECT_LIST_FAIL,
+} from 'Actions/projects';
 import {
   MARKDWON_UPLADING_SUCCESS,
   MARKDWON_UPLADING_FAILED,
-} from '../actions/markdown';
-import * as db from '../utils/db/app';
+} from 'Actions/markdown';
+import * as db from 'Utils/db/app';
+// import { sendIPC } from 'Utils/complex';
 import OneDrive from '../services/OneDrive';
 
 const oneDrive = new OneDrive();
@@ -24,7 +28,7 @@ function* oneDriveUpload(action) {
   try {
     // yield put({ type: MARKDOWN_UPLOADING });
     if (typeof param.content === 'undefined') {
-      const data = ipcRenderer.sendSync('read-file', {
+      const data = ipcRenderer.sendSync('NOTES:read-file', {
         projectName,
         fileName: name,
       });
@@ -97,10 +101,28 @@ function* oneDriveUpload(action) {
   }
 }
 
-function* saga() {
-  yield all([
-    takeLatest(UPLOAD_NOTE_ONEDRIVE, oneDriveUpload),
-  ]);
+function* getProject() {
+  if (db.checkProjects()) {
+    // get data from localStorage
+    const payload = db.getProjectList();
+    ipcRenderer.send('migrate-notes', payload);
+    yield put({
+      type: GET_PROJECT_LIST_SUCCESS,
+      payload,
+    });
+    return;
+  }
+  // todo
+  // try {
+
+  // } catch (ex) {
+
+  // }
 }
 
-export default saga;
+export default function* saga() {
+  yield all([
+    takeLatest(UPLOAD_NOTE_ONEDRIVE, oneDriveUpload),
+    takeLatest(GET_PROJECT_LIST, getProject),
+  ]);
+}

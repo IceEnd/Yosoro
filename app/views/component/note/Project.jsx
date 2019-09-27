@@ -49,7 +49,7 @@ export default class Project extends Component {
   }
 
   componentDidMount() {
-    ipcRenderer.send('file-new-enbaled', { // 启用 新建菜单
+    ipcRenderer.send('MENUS:file-new-enbaled', { // 启用 新建菜单
       type: 'new-project',
       flag: true,
     });
@@ -68,7 +68,7 @@ export default class Project extends Component {
         dispatch(clearMarkdown());
         dispatch(clearWorkspace());
       }
-      const data = ipcRenderer.sendSync('move-project-to-trash', {
+      const data = ipcRenderer.sendSync('NOTES:move-project-to-trash', {
         name,
       });
       if (!data.success) {
@@ -99,7 +99,7 @@ export default class Project extends Component {
     // 需要异步处理
     ipcRenderer.on('export-get-notebook-info', (event, type) => {
       const { name: notebook } = this.state.contextProject;
-      ipcRenderer.send('export-notebook', {
+      ipcRenderer.send('NOTES:export-notebook', {
         notebook,
         type,
       });
@@ -121,7 +121,7 @@ export default class Project extends Component {
     ipcRenderer.removeAllListeners('new-project');
     ipcRenderer.removeAllListeners('delete-project');
     ipcRenderer.removeAllListeners('rename-project');
-    ipcRenderer.send('file-new-enbaled', { // 禁用 新建菜单
+    ipcRenderer.send('MENUS:file-new-enbaled', { // 禁用 新建菜单
       type: 'new-project',
       flag: false,
     });
@@ -163,7 +163,7 @@ export default class Project extends Component {
     if (searchStatus === 1) {
       return false;
     }
-    ipcRenderer.send('show-context-menu-explorer');
+    ipcRenderer.send('MENUS:show-context-menu-explorer');
   }
 
   // 输入新建项目名称
@@ -232,7 +232,7 @@ export default class Project extends Component {
       });
       return false;
     }
-    const folderData = ipcRenderer.sendSync('create-project', name); // 创建文件夹
+    const folderData = ipcRenderer.sendSync('NOTES:create-project', name); // 创建文件夹
     if (!folderData.success) {
       const error = folderData.error;
       if (error.errno === -17) { // 文件夹存在
@@ -278,7 +278,7 @@ export default class Project extends Component {
         message.error('Name repeat.');
         return false;
       }
-      const data = ipcRenderer.sendSync('rename-project', {
+      const data = ipcRenderer.sendSync('NOTES:rename-project', {
         oldName,
         newName: name,
       });
@@ -312,7 +312,7 @@ export default class Project extends Component {
     if (searchStatus === 1) {
       return false;
     }
-    ipcRenderer.send('show-context-menu-project-item');
+    ipcRenderer.send('MENUS:show-context-menu-project-item');
   }
 
   handleIptClick = (e) => {

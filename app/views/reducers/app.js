@@ -41,7 +41,7 @@ const initSettings = assign({}, defaultSettings, getAppSettings());
 
 // Sync View MenuItems
 if (initSettings.editorMode) {
-  ipcRenderer.send('app-switch-edit-mode', initSettings.editorMode);
+  ipcRenderer.send('COMMON:app-switch-edit-mode', initSettings.editorMode);
 }
 
 if (typeof initSettings.defaultDrive === 'undefined') {
@@ -80,7 +80,7 @@ export default function lounchApp(state = {
       settings.editorMode = mode;
       updateAppSettings(settings);
       if (!fromApp) {
-        ipcRenderer.send('app-switch-edit-mode', mode);
+        ipcRenderer.send('COMMON:app-switch-edit-mode', mode);
       }
       updateAppSettings(settings);
       const newState = assign({}, state, {

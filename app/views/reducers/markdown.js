@@ -65,7 +65,7 @@ function updateMarkdown(state = initState, action) {
       if (status === 0 || status === 2) { // 不用保存
         return state;
       }
-      const data = ipcRenderer.sendSync('save-content-to-file', {
+      const data = ipcRenderer.sendSync('NOTES:save-content-to-file', {
         content,
         projectName,
         fileName: name,
@@ -87,7 +87,7 @@ function updateMarkdown(state = initState, action) {
     case SAVE_CONTENT_TO_TRASH_FILE: { // 删除文件后将内容保存至草稿箱
       const { projectName } = action;
       const { content, name } = state;
-      const data = ipcRenderer.sendSync('save-content-to-trash-file', {
+      const data = ipcRenderer.sendSync('NOTES:save-content-to-trash-file', {
         content,
         projectName,
         name,

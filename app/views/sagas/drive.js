@@ -208,7 +208,7 @@ function* getUserAvatar(action) {
     const token = yield call(getToken, cloudDrive, driveType);
     const data = yield call(cloudDrive.getUserAvatar, token);
     const base64 = yield call(blobToBase64, data);
-    const avatar = ipcRenderer.sendSync('save-user-avatar', base64);
+    const avatar = ipcRenderer.sendSync('COMMON:save-user-avatar', base64);
     yield put({
       type: GET_USER_AVATAR_SUCCESS,
       avatar: avatar.url,

@@ -199,8 +199,8 @@ export default class App extends Component {
     this.fetchAvatar();
     setTheme(this.props.app.settings.theme);
 
-    ipcRenderer.send('start-release-schedule');
-    ipcRenderer.send('get-images-list');
+    ipcRenderer.send('SCHEDULE:start-release-schedule');
+    ipcRenderer.send('IMAGES:get-images-list');
   }
 
   componentDidUpdate(prevProps) {
@@ -209,13 +209,13 @@ export default class App extends Component {
       this.updateNotification(latestVersion);
     }
     if (prevProps.app.allowShowUpdate && !allowShowUpdate) {
-      ipcRenderer.send('stop-release-schedule');
+      ipcRenderer.send('SCHEDULE:stop-release-schedule');
     }
   }
 
   componentWillUnmount() {
     if (this.props.app.allowShowUpdate) {
-      ipcRenderer.send('stop-release-schedule');
+      ipcRenderer.send('SCHEDULE:stop-release-schedule');
     }
     const listeners = [
       'save-content',
@@ -235,7 +235,7 @@ export default class App extends Component {
 
   // 获取本地存储的头像
   getLocalAvatar() {
-    const avatar = ipcRenderer.sendSync('get-local-avatar');
+    const avatar = ipcRenderer.sendSync('COMMON:get-local-avatar');
     if (avatar) {
       this.props.dispatch({
         type: SET_USER_LOCAL_AVATAR,
@@ -311,7 +311,7 @@ export default class App extends Component {
         projectName,
         fileName: name,
       };
-      const data = ipcRenderer.sendSync('save-content-to-file', param);
+      const data = ipcRenderer.sendSync('NOTES:save-content-to-file', param);
       if (parentsId && uuid) {
         dispatch(saveNote(parentsId, uuid));
       }

@@ -33,7 +33,7 @@ export default function imageHosting(state = {
     case IMAGES_DELETE: { // delete image
       const { id, index } = action;
       state.images.splice(index, 1);
-      ipcRenderer.send('images-delete', id);
+      ipcRenderer.send('IMAGES:images-delete', id);
       return { ...state };
     }
     default:

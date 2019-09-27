@@ -138,7 +138,7 @@ export default class Editor extends Component {
   // 停止编辑500ms, 异步保存文件内容
   autoSave = debounce(() => {
     const { note: { projectName, projectUuid, fileName, fileUuid }, defaultContent, dispatch } = this.props;
-    ipcRenderer.send('auto-save-content-to-file', {
+    ipcRenderer.send('NOTES:auto-save-content-to-file', {
       projectName,
       fileName,
       content: defaultContent,
@@ -228,7 +228,7 @@ export default class Editor extends Component {
         });
       }
     });
-    ipcRenderer.send('pic-upload-sync', {
+    ipcRenderer.send('IMAGES:pic-upload-sync', {
       files: {
         filePath,
         base64,

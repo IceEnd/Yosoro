@@ -63,7 +63,7 @@ export default class Files extends Component {
   }
 
   componentDidMount() {
-    ipcRenderer.send('file-new-enbaled', {
+    ipcRenderer.send('MENUS:file-new-enbaled', {
       type: 'new-note',
       flag: true,
     });
@@ -77,7 +77,7 @@ export default class Files extends Component {
     ipcRenderer.on('delete-note', () => {
       const { projectName, parentsId, dispatch, currentUuid } = this.props;
       const { name, uuid } = this.state.contextNote;
-      const data = ipcRenderer.sendSync('move-file-to-trash', {
+      const data = ipcRenderer.sendSync('NOTES:move-file-to-trash', {
         name,
         projectName,
       });
@@ -135,7 +135,7 @@ export default class Files extends Component {
     ipcRenderer.on('export-get-note-info', async (event, type) => {
       const { projectName } = this.props;
       const { name } = this.state.contextNote;
-      ipcRenderer.send('export-note', {
+      ipcRenderer.send('NOTES:export-note', {
         projectName,
         fileName: name,
         type,
@@ -145,7 +145,7 @@ export default class Files extends Component {
     ipcRenderer.on('post-medium', () => {
       const { projectName, dispatch } = this.props;
       const { name } = this.state.contextNote;
-      const data = ipcRenderer.sendSync('read-file', {
+      const data = ipcRenderer.sendSync('NOTES:read-file', {
         projectName,
         fileName: name,
       });
@@ -165,7 +165,7 @@ export default class Files extends Component {
       const item = nextProps.notes[0];
       dispatch(beforeSwitchSave(projectName));
       dispatch(switchFile(item.uuid, item.name));
-      const data = ipcRenderer.sendSync('read-file', {
+      const data = ipcRenderer.sendSync('NOTES:read-file', {
         projectName,
         fileName: item.name,
       });
@@ -204,7 +204,7 @@ export default class Files extends Component {
     ipcRenderer.removeAllListeners('node-add-desc');
     ipcRenderer.removeAllListeners('upload-note-onedrive');
     ipcRenderer.removeAllListeners('export-get-note-info');
-    ipcRenderer.send('file-new-enbaled', {
+    ipcRenderer.send('MENUS:file-new-enbaled', {
       type: 'new-note',
       flag: false,
     });
@@ -262,7 +262,7 @@ export default class Files extends Component {
     if (searchStatus === 1) {
       return false;
     }
-    ipcRenderer.send('show-context-menu-explorer-file');
+    ipcRenderer.send('MENUS:show-context-menu-explorer-file');
   }
 
   // 新建输入框改变事件
@@ -344,7 +344,7 @@ export default class Files extends Component {
       });
       return false;
     }
-    const fileData = ipcRenderer.sendSync('create-file', {
+    const fileData = ipcRenderer.sendSync('NOTES:create-file', {
       name,
       projectName,
     });
@@ -391,7 +391,7 @@ export default class Files extends Component {
         message.error('Name repeat.');
         return false;
       }
-      const data = ipcRenderer.sendSync('rename-note', {
+      const data = ipcRenderer.sendSync('NOTES:rename-note', {
         oldName,
         newName: name,
         projectName,
@@ -452,7 +452,7 @@ export default class Files extends Component {
       }
     }
     dispatch(switchFile(item.uuid, item.name));
-    const data = ipcRenderer.sendSync('read-file', {
+    const data = ipcRenderer.sendSync('NOTES:read-file', {
       projectName,
       fileName: item.name,
     });
@@ -479,7 +479,7 @@ export default class Files extends Component {
     if (searchStatus === 1) {
       return false;
     }
-    ipcRenderer.send('show-context-menu-file-item');
+    ipcRenderer.send('MENUS:show-context-menu-file-item');
   }
 
   renderCloudIcon = (status) => {

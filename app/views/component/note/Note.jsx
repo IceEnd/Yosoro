@@ -86,7 +86,7 @@ export default class NoteWorkspace extends Component {
     const file = getFileById(fileUuid);
     if (Array.isArray(file) && file.length === 1) {
       const item = file[0];
-      const data = ipcRenderer.sendSync('read-file', {
+      const data = ipcRenderer.sendSync('NOTES:read-file', {
         projectName,
         fileName: item.name,
       });

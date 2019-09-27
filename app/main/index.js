@@ -3,7 +3,7 @@ import path from 'path';
 import url from 'url';
 import ChildProcess from 'child_process';
 import { setMenu, getExplorerMenuItem, getExplorerFileMenuItem, getExplorerProjectItemMenu, getExplorerFileItemMenu } from './menu';
-import { removeEventListeners, eventListener } from './event';
+import Events from './events/index';
 import schedule from './schedule';
 import * as appPaths from './paths';
 import pkg from '../../package.json';
@@ -129,12 +129,13 @@ function createWindow() {
   const projectItemMenu = getExplorerProjectItemMenu(mainWindow);
   const fileItemMenu = getExplorerFileItemMenu(mainWindow);
 
-  eventListener({
+  const events = new Events({
     explorerMenu,
     exploereFileMenu,
     projectItemMenu,
     fileItemMenu,
   });
+  events.setListeners();
 
   const webContents = mainWindow.webContents;
 
@@ -152,7 +153,7 @@ function createWindow() {
   mainWindow.on('close', () => {
     mainWindow = null;
     try {
-      removeEventListeners();
+      events.clearListeners();
     } catch (err) {
       // err
     }

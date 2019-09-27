@@ -47,7 +47,7 @@ export default function HOCListFactory(listType) {
 
       // 还原项目
       restoreProject(uuid, name) {
-        const data = ipcRenderer.sendSync('restore-notebook', {
+        const data = ipcRenderer.sendSync('NOTES:restore-notebook', {
           name,
         });
         if (!data.success) {
@@ -60,7 +60,7 @@ export default function HOCListFactory(listType) {
       // 还原笔记
       restoreNote(uuid, name) {
         const { trash: { projectUuid, projectName }, dispatch } = this.props;
-        const data = ipcRenderer.sendSync('restore-note', {
+        const data = ipcRenderer.sendSync('NOTES:restore-note', {
           projectName,
           name,
         });
@@ -94,7 +94,7 @@ export default function HOCListFactory(listType) {
 
       // 永久删除笔记本
       removeNotebook(uuid, name) {
-        const data = ipcRenderer.sendSync('permanent-remove-notebook', {
+        const data = ipcRenderer.sendSync('NOTES:permanent-remove-notebook', {
           name,
         });
         if (!data.success) {
@@ -110,7 +110,7 @@ export default function HOCListFactory(listType) {
       // 永久删除笔记
       removeNote(uuid, name) {
         const { trash: { projectUuid, projectName }, dispatch } = this.props;
-        const data = ipcRenderer.sendSync('permanent-remove-note', {
+        const data = ipcRenderer.sendSync('NOTES:permanent-remove-note', {
           projectName,
           name,
         });

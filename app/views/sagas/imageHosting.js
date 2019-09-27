@@ -17,7 +17,7 @@ function* handleUpload(action) {
   try {
     const base64 = yield call(blobToBase64, files);
     const name = `${formatDate(new Date(), 'upload')}-${files.name}`;
-    ipcRenderer.send('pic-upload', {
+    ipcRenderer.send('IMAGES:pic-upload', {
       uuid,
       from,
       imageHostingConfig,

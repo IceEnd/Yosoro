@@ -108,8 +108,10 @@ function projectReducer(state = {
         // },
       });
     }
-    case GET_PROJECT_LIST_FAIL:
+    case GET_PROJECT_LIST_FAIL: {
+      state.status = 2;
       return state;
+    }
     case CREATE_PROJECT: { // 创建项目
       const { param: { name, createDate } } = action;
       const project = createProject(name, createDate);
@@ -871,7 +873,7 @@ function projectReducer(state = {
           state.projects[targetProjectIndex].notes[targetNoteIndex] = newNote;
         }
       }
-      ipcRenderer.sendSync('save-content-to-file', {
+      ipcRenderer.sendSync('NOTES:save-content-to-file', {
         content,
         projectName: folder,
         fileName: name,
