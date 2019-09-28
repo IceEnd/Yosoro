@@ -25,10 +25,8 @@ export default class Common extends Event {
     this.name = 'COMMON';
   }
 
-  setListener() {
-    const listener = this.listener;
-
-    listener('get-webview-path', (event) => {
+  setListeners() {
+    this.listener('get-webview-path', (event) => {
       event.returnValue = url.format({
         pathname: path.join(__dirname, './webview/webview.html'),
         protocol: 'file:',
@@ -36,7 +34,7 @@ export default class Common extends Event {
     });
 
     // 将用户头像保存到 应用数据文件夹/profile
-    listener('save-user-avatar', (event, args) => {
+    this.listener('save-user-avatar', (event, args) => {
       const data = args.replace(/^data:image\/\w+;base64,/, '');
       const avatar = `${PROFILE_PATH}/avatar.png`;
       try {
@@ -52,7 +50,7 @@ export default class Common extends Event {
       }
     });
 
-    listener('get-local-avatar', (event) => {
+    this.listener('get-local-avatar', (event) => {
       try {
         let avatar = `${PROFILE_PATH}/avatar.png`;
         if (!fs.existsSync(avatar)) {
@@ -65,11 +63,11 @@ export default class Common extends Event {
     });
 
     // get yosoro documents save path
-    listener('get-docuemnts-save-path', (event) => {
+    this.listener('get-docuemnts-save-path', (event) => {
       event.returnValue = global.RUNTIME.paths.DOCUMENTS_ROOT;
     });
 
-    listener('app-switch-edit-mode', (event, args) => {
+    this.listener('app-switch-edit-mode', (event, args) => {
       const cm = Menu.getApplicationMenu();
       let target = 3;
       if (process.platform === 'darwin') {

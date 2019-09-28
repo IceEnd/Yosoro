@@ -12,10 +12,10 @@ export default class Event {
     this.name = 'EVENT';
   }
 
-  setListeners = () => null;
-
   listener(channel, cb) {
-    ipcMain.on(`${this.name}:${channel}`, (...args) => cb(args));
+    ipcMain.on(`${this.name}:${channel}`, (...args) => {
+      cb.apply(this, args);
+    });
   }
 
   removeAllListenter(event) {

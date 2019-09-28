@@ -13,10 +13,13 @@
         ["@babel/preset-env", {
           "targets": {
             "node": 10,
-            "esmodules": false,
+            "esmodules": false
           }
         }]
-			]
+      ],
+      "plugins": [
+        ["@babel/plugin-proposal-class-properties", { "loose": true }]
+      ]
     },
     "renderer": {
       "presets": [
@@ -46,7 +49,7 @@
       "plugins": [
         "@babel/plugin-transform-runtime",
         "@babel/plugin-syntax-dynamic-import",
-        ["@babel/plugin-proposal-class-properties", { "loose": true }],
+        ["@babel/plugin-proposal-class-properties", { "loose": true }]
       ]
     }
   },

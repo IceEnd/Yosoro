@@ -43,11 +43,9 @@ export default class Notes extends Event {
     this.name = 'NOTES';
   }
 
-  setListener() {
-    const listener = this.listener;
+  setListeners() {
     // create notes folder
-
-    listener('create-project', (event, args) => {
+    this.listener('create-project', (event, args) => {
       const name = args;
       const folder = `${getProjectsPath()}/${name}`;
       try {
@@ -72,7 +70,7 @@ export default class Notes extends Event {
     });
 
     // rename folder
-    listener('rename-project', (event, args) => {
+    this.listener('rename-project', (event, args) => {
       const { oldName, newName } = args;
       const oldfolder = `${getProjectsPath()}/${oldName}`;
       const newfolder = `${getProjectsPath()}/${newName}`;
@@ -96,7 +94,7 @@ export default class Notes extends Event {
     });
 
     // move to trash
-    listener('move-project-to-trash', (event, args) => {
+    this.listener('move-project-to-trash', (event, args) => {
       const { name } = args;
       const oldPath = `${getProjectsPath()}/${name}`;
       const newPath = `${getTrashPath()}/${name}`;
@@ -135,7 +133,7 @@ export default class Notes extends Event {
     });
 
     // create file
-    listener('create-file', (event, args) => {
+    this.listener('create-file', (event, args) => {
       const { name, projectName } = args;
       const file = `${getProjectsPath()}/${projectName}/${name}.md`;
       try {
@@ -153,7 +151,7 @@ export default class Notes extends Event {
     });
 
     // rename file
-    listener('rename-note', (event, args) => {
+    this.listener('rename-note', (event, args) => {
       const { oldName, newName, projectName } = args;
       const oldPath = `${getProjectsPath()}/${projectName}/${oldName}.md`;
       const newPath = `${getProjectsPath()}/${projectName}/${newName}.md`;
@@ -172,7 +170,7 @@ export default class Notes extends Event {
     });
 
     // read file
-    listener('read-file', (event, args) => {
+    this.listener('read-file', (event, args) => {
       const { projectName, fileName } = args;
       const filePath = `${getProjectsPath()}/${projectName}/${fileName}.md`;
       try {
@@ -192,7 +190,7 @@ export default class Notes extends Event {
     });
 
     // save file
-    listener('save-content-to-file', (event, args) => {
+    this.listener('save-content-to-file', (event, args) => {
       const { content, fileName, projectName } = args;
       const filePath = `${getProjectsPath()}/${projectName}/${fileName}.md`;
       const folder = `${getProjectsPath()}/${projectName}`;
@@ -213,7 +211,7 @@ export default class Notes extends Event {
     });
 
     // auto save file
-    listener('auto-save-content-to-file', (event, args) => {
+    this.listener('auto-save-content-to-file', (event, args) => {
       const { content, fileName, projectName } = args;
       const filePath = `${getProjectsPath()}/${projectName}/${fileName}.md`;
       const folder = `${getProjectsPath()}/${projectName}`;
@@ -229,7 +227,7 @@ export default class Notes extends Event {
     });
 
     // save trash file
-    listener('save-content-to-trash-file', (event, args) => {
+    this.listener('save-content-to-trash-file', (event, args) => {
       const { content, projectName, name } = args;
       const filePath = `${getTrashPath()}/${projectName}/${name}.md`;
       try {
@@ -246,7 +244,7 @@ export default class Notes extends Event {
     });
 
     // move note to trash
-    listener('move-file-to-trash', (event, args) => {
+    this.listener('move-file-to-trash', (event, args) => {
       const { name, projectName } = args;
       const oldPath = `${getProjectsPath()}/${projectName}/${name}.md`;
       const newPath = `${getTrashPath()}/${projectName}/${name}.md`;
@@ -281,7 +279,7 @@ export default class Notes extends Event {
     });
 
     // remove note permanent
-    listener('permanent-remove-note', (event, args) => {
+    this.listener('permanent-remove-note', (event, args) => {
       const { projectName, name } = args;
       const filePath = `${getTrashPath()}/${projectName}/${name}.md`;
       try {
@@ -306,7 +304,7 @@ export default class Notes extends Event {
     });
 
     // remove fold permanentg
-    listener('permanent-remove-notebook', (event, args) => {
+    this.listener('permanent-remove-notebook', (event, args) => {
       const { name } = args;
       const folder = `${getTrashPath()}/${name}`;
       try {
@@ -330,7 +328,7 @@ export default class Notes extends Event {
     });
 
     // restore file
-    listener('restore-note', (event, args) => {
+    this.listener('restore-note', (event, args) => {
       const { projectName, name } = args;
       const folder = `${getProjectsPath()}/${projectName}`;
       const oldFile = `${getTrashPath()}/${projectName}/${name}.md`;
@@ -352,7 +350,7 @@ export default class Notes extends Event {
     });
 
     // restore folder
-    listener('restore-notebook', (event, args) => {
+    this.listener('restore-notebook', (event, args) => {
       const { name } = args;
       const oldPath = `${getTrashPath()}/${name}`;
       const newPath = `${getProjectsPath()}/${name}`;
@@ -376,7 +374,7 @@ export default class Notes extends Event {
     });
 
     // save upload info. not use
-    listener('save-upload-info-data', (event, args) => {
+    this.listener('save-upload-info-data', (event, args) => {
       const content = JSON.stringify(args);
       const filePath = `${getProjectsPath()}/data.json`;
       try {
@@ -394,7 +392,7 @@ export default class Notes extends Event {
     });
 
     // export-nopte
-    listener('export-note', async (event, args) => {
+    this.listener('export-note', async (event, args) => {
       const { projectName, fileName, type, data } = args;
       const filePath = `${getProjectsPath()}/${projectName}/${fileName}.md`;
       try {
@@ -448,7 +446,7 @@ export default class Notes extends Event {
      * 导出笔记本
      * 暂时只遍历一层目录
      */
-    listener('export-notebook', async (event, args) => {
+    this.listener('export-notebook', async (event, args) => {
       const { notebook, type } = args;
       try {
         const folderPath = `${getProjectsPath()}/${notebook}`;
@@ -488,7 +486,7 @@ export default class Notes extends Event {
       }
     });
 
-    listener('open-file-dialog', (event, args) => {
+    this.listener('open-file-dialog', (event, args) => {
       const { properties, cbChannel, cbOver } = args;
       const win = BrowserWindow.fromWebContents(event.sender);
       dialog.showOpenDialog(win, {

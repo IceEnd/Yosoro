@@ -17,14 +17,12 @@ export default class Schedule extends Event {
     this.name = 'SCHEDULE';
   }
 
-  setListener() {
-    const listener = this.listener;
-
-    listener('start-release-schedule', () => {
+  setListeners() {
+    this.listener('start-release-schedule', () => {
       schedule.releaseSchedule();
     });
 
-    listener('start-release-schedule', () => {
+    this.listener('start-release-schedule', () => {
       schedule.cancelReleases();
     });
   }

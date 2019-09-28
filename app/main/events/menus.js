@@ -20,34 +20,32 @@ export default class Menus extends Event {
     this.name = 'MENU';
   }
 
-  setLinstener() {
-    const listener = this.listener;
-
+  setListeners() {
     // 监听Explorer导航右键事件
-    listener('show-context-menu-explorer', (event) => {
+    this.listener('show-context-menu-explorer', (event) => {
       const win = BrowserWindow.fromWebContents(event.sender);
       this.ctx.explorerMenu.popup(win);
     });
 
     // 项目右键菜单
-    listener('show-context-menu-project-item', (event) => {
+    this.listener('show-context-menu-project-item', (event) => {
       const win = BrowserWindow.fromWebContents(event.sender);
       this.ctx.projectItemMenu.popup(win);
     });
 
     // 监听File Explorer导航右键事件
-    listener('show-context-menu-explorer-file', (event) => {
+    this.listener('show-context-menu-explorer-file', (event) => {
       const win = BrowserWindow.fromWebContents(event.sender);
       this.ctx.exploereFileMenu.popup(win);
     });
 
-    listener('show-context-menu-file-item', (event) => {
+    this.listener('show-context-menu-file-item', (event) => {
       const win = BrowserWindow.fromWebContents(event.sender);
       this.ctx.fileItemMenu.popup(win);
     });
 
     // 启用 | 启用 菜单 `new -> file`
-    listener('file-new-enbaled', (event, args) => {
+    this.listener('file-new-enbaled', (event, args) => {
       const { flag, type } = args;
       let index = 0;
       let saveFlag = false;
