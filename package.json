@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.8.3",
-    "antd": "^3.22.0",
+    "antd": "^3.24.2",
     "autobind-decorator": "^2.1.0",
     "classnames": "^2.2.5",
     "codemirror": "^5.36.0",
@@ -159,8 +159,5 @@
     "webpack-merge": "^4.2.1"
   },
   "license": "GPL-3.0",
-  "pre-commit": [
-    "lint",
-    "test"
-  ]
+  "pre-commit": []
 }

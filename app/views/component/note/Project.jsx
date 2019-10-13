@@ -36,7 +36,7 @@ export default class Project extends Component {
     super();
     this.state = mergeStateFromStorage('noteExplorerProjectState', {
       newProject: false,
-      newProjectTitle: 'New Project',
+      newProjectTitle: 'New Folder',
       rename: {
         uuid: '',
         name: '',

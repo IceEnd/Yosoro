@@ -211,7 +211,8 @@ export default class Files extends Component {
   }
 
   getNotes = () => {
-    const { notes, sortBy } = this.props;
+    const { notes: files, sortBy, parentsId } = this.props;
+    const notes = files.filter(item => item.parentsId === parentsId);
     let type;
     switch (sortBy) {
       case 'create-date':

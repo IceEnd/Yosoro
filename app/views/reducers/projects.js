@@ -1,5 +1,7 @@
 // import lunr from 'lunr';
 import { ipcRenderer } from 'electron';
+import { message } from 'antd';
+import { eventFolder } from '../events/eventDispatch';
 import {
   GET_PROJECT_LIST,
   GET_PROJECT_LIST_SUCCESS,
@@ -25,9 +27,11 @@ import {
   UPLOAD_NOTE_ONEDRIVE_FAILED,
   UPDATE_NOTE_UPLOAD_STATUS,
   SAVE_NOTE_FROM_DRIVE,
+  TOGGLE_FOLDER_EXPANEDED_KEYS,
 } from '../actions/projects';
 import {
   // getProjectList,
+  updateProjects,
   createProject,
   createFile,
   deleteProject,
@@ -46,10 +50,41 @@ import {
 
 const assign = Object.assign;
 
+const FOLDER_REG = /^New Folder/;
+
+function getFolderByPos(folder, pos) {
+  const nodes = pos.split('-').slice(1);
+  let path = '';
+  let head = folder;
+  for (const node of nodes) {
+    if (Array.isArray(head)) {
+      head = head[node];
+    } else {
+      head = head.children[node];
+    }
+    path += `/${head.name}`;
+  }
+  let index = 0;
+  if (Array.isArray(head.children)) {
+    for (const child of head.children) {
+      if (FOLDER_REG.test(child.name)) {
+        index++;
+      }
+    }
+  }
+  const name = 'New Folder';
+  return {
+    head,
+    path,
+    name: index ? `${name}-${index}` : name,
+  };
+}
+
 function projectReducer(state = {
   status: 0, // 0: request 1: success 2: failed
   projects: [],
   trashProjects: [],
+  notes: [],
   hash: {}, // del
   trashHash: {}, // del
   trash: {
@@ -58,6 +93,7 @@ function projectReducer(state = {
   },
   searchResult: [],
   searchStatus: 0, // 0：normal 1: search
+  expandedKeys: [],
 }, action) {
   switch (action.type) {
     case TRASH_CHOOSE_PROJECT: {
@@ -93,13 +129,14 @@ function projectReducer(state = {
       // });
     }
     case GET_PROJECT_LIST_SUCCESS: {
-      const { projects, trashProjects } = action.payload;
+      const { projects, trashProjects, hash, trashHash, notes } = action.payload;
       return assign({}, state, {
         status: 1,
         projects,
         trashProjects,
-        // hash,
-        // trashHash,
+        hash,
+        trashHash,
+        notes,
         // searchResult: [],
         // searchStatus: 0, // 0：normal 1: search
         // trash: {
@@ -112,12 +149,36 @@ function projectReducer(state = {
       state.status = 2;
       return state;
     }
-    case CREATE_PROJECT: { // 创建项目
-      const { param: { name, createDate } } = action;
-      const project = createProject(name, createDate);
-      project.notes = [];
-      state.hash[project.uuid] = state.projects.length;
-      state.projects.push(project);
+    case CREATE_PROJECT: {
+      const { pos, uuid } = action;
+      // get path
+      const { projects, expandedKeys } = state;
+      const { head, path, name } = getFolderByPos(projects, pos);
+      const res = ipcRenderer.sendSync('NOTES:create-project', `${path}/${name}`);
+      if (res.success) {
+        const newFolder = createProject(name);
+        if (!head.children) {
+          head.children = [];
+        }
+        head.children.push(newFolder);
+        updateProjects(projects);
+        // expand node
+        const set = new Set(expandedKeys);
+        set.add(uuid);
+        state.expandedKeys = Array.from(set);
+        eventFolder.emit('show-layer', uuid);
+        return assign({}, state);
+      }
+      const error = res.error;
+      if (error.errno === -17) { // 文件夹存在
+        message.error('folder is exists.');
+      } else {
+        message.error('Create folder failed.');
+      }
+      return state;
+    }
+    case TOGGLE_FOLDER_EXPANEDED_KEYS: {
+      state.expandedKeys = action.expandedKeys;
       return assign({}, state);
     }
     case CREATE_FILE: { // 创建笔记

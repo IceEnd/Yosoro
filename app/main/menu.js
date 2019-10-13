@@ -23,16 +23,14 @@ function getMemuTemplete(mainWindow) {
   const menuTemplete = [{
     label: 'File',
     submenu: [{
-      label: 'New Note',
+      label: 'New File',
       accelerator: 'CmdOrCtrl+N',
       enabled: false,
-      // role: 'new file',
       click: () => mainWindow.webContents.send('new-file'),
     }, {
-      label: 'New Project',
+      label: 'New Folder',
       accelerator: 'Shift+CmdOrCtrl+N',
       enabled: false,
-      // role: 'new project',
       click: () => mainWindow.webContents.send('new-project'),
     }, {
       type: 'separator',
@@ -278,8 +276,8 @@ export function getExplorerProjectItemMenu(mainWindow) {
     type: 'separator',
   }));
   menu.append(new MenuItem({
-    label: 'New Notebook',
-    click: () => mainWindow.webContents.send('new-project'),
+    label: 'New Folder',
+    click: () => mainWindow.webContents.send('new-folder'),
   }));
   menu.append(new MenuItem({
     type: 'separator',

@@ -176,7 +176,7 @@ export function checkProjects() {
 }
 
 /*
- * get note list
+ * @description 读取项目信息
  */
 export function getProjectList() {
   const notes = db.get(FILES).value() || [];
@@ -184,10 +184,9 @@ export function getProjectList() {
   const trashProjects = [];
   const projects = [];
   const dLength = data.length;
-  // const nLength = notes.length;
+  const nLength = notes.length;
   const hash = {};
   const trashHash = {};
-
   for (let i = 0; i < dLength; i++) { // 利用hash存储
     data[i].notes = [];
     if (data[i].status === 1) {
@@ -198,27 +197,25 @@ export function getProjectList() {
       trashProjects.push(data[i]);
     }
   }
-  // to trash uuid
-  // for (let i = 0; i < nLength; i++) {
-  //   const { parentsId } = notes[i];
-  //   if (notes[i].status === 1) {
-  //     projects[hash[parentsId]].notes.unshift(notes[i]);
-  //   } else {
-  //     if (typeof trashHash[parentsId] === 'undefined') {
-  //       trashHash[parentsId] = trashProjects.length;
-  //       const p = Object.assign({}, projects[hash[parentsId]]);
-  //       p.notes = [];
-  //       trashProjects.push(p);
-  //     }
-  //     trashProjects[trashHash[parentsId]].notes.unshift(notes[i]);
-  //   }
-  // }
+  for (let i = 0; i < nLength; i++) {
+    const { parentsId } = notes[i];
+    if (notes[i].status === 1) {
+      projects[hash[parentsId]].notes.unshift(notes[i]);
+    } else {
+      if (typeof trashHash[parentsId] === 'undefined') {
+        trashHash[parentsId] = trashProjects.length;
+        const p = Object.assign({}, projects[hash[parentsId]]);
+        p.notes = [];
+        trashProjects.push(p);
+      }
+      trashProjects[trashHash[parentsId]].notes.unshift(notes[i]);
+    }
+  }
   return {
     projects,
     trashProjects,
     hash,
     trashHash,
-    notes,
   };
 }
 
@@ -236,10 +233,10 @@ export function getFileById(uuid) {
 /**
  * @description 新建项目
  * @param {String} name - 项目名称
+ * @param {Date} createDate - 创建时间
  */
-export function createProject(name) {
+export function createProject(name, createDate) {
   const uuid = uuidv4();
-  const createDate = Date.parse(new Date());
   const project = {
     uuid,
     name,
@@ -249,14 +246,10 @@ export function createProject(name) {
     status: 1, // 有效
     children: [],
   };
-  // db.get(PROJECTS)
-  //   .push(project)
-  //   .write();
+  db.get(PROJECTS)
+    .push(project)
+    .write();
   return project;
-}
-
-export function updateProjects(projects) {
-  db.set(PROJECTS, projects);
 }
 
 /**

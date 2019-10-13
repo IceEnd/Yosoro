@@ -20,6 +20,7 @@ export default class NoteWorkspace extends Component {
   static displayName = 'NoteSpace';
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    expandedKeys: PropTypes.array.isRequired,
     imageHostingConfig: PropTypes.shape({
       default: PropTypes.oneOf(['github', 'weibo', 'SM.MS']).isRequired,
       github: PropTypes.shape({
@@ -36,8 +37,9 @@ export default class NoteWorkspace extends Component {
       description: PropTypes.string.isRequired,
       labels: PropTypes.arrayOf(PropTypes.string).isRequired,
       status: PropTypes.number.isRequired,
-      notes: PropTypes.array.isRequired,
+      // notes: PropTypes.array.isRequired,
     })).isRequired,
+    files: PropTypes.array.isRequired,
     searchResult: PropTypes.arrayOf(PropTypes.shape({
       uuid: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
@@ -103,7 +105,7 @@ export default class NoteWorkspace extends Component {
   }
 
   render() {
-    const { projects, markdown, note, editorMode, searchStatus, searchResult, exportQueue: { status: exportStatus }, imageHostingConfig, editor, sortBy } = this.props;
+    const { projects, markdown, note, editorMode, searchStatus, searchResult, exportQueue: { status: exportStatus }, imageHostingConfig, editor, sortBy, files, expandedKeys } = this.props;
     let projectData;
     if (searchStatus === 0) {
       projectData = projects;
@@ -134,6 +136,8 @@ export default class NoteWorkspace extends Component {
             searchStatus={searchStatus}
             hasEdit={markdown.hasEdit}
             sortBy={sortBy}
+            files={files}
+            expandedKeys={expandedKeys}
           />
           <Markdown
             imageHostingConfig={imageHostingConfig}

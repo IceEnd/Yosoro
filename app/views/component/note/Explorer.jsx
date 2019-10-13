@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { withDispatch } from 'Components/HOC/context';
-import Project from './Project';
+// import Project from './Project';
+import Projects from './project/Projects';
 import Files from './Files';
 import { pushStateToStorage, mergeStateFromStorage } from '../../utils/utils';
 
@@ -10,14 +11,15 @@ export default class Explorer extends Component {
   static displayName = 'NoteExplorer';
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    expandedKeys: PropTypes.array.isRequired,
     projects: PropTypes.arrayOf(PropTypes.shape({
       uuid: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       description: PropTypes.string.isRequired,
       labels: PropTypes.arrayOf(PropTypes.string).isRequired,
-      notes: PropTypes.array.isRequired,
       status: PropTypes.number.isRequired,
     })).isRequired,
+    files: PropTypes.array.isRequired,
     note: PropTypes.shape({
       projectUuid: PropTypes.string.isRequired,
       projectName: PropTypes.string.isRequired,
@@ -54,11 +56,11 @@ export default class Explorer extends Component {
   }
 
   render() {
-    const { editorMode, projects, dispatch, note: { projectUuid, fileUuid, projectName }, searchStatus, hasEdit, sortBy } = this.props;
-    const notes = this.getNotes();
+    const { editorMode, projects, dispatch, note: { projectUuid, fileUuid, projectName }, searchStatus, hasEdit, sortBy, files, expandedKeys } = this.props;
+    // const notes = this.getNotes();
     return (
       <Fragment>
-        <Project
+        <Projects
           projects={projects}
           dispatch={dispatch}
           currentUuid={projectUuid}
@@ -67,11 +69,12 @@ export default class Explorer extends Component {
           searchStatus={searchStatus}
           projectName={projectName}
           hasEdit={hasEdit}
+          expandedKeys={expandedKeys}
         />
         { projectUuid === '-1' ? (null) : (
           <Files
             dispatch={dispatch}
-            notes={notes}
+            notes={files}
             parentsId={projectUuid}
             currentUuid={fileUuid}
             projectName={projectName}

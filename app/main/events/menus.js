@@ -17,7 +17,7 @@ export default class Menus extends Event {
 
   constructor(ctx = {}) {
     super(ctx);
-    this.name = 'MENU';
+    this.name = 'MENUS';
   }
 
   setListeners() {
@@ -27,7 +27,7 @@ export default class Menus extends Event {
       this.ctx.explorerMenu.popup(win);
     });
 
-    // 项目右键菜单
+    // folder context menu
     this.listener('show-context-menu-project-item', (event) => {
       const win = BrowserWindow.fromWebContents(event.sender);
       this.ctx.projectItemMenu.popup(win);

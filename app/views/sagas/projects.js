@@ -105,19 +105,12 @@ function* getProject() {
   if (db.checkProjects()) {
     // get data from localStorage
     const payload = db.getProjectList();
-    ipcRenderer.send('migrate-notes', payload);
     yield put({
       type: GET_PROJECT_LIST_SUCCESS,
       payload,
     });
     return;
   }
-  // todo
-  // try {
-
-  // } catch (ex) {
-
-  // }
 }
 
 export default function* saga() {

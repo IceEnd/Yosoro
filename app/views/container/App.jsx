@@ -118,8 +118,9 @@ export default class App extends Component {
         description: PropTypes.string.isRequired,
         labels: PropTypes.arrayOf(PropTypes.string).isRequired,
         status: PropTypes.number.isRequired,
-        notes: PropTypes.array.isRequired,
+        // notes: PropTypes.array.isRequired,
       })).isRequired,
+      notes: PropTypes.array.isRequired,
       trashProjects: PropTypes.arrayOf(PropTypes.shape({
         uuid: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
@@ -141,6 +142,7 @@ export default class App extends Component {
         projectName: PropTypes.string.isRequired,
         projectUuid: PropTypes.string.isRequired,
       }).isRequired,
+      expandedKeys: PropTypes.array.isRequired,
     }).isRequired,
     markdown: PropTypes.shape({
       parentsId: PropTypes.string.isRequired,
@@ -389,7 +391,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash }, markdown, note, drive, exportQueue, user } = this.props;
+    const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash, notes: files, expandedKeys }, markdown, note, drive, exportQueue, user } = this.props;
     const { settings, platform } = app;
     const { dispatch, history } = this.props;
     const notDarwin = platform === 'darwin' ? '' : 'not-darwin';
@@ -410,11 +412,13 @@ export default class App extends Component {
                   exact
                   render={() => (
                     <Note
+                      expandedKeys={expandedKeys}
                       projects={projects}
                       searchResult={searchResult}
                       searchStatus={searchStatus}
                       markdown={markdown}
                       note={note}
+                      files={files}
                       editorMode={app.settings.editorMode}
                       editor={settings.editor}
                       exportQueue={exportQueue}

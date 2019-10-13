@@ -36,6 +36,7 @@ export default class Notes extends Event {
     'export-note',
     'export-notebook',
     'open-file-dialog',
+    'migrate-notes',
   ]);
 
   constructor(ctx) {
@@ -49,18 +50,13 @@ export default class Notes extends Event {
       const name = args;
       const folder = `${getProjectsPath()}/${name}`;
       try {
-        if (fs.existsSync(folder)) {
-          event.returnValue = {
-            folder,
-            success: true,
-          };
-        } else {
+        if (!fs.existsSync(folder)) {
           fs.mkdirSync(folder);
-          event.returnValue = {
-            folder,
-            success: true,
-          };
         }
+        event.returnValue = {
+          folder,
+          success: true,
+        };
       } catch (ex) {
         event.returnValue = {
           success: false,
