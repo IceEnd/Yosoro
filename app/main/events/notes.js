@@ -48,7 +48,7 @@ export default class Notes extends Event {
     // create notes folder
     this.listener('create-project', (event, args) => {
       const name = args;
-      const folder = `${getProjectsPath()}/${name}`;
+      const folder = `${getProjectsPath()}${name}`;
       try {
         if (!fs.existsSync(folder)) {
           fs.mkdirSync(folder);
@@ -68,15 +68,15 @@ export default class Notes extends Event {
     // rename folder
     this.listener('rename-project', (event, args) => {
       const { oldName, newName } = args;
-      const oldfolder = `${getProjectsPath()}/${oldName}`;
-      const newfolder = `${getProjectsPath()}/${newName}`;
-      const oldTrashFolder = `${getTrashPath()}/${oldName}`;
-      const newTrashFolder = `${getTrashPath()}/${newName}`;
+      const oldfolder = `${getProjectsPath()}${oldName}`;
+      const newfolder = `${getProjectsPath()}${newName}`;
+      // const oldTrashFolder = `${getTrashPath()}/${oldName}`;
+      // const newTrashFolder = `${getTrashPath()}/${newName}`;
       try {
         fs.renameSync(oldfolder, newfolder);
-        if (fs.existsSync(oldTrashFolder)) {
-          fs.renameSync(oldTrashFolder, newTrashFolder);
-        }
+        // if (fs.existsSync(oldTrashFolder)) {
+        //   fs.renameSync(oldTrashFolder, newTrashFolder);
+        // }
         event.returnValue = {
           success: true,
           folder: newfolder,

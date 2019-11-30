@@ -86,8 +86,8 @@ function createWindow() {
   // Create the browser window.
   const options = {
     title: 'Yosoro',
-    width: 1200,
-    height: 786,
+    width: process.env.NODE_ENV === 'development' ? 2000 : 1200,
+    height: process.env.NODE_ENV === 'development' ? 1200 : 786,
     minWidth: 1200,
     minHeight: 600,
     titleBarStyle: 'default',
@@ -127,12 +127,14 @@ function createWindow() {
   const explorerMenu = getExplorerMenuItem(mainWindow);
   const exploereFileMenu = getExplorerFileMenuItem(mainWindow);
   const projectItemMenu = getExplorerProjectItemMenu(mainWindow);
+  const projectRootMenu = getExplorerProjectItemMenu(mainWindow, true);
   const fileItemMenu = getExplorerFileItemMenu(mainWindow);
 
   const events = new Events({
     explorerMenu,
     exploereFileMenu,
     projectItemMenu,
+    projectRootMenu,
     fileItemMenu,
   });
   events.setListeners();

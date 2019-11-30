@@ -1,19 +1,52 @@
-import React, { Component } from 'react';
-import { Tree, Icon, Input } from 'antd';
+import React, { Component, Fragment } from 'react';
+import { Tree, Icon, Input, Modal, Checkbox, message } from 'antd';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
+import { connect } from 'react-redux';
 
-import { withDispatch } from 'Components/HOC/context';
-import { CREATE_PROJECT, TOGGLE_FOLDER_EXPANEDED_KEYS, deleteProject, renameProject, trashBack, updateNoteUploadStatus } from 'Actions/projects';
+import {
+  createProject,
+  renameProject,
+  toggleExpanededKeys,
+  deleteProject,
+  trashBack,
+  updateNoteUploadStatus,
+} from 'Actions/projects';
 import { beforeSwitchSave, clearMarkdown } from 'Actions/markdown';
 import { switchProject, switchFile, clearWorkspace, updateNoteProjectName } from 'Actions/note';
 import { pushStateToStorage, mergeStateFromStorage, checkSpecial } from 'Utils/utils';
 import { getNote } from 'Utils/db/app';
-import Layer from './Layer';
+// import Layer from './Layer';
 
-const { TreeNode } = Tree;
+const { TreeNode, DirectoryTree } = Tree;
 
-@withDispatch
+function mapStateToProps(state, ownProps) {
+  const { projects, app, markdown, note } = state;
+  const { editor, sortBy, editorMode } = app.settings;
+  const { fileUuid: currentFileUuid, projectUuid: currentUuid, projectName } = note;
+  return {
+    ...projects,
+    ...ownProps,
+    editor,
+    editorMode,
+    sortBy,
+    currentUuid,
+    currentFileUuid,
+    hasEdit: markdown.hasEdit,
+    projectName,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+    createFolder: (...args) => dispatch(createProject(...args)),
+    renameFolder: (...args) => dispatch(renameProject(...args)),
+    toggleExpanededKeys: (...args) => dispatch(toggleExpanededKeys(...args)),
+  };
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
 export default class Folder extends Component {
   static displayName = 'NoteExplorerProjectFolder';
   static propTypes = {
@@ -33,56 +66,85 @@ export default class Folder extends Component {
     projectName: PropTypes.string.isRequired,
     hasEdit: PropTypes.bool.isRequired,
     expandedKeys: PropTypes.array.isRequired,
+    // actions func
+    toggleExpanededKeys: PropTypes.func.isRequired,
+    createFolder: PropTypes.func.isRequired,
+    renameFolder: PropTypes.func.isRequired,
   };
 
-  constructor() {
-    super();
-    const initState = mergeStateFromStorage('noteExplorerProjectFolderState', {
-      rename: {
-        uuid: '',
-        name: '',
-      },
-      contextFolder: {
-        uuid: '',
-        pos: '',
-      },
-    });
-    this.state = Object.assign(initState, {
-      status: '',
-      value: '',
-    });
-  }
+  state = {
+    status: 'normal',
+    value: '',
+    contextUuid: '',
+    contextPos: '',
+    contextTitle: '',
+    rename: '',
+    deleteWarn: true,
+    moveFileToTrash: true,
+  };
 
   componentDidMount() {
-    ipcRenderer.on('new-folder', () => {
-      this.createFolder();
-    });
+    ipcRenderer.on('new-folder', () => this.setStatus('new', 'newIpt'));
+    ipcRenderer.on('rename-folder', () => this.setStatus('rename', 'renameIpt'));
+    ipcRenderer.on('delete-project', () => this.deleteConfrim());
   }
 
   componentWillUnmount() {
-    ipcRenderer.removeAllListeners('new-folder');
-    pushStateToStorage('noteExplorerProjectFolderState', Object.assign({}, this.state, {
-      rename: {
-        uuid: '',
-        name: '',
-      },
-      contextFolder: {
-        uuid: '',
-        pos: '',
-      },
-    }));
+    [
+      'new-folder',
+      'rename-folder',
+      'delete-project',
+    ].forEach(item => ipcRenderer.removeAllListeners(item));
   }
 
-  createFolder() {
-    // const { contextFolder: { uuid, pos } } = this.state;
-
-    // this.props.dispatch({
-    //   type: CREATE_PROJECT,
-    //   uuid,
-    //   pos,
-    // });
+  setStatus(value, ipt, toggle = false) {
+    if (toggle) {
+      this.props.toggleExpanededKeys(this.state.contextUuid, 'add');
+    }
     this.setState({
-      status: 'new',
+      status: value,
+    }, () => {
+      if (this[ipt]) {
+        this[ipt].focus();
+      }
+    });
+  }
+
+  deleteConfrim() {
+    const {
+      contextTitle,
+      deleteWarn,
+      moveFileToTrash,
+    } = this.state;
+    const content = (
+      <Fragment>
+        <p>This operation cannot be restored.</p>
+        <div>
+          <Checkbox
+            checked={moveFileToTrash}
+            onChange={e => this.handleCheckbox(e, 'moveFileToTrash')}
+          >Move the file to the Trash</Checkbox>
+        </div>
+        <div>
+          <Checkbox
+            checked={deleteWarn}
+            onChange={e => this.handleCheckbox(e, 'deleteWarn')}
+          >Do not ask me again</Checkbox>
+        </div>
+      </Fragment>
+    );
+    Modal.confirm({
+      title: `Are you sure you want to delete '${contextTitle}' and its contents?`,
+      content,
+      centered: true,
+      maskClosable: true,
+      okText: 'Delete',
+    });
+  }
+
+  handleCheckbox = (e, name) => {
+    this.setState({
+      [name]: e.target.checked,
     });
   }
 
@@ -111,75 +173,162 @@ export default class Folder extends Component {
   }
 
   handleExpand = (expandedKeys) => {
-    this.props.dispatch({
-      type: TOGGLE_FOLDER_EXPANEDED_KEYS,
-      expandedKeys,
-    });
+    this.props.toggleExpanededKeys(expandedKeys);
   }
 
   handleItemMenu = ({ event, node }) => {
     event.stopPropagation();
     event.preventDefault();
-    const { eventKey, pos } = node.props;
+    const { eventKey, pos, title } = node.props;
     this.setState({
-      contextFolder: {
-        uuid: eventKey,
-        pos,
-      },
+      contextUuid: eventKey,
+      contextPos: pos,
+      contextTitle: title,
     });
     const { searchStatus } = this.props;
     if (searchStatus === 1) {
       // do nothing
       return;
     }
-    ipcRenderer.send('MENUS:show-context-menu-project-item');
+    ipcRenderer.send('MENUS:show-context-menu-project-item', eventKey);
   }
 
   handleInput = e => this.setState({ value: e.target.value })
 
+  handleFocus = (e) => {
+    e.stopPropagation();
+    e.target.select();
+  }
+
+  handleBlur = (e, type = 'new') => {
+    e.stopPropagation();
+    if (type === 'new') {
+      this.createFolder();
+    } else if (type === 'rename') {
+      this.renameFolder(e);
+    }
+  }
+
+  handleKeyDown = (e, type) => {
+    const keyCode = e.keyCode;
+    if (keyCode === 27) {
+      // esc
+      this.setState({
+        status: 'normal',
+      });
+      return;
+    }
+    if (keyCode === 13) {
+      // return
+      if (type === 'new') {
+        this.createFolder();
+      } else if (type === 'rename') {
+        this.renameFolder(e);
+      }
+    }
+  }
+
+  handleIptClick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
+  checkValue(name) {
+    if (!name.length) {
+      // do nothing
+      this.setState({
+        status: 'normal',
+      });
+      return false;
+    }
+    if (!checkSpecial(name)) {
+      message.error('no special characters.');
+      return false;
+    }
+    return true;
+  }
+
+  createFolder() {
+    const name = this.state.value.trim();
+    if (!this.checkValue(name)) {
+      return;
+    }
+    this.setState({
+      status: 'normal',
+    }, () => {
+      const { contextUuid, contextPos } = this.state;
+      this.props.createFolder(contextUuid, contextPos, name);
+    });
+  }
+
+  renameFolder(e) {
+    const name = e.target.value.trim();
+    if (!this.checkValue(name)) {
+      return;
+    }
+    const { contextUuid, contextPos } = this.state;
+    this.props.renameFolder(contextUuid, contextPos, name);
+    this.setState({
+      status: 'normal',
+    });
+  }
+
   walkNode = projects =>
     projects.map((item) => {
-      const { children, uuid, status } = item;
+      const { children, uuid, status, name } = item;
       if (status === 0) {
         return null;
-      }
-      if (children) {
-        // todo
-        // title reactDOM
-        return (
-          <TreeNode
-            className={`f-${uuid}`}
-            icon={<Icon type="folder" />}
-            title={item.name}
-            key={uuid}
-          >
-            {this.renderCreateFolder(uuid)}
-            {this.walkNode(children)}
-          </TreeNode>
-        );
       }
       return (
         <TreeNode
           icon={<Icon type="folder" />}
-          title={item.name}
+          title={this.renderNodeTitle(uuid, name)}
           key={uuid}
-        />
+        >
+          {this.renderCreateFolder(uuid)}
+          {this.walkNode(children || [])}
+        </TreeNode>
       );
     })
 
+  renderNodeTitle = (uuid, name) => {
+    const { status, contextUuid } = this.state;
+    if (status !== 'rename' || uuid !== contextUuid) {
+      return name;
+    }
+    return (
+      <Input
+        className="folder-rename"
+        size="small"
+        defaultValue={name}
+        onBlur={e => this.handleBlur(e, 'rename')}
+        onKeyDown={e => this.handleKeyDown(e, 'rename')}
+        onClick={this.handleIptClick}
+        ref={node => (this.renameIpt = node)}
+      />
+    );
+  }
+
   renderCreateFolder = (uuid) => {
-    const { status, contextFolder, value } = this.state;
-    if (status === 'new' && uuid === contextFolder.uuid) {
+    const { status, contextUuid, value } = this.state;
+    if (status === 'new' && uuid === contextUuid) {
       const title = (
-        <input
+        <Input
+          size="small"
           value={value}
           onChange={this.handleInput}
+          onFocus={this.handleFocus}
+          onBlur={e => this.handleBlur(e, 'new')}
+          onKeyDown={e => this.handleKeyDown(e, 'new')}
+          onClick={this.handleIptClick}
+          ref={node => (this.newIpt = node)}
         />
       );
       return (
         <TreeNode
           key={`n-${uuid}`}
           title={title}
+          className="new-folder-node"
         />
       );
     }
@@ -187,24 +336,28 @@ export default class Folder extends Component {
   }
 
   render() {
-    const { expandedKeys, projects } = this.props;
+    const { expandedKeys, projects, currentUuid } = this.props;
     return (
-      <div>
-        Folder
-        <div>
-          <Tree
-            showIcon
-            expandedKeys={expandedKeys}
-            blockNode
-            switcherIcon={<Icon type="down" />}
-            onSelect={this.handleSelect}
-            onRightClick={this.handleItemMenu}
-            onExpand={this.handleExpand}
+      <div className="folder-tree">
+        <DirectoryTree
+          showIcon
+          expandedKeys={expandedKeys}
+          switcherIcon={<Icon type="down" />}
+          onSelect={this.handleSelect}
+          onRightClick={this.handleItemMenu}
+          onExpand={this.handleExpand}
+          selectedKeys={[currentUuid]}
+        >
+          <TreeNode
+            title={(<h3>Folder</h3>)}
+            key="root"
+            className="folder-root"
+            icon={null}
           >
+            {this.renderCreateFolder('root')}
             {this.walkNode(projects)}
-          </Tree>
-        </div>
-        <Layer />
+          </TreeNode>
+        </DirectoryTree>
       </div>
     );
   }

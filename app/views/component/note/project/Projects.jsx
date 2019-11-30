@@ -3,15 +3,14 @@ import Scrollbars from 'Share/Scrollbars';
 import Folder from './Folder';
 import Trash from './Trash';
 
+// {...props}
 const Projects = (props) => {
   return (
     <div className="project-explorer">
       <Scrollbars>
         <div>
           <Trash />
-          <Folder
-            {...props}
-          />
+          <Folder />
         </div>
       </Scrollbars>
     </div>

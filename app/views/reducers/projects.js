@@ -50,10 +50,8 @@ import {
 
 const assign = Object.assign;
 
-const FOLDER_REG = /^New Folder/;
-
 function getFolderByPos(folder, pos) {
-  const nodes = pos.split('-').slice(1);
+  const nodes = pos.split('-').slice(2);
   let path = '';
   let head = folder;
   for (const node of nodes) {
@@ -64,19 +62,9 @@ function getFolderByPos(folder, pos) {
     }
     path += `/${head.name}`;
   }
-  let index = 0;
-  if (Array.isArray(head.children)) {
-    for (const child of head.children) {
-      if (FOLDER_REG.test(child.name)) {
-        index++;
-      }
-    }
-  }
-  const name = 'New Folder';
   return {
     head,
     path,
-    name: index ? `${name}-${index}` : name,
   };
 }
 
@@ -93,7 +81,7 @@ function projectReducer(state = {
   },
   searchResult: [],
   searchStatus: 0, // 0：normal 1: search
-  expandedKeys: [],
+  expandedKeys: ['root'],
 }, action) {
   switch (action.type) {
     case TRASH_CHOOSE_PROJECT: {
@@ -150,23 +138,26 @@ function projectReducer(state = {
       return state;
     }
     case CREATE_PROJECT: {
-      const { pos, uuid } = action;
+      const { pos, uuid, name } = action;
       // get path
       const { projects, expandedKeys } = state;
-      const { head, path, name } = getFolderByPos(projects, pos);
+      const { head, path } = getFolderByPos(projects, pos);
       const res = ipcRenderer.sendSync('NOTES:create-project', `${path}/${name}`);
       if (res.success) {
         const newFolder = createProject(name);
-        if (!head.children) {
-          head.children = [];
+        if (uuid === 'root') {
+          head.push(newFolder);
+        } else {
+          if (!head.children) {
+            head.children = [];
+          }
+          head.children.push(newFolder);
         }
-        head.children.push(newFolder);
         updateProjects(projects);
         // expand node
         const set = new Set(expandedKeys);
         set.add(uuid);
         state.expandedKeys = Array.from(set);
-        eventFolder.emit('show-layer', uuid);
         return assign({}, state);
       }
       const error = res.error;
@@ -177,8 +168,37 @@ function projectReducer(state = {
       }
       return state;
     }
+    case RENAME_PROJECT: { // 对项目进行重命名
+      const { uuid, name, pos } = action;
+      const { head, path } = getFolderByPos(state.projects, pos);
+      if (head.uuid !== uuid) {
+        return state;
+      }
+      const res = ipcRenderer.sendSync('NOTES:rename-project', {
+        oldName: path,
+        newName: path.replace(new RegExp(`${head.name}$`), name),
+      });
+      if (res.success) {
+        head.name = name;
+        updateProjects(state.projects);
+        return assign({}, state);
+      }
+      message.error('Rename failed.');
+      return state;
+    }
     case TOGGLE_FOLDER_EXPANEDED_KEYS: {
-      state.expandedKeys = action.expandedKeys;
+      const { expandedKeys, flag } = action;
+      if (Array.isArray(expandedKeys)) {
+        state.expandedKeys = expandedKeys;
+      } else if (typeof expandedKeys === 'string') {
+        const set = new Set(state.expandedKeys);
+        if (flag === 'remove') {
+          set.remove(expandedKeys);
+        } else {
+          set.add(expandedKeys);
+        }
+        state.expandedKeys = Array.from(set);
+      }
       return assign({}, state);
     }
     case CREATE_FILE: { // 创建笔记
@@ -309,15 +329,6 @@ function projectReducer(state = {
       }
       const newState = assign({}, state);
       return assign({}, newState);
-    }
-    case RENAME_PROJECT: { // 对项目进行重命名
-      const { uuid, name } = action;
-      renameProject(uuid, name);
-      state.projects[state.hash[uuid]].name = name;
-      if (typeof state.trashHash[uuid] !== 'undefined') {
-        state.trashProjects[state.trashHash[uuid]].name = name;
-      }
-      return assign({}, state);
     }
     case RENAME_NOTE: { // 对笔记进行重命名
       const { uuid, name, parentsId } = action;

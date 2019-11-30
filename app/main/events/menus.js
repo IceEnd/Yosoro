@@ -28,9 +28,13 @@ export default class Menus extends Event {
     });
 
     // folder context menu
-    this.listener('show-context-menu-project-item', (event) => {
+    this.listener('show-context-menu-project-item', (event, eventKey) => {
       const win = BrowserWindow.fromWebContents(event.sender);
-      this.ctx.projectItemMenu.popup(win);
+      if (eventKey === 'root') {
+        this.ctx.projectRootMenu.popup(win);
+      } else {
+        this.ctx.projectItemMenu.popup(win);
+      }
     });
 
     // 监听File Explorer导航右键事件

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Input, message, Icon } from 'antd';
 import { ipcRenderer } from 'electron';
 import Scrollbars from 'Share/Scrollbars';
-import { withDispatch } from 'Components/HOC/context';
+import { connect } from 'react-redux';
 
 import { createFile, renameNote, deletNote, updateNoteDesc, trashBack, updateNoteUploadStatus, UPLOAD_NOTE_ONEDRIVE } from 'Actions/projects';
 import { formatDate, pushStateToStorage, mergeStateFromStorage, checkSpecial } from 'Utils/utils';
@@ -15,7 +15,25 @@ import { POST_MEDIUM } from 'Actions/medium';
 
 import SVGIcon from '../share/SVGIcon';
 
-@withDispatch
+function mapStateToProps(state, ownProps) {
+  const { projects: { notes, searchStatus }, app, markdown, note } = state;
+  const { editor, sortBy, editorMode } = app.settings;
+  const { fileUuid, projectUuid, projectName } = note;
+  return {
+    parentsId: projectUuid,
+    projectName,
+    notes,
+    currentUuid: fileUuid,
+    editor,
+    editorMode,
+    sortBy,
+    searchStatus,
+    hasEdit: markdown.hasEdit,
+    ...ownProps,
+  };
+}
+
+@connect(mapStateToProps)
 export default class Files extends Component {
   static displayName = 'NoteExplorerFiles';
   static propTypes = {
@@ -548,12 +566,15 @@ export default class Files extends Component {
   }
 
   render() {
-    const { currentUuid, editorMode, sortBy } = this.props;
+    const { currentUuid, editorMode, sortBy, parentsId } = this.props;
     const { newFile, rename, desc } = this.state;
     const notes = this.getNotes();
     let rootClass = '';
     if (editorMode !== 'normal') {
       rootClass = 'hide';
+    }
+    if (parentsId === '-1') {
+      return null;
     }
     if (notes.length === 0) {
       return (

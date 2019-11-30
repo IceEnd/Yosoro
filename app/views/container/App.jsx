@@ -46,14 +46,13 @@ import 'Assets/scss/scrollbar.css';
 const { shell } = remote;
 
 function mapStateToProps(state) {
-  const { app, projects, markdown, note, drive, exportQueue, user, imageHosting } = state;
+  const { app, projects, markdown, note, drive, user, imageHosting } = state;
   return {
     app,
     projectsData: projects,
     markdown,
     note,
     drive,
-    exportQueue,
     user,
     imageHosting,
   };
@@ -112,25 +111,7 @@ export default class App extends Component {
       }).isRequired,
     }),
     projectsData: PropTypes.shape({
-      projects: PropTypes.arrayOf(PropTypes.shape({
-        uuid: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
-        labels: PropTypes.arrayOf(PropTypes.string).isRequired,
-        status: PropTypes.number.isRequired,
-        // notes: PropTypes.array.isRequired,
-      })).isRequired,
-      notes: PropTypes.array.isRequired,
       trashProjects: PropTypes.arrayOf(PropTypes.shape({
-        uuid: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
-        labels: PropTypes.arrayOf(PropTypes.string).isRequired,
-        status: PropTypes.number.isRequired,
-        notes: PropTypes.array.isRequired,
-      })).isRequired,
-      searchStatus: PropTypes.number.isRequired,
-      searchResult: PropTypes.arrayOf(PropTypes.shape({
         uuid: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
@@ -167,10 +148,6 @@ export default class App extends Component {
       projects: PropTypes.array.isRequired,
       notes: PropTypes.array.isRequired,
       currentProjectName: PropTypes.string.isRequired,
-    }).isRequired,
-    // 文件导出队列
-    exportQueue: PropTypes.shape({
-      status: PropTypes.number.isRequired,
     }).isRequired,
     // User info
     user: PropTypes.shape({
@@ -391,8 +368,8 @@ export default class App extends Component {
   }
 
   render() {
-    const { app, projectsData: { projects, searchResult, searchStatus, trashProjects, trash, notes: files, expandedKeys }, markdown, note, drive, exportQueue, user } = this.props;
-    const { settings, platform } = app;
+    const { app, projectsData: { trashProjects, trash }, note, drive, user } = this.props;
+    const { platform } = app;
     const { dispatch, history } = this.props;
     const notDarwin = platform === 'darwin' ? '' : 'not-darwin';
     return (
@@ -410,22 +387,7 @@ export default class App extends Component {
                 <Route
                   path="/note"
                   exact
-                  render={() => (
-                    <Note
-                      expandedKeys={expandedKeys}
-                      projects={projects}
-                      searchResult={searchResult}
-                      searchStatus={searchStatus}
-                      markdown={markdown}
-                      note={note}
-                      files={files}
-                      editorMode={app.settings.editorMode}
-                      editor={settings.editor}
-                      exportQueue={exportQueue}
-                      imageHostingConfig={app.imageHostingConfig}
-                      sortBy={app.settings.sortBy}
-                    />
-                  )}
+                  component={Note}
                 />
                 {/* 回收站 */}
                 <Route

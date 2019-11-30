@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { ipcRenderer } from 'electron';
 import Scrollbars from 'Share/Scrollbars';
 import autobind from 'autobind-decorator';
@@ -14,7 +15,7 @@ import { saveNote } from 'Actions/projects';
 import { updateMarkdownHtml } from 'Actions/markdown';
 import { isCanUpload } from 'Utils/db/app';
 import { debounce, animatedScrollTo } from 'Utils/utils';
-import { withDispatch, withTheme } from 'Components/HOC/context';
+import { withTheme } from 'Components/HOC/context';
 import * as notifications from '../share/notifications';
 import { eventTOC } from '../../events/eventDispatch';
 
@@ -23,9 +24,25 @@ let seed = 0;
 
 const STANDAR_Y = 70;
 
+function mapStateToProps(state, ownProps) {
+  const {
+    app: { imageHostingConfig, settings },
+    markdown: { content, uuid },
+    note,
+  } = state;
+  return {
+    uuid,
+    defaultContent: content,
+    editorMode: settings.editorMode,
+    fontSize: settings.editor.fontSize,
+    note,
+    imageHostingConfig,
+    ...ownProps,
+  };
+}
 
-@withDispatch
 @withTheme
+@connect(mapStateToProps)
 export default class Editor extends Component {
   static displayName = 'MarkdownEditor';
   static propTypes = {

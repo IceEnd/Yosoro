@@ -500,6 +500,126 @@
 		}
 	}
 
+	// folder-tree
+	.folder-tree {
+		.folder-rename {
+			padding: 2px 7px;
+			width: calc(100% - 26px);
+		}
+		li {
+			padding: 0;
+			span {
+				&.ant-tree-switcher,
+				&.ant-tree-iconEle {
+					height: 28px;
+					line-height: 28px;
+				}
+			}
+
+			.ant-tree-node-content-wrapper {
+				height: 28px;
+				line-height: 28px;
+			}
+		}
+		.ant-tree {
+			&.ant-tree-directory {
+				& > li.ant-tree-treenode-selected {
+					& > span.ant-tree-node-content-wrapper {
+						&::before {
+							height: 28px;
+							background-color: $noteLiActiveBg;
+						}
+						&::after {
+							content: " ";
+							position: absolute;
+							top: 0;
+							right: 0;
+							height: 28px;
+							border-right: 3px solid #000;
+						}
+						&:hover {
+							&::before {
+								height: 28px;
+								background-color: $noteLiHoverBg;
+							}
+						}
+					}
+				}
+
+				.ant-tree-child-tree {
+					& > li {
+						span.ant-tree-node-content-wrapper {
+							&:hover {
+								&::before {
+									height: 28px;
+									background-color: $noteLiHoverBg;
+								}
+							}
+						}
+						&.ant-tree-treenode-selected {
+							& > span.ant-tree-node-content-wrapper {
+								&::before {
+									height: 28px;
+									background-color: $noteLiActiveBg;
+								}
+								&::after {
+									content: " ";
+									position: absolute;
+									right: 0;
+									height: 28px;
+									border-right: 3px solid #0065ff;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		.ant-tree-node-content-wrapper {
+			&:hover {
+				background-color: transparent;
+			}
+		}
+
+		.folder-root {
+			& > .ant-tree-switcher {
+				display: none;
+			}
+
+			& > .ant-tree-node-content-wrapper {
+				width: 100%;
+				padding: 0;
+				.ant-tree-iconEle {
+					display: none;
+				}
+			}
+
+			& > .ant-tree-child-tree {
+				padding: 0;
+
+				.ant-tree-child-tree {
+					padding-left: 10px;
+				}
+
+				.ant-tree-switcher {
+					width: 16px;
+				}
+
+				.ant-tree-node-content-wrapper {
+					width: calc(100% - 16px);
+					padding: 0;
+				}
+			}
+
+			.new-folder-node {
+				.ant-tree-iconEle {
+					display: none;
+				}
+			}
+		}
+	}
+
 	.tips {
 		position: absolute;
 		top: 30%;

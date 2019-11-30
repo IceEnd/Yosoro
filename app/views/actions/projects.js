@@ -31,10 +31,12 @@ export function getProjectList() {
 }
 
 // 新建笔记项目
-export function createProject(param) {
+export function createProject(uuid, pos, name) {
   return {
     type: CREATE_PROJECT,
-    param,
+    uuid,
+    pos,
+    name,
   };
 }
 
@@ -61,10 +63,11 @@ export function deleteProject(uuid, onlyDelete) {
  * @param {String} uuid 项目uuid
  * @param {String} name 新名称
  */
-export function renameProject(uuid, name) {
+export function renameProject(uuid, pos, name) {
   return {
     type: RENAME_PROJECT,
     uuid,
+    pos,
     name,
   };
 }
@@ -186,5 +189,13 @@ export function updateNoteUploadStatus(parentsId, uuid, status) {
     parentsId,
     uuid,
     status,
+  };
+}
+
+export function toggleExpanededKeys(expandedKeys, flag = 'add') {
+  return {
+    type: TOGGLE_FOLDER_EXPANEDED_KEYS,
+    expandedKeys,
+    flag,
   };
 }

@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { ipcRenderer } from 'electron';
 import classnames from 'classnames';
 import { Icon, Tooltip, Menu, Dropdown, Popover } from 'antd';
-import { withDispatch } from 'Components/HOC/context';
 import { pushStateToStorage, mergeStateFromStorage } from 'Utils/utils';
 
 import { searchNotes, clearSearchNotes, UPLOAD_NOTE_ONEDRIVE } from 'Actions/projects';
@@ -20,7 +20,23 @@ const MenuItem = Menu.Item;
 
 const VIEWS = ['normal', 'write'];
 
-@withDispatch
+function mapStateToProps(state, ownProps) {
+  const {
+    app,
+    markdown,
+    note,
+    projects,
+  } = state;
+  return {
+    markdown,
+    note,
+    editorMode: app.settings.editorMode,
+    searchStatus: projects.searchStatus,
+    ...ownProps,
+  };
+}
+
+@connect(mapStateToProps)
 export default class Tool extends Component {
   static displayName = 'NoteToolBar';
   static propTypes = {

@@ -260,21 +260,24 @@ export function getExplorerMenuItem(mainWindow) {
  *
  * @export
  * @param {any} mainWindow
+ * @param {boolean} isRoot
  * @returns {Array} menu - 项目右键菜单
  */
-export function getExplorerProjectItemMenu(mainWindow) {
+export function getExplorerProjectItemMenu(mainWindow, isRoot = false) {
   const menu = new Menu();
-  menu.append(new MenuItem({
-    label: 'Rename',
-    click: () => mainWindow.webContents.send('rename-project'),
-  }));
-  menu.append(new MenuItem({
-    label: 'Delete',
-    click: () => mainWindow.webContents.send('delete-project'),
-  }));
-  menu.append(new MenuItem({
-    type: 'separator',
-  }));
+  if (!isRoot) {
+    menu.append(new MenuItem({
+      label: 'Rename',
+      click: () => mainWindow.webContents.send('rename-folder'),
+    }));
+    menu.append(new MenuItem({
+      label: 'Delete',
+      click: () => mainWindow.webContents.send('delete-project'),
+    }));
+    menu.append(new MenuItem({
+      type: 'separator',
+    }));
+  }
   menu.append(new MenuItem({
     label: 'New Folder',
     click: () => mainWindow.webContents.send('new-folder'),

@@ -181,23 +181,23 @@ export function checkProjects() {
 export function getProjectList() {
   const notes = db.get(FILES).value() || [];
   const data = db.get(PROJECTS).value() || [];
-  const trashProjects = [];
-  const projects = [];
-  const dLength = data.length;
+  // const trashProjects = [];
+  // const projects = [];
+  // const dLength = data.length;
   // const nLength = notes.length;
-  const hash = {};
-  const trashHash = {};
+  // const hash = {};
+  // const trashHash = {};
 
-  for (let i = 0; i < dLength; i++) { // 利用hash存储
-    data[i].notes = [];
-    if (data[i].status === 1) {
-      hash[data[i].uuid] = projects.length;
-      projects.push(data[i]);
-    } else {
-      trashHash[data[i].uuid] = trashProjects.length;
-      trashProjects.push(data[i]);
-    }
-  }
+  // for (let i = 0; i < dLength; i++) { // 利用hash存储
+  //   data[i].notes = [];
+  //   if (data[i].status === 1) {
+  //     hash[data[i].uuid] = projects.length;
+  //     projects.push(data[i]);
+  //   } else {
+  //     trashHash[data[i].uuid] = trashProjects.length;
+  //     trashProjects.push(data[i]);
+  //   }
+  // }
   // to trash uuid
   // for (let i = 0; i < nLength; i++) {
   //   const { parentsId } = notes[i];
@@ -213,11 +213,18 @@ export function getProjectList() {
   //     trashProjects[trashHash[parentsId]].notes.unshift(notes[i]);
   //   }
   // }
+  // 回收站有点鸡肋，而且同时维护相同的文件结构比较繁琐，
+  /**
+   * 文件夹整个删除 无法复原
+   * 回收站有点鸡肋，而且同时维护相同的文件结构比较繁琐
+   * 于是回收站只有一层目录，文件用uuid命名，
+   * 被删除的文件带上一个原路径的 path，以便于恢复
+  */
   return {
-    projects,
-    trashProjects,
-    hash,
-    trashHash,
+    projects: data,
+    // trashProjects,
+    // hash,
+    // trashHash,
     notes,
   };
 }

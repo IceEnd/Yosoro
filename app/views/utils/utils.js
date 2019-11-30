@@ -37,7 +37,7 @@ export function pushStateToStorage(componentName, state) {
  * @param {String} componentName - 组件displayName
  * @param {Object} initState - 组件初始state
  */
-export function mergeStateFromStorage(componentName, initState) {
+export function mergeStateFromStorage(componentName, initState = {}) {
   const str = window.localStorage.getItem(componentName);
   let obj;
   if (str) {

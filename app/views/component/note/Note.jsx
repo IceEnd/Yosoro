@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { ipcRenderer } from 'electron';
 import { message } from 'antd';
-import { withDispatch } from 'Components/HOC/context';
 import { appSwitchEditMode } from 'Actions/app';
 import { readFile } from 'Actions/markdown';
 import { getFileById } from 'Utils/db/app';
@@ -15,70 +15,39 @@ import Loading from '../share/Loading';
 
 import '../../assets/scss/note.scss';
 
-@withDispatch
+function mapStateToProps(state, ownProps) {
+  const {
+    app,
+    markdown: { uuid },
+    exportQueue,
+    note,
+  } = state;
+  return {
+    uuid,
+    editorMode: app.settings.editorMode,
+    exportStatus: exportQueue.status,
+    note,
+    ...ownProps,
+  };
+}
+
+@connect(mapStateToProps)
 export default class NoteWorkspace extends Component {
   static displayName = 'NoteSpace';
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    expandedKeys: PropTypes.array.isRequired,
-    imageHostingConfig: PropTypes.shape({
-      default: PropTypes.oneOf(['github', 'weibo', 'SM.MS']).isRequired,
-      github: PropTypes.shape({
-        repo: PropTypes.string.isRequired,
-        branch: PropTypes.string.isRequired,
-        token: PropTypes.string.isRequired,
-        path: PropTypes.string.isRequired,
-        domain: PropTypes.string.isRequired,
-      }).isRequired,
-    }).isRequired,
-    projects: PropTypes.arrayOf(PropTypes.shape({
-      uuid: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-      labels: PropTypes.arrayOf(PropTypes.string).isRequired,
-      status: PropTypes.number.isRequired,
-      // notes: PropTypes.array.isRequired,
-    })).isRequired,
-    files: PropTypes.array.isRequired,
-    searchResult: PropTypes.arrayOf(PropTypes.shape({
-      uuid: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-      labels: PropTypes.arrayOf(PropTypes.string).isRequired,
-      status: PropTypes.number.isRequired,
-      notes: PropTypes.array.isRequired,
-    })).isRequired,
-    searchStatus: PropTypes.number.isRequired,
-    markdown: PropTypes.shape({
-      parentsId: PropTypes.string.isRequired,
-      uuid: PropTypes.string.isRequired,
-      createDate: PropTypes.string.isRequired,
-      latestDate: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      content: PropTypes.string.isRequired,
-      status: PropTypes.number.isRequired,
-      start: PropTypes.number.isRequired,
-      hasEdit: PropTypes.bool.isRequired,
-      uploadStatus: PropTypes.number.isRequired,
-    }).isRequired,
+    uuid: PropTypes.string.isRequired,
+    exportStatus: PropTypes.number.isRequired,
     note: PropTypes.shape({
       projectUuid: PropTypes.string.isRequired,
       projectName: PropTypes.string.isRequired,
       fileUuid: PropTypes.string.isRequired,
     }).isRequired,
-    editor: PropTypes.shape({
-      fontSize: PropTypes.number.isRequired,
-      cursorPosition: PropTypes.bool.isRequired,
-    }).isRequired,
     editorMode: PropTypes.string.isRequired,
-    sortBy: PropTypes.oneOf(['normal', 'create-date', 'latest-date']).isRequired,
-    exportQueue: PropTypes.shape({
-      status: PropTypes.number.isRequired,
-    }).isRequired,
   };
 
   componentDidMount() {
-    if (this.props.note.fileUuid !== '-1' && !this.props.markdown.uuid) { // 读取文件
+    if (this.props.note.fileUuid !== '-1' && !this.props.uuid) { // 读取文件
       this.setContent();
     }
   }
@@ -105,13 +74,7 @@ export default class NoteWorkspace extends Component {
   }
 
   render() {
-    const { projects, markdown, note, editorMode, searchStatus, searchResult, exportQueue: { status: exportStatus }, imageHostingConfig, editor, sortBy, files, expandedKeys } = this.props;
-    let projectData;
-    if (searchStatus === 0) {
-      projectData = projects;
-    } else if (searchStatus === 1) {
-      projectData = searchResult;
-    }
+    const { editorMode, exportStatus } = this.props;
     const blur = exportStatus === 1;
     const contClass = classnames('note-root-cont', {
       'note-blur': blur,
@@ -122,30 +85,11 @@ export default class NoteWorkspace extends Component {
           <Loading tip="Exporting..." />
         ) : null}
         <ToolBar
-          markdown={markdown}
-          editorMode={editorMode}
-          searchStatus={searchStatus}
-          note={note}
           blur={blur}
         />
         <div className={contClass} id="note_root_cont">
-          <Explorer
-            projects={projectData}
-            note={note}
-            editorMode={editorMode}
-            searchStatus={searchStatus}
-            hasEdit={markdown.hasEdit}
-            sortBy={sortBy}
-            files={files}
-            expandedKeys={expandedKeys}
-          />
-          <Markdown
-            imageHostingConfig={imageHostingConfig}
-            markdown={markdown}
-            editorMode={editorMode}
-            editor={editor}
-            note={note}
-          />
+          <Explorer />
+          <Markdown />
         </div>
       </div>
     );
