@@ -261,21 +261,36 @@
 
 		&.hide {
 			margin-left: -28rem;
-			// flex-basis: 0;
 			border: 0;
+		}
+
+		.folder-name {
+			font-weight: 500;
+			font-size: 1.1rem;
+			padding: 0.5rem;
+			margin: 0;
+			border-bottom: 1px solid $lightBorderBg;
+
+			&:first-child {
+				font-size: 1.6rem;
+				padding-top: 0;
+				border-top: none;
+			}
 		}
 
 		.file-list {
 			position: relative;
 			flex: 1 1 auto;
 			overflow: auto;
-			padding: 0 .3rem 4rem .3rem;
+			padding: 0;
+			margin: 0;
+			border-bottom: 1px solid $lightBorderBg;
 		}
 
 		.file-list__item {
-			height: 6.6rem;
+			height: 7rem;
 			position: relative;
-			border-radius: 0.5rem;
+			padding: 0 .8rem;
 			transition: background-color linear 0.2s;
 
 			.clouds {
@@ -354,21 +369,7 @@
 			}
 
 			&:hover {
-				background-color: $fileLiHoverBg;
-				.file-list__item__name {
-					.ant-input {
-						color: $noteLiActiveColor;
-					}
-					h3 {
-						color: $noteLiActiveColor;
-					}
-
-				}
-				.file-list__item__info__desc {
-					p {
-						color: $noteLiActiveColor;
-					}
-				}
+				background-color: $noteLiHoverBg;
 				.clouds {
 					.clouds-item {
 						background-color: #f7f8f9;
@@ -379,14 +380,15 @@
 						}
 					}
 				}
-				.file-list__item__icon {
-					svg {
-						fill: $noteLiActiveColor;
+				.file-list__item__name {
+					.ant-input {
+						color: #fff;
+						border-color: #fff;
 					}
 				}
 			}
 			&.cur {
-				background-color: $fileLiActiveBg;
+				background-color: $noteLiActiveBg;
 				.ant-input {
 					color: $noteLiActiveColor;
 				}
@@ -394,12 +396,9 @@
 					h3 {
 						color: $noteLiActiveColor;
 					}
-
 				}
-				.file-list__item__info__desc {
-					p {
-						color: $noteLiActiveColor;
-					}
+				p {
+					color: $noteLiActiveColor;
 				}
 				.clouds {
 					.clouds-item {
@@ -416,85 +415,70 @@
 						fill: $noteLiActiveColor;
 					}
 				}
+
+				.file-list__item__name {
+					.ant-input {
+						color: #fff;
+						border-color: #fff;
+					}
+				}
 			}
 
-			.file-list__item__root {
-				@include display-flex;
-				height: 3rem;
-				padding: 0 0.4rem;
+			p {
+				font-size: .8rem;
+				line-height: 1.2rem;
+				color: rgba(0, 0, 0, 0.4);
+				margin: 0;
 			}
 
-			.file-list__item__info {
-				height: 3.6rem;
-				padding: 0 0.4rem;
-				border-bottom: 1px solid rgba(255, 204, 204, 0.5);
-			}
-
-			.file-list__item__info__desc {
-				height: 1.2rem;
-
+			&__name {
+				height: 2.2rem;
+				padding-top: .4rem;
+				line-height: 2rem;
+				h3 {
+					font-size: 1.1rem;
+					font-weight: bolder;
+					color: rgba(0, 0, 0, 0.8);
+					cursor: pointer;
+					margin-bottom: 0;
+					@include text-ellipsis;
+				}
 				.ant-input {
-					@include normal-ipt;
+					@include file-title-ipt;
+					background-color: inherit;
+				}
+			}
+
+			&__desc {
+				height: 3.6rem;
+				.ant-input {
+					height: 3.6rem;
+					font-size: 0.8rem;
+					line-height: 1rem;
+					color: rgba(0, 0, 0, 0.8);
+					cursor: pointer;
 					display: block;
-					font-size: .8rem;
-					height: 1.2rem;
 					background-color: inherit;
 					border: 1px solid transparent;
 					border: 1px solid #d9d9d9;
 					display: block;
 					border-radius: 0.1rem;
-				}
-
-				p {
-					height: 1.2rem;
-					font-size: .8rem;
-					line-height: 1.2rem;
-					color: rgba(0, 0, 0, 0.4);
-					margin: 0;
-					@include text-ellipsis;
+					padding: .4rem .2rem;
 				}
 			}
 
-			.file-list__item__icon {
-				flex: 0 0 2rem;
-
-				svg {
-					width: 2rem;
-					height: 3rem;
-					fill: #ff6666;
-
-					use {
-						width: 100%;
-						height: 100%;
-					}
-				}
+			&::after {
+				content: " ";
+				position: absolute;
+				width: 90%;
+				height: 1px;
+				background: #d9d9d9;
+				bottom: 0;
 			}
 
-			.file-list__item__name {
-				flex: 1 1 auto;
-				line-height: 3rem;
-				position: relative;
-				@include text-ellipsis;
-				padding: 0 0.1rem;
-
-				h3 {
-					font-size: 0.9rem;
-					padding: 0 0.2rem;
-					color: rgba(0, 0, 0, 0.5);
-					cursor: pointer;
-					margin-bottom: 0;
-					@include text-ellipsis;
-				}
-
-				.ant-input {
-					@include normal-ipt;
-					font-size: .9rem;
-					background-color: inherit;
-					border: 1px solid transparent;
-
-					&.edit {
-						border: 1px solid #d9d9d9;
-					}
+			&:last-child {
+				&::after {
+					background: transparent;
 				}
 			}
 		}
@@ -590,13 +574,10 @@
 			& > .ant-tree-node-content-wrapper {
 				width: 100%;
 				padding: 0;
-				.ant-tree-iconEle {
-					display: none;
-				}
 			}
 
 			& > .ant-tree-child-tree {
-				padding: 0;
+				padding: 0 0 0 12px;
 
 				.ant-tree-child-tree {
 					padding-left: 10px;

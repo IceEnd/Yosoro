@@ -27,7 +27,7 @@ import {
   FETCHING_GITHUB_RELEASES,
   CLOSE_UPDATE_NOTIFICATION,
 } from 'Actions/app';
-import { getProjectList, saveNote } from 'Actions/projects';
+import { getProjectList, saveFile } from 'Actions/projects';
 import { EXPORT_INIT_QUEUE, EXPORT_COMPOLETE } from 'Actions/exportQueue';
 import {
   UPLOAD_IMAGE_SUCCESS,
@@ -292,7 +292,7 @@ export default class App extends Component {
       };
       const data = ipcRenderer.sendSync('NOTES:save-content-to-file', param);
       if (parentsId && uuid) {
-        dispatch(saveNote(parentsId, uuid));
+        dispatch(saveFile(parentsId, uuid));
       }
       if (!data.success) { // 保存失败
         message.error('Save failed.');

@@ -265,19 +265,6 @@ export function getExplorerMenuItem(mainWindow) {
  */
 export function getExplorerProjectItemMenu(mainWindow, isRoot = false) {
   const menu = new Menu();
-  if (!isRoot) {
-    menu.append(new MenuItem({
-      label: 'Rename',
-      click: () => mainWindow.webContents.send('rename-folder'),
-    }));
-    menu.append(new MenuItem({
-      label: 'Delete',
-      click: () => mainWindow.webContents.send('delete-project'),
-    }));
-    menu.append(new MenuItem({
-      type: 'separator',
-    }));
-  }
   menu.append(new MenuItem({
     label: 'New Folder',
     click: () => mainWindow.webContents.send('new-folder'),
@@ -285,6 +272,19 @@ export function getExplorerProjectItemMenu(mainWindow, isRoot = false) {
   menu.append(new MenuItem({
     type: 'separator',
   }));
+  if (!isRoot) {
+    menu.append(new MenuItem({
+      label: 'Rename',
+      click: () => mainWindow.webContents.send('rename-folder'),
+    }));
+    menu.append(new MenuItem({
+      label: 'Delete',
+      click: () => mainWindow.webContents.send('delete-folder'),
+    }));
+    menu.append(new MenuItem({
+      type: 'separator',
+    }));
+  }
   menu.append(new MenuItem({
     label: 'Export as',
     submenu: [{
@@ -328,15 +328,15 @@ export function getExplorerFileItemMenu(mainWindow) {
   const menu = new Menu();
   menu.append(new MenuItem({
     label: 'Rename',
-    click: () => mainWindow.webContents.send('rename-note'),
+    click: () => mainWindow.webContents.send('rename-file'),
   }));
   menu.append(new MenuItem({
     label: 'Delete',
-    click: () => mainWindow.webContents.send('delete-note'),
+    click: () => mainWindow.webContents.send('delete-file'),
   }));
   menu.append(new MenuItem({
     label: 'Edit description',
-    click: () => mainWindow.webContents.send('node-add-desc'),
+    click: () => mainWindow.webContents.send('file-edit-desc'),
   }));
   menu.append(new MenuItem({
     type: 'separator',

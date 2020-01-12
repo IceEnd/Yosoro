@@ -39,6 +39,7 @@ function getGlobalPath(rootPath) {
   const DOCUMENTS_PATH = `${DOCUMENTS_ROOT}${splitFlag}documents`;
   const PROJECTS_PATH = `${DOCUMENTS_PATH}${splitFlag}projects`;
   const TRASH_PATH = `${DOCUMENTS_PATH}${splitFlag}trash`;
+  const TRASH_FILE_PATH = `${DOCUMENTS_PATH}${splitFlag}file_trash`;
   const IMAGES_DB_PATH = `${DBS_PATH}${splitFlag}IMAGES_DB.ysrdb`;
 
   return {
@@ -47,6 +48,7 @@ function getGlobalPath(rootPath) {
     DOCUMENTS_PATH,
     PROJECTS_PATH,
     TRASH_PATH,
+    TRASH_FILE_PATH,
     IMAGES_DB_PATH,
   };
 }
@@ -91,6 +93,9 @@ export function initWorkSpace() {
     }
     if (!fs.existsSync(global.RUNTIME.paths.TRASH_PATH)) {
       fs.mkdirSync(global.RUNTIME.paths.TRASH_PATH);
+    }
+    if (!fs.existsSync(global.RUNTIME.paths.TRASH_FILE_PATH)) {
+      fs.mkdirSync(global.RUNTIME.paths.TRASH_FILE_PATH);
     }
   } catch (ex) {
     console.warn(ex);

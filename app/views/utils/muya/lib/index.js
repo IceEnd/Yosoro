@@ -177,6 +177,8 @@ class Muya {
     const markdown = this.getMarkdown()
     const isRenderCursor = true
 
+    console.log(setCursor)
+
     return this.setMarkdown(markdown, cursor, isRenderCursor)
   }
 

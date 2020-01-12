@@ -1,14 +1,40 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Input, message, Icon } from 'antd';
 import { ipcRenderer } from 'electron';
 import Scrollbars from 'Share/Scrollbars';
 import { connect } from 'react-redux';
 
-import { createFile, renameNote, deletNote, updateNoteDesc, trashBack, updateNoteUploadStatus, UPLOAD_NOTE_ONEDRIVE } from 'Actions/projects';
-import { formatDate, pushStateToStorage, mergeStateFromStorage, checkSpecial } from 'Utils/utils';
-import { readFile, beforeSwitchSave, saveContentToTrashFile, updateCurrentTitle, clearMarkdown, MARKDOWN_UPLOADING } from 'Actions/markdown';
-import { switchFile, clearNote, updateNoteFileName } from 'Actions/note';
+import {
+  createFile,
+  renameFile,
+  deleteFile,
+  updateFileDesc,
+  switchFile,
+  trashBack,
+  updateNoteUploadStatus,
+  UPLOAD_NOTE_ONEDRIVE,
+} from 'Actions/projects';
+import {
+  readFile,
+  beforeSwitchSave,
+  saveContentToTrashFile,
+  updateCurrentTitle,
+  clearMarkdown,
+  MARKDOWN_UPLOADING,
+} from 'Actions/markdown';
+import {
+  clearNote,
+  updateNoteFileName,
+} from 'Actions/note';
+import {
+  getFolderByPos,
+  getFolderByUuid,
+  formatDate,
+  pushStateToStorage,
+  mergeStateFromStorage,
+  checkSpecial,
+} from 'Utils/utils';
 import { getNote } from 'Utils/db/app';
 import oneDriveLogo from 'Assets/images/onedrive.png';
 import { POST_MEDIUM } from 'Actions/medium';
@@ -16,14 +42,14 @@ import { POST_MEDIUM } from 'Actions/medium';
 import SVGIcon from '../share/SVGIcon';
 
 function mapStateToProps(state, ownProps) {
-  const { projects: { notes, searchStatus }, app, markdown, note } = state;
+  const { projects: { notes, searchStatus, projectUuid, fileUuid, projects, pos }, app, markdown } = state;
   const { editor, sortBy, editorMode } = app.settings;
-  const { fileUuid, projectUuid, projectName } = note;
   return {
+    projects,
+    pos,
     parentsId: projectUuid,
-    projectName,
-    notes,
     currentUuid: fileUuid,
+    notes,
     editor,
     editorMode,
     sortBy,
@@ -33,13 +59,26 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-@connect(mapStateToProps)
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+    switchFile: (...args) => dispatch(switchFile(...args)),
+    createFile: (...args) => dispatch(createFile(...args)),
+    readFile: (...args) => dispatch(readFile(...args)),
+    deleteFile: (...args) => dispatch(deleteFile(...args)),
+    trashBack: (...args) => dispatch(trashBack(...args)),
+    clearMarkdown: (...args) => dispatch(clearMarkdown(...args)),
+    renameFile: (...args) => dispatch(renameFile(...args)),
+    updateFileDesc: (...args) => dispatch(updateFileDesc(...args)),
+  };
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
 export default class Files extends Component {
-  static displayName = 'NoteExplorerFiles';
+  static displayName = 'ExplorerFiles';
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     parentsId: PropTypes.string.isRequired,
-    projectName: PropTypes.string.isRequired,
     notes: PropTypes.arrayOf(PropTypes.shape({
       uuid: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
@@ -48,37 +87,41 @@ export default class Files extends Component {
       status: PropTypes.number.isRequired,
       oneDriver: PropTypes.number.isRequired,
     })).isRequired,
+    projects: PropTypes.arrayOf(PropTypes.shape({
+      uuid: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      labels: PropTypes.arrayOf(PropTypes.string).isRequired,
+      status: PropTypes.number.isRequired,
+      children: PropTypes.array,
+    })).isRequired,
     currentUuid: PropTypes.string.isRequired,
     editorMode: PropTypes.string.isRequired,
     searchStatus: PropTypes.number.isRequired,
     hasEdit: PropTypes.bool.isRequired,
     sortBy: PropTypes.oneOf(['normal', 'create-date', 'latest-date']).isRequired,
+    pos: PropTypes.string.isRequired,
+    // action functions
+    switchFile: PropTypes.func.isRequired,
+    createFile: PropTypes.func.isRequired,
+    readFile: PropTypes.func.isRequired,
+    deleteFile: PropTypes.func.isRequired,
+    trashBack: PropTypes.func.isRequired,
+    clearMarkdown: PropTypes.func.isRequired,
+    renameFile: PropTypes.func.isRequired,
+    updateFileDesc: PropTypes.func.isRequired,
   };
 
-  constructor() {
-    super();
-    this.state = mergeStateFromStorage('noteExplorerFilesState', {
-      newFile: false,
-      newFileTitle: 'New Note',
-      renameUuid: -1,
-      newName: '',
-      contextNote: {
-        uuid: '',
-        name: '',
-        description: '',
-        oneDriver: 0,
-      },
-      rename: {
-        uuid: '',
-        name: '',
-      },
-      desc: {
-        uuid: '',
-        value: '',
-      },
-    });
-    this.selectNew = false;
-  }
+  state = {
+    newFile: false,
+    newFileTitle: 'New Note',
+    contextStatus: '',
+    renameUuid: -1,
+    contextUuid: '',
+    rename: '',
+    reDesc: '',
+    oneDriver: '',
+  };
 
   componentDidMount() {
     ipcRenderer.send('MENUS:file-new-enbaled', {
@@ -92,54 +135,19 @@ export default class Files extends Component {
         this.newItemFocus();
       });
     });
-    ipcRenderer.on('delete-note', () => {
-      const { projectName, parentsId, dispatch, currentUuid } = this.props;
-      const { name, uuid } = this.state.contextNote;
-      const data = ipcRenderer.sendSync('NOTES:move-file-to-trash', {
-        name,
-        projectName,
-      });
-      if (!data.success) {
-        message.error('Delete note failed.');
-        return false;
-      }
-      if (data.code === 0) {
-        dispatch(deletNote(uuid, parentsId, name, projectName, false));
-        dispatch(trashBack());
-        if (uuid === currentUuid) {
-          dispatch(saveContentToTrashFile(projectName));
-          dispatch(clearMarkdown());
-          dispatch(clearNote());
-        }
-      } else if (data.code === 1) { // 笔记已经不存在了
-        message.error('Note does not exist.');
-        dispatch(deletNote(uuid, parentsId, name, projectName, true));
-        if (uuid === currentUuid) {
-          dispatch(clearMarkdown());
-          dispatch(clearNote());
-        }
-      }
-    });
-    ipcRenderer.on('rename-note', () => {
-      const { contextNote: { uuid, name } } = this.state;
+    ipcRenderer.on('delete-file', this.handleDelete);
+    ipcRenderer.on('rename-file', () => {
       this.setState({
-        rename: {
-          uuid,
-          name,
-        },
+        contextStatus: 'rename',
       }, () => {
         if (this.titleIpt) {
           this.titleIpt.focus();
         }
       });
     });
-    ipcRenderer.on('node-add-desc', () => {
-      const { uuid, description } = this.state.contextNote;
+    ipcRenderer.on('file-edit-desc', () => {
       this.setState({
-        desc: {
-          uuid,
-          value: description,
-        },
+        contextStatus: 'redesc',
       }, () => {
         if (this.descIpt) {
           this.descIpt.focus();
@@ -176,52 +184,22 @@ export default class Files extends Component {
     });
   }
 
-  /* eslint-disable react/no-deprecated */
-  componentWillReceiveProps(nextProps) {
-    if (this.props.parentsId === nextProps.parentsId && this.selectNew) {
-      const { dispatch, projectName } = this.props;
-      const item = nextProps.notes[0];
-      dispatch(beforeSwitchSave(projectName));
-      dispatch(switchFile(item.uuid, item.name));
-      const data = ipcRenderer.sendSync('NOTES:read-file', {
-        projectName,
-        fileName: item.name,
-      });
-      if (!data.success) {
-        message.error('Failed to read file data.');
-        return false;
-      }
-      item.content = data.data;
-      this.props.dispatch(readFile(item));
-      this.selectNew = false;
+  componentDidUpdate(prevProps) {
+    if (this.props.parentsId !== prevProps.parentsId) {
+      this.props.switchFile('-1');
     }
-    return true;
   }
-  /* eslint-enable react/no-deprecated */
 
   componentWillUnmount() {
-    pushStateToStorage('noteExplorerFilesState', Object.assign({}, this.state, {
-      contextNote: {
-        uuid: '',
-        name: '',
-        description: '',
-      },
-      rename: {
-        uuid: '',
-        name: '',
-      },
-      desc: {
-        uuid: '',
-        value: '',
-      },
-    }));
-    ipcRenderer.removeAllListeners('new-file');
-    ipcRenderer.removeAllListeners('delete-note');
-    ipcRenderer.removeAllListeners('rename-note');
-    ipcRenderer.removeAllListeners('sort-note');
-    ipcRenderer.removeAllListeners('node-add-desc');
-    ipcRenderer.removeAllListeners('upload-note-onedrive');
-    ipcRenderer.removeAllListeners('export-get-note-info');
+    [
+      'new-file',
+      'delete-file',
+      'rename-file',
+      'sort-note',
+      'file-edit-desc',
+      'upload-note-onedrive',
+      'export-get-note-info',
+    ].forEach(event => ipcRenderer.removeAllListeners(event));
     ipcRenderer.send('MENUS:file-new-enbaled', {
       type: 'new-note',
       flag: false,
@@ -247,9 +225,62 @@ export default class Files extends Component {
     return notes.sort((next, current) => new Date(current[type]) - new Date(next[type]));
   }
 
+  getFileByParent(uuid) {
+    const { notes, sortBy } = this.props;
+    const files = notes.filter(item => item.parentsId === uuid && item.status === 1);
+    let type;
+    switch (sortBy) {
+      case 'create-date':
+        type = 'createDate';
+        break;
+      case 'latest-date':
+        type = 'latestDate';
+        break;
+      default:
+        type = 'normal';
+        break;
+    }
+    if (type === 'normal') {
+      return files.sort((next, current) => new Date(next.createDate) - new Date(current.createDate));
+    }
+    return files.sort((next, current) => new Date(current[type]) - new Date(next[type]));
+  }
+
+  getFileById(uuid) {
+    const files = this.props.notes.filter(item => item.uuid === uuid);
+    return files;
+  }
+
   newItemFocus = () => {
     if (this.fileIpt) {
       this.fileIpt.focus();
+    }
+  }
+
+  handleDelete = () => {
+    const { currentUuid, pos, projects } = this.props;
+    const { rename: name, contextUuid: uuid } = this.state;
+    const head = getFolderByPos(projects, pos);
+    const data = ipcRenderer.sendSync('NOTES:move-file-to-trash', {
+      file: `${head.path}/${name}.md`,
+      uuid,
+    });
+    if (!data.success) {
+      message.error('delete file failed');
+      return false;
+    }
+    if (data.code === 0) {
+      this.props.deleteFile(uuid, false);
+      this.props.trashBack();
+      if (uuid === currentUuid) {
+        this.props.clearMarkdown();
+      }
+    } else if (data.code === 1) { // 笔记已经不存在了
+      message.error('file not exist');
+      this.props.deleteFile(uuid, true);
+      if (uuid === currentUuid) {
+        this.props.clearMarkdown();
+      }
     }
   }
 
@@ -286,24 +317,18 @@ export default class Files extends Component {
 
   // 新建输入框改变事件
   handleChange = (e, type) => {
-    const title = e.target.value;
+    const value = e.target.value;
     if (type === 'new') {
       this.setState({
-        newFileTitle: title,
+        newFileTitle: value,
       });
     } else if (type === 'edit') {
       this.setState({
-        rename: {
-          uuid: this.state.contextNote.uuid,
-          name: title,
-        },
+        rename: value,
       });
     } else if (type === 'desc') {
       this.setState({
-        desc: {
-          uuid: this.state.contextNote.uuid,
-          value: title,
-        },
+        reDesc: value,
       });
     }
   }
@@ -349,24 +374,23 @@ export default class Files extends Component {
    */
   createFile = () => {
     const value = this.state.newFileTitle || 'New Note';
-    const name = value.replace(/(^\s*|\s*$)/ig, '');
+    const name = value.trim();
     if (!checkSpecial(value)) {
+      message.error('no special characters');
       return;
     }
-    const { parentsId, projectName, notes } = this.props;
-    const arr = notes.filter(item => item.name === name);
+    const { parentsId, projects, notes, pos } = this.props;
+    const arr = notes.filter(item => (item.name === name && item.parentsId === parentsId && item.status === 1));
     if (arr.length !== 0) {
-      message.error('File is exists.');
+      message.error('file is exists.');
       this.setState({
         newFile: false,
         newFileTitle: 'New Note',
       });
-      return false;
+      return;
     }
-    const fileData = ipcRenderer.sendSync('NOTES:create-file', {
-      name,
-      projectName,
-    });
+    const head = getFolderByPos(projects, pos);
+    const fileData = ipcRenderer.sendSync('NOTES:create-file', `${head.path}/${value}.md`);
     if (!fileData.success) {
       message.error('Create file failed.');
       this.setState({
@@ -375,124 +399,105 @@ export default class Files extends Component {
       });
       return false;
     }
-    // const file = fileData.file;
     this.setState({
       newFile: false,
       newFileTitle: 'New Note',
     });
     const createDate = (new Date()).toString();
-    this.props.dispatch(createFile({
+    this.props.createFile({
       name,
       createDate,
       parentsId,
-    }));
-    this.selectNew = true;
+    });
   }
 
   editTitle = () => {
-    const { parentsId, dispatch, projectName } = this.props;
-    const { uuid, name: value } = this.state.rename;
-    const name = value.replace(/(^\s*|\s*$)/ig, '');
-    if (!checkSpecial(value)) { // 检查长度和特殊字符
+    const { currentUuid, pos, projects } = this.props;
+    const { contextUuid, rename } = this.state;
+    this.setState({
+      contextStatus: '',
+    });
+    const oldFile = this.getFileById(contextUuid)[0];
+    const name = rename.replace(/(^\s*|\s*$)/ig, '');
+    if (oldFile.name === rename || !name) {
+      // do nothing
       return;
     }
-    if (name === '' || name === this.state.contextNote.name) {
-      this.setState({
-        rename: {
-          uuid: '',
-          name: '',
-        },
-      });
-    } else {
-      const oldName = this.state.contextNote.name;
-      const arr = this.props.notes.filter(item => item.name === name);
-      if (arr.length !== 0) {
-        message.error('Name repeat.');
-        return false;
-      }
-      const data = ipcRenderer.sendSync('NOTES:rename-note', {
-        oldName,
-        newName: name,
-        projectName,
-      });
-      if (!data.success) {
-        message.error('Rename notebook failed.');
-        return false;
-      }
-      dispatch(renameNote(uuid, name, parentsId));
-      dispatch(updateCurrentTitle(uuid, name));
-      dispatch(updateNoteFileName(name));
-      this.setState({
-        rename: {
-          uuid: '',
-          name: '',
-        },
-      });
+    if (!checkSpecial(name)) { // 检查长度和特殊字符
+      message.error('no special characters');
+      return;
     }
+    const files = this.getFileByParent(currentUuid);
+    const repeatArr = files.filter(item => item.name === name);
+    if (repeatArr.length !== 0) {
+      message.error('name repeat');
+      return;
+    }
+    const head = getFolderByPos(projects, pos);
+    const result = ipcRenderer.sendSync('NOTES:rename-file', {
+      root: head.path,
+      oldName: oldFile.name,
+      newName: name,
+    });
+    if (!result.success) {
+      message.error('rename failed');
+      return false;
+    }
+    this.props.renameFile(contextUuid, name);
   }
 
   // 更新笔记描述
   updateDesc = () => {
-    const { uuid, value } = this.state.desc;
-    if (value === this.state.contextNote.description) {
-      this.setState({
-        desc: {
-          uuid: '',
-          value: '',
-        },
-      });
-      return false;
-    }
-    const { parentsId, dispatch } = this.props;
-    dispatch(updateNoteDesc(uuid, value, parentsId));
+    const { contextUuid, reDesc } = this.state;
+    const oldFile = this.getFileById(contextUuid)[0];
     this.setState({
-      desc: {
-        uuid: '',
-        value: '',
-      },
+      contextStatus: '',
     });
+    if (reDesc === oldFile.description) {
+      // do nothing
+      return;
+    }
+    this.props.updateFileDesc(contextUuid, reDesc);
   }
 
   // 选中当前笔记文件
-  handleChoose = (item) => {
-    const { dispatch, projectName, parentsId, currentUuid, hasEdit } = this.props;
+  handleChoose = (item, folderPos) => {
+    const { dispatch, parentsId, currentUuid, hasEdit, pos, projects } = this.props;
     if (currentUuid === item.uuid) {
       return false;
     }
-    if (hasEdit) {
-      const note = getNote(currentUuid);
-      let needUpdateCloudStatus = false;
-      if (note && note.oneDriver !== 0) {
-        needUpdateCloudStatus = true;
-      }
-      dispatch(beforeSwitchSave(projectName, needUpdateCloudStatus));
-      if (needUpdateCloudStatus) {
-        dispatch(updateNoteUploadStatus(parentsId, currentUuid, 1));
-      }
-    }
-    dispatch(switchFile(item.uuid, item.name));
-    const data = ipcRenderer.sendSync('NOTES:read-file', {
-      projectName,
-      fileName: item.name,
-    });
+    const currentPos = folderPos ? `${pos}-${folderPos}` : pos;
+    const head = getFolderByPos(projects, currentPos);
+    // 待完善
+    // if (hasEdit) {
+    //   const note = getNote(currentUuid);
+    //   let needUpdateCloudStatus = false;
+    //   if (note && note.oneDriver !== 0) {
+    //     needUpdateCloudStatus = true;
+    //   }
+    //   dispatch(beforeSwitchSave(projectName, needUpdateCloudStatus));
+    //   if (needUpdateCloudStatus) {
+    //     dispatch(updateNoteUploadStatus(parentsId, currentUuid, 1));
+    //   }
+    // }
+    this.props.switchFile(item.uuid);
+    const data = ipcRenderer.sendSync('NOTES:read-file', `${head.path}/${item.name}.md`);
     if (!data.success) {
       message.error('Failed to read file data.');
       return false;
     }
     item.content = data.data;
-    this.props.dispatch(readFile(item));
+    this.props.readFile(item);
   }
 
   handleItemMenu = (event, uuid, name, description, oneDriver) => {
     event.stopPropagation();
     event.preventDefault();
     this.setState({
-      contextNote: {
-        uuid,
-        name,
-        description,
-        oneDriver,
-      },
+      contextUuid: uuid,
+      rename: name,
+      reDesc: description,
+      oneDriver,
     });
     const { searchStatus } = this.props;
     if (searchStatus === 1) {
@@ -537,38 +542,111 @@ export default class Files extends Component {
   renderNewFile() {
     const { newFileTitle } = this.state;
     return (
-      <div className="file-list__item new">
-        <div className="file-list__item__root">
-          <span className="file-list__item__icon">
-            <SVGIcon
-              className="file-list__item__icon__svg"
-              viewBox="0 0 48 48"
-              id="#icon_svg_markdown"
-              useClassName="icon-use"
-            />
-          </span>
-          <span className="file-list__item__name">
-            <Input
-              className="edit"
-              value={newFileTitle}
-              onChange={e => this.handleChange(e, 'new')}
-              onFocus={this.handleFocus}
-              onBlur={e => this.handleBlur(e, 'new')}
-              onKeyDown={e => this.handleKeyDown(e, 'new')}
-              onClick={this.handleIptClick}
-              ref={node => (this.fileIpt = node)}
-            />
-          </span>
+      <li className="file-list__item new" key="new">
+        <div className="file-list__item__name">
+          <Input
+            className="edit"
+            value={newFileTitle}
+            onChange={e => this.handleChange(e, 'new')}
+            onFocus={this.handleFocus}
+            onBlur={e => this.handleBlur(e, 'new')}
+            onKeyDown={e => this.handleKeyDown(e, 'new')}
+            onClick={this.handleIptClick}
+            ref={node => (this.fileIpt = node)}
+          />
         </div>
-        <div className="file-list__item__info" />
-      </div>
+      </li>
+    );
+  }
+
+  renderFile(note, folderPos) {
+    const { contextUuid, contextStatus, rename, reDesc } = this.state;
+    const { currentUuid } = this.props;
+    const { uuid, name, description, oneDriver } = note;
+    const disabled = contextUuid !== uuid;
+    let active = '';
+    if (uuid === currentUuid) {
+      active = 'cur';
+    }
+    return (
+      <li
+        key={`n-${uuid}`}
+        className={`file-list__item ${active}`}
+        onClick={() => this.handleChoose(note, folderPos)}
+        onContextMenu={e => this.handleItemMenu(e, uuid, name, description, oneDriver)}
+        role="presentation"
+      >
+        <div className="file-list__item__name">
+          {!disabled && contextStatus === 'rename' ? (
+            <Input
+              value={rename}
+              disabled={disabled}
+              onChange={e => this.handleChange(e, 'edit')}
+              onFocus={this.handleFocus}
+              onBlur={e => this.handleBlur(e, 'edit')}
+              onKeyDown={e => this.handleKeyDown(e, 'edit')}
+              onClick={this.handleIptClick}
+              ref={node => (this.titleIpt = node)}
+            />
+          ) : (
+            <h3>{name}</h3>
+          )}
+        </div>
+        <div className="file-list__item__desc row-3">
+          {!disabled && contextStatus === 'redesc' ? (
+            <Input.TextArea
+              value={reDesc}
+              onFocus={this.handleFocus}
+              onClick={this.handleIptClick}
+              onChange={e => this.handleChange(e, 'desc')}
+              onBlur={e => this.handleBlur(e, 'desc')}
+              onKeyDown={e => this.handleKeyDown(e, 'desc')}
+              maxLength="64"
+              placeholder="limit 64 chars"
+              rows={3}
+              ref={node => (this.descIpt = node)}
+            />
+          ) : (
+            <p className="text-ellipsis-3">{note.description}</p>
+          )}
+        </div>
+        <div className="file-list__item__date">
+          <p className="text-ellipsis-1">{formatDate(note.latestDate)}</p>
+        </div>
+        <div className="file-list__item__border" />
+        <ul className="clouds">
+          {this.renderCloudIcon(note.oneDriver)}
+        </ul>
+      </li>
+    );
+  }
+
+  renderNotes(head, pos) {
+    if (!head || Array.isArray(head)) {
+      return null;
+    }
+    const { name, uuid, children = [] } = head;
+    const { newFile } = this.state;
+    const files = this.getFileByParent(uuid);
+    return (
+      <Fragment key={uuid}>
+        <h3 className="folder-name">{name}</h3>
+        {files.length > 0 ? (
+          <ul className="file-list">
+            {newFile && !pos ? this.renderNewFile() : (null) }
+            {files.map(note => this.renderFile(note, pos))}
+          </ul>
+        ) : null}
+        {children.map((item, index) => {
+          const folderPos = pos ? `${pos}-${index}` : index.toString();
+          return this.renderNotes(item, folderPos);
+        })}
+      </Fragment>
     );
   }
 
   render() {
-    const { currentUuid, editorMode, sortBy, parentsId } = this.props;
-    const { newFile, rename, desc } = this.state;
-    const notes = this.getNotes();
+    const { parentsId, editorMode, pos, projects } = this.props;
     let rootClass = '';
     if (editorMode !== 'normal') {
       rootClass = 'hide';
@@ -576,107 +654,16 @@ export default class Files extends Component {
     if (parentsId === '-1') {
       return null;
     }
-    if (notes.length === 0) {
-      return (
-        <div className={`file-explorer ${rootClass}`} onContextMenu={this.handleContextMenu}>
-          <ul
-            className="file-list height-block"
-          >
-            { newFile ? this.renderNewFile() : (
-              <p className="tips no-select">No notes have been created.</p>
-            )}
-          </ul>
-        </div>
-      );
+    let head = null;
+    if (pos) {
+      head = getFolderByPos(projects, pos).head;
+    } else {
+      head = getFolderByUuid(projects, parentsId);
     }
     return (
       <div className={`file-explorer fade-in ${rootClass}`} onContextMenu={this.handleContextMenu}>
         <Scrollbars>
-          <ul
-            className="file-list"
-          >
-            {newFile && sortBy !== 'normal' ? this.renderNewFile() : (null) }
-            {notes.map((note) => {
-              const { uuid, status, name, description, oneDriver } = note;
-              if (status === 0) { // 删除
-                return null;
-              }
-              let disabled = true;
-              let edit = '';
-              if (rename.uuid === uuid) {
-                disabled = false;
-                edit = 'edit';
-              }
-              let active = '';
-              if (uuid === currentUuid) {
-                active = 'cur';
-              }
-              return (
-                <li
-                  key={`n-${uuid}`}
-                  className={`file-list__item ${active}`}
-                  onClick={() => this.handleChoose(note)}
-                  onContextMenu={e => this.handleItemMenu(e, uuid, name, description, oneDriver)}
-                  role="presentation"
-                >
-                  <div className="file-list__item__root">
-                    <span className="file-list__item__icon">
-                      <SVGIcon
-                        className="file-list__item__icon__svg"
-                        viewBox="0 0 48 48"
-                        id="#icon_svg_markdown"
-                        useClassName="icon-us"
-                      />
-                    </span>
-                    <span className="file-list__item__name">
-                      {disabled ? (
-                        <h3>{name}</h3>
-                      ) : (
-                        <Input
-                          className={edit}
-                          value={rename.name}
-                          disabled={disabled}
-                          onChange={e => this.handleChange(e, 'edit')}
-                          onFocus={this.handleFocus}
-                          onBlur={e => this.handleBlur(e, 'edit')}
-                          onKeyDown={e => this.handleKeyDown(e, 'edit')}
-                          onClick={this.handleIptClick}
-                          ref={node => (this.titleIpt = node)}
-                        />
-                      )}
-                    </span>
-                  </div>
-                  <div className="file-list__item__info">
-                    <div className="file-list__item__info__desc">
-                      {desc.uuid === uuid ? (
-                        <Input
-                          value={desc.value}
-                          onFocus={this.handleFocus}
-                          onClick={this.handleIptClick}
-                          onChange={e => this.handleChange(e, 'desc')}
-                          onBlur={e => this.handleBlur(e, 'desc')}
-                          onKeyDown={e => this.handleKeyDown(e, 'desc')}
-                          maxLength="20"
-                          placeholder="Limit 20 chars."
-                          ref={node => (this.descIpt = node)}
-                        />
-                      ) : (
-                        <p>{note.description}</p>
-                      )}
-                    </div>
-                    <div className="file-list__item__info__desc" />
-                    <div className="file-list__item__info__desc">
-                      <p className="date-p">{formatDate(note.latestDate)}</p>
-                    </div>
-                  </div>
-                  <ul className="clouds">
-                    {this.renderCloudIcon(note.oneDriver)}
-                  </ul>
-                </li>
-              );
-            })}
-            {newFile && sortBy === 'normal' ? this.renderNewFile() : (null) }
-          </ul>
+          {this.renderNotes(head)}
         </Scrollbars>
       </div>
     );

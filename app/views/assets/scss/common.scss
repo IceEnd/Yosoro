@@ -14,15 +14,32 @@
 @mixin normal-ipt {
 	height: 1.8rem;
 	font-size: 0.9rem;
-	padding: 0 0.2rem;
-	color: rgba(0, 0, 0, 0.5);
+	color: rgba(0, 0, 0, 0.8);
 	cursor: pointer;
 }
 
-@mixin text-ellipsis {
+@mixin file-title-ipt {
+	height: 1.6rem;
+	font-size: 1.1rem;
+	font-weight: bolder;
+	margin-top: .1rem;
+	color: rgba(0, 0, 0, .8);
+	cursor: pointer;
+}
+
+@mixin text-ellipsis($line: 1) {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	text-align: justify;
 	overflow: hidden;
-	white-space: nowrap;
 	text-overflow: ellipsis;
+	-webkit-line-clamp: $line;
+}
+
+@for $i from 1 through 4 {
+	.text-ellipsis-#{$i}{
+		@include text-ellipsis($i);
+	}
 }
 
 /**

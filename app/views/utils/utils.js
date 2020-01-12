@@ -269,3 +269,38 @@ export function animatedScrollTo(element, to, duration, callback) {
   };
   requestAnimationFrame(animateScroll);
 }
+
+export function getFolderByPos(folder, pos) {
+  const nodes = pos.split('-').slice(2);
+  let path = '';
+  let head = folder;
+  for (const node of nodes) {
+    if (Array.isArray(head)) {
+      head = head[node];
+    } else {
+      head = head.children[node];
+    }
+    path += `/${head.name}`;
+  }
+  return {
+    head,
+    path,
+  };
+}
+
+export function getFolderByUuid(folder, target) {
+  let res = null;
+  for (const item of folder) {
+    const { children, uuid } = item;
+    if (target === uuid) {
+      return item;
+    }
+    if (children && Array.isArray(children)) {
+      res = getFolderByUuid(children, target);
+      if (res) {
+        return res;
+      }
+    }
+  }
+  return res;
+}

@@ -9,6 +9,7 @@ import { createHashHistory } from 'history';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import storage from 'redux-persist/lib/storage';
+import { AppContainer } from 'react-hot-loader';
 import App from './container/App';
 import rootReducer from './reducers/reducers';
 import sagas from './sagas/sagas';
@@ -32,13 +33,12 @@ const enhancer = composeEnhancers(
 const persistConfig = {
   key: 'edit',
   storage,
-  blacklist: ['app', 'drive', 'projects', 'markdown', 'exportQueue', 'routing', 'user', 'imageHosting', 'medium'],
+  blacklist: ['app', 'drive', 'markdown', 'exportQueue', 'routing', 'user', 'imageHosting', 'medium'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = createStore(
-  // rootReducer,
   persistedReducer,
   enhancer,
 );
@@ -55,11 +55,13 @@ syncHistoryWithStore(createHashHistory(), store);
 
 const render = (Component) => {
   ReactDOM.render(
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Component history={history} />
-      </PersistGate>
-    </Provider>,
+    <AppContainer>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Component history={history} />
+        </PersistGate>
+      </Provider>
+    </AppContainer>,
     document.querySelector('#root')
   );
 };
@@ -70,6 +72,11 @@ if (module.hot) {
   module.hot.accept('./container/App', () => {
     const newApp = require('./container/App').default;
     render(newApp);
+  });
+
+  module.hot.accept('./reducers/reducers', () => {
+    const nextReducer = require('./reducers/reducers').default;
+    store.replaceReducer(nextReducer);
   });
 
   const hotEmitter = require('webpack/hot/emitter');

@@ -12,7 +12,7 @@ import {
   JUST_UPDATE_MARKDWON_HTML,
   REPLACE_UPLOAD_IMAGE_TEXT,
 } from '../actions/markdown';
-import { updateNoteInfo } from '../utils/db/app';
+import { updateFileInfo } from '../utils/db/app';
 import { eventMD } from '../events/eventDispatch';
 
 const assign = Object.assign;
@@ -53,7 +53,7 @@ function updateMarkdown(state = initState, action) {
       if (state.uuid !== action.uuid) {
         hasEdit = false;
       }
-      return assign({}, state, {
+      return assign(state, {
         content: action.content,
         start: action.start,
         hasEdit,
@@ -78,7 +78,7 @@ function updateMarkdown(state = initState, action) {
       if (needUpdateCloudStatus) {
         param.oneDriver = 1;
       }
-      updateNoteInfo(uuid, param);
+      updateFileInfo(uuid, param);
       if (!data.success) {
         console.error('Save file failed.');
       }

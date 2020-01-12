@@ -22,7 +22,7 @@ export default class Notes extends Event {
     'rename-project',
     'move-project-to-trash',
     'create-file',
-    'rename-note',
+    'rename-file',
     'read-file',
     'save-content-to-file',
     'auto-save-content-to-file',
@@ -70,13 +70,8 @@ export default class Notes extends Event {
       const { oldName, newName } = args;
       const oldfolder = `${getProjectsPath()}${oldName}`;
       const newfolder = `${getProjectsPath()}${newName}`;
-      // const oldTrashFolder = `${getTrashPath()}/${oldName}`;
-      // const newTrashFolder = `${getTrashPath()}/${newName}`;
       try {
         fs.renameSync(oldfolder, newfolder);
-        // if (fs.existsSync(oldTrashFolder)) {
-        //   fs.renameSync(oldTrashFolder, newTrashFolder);
-        // }
         event.returnValue = {
           success: true,
           folder: newfolder,
@@ -91,9 +86,9 @@ export default class Notes extends Event {
 
     // move to trash
     this.listener('move-project-to-trash', (event, args) => {
-      const { name } = args;
-      const oldPath = `${getProjectsPath()}/${name}`;
-      const newPath = `${getTrashPath()}/${name}`;
+      const { folder, uuid } = args;
+      const oldPath = `${getProjectsPath()}${folder}`;
+      const newPath = `${getTrashPath()}/${uuid}`;
       try {
         if (!fs.existsSync(oldPath)) { // 不存在对应文件夹
           event.returnValue = {
@@ -101,16 +96,7 @@ export default class Notes extends Event {
             code: 1,
           };
         } else {
-          if (fs.existsSync(newPath)) {
-            const files = fs.readdirSync(oldPath);
-            const fl = files.length;
-            for (let i = 0; i < fl; i++) {
-              const fileName = files[i];
-              fse.moveSync(`${oldPath}/${fileName}`, `${newPath}/${fileName}`, { overwrite: true });
-            }
-          } else {
-            fse.moveSync(oldPath, newPath, { overwrite: true });
-          }
+          fse.moveSync(oldPath, newPath, { overwrite: true });
           if (fs.existsSync(oldPath)) {
             fs.rmdirSync(oldPath);
           }
@@ -129,11 +115,10 @@ export default class Notes extends Event {
     });
 
     // create file
-    this.listener('create-file', (event, args) => {
-      const { name, projectName } = args;
-      const file = `${getProjectsPath()}/${projectName}/${name}.md`;
+    this.listener('create-file', (event, file) => {
+      const filePath = `${getProjectsPath()}${file}`;
       try {
-        fs.writeFileSync(file, '');
+        fs.writeFileSync(filePath, '');
         event.returnValue = {
           file,
           success: true,
@@ -147,10 +132,10 @@ export default class Notes extends Event {
     });
 
     // rename file
-    this.listener('rename-note', (event, args) => {
-      const { oldName, newName, projectName } = args;
-      const oldPath = `${getProjectsPath()}/${projectName}/${oldName}.md`;
-      const newPath = `${getProjectsPath()}/${projectName}/${newName}.md`;
+    this.listener('rename-file', (event, args) => {
+      const { root, oldName, newName } = args;
+      const oldPath = `${getProjectsPath()}${root}/${oldName}.md`;
+      const newPath = `${getProjectsPath()}${root}/${newName}.md`;
       try {
         fs.renameSync(oldPath, newPath);
         event.returnValue = {
@@ -166,9 +151,8 @@ export default class Notes extends Event {
     });
 
     // read file
-    this.listener('read-file', (event, args) => {
-      const { projectName, fileName } = args;
-      const filePath = `${getProjectsPath()}/${projectName}/${fileName}.md`;
+    this.listener('read-file', (event, file) => {
+      const filePath = `${getProjectsPath()}${file}`;
       try {
         const data = fs.readFileSync(filePath, {
           encoding: 'utf8',
@@ -208,15 +192,10 @@ export default class Notes extends Event {
 
     // auto save file
     this.listener('auto-save-content-to-file', (event, args) => {
-      const { content, fileName, projectName } = args;
-      const filePath = `${getProjectsPath()}/${projectName}/${fileName}.md`;
-      const folder = `${getProjectsPath()}/${projectName}`;
+      const { content, file } = args;
+      const filePath = `${getProjectsPath()}${file}`;
       try {
-        if (!fs.existsSync(folder)) {
-          fs.mkdirSync(folder);
-        }
-        fs.writeFile(filePath, content, () => {
-        });
+        fs.writeFile(filePath, content, () => {});
       } catch (ex) {
         console.warn(ex);
       }
@@ -241,10 +220,10 @@ export default class Notes extends Event {
 
     // move note to trash
     this.listener('move-file-to-trash', (event, args) => {
-      const { name, projectName } = args;
-      const oldPath = `${getProjectsPath()}/${projectName}/${name}.md`;
-      const newPath = `${getTrashPath()}/${projectName}/${name}.md`;
-      const newfolder = `${getTrashPath()}/${projectName}`;
+      const { file, uuid } = args;
+      const { PROJECTS_PATH, TRASH_FILE_PATH } = global.RUNTIME.paths;
+      const oldPath = `${PROJECTS_PATH}/${file}`;
+      const newPath = `${TRASH_FILE_PATH}/${uuid}`;
       try {
         if (!fs.existsSync(oldPath)) {
           event.returnValue = {
@@ -253,8 +232,8 @@ export default class Notes extends Event {
             code: 1,
           };
         } else {
-          if (!fs.existsSync(newfolder)) {
-            fs.mkdirSync(newfolder);
+          if (!fs.existsSync(TRASH_FILE_PATH)) {
+            fs.mkdirSync(TRASH_FILE_PATH);
           }
           fse.moveSync(oldPath, newPath, { overwrite: true });
           if (fs.existsSync(oldPath)) {
@@ -262,7 +241,6 @@ export default class Notes extends Event {
           }
           event.returnValue = {
             success: true,
-            folder: newPath,
             code: 0,
           };
         }

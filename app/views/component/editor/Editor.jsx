@@ -7,15 +7,14 @@ import Scrollbars from 'Share/Scrollbars';
 import autobind from 'autobind-decorator';
 import Muya from 'Utils/muya/index';
 import {
-  UPLOAD_IMAGE,
-  UPLOAD_IMAGE_SUCCESS,
-  UPLOAD_IMAGE_FAILED,
+  uploadImage,
+  uploadImageSuccess,
+  uploadImageFailed,
 } from 'Actions/imageHosting';
-import { saveNote } from 'Actions/projects';
+import { saveFile } from 'Actions/projects';
 import { updateMarkdownHtml } from 'Actions/markdown';
 import { isCanUpload } from 'Utils/db/app';
 import { debounce, animatedScrollTo } from 'Utils/utils';
-import { withTheme } from 'Components/HOC/context';
 import * as notifications from '../share/notifications';
 import { eventTOC } from '../../events/eventDispatch';
 
@@ -27,36 +26,37 @@ const STANDAR_Y = 70;
 function mapStateToProps(state, ownProps) {
   const {
     app: { imageHostingConfig, settings },
-    markdown: { content, uuid },
-    note,
+    markdown: { content },
+    projects: { fileUuid },
   } = state;
   return {
-    uuid,
+    uuid: fileUuid,
     defaultContent: content,
     editorMode: settings.editorMode,
     fontSize: settings.editor.fontSize,
-    note,
     imageHostingConfig,
     ...ownProps,
   };
 }
 
-@withTheme
-@connect(mapStateToProps)
+function mapDispatchToProps(dispatch) {
+  return {
+    uploadImage: (...args) => dispatch(uploadImage(...args)),
+    uploadImageSuccess: (...args) => dispatch(uploadImageSuccess(...args)),
+    uploadImageFailed: (...args) => dispatch(uploadImageFailed(...args)),
+    saveFile: (...args) => dispatch(saveFile(...args)),
+    updateMarkdownHtml: (...args) => dispatch(updateMarkdownHtml(...args)),
+  };
+}
+
+@connect(mapStateToProps, mapDispatchToProps)
 export default class Editor extends Component {
   static displayName = 'MarkdownEditor';
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
     uuid: PropTypes.string.isRequired,
     defaultContent: PropTypes.string.isRequired,
     editorMode: PropTypes.string.isRequired,
     fontSize: PropTypes.number.isRequired,
-    note: PropTypes.shape({
-      projectUuid: PropTypes.string.isRequired,
-      projectName: PropTypes.string.isRequired,
-      fileUuid: PropTypes.string.isRequired,
-      fileName: PropTypes.string.isRequired,
-    }).isRequired,
     imageHostingConfig: PropTypes.shape({
       default: PropTypes.oneOf(['github', 'weibo', 'SM.MS']).isRequired,
       github: PropTypes.shape({
@@ -67,6 +67,12 @@ export default class Editor extends Component {
         domain: PropTypes.string.isRequired,
       }).isRequired,
     }).isRequired,
+    // action function
+    uploadImage: PropTypes.func.isRequired,
+    uploadImageSuccess: PropTypes.func.isRequired,
+    uploadImageFailed: PropTypes.func.isRequired,
+    saveFile: PropTypes.func.isRequired,
+    updateMarkdownHtml: PropTypes.func.isRequired,
   };
 
   constructor() {
@@ -152,16 +158,16 @@ export default class Editor extends Component {
     });
   }
 
-  // 停止编辑500ms, 异步保存文件内容
-  autoSave = debounce(() => {
-    const { note: { projectName, projectUuid, fileName, fileUuid }, defaultContent, dispatch } = this.props;
-    ipcRenderer.send('NOTES:auto-save-content-to-file', {
-      projectName,
-      fileName,
-      content: defaultContent,
-    });
-    dispatch(saveNote(projectUuid, fileUuid));
-  }, 500);
+  // 停止编辑 2s, 异步保存文件内容
+  autoSave = debounce((markdown) => {
+    const { uuid } = this.props;
+    const desc = this.editorRoot.innerText
+      .substr(0, 100)
+      .replace(/[\t\v\n\r\f]/g, '')
+      .replace(/ +/g, ' ').substr(0, 60);
+    this.props.updateMarkdownHtml(markdown, uuid, -1);
+    this.props.saveFile(uuid, markdown, desc);
+  }, 2000);
 
   addChangeEvent() {
     if (this.muya) {
@@ -183,9 +189,7 @@ export default class Editor extends Component {
   }
 
   handleChange = ({ markdown }) => {
-    const { uuid } = this.props;
-    this.props.dispatch(updateMarkdownHtml(markdown, uuid, -1));
-    this.autoSave();
+    this.autoSave(markdown);
   }
 
   handleParagraph = (e, type) => {
@@ -232,17 +236,12 @@ export default class Editor extends Component {
     ipcRenderer.once(`pic-upload-sync-cb-${++seed}`, (event, args) => {
       const { code, data } = args;
       if (code === 0) {
-        this.props.dispatch({
-          type: UPLOAD_IMAGE_SUCCESS,
-          data,
-        });
+        this.props.uploadImageSuccess(data);
         if (cb && this.state.uploadfor === this.props.uuid) {
           cb(data);
         }
       } else {
-        this.props.dispatch({
-          type: UPLOAD_IMAGE_FAILED,
-        });
+        this.props.uploadImageFailed();
       }
     });
     ipcRenderer.send('IMAGES:pic-upload-sync', {
@@ -282,13 +281,7 @@ export default class Editor extends Component {
     }
     const uuid = `${Date.now()}${key++}`;
     cm.doc.replaceSelection(`![Uploading ${uuid}]()`);
-    this.props.dispatch({
-      type: UPLOAD_IMAGE,
-      imageHostingConfig,
-      files,
-      uuid,
-      from: 'editor',
-    });
+    this.props.uploadImage(imageHostingConfig, files, uuid, 'editor');
   }
 
   render() {

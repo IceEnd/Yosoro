@@ -1,28 +1,36 @@
-export const GET_PROJECT_LIST = 'GET_PROJECT_LIST';
-export const GET_PROJECT_LIST_SUCCESS = 'GET_PROJECT_LIST_SUCCESS';
-export const GET_PROJECT_LIST_FAIL = 'GET_PROJECT_LIST_FAIL';
-export const CREATE_PROJECT = 'CREATE_PROJECT';
-export const CREATE_FILE = 'CREATE_FILE';
-export const DELETE_PROJECT = 'DELETE_PROJECT';
-export const RENAME_PROJECT = 'RENAME_PROJECT';
-export const RENAME_NOTE = 'RENAME_NOTE';
-export const DELETE_NOTE = 'DELETE_NOTE';
-export const UPDATE_NOTE_DESCRIPTION = 'UPDATE_NODE_DESCRIPTION';
-export const SEARCH_NOTES = 'SEARCH_NOTES';
-export const CLEAR_SEARCH_NOTES = 'CLEAR_SEARCH_NOTES';
-export const REMOVE_NOTE_PERMANENTLY = 'REMOVE_NOTE_PERMANENTLY';
-export const REMOVE_NOTEBOOK_PERMANENTLY = 'REMOVE_NOTEBOOK_PERMANENTLY';
-export const RESTORE_NOTE = 'RESTORE_NOTE';
-export const RESTORE_NOTEBOOK = 'RESTORE_NOTEBOOK';
-export const TRASH_CHOOSE_PROJECT = 'TRASH_CHOOSE_PROJECT';
-export const TRASH_BACK_ROOT = 'TRASH_BACK_ROOT';
-export const SAVE_NOTE_ON_KEYDOWN = 'SAVE_NOTE_ON_KEYDOWN';
-export const UPLOAD_NOTE_ONEDRIVE = 'UPLOAD_NOTE_ONEDRIVE';
-export const UPLOAD_NOTE_ONEDRIVE_SUCCESS = 'UPLOAD_NOTE_ONEDRIVE_SUCCESS';
-export const UPLOAD_NOTE_ONEDRIVE_FAILED = 'UPLOAD_NOTE_ONEDRIVE_FAILED';
-export const UPDATE_NOTE_UPLOAD_STATUS = 'UPDATE_NOTE_UPLOAD_STATUS';
-export const SAVE_NOTE_FROM_DRIVE = 'SAVE_NOTE_FROM_DRIVE';
-export const TOGGLE_FOLDER_EXPANEDED_KEYS = 'TOGGLE_FOLDER_EXPANEDED_KEYS';
+const TOKEN = '[PROJECTS]';
+
+export const GET_PROJECT_LIST = `${TOKEN}:GET_PROJECT_LIST`;
+export const GET_PROJECT_LIST_SUCCESS = `${TOKEN}:GET_PROJECT_LIST_SUCCESS`;
+export const GET_PROJECT_LIST_FAIL = `${TOKEN}:GET_PROJECT_LIST_FAIL`;
+export const CREATE_PROJECT = `${TOKEN}:CREATE_PROJECT`;
+export const CREATE_FILE = `${TOKEN}:CREATE_FILE`;
+export const DELETE_PROJECT = `${TOKEN}:DELETE_PROJECT`;
+export const RENAME_PROJECT = `${TOKEN}:RENAME_PROJECT`;
+export const RENAME_FILE = `${TOKEN}:RENAME_FILE`;
+export const DELETE_FILE = `${TOKEN}:DELETE_FILE`;
+export const UPDATE_FILE_DESCRIPTION = `${TOKEN}:UPDATE_NODE_DESCRIPTION`;
+export const SEARCH_NOTES = `${TOKEN}:SEARCH_NOTES`;
+export const CLEAR_SEARCH_NOTES = `${TOKEN}:CLEAR_SEARCH_NOTES`;
+export const REMOVE_NOTE_PERMANENTLY = `${TOKEN}:${TOKEN}:REMOVE_NOTE_PERMANENTLY`;
+export const REMOVE_NOTEBOOK_PERMANENTLY = `${TOKEN}:REMOVE_NOTEBOOK_PERMANENTLY`;
+export const RESTORE_NOTE = `${TOKEN}:RESTORE_NOTE`;
+export const RESTORE_NOTEBOOK = `${TOKEN}:RESTORE_NOTEBOOK`;
+export const TRASH_CHOOSE_PROJECT = `${TOKEN}:TRASH_CHOOSE_PROJECT`;
+export const TRASH_BACK_ROOT = `${TOKEN}:TRASH_BACK_ROOT`;
+export const SAVE_FILE_ON_KEYDOWN = `${TOKEN}:SAVE_FILE_ON_KEYDOWN`;
+export const UPLOAD_NOTE_ONEDRIVE = `${TOKEN}:UPLOAD_NOTE_ONEDRIVE`;
+export const UPLOAD_NOTE_ONEDRIVE_SUCCESS = `${TOKEN}:UPLOAD_NOTE_ONEDRIVE_SUCCESS`;
+export const UPLOAD_NOTE_ONEDRIVE_FAILED = `${TOKEN}:UPLOAD_NOTE_ONEDRIVE_FAILED`;
+export const UPDATE_NOTE_UPLOAD_STATUS = `${TOKEN}:UPDATE_NOTE_UPLOAD_STATUS`;
+export const SAVE_NOTE_FROM_DRIVE = `${TOKEN}:SAVE_NOTE_FROM_DRIVE`;
+export const TOGGLE_FOLDER_EXPANEDED_KEYS = `${TOKEN}:TOGGLE_FOLDER_EXPANEDED_KEYS`;
+export const SWITCH_PROJECT = `${TOKEN}:SWITCH_PROJECT`;
+export const SWITCH_FILE = `${TOKEN}:SWITCH_NOTE`;
+export const CLEAR_NOTE = `${TOKEN}:CLEAR_NOTE`;
+export const CLEAR_NOTE_WORKSCAPE = `${TOKEN}:CLEAR_NOTE_WORKSCAPE`;
+export const UPDATE_NOTE_PROJECTNAME = `${TOKEN}:UPDATE_NOTE_PROJECTNAME`;
+export const UPDATE_NOTE_FILENAME = `${TOKEN}:UPDATE_NOTE_FILENAME`;
 
 export function getProjectList() {
   return {
@@ -48,11 +56,12 @@ export function createFile(param) {
   };
 }
 
-export function deleteProject(uuid, onlyDelete) {
+export function deleteProject(uuid, pos, permanently = false) {
   return {
     type: DELETE_PROJECT,
     uuid,
-    onlyDelete,
+    pos,
+    permanently,
   };
 }
 
@@ -73,39 +82,33 @@ export function renameProject(uuid, pos, name) {
 }
 
 /**
- * @description 重命名笔记
+ * @description rename file
  *
  * @export
- * @param {String} uuid 项目uuid
- * @param {String} name 新名称
- * @param {String} parentsId 项目uuid
+ * @param {String} uuid uuid
+ * @param {String} name new name
  */
-export function renameNote(uuid, name, parentsId) {
+export function renameFile(uuid, name) {
   return {
-    type: RENAME_NOTE,
+    type: RENAME_FILE,
     uuid,
     name,
-    parentsId,
   };
 }
 
-export function deletNote(uuid, parentsId, name, projectName, onlyDelete = false) {
+export function deleteFile(uuid, onlyDelete = false) {
   return {
-    type: DELETE_NOTE,
+    type: DELETE_FILE,
     uuid,
-    parentsId,
-    noteName: name,
-    projectName,
     onlyDelete,
   };
 }
 
-export function updateNoteDesc(uuid, desc, parentsId) {
+export function updateFileDesc(uuid, desc) {
   return {
-    type: UPDATE_NOTE_DESCRIPTION,
+    type: UPDATE_FILE_DESCRIPTION,
     uuid,
     desc,
-    parentsId,
   };
 }
 
@@ -175,11 +178,12 @@ export function trashBack() {
   };
 }
 
-export function saveNote(parentsId, uuid) {
+export function saveFile(uuid, content, desc) {
   return {
-    type: SAVE_NOTE_ON_KEYDOWN,
-    parentsId,
+    type: SAVE_FILE_ON_KEYDOWN,
     uuid,
+    content,
+    desc,
   };
 }
 
@@ -197,5 +201,46 @@ export function toggleExpanededKeys(expandedKeys, flag = 'add') {
     type: TOGGLE_FOLDER_EXPANEDED_KEYS,
     expandedKeys,
     flag,
+  };
+}
+
+export function switchProject(uuid, pos) {
+  return {
+    type: SWITCH_PROJECT,
+    uuid,
+    pos,
+  };
+}
+
+export function switchFile(uuid) {
+  return {
+    type: SWITCH_FILE,
+    uuid,
+  };
+}
+
+export function clearNote() {
+  return {
+    type: CLEAR_NOTE,
+  };
+}
+
+export function clearWorkspace() {
+  return {
+    type: CLEAR_NOTE_WORKSCAPE,
+  };
+}
+
+export function updateNoteProjectName(name) {
+  return {
+    type: UPDATE_NOTE_PROJECTNAME,
+    name,
+  };
+}
+
+export function updateNoteFileName(name) {
+  return {
+    type: UPDATE_NOTE_FILENAME,
+    name,
   };
 }

@@ -1,7 +1,6 @@
 // import lunr from 'lunr';
 import { ipcRenderer } from 'electron';
 import { message } from 'antd';
-import { eventFolder } from '../events/eventDispatch';
 import {
   GET_PROJECT_LIST,
   GET_PROJECT_LIST_SUCCESS,
@@ -10,9 +9,9 @@ import {
   CREATE_FILE,
   DELETE_PROJECT,
   RENAME_PROJECT,
-  RENAME_NOTE,
-  DELETE_NOTE,
-  UPDATE_NOTE_DESCRIPTION,
+  RENAME_FILE,
+  DELETE_FILE,
+  UPDATE_FILE_DESCRIPTION,
   SEARCH_NOTES,
   CLEAR_SEARCH_NOTES,
   REMOVE_NOTE_PERMANENTLY,
@@ -21,13 +20,19 @@ import {
   RESTORE_NOTEBOOK,
   TRASH_CHOOSE_PROJECT,
   TRASH_BACK_ROOT,
-  SAVE_NOTE_ON_KEYDOWN,
+  SAVE_FILE_ON_KEYDOWN,
   UPLOAD_NOTE_ONEDRIVE,
   UPLOAD_NOTE_ONEDRIVE_SUCCESS,
   UPLOAD_NOTE_ONEDRIVE_FAILED,
   UPDATE_NOTE_UPLOAD_STATUS,
   SAVE_NOTE_FROM_DRIVE,
   TOGGLE_FOLDER_EXPANEDED_KEYS,
+  SWITCH_PROJECT,
+  SWITCH_FILE,
+  CLEAR_NOTE,
+  CLEAR_NOTE_WORKSCAPE,
+  UPDATE_NOTE_PROJECTNAME,
+  UPDATE_NOTE_FILENAME,
 } from '../actions/projects';
 import {
   // getProjectList,
@@ -36,9 +41,9 @@ import {
   createFile,
   deleteProject,
   renameProject,
-  renameNote,
+  renameFile,
   deleteNote,
-  updateNoteInfo,
+  updateFileInfo,
   dbSearchNotes,
   dbRemoveNote,
   dbRemoveProject,
@@ -47,26 +52,9 @@ import {
   dbUpdateNotebook,
   getNote,
 } from '../utils/db/app';
+import { getFolderByPos } from '../utils/utils';
 
 const assign = Object.assign;
-
-function getFolderByPos(folder, pos) {
-  const nodes = pos.split('-').slice(2);
-  let path = '';
-  let head = folder;
-  for (const node of nodes) {
-    if (Array.isArray(head)) {
-      head = head[node];
-    } else {
-      head = head.children[node];
-    }
-    path += `/${head.name}`;
-  }
-  return {
-    head,
-    path,
-  };
-}
 
 function projectReducer(state = {
   status: 0, // 0: request 1: success 2: failed
@@ -82,6 +70,9 @@ function projectReducer(state = {
   searchResult: [],
   searchStatus: 0, // 0：normal 1: search
   expandedKeys: ['root'],
+  projectUuid: '-1',
+  fileUuid: '-1',
+  pos: '',
 }, action) {
   switch (action.type) {
     case TRASH_CHOOSE_PROJECT: {
@@ -186,6 +177,32 @@ function projectReducer(state = {
       message.error('Rename failed.');
       return state;
     }
+    case DELETE_PROJECT: {
+      /**
+       * 删除文件夹方案：
+       * 1. 将整个文件夹移动到trash目录下，并用uuid进行命名（方便恢复）
+       * 2. 将当前uuid状态设置为垃圾状态
+       *
+       * 永久删除直接删除uuid命名的文件夹，并清理数据
+       */
+      const { uuid, pos } = action;
+      const { head, path } = getFolderByPos(state.projects, pos);
+      const res = ipcRenderer.sendSync('NOTES:move-project-to-trash', {
+        uuid,
+        folder: path,
+      });
+      if (res.success) {
+        head.status = -1;
+        updateProjects(state.projects);
+        if (state.projectUuid === uuid) {
+          state.projectUuid = '-1';
+          state.fileUuid = '-1';
+        }
+        return assign({}, state);
+      }
+      message.error('Delete Failed.');
+      return state;
+    }
     case TOGGLE_FOLDER_EXPANEDED_KEYS: {
       const { expandedKeys, flag } = action;
       if (Array.isArray(expandedKeys)) {
@@ -202,287 +219,40 @@ function projectReducer(state = {
       return assign({}, state);
     }
     case CREATE_FILE: { // 创建笔记
-      const { param, param: { parentsId } } = action;
+      const { param } = action;
       const file = createFile(param);
-      const hash = state.hash;
-      state.projects[hash[parentsId]].notes.unshift(file);
+      state.notes.unshift(file);
       return assign({}, state);
     }
-    case DELETE_PROJECT: { // 删除项目
-      const { uuid, onlyDelete } = action;
-      deleteProject(uuid);
-      const { hash, trashHash } = state;
-      const project = state.projects[hash[uuid]];
-      state.projects.splice(hash[uuid], 1);
-      const newHash = {};
-      const pl = state.projects.length;
-      for (let i = 0; i < pl; i++) {
-        newHash[state.projects[i].uuid] = i;
-      }
-      // delete hash[uuid];
-      state.hash = newHash;
-      if (onlyDelete) { // 仅仅删除
-        return assign({}, state);
-      }
-      if (typeof trashHash[uuid] === 'undefined') {
-        const { trashProjects } = state;
-        let tIndex = 0;
-        const tpLength = trashProjects.length;
-        let overwrite = false;
-        let targetProject;
-        for (let i = 0; i < tpLength; i++) {
-          if (trashProjects[i].name === project.name) {
-            tIndex = i;
-            targetProject = trashProjects[i];
-            overwrite = true;
-            break;
-          }
-        }
-        if (overwrite) { // 去重: 覆盖， 合并
-          dbRemoveProject({
-            uuid: targetProject.uuid,
-            status: 0,
-          });
-          const pNotes = project.notes;
-          const tNotes = targetProject.notes;
-          const pnLength = pNotes.length;
-          const tnLength = tNotes.length;
-          const newNotes = [...[], ...tNotes];
-          for (let i = 0; i < pnLength; i++) {
-            let targetIndex = 0;
-            let targetOverwrite = false;
-            for (let j = 0; j < tnLength; j++) {
-              if (pNotes[i].name === tNotes[i].name) {
-                targetIndex = j;
-                targetOverwrite = true;
-                break;
-              }
-            }
-            if (targetOverwrite) { // 重写覆盖
-              dbRemoveNote({ uuid: newNotes[targetIndex].uuid }); // 删除原来的"删除记录"
-              newNotes[targetIndex] = assign({}, pNotes[i], {
-                status: 0,
-              });
-            } else { // 插入
-              newNotes.push(assign({}, pNotes[i], {
-                status: 0,
-              }));
-            }
-          }
-          dbUpdateNote({
-            parentsId: targetProject.uuid,
-            status: 0,
-          }, {
-            parentsId: uuid,
-          });
-          const newTrashProject = assign({}, trashProjects[tIndex], {
-            uuid: project.uuid,
-            description: project.description,
-            labels: project.labels,
-          });
-          newTrashProject.notes = newNotes;
-          const trashHashIndex = trashHash[targetProject.uuid];
-          delete trashHash[targetProject.uuid];
-          trashHash[uuid] = trashHashIndex;
-          state.trashHash = assign({}, trashHash);
-          state.trashProjects[tIndex] = newTrashProject;
-        } else {
-          state.trashHash[uuid] = state.trashProjects.length;
-          project.status = 0;
-          state.trashProjects.push(project);
-        }
-      } else { // 考虑去重以及合并
-        const ti = trashHash[uuid];
-        const { name, description, labels } = project;
-        const pNotes = project.notes;
-        const tNotes = state.trashProjects[trashHash[uuid]].notes;
-        const pnLength = pNotes.length;
-        const tnLength = tNotes.length;
-        const newNotes = [...[], ...tNotes];
-        for (let i = 0; i < pnLength; i++) {
-          let targetIndex = 0;
-          let targetOverwrite = false;
-          for (let j = 0; j < tnLength; j++) {
-            if (pNotes[i].name === tNotes[i].name) {
-              targetIndex = j;
-              targetOverwrite = true;
-              break;
-            }
-          }
-          if (targetOverwrite) { // 重写覆盖
-            dbRemoveNote({ uuid: newNotes[targetIndex].uuid }); // 删除原来的"删除记录"
-            newNotes[targetIndex] = assign({}, pNotes[i], {
-              status: 0,
-            });
-          } else { // 插入
-            newNotes.push(assign({}, pNotes[i], {
-              status: 0,
-            }));
-          }
-        }
-        state.trashProjects[ti] = assign({}, state.trashProjects[ti], {
-          name,
-          description,
-          labels,
-        });
-        state.trashProjects[ti].notes = newNotes;
-      }
-      const newState = assign({}, state);
-      return assign({}, newState);
+    case RENAME_FILE: { // 对笔记进行重命名
+      const { uuid, name } = action;
+      renameFile(uuid, name);
+      const target = state.notes.find(item => item.uuid === uuid);
+      target.name = name;
+      state.notes = [...state.notes];
+      return state;
     }
-    case RENAME_NOTE: { // 对笔记进行重命名
-      const { uuid, name, parentsId } = action;
-      renameNote(uuid, name);
-      const notes = state.projects[state.hash[parentsId]].notes;
-      state.projects[state.hash[parentsId]].notes = notes.map((item) => {
-        if (item.uuid === uuid) {
-          item.name = name;
-        }
-        return item;
-      });
-      return assign({}, state);
-    }
-    case DELETE_NOTE: {
-      const { uuid, parentsId, noteName, projectName, onlyDelete } = action;
+    case DELETE_FILE: {
+      const { uuid } = action;
       deleteNote(uuid);
-      const pi = state.hash[parentsId];
-      const notes = [...[], ...state.projects[pi].notes];
-      const oldNotes = [...[], ...notes];
-      const nl = notes.length;
-      let ni;
-      let delNote;
-      for (let i = 0; i < nl; i++) {
-        if (notes[i].uuid === uuid) {
-          ni = i;
-          delNote = assign({}, notes[i], { status: 0 });
-          break;
-        }
+      const res = state.notes.filter(item => item.uuid === uuid);
+      if (res.length > 0) {
+        res[0].status = 0;
       }
-      notes.splice(ni, 1);
-      state.projects[pi].notes = notes;
-      if (onlyDelete) {
-        return assign({}, state);
-      }
-      const project = assign({}, state.projects[state.hash[parentsId]]);
-      if (typeof state.trashHash[parentsId] === 'undefined') { // 废纸篓中不存在对应项目
-        const { trashProjects, trashHash } = state;
-        let tIndex = 0;
-        const tpLength = trashProjects.length;
-        let overwrite = false;
-        let targetProject;
-        for (let i = 0; i < tpLength; i++) {
-          if (trashProjects[i].name === projectName) {
-            tIndex = i;
-            targetProject = trashProjects[i];
-            overwrite = true;
-            break;
-          }
-        }
-        if (overwrite) {
-          dbRemoveProject({
-            uuid: targetProject.uuid,
-            status: 0,
-          });
-          dbUpdateNote({ // 更新trashproject 下所有笔记 parentsId
-            parentsId: targetProject.uuid,
-            status: 0,
-          }, {
-            parentsId,
-          });
-          const pNotes = oldNotes;
-          const tNotes = targetProject.notes;
-          const pnLength = pNotes.length;
-          const tnLength = tNotes.length;
-          const newNotes = [...[], ...tNotes];
-          for (let i = 0; i < pnLength; i++) {
-            let targetIndex = 0;
-            let targetOverwrite = false;
-            for (let j = 0; j < tnLength; j++) {
-              if (pNotes[i].name === tNotes[i].name) {
-                targetIndex = j;
-                targetOverwrite = true;
-                break;
-              }
-            }
-            if (targetOverwrite) { // 重写覆盖
-              dbRemoveNote({ uuid: newNotes[targetIndex].uuid }); // 删除原来的"删除记录"
-              newNotes[targetIndex] = assign({}, pNotes[i], {
-                status: 0,
-              });
-            } else { // 插入
-              newNotes.push(assign({}, pNotes[i], {
-                status: 0,
-              }));
-            }
-          }
-          const newTrashProject = assign({}, trashProjects[tIndex], {
-            uuid: project.uuid,
-            description: project.description,
-            labels: project.labels,
-          });
-          newTrashProject.notes = newNotes;
-          const trashHashIndex = trashHash[targetProject.uuid];
-          delete trashHash[targetProject.uuid];
-          trashHash[uuid] = trashHashIndex;
-          state.trashHash = assign({}, trashHash);
-          state.trashProjects[tIndex] = newTrashProject;
-          state.trash.projectUuid = project.uuid;
-          state.trash.projectUuid = targetProject.uuid;
-        } else {
-          project.notes = [];
-          project.status = 0;
-          const ti = state.trashProjects.length;
-          state.trashHash[parentsId] = ti;
-          state.trashProjects.push(project);
-          state.trashProjects[ti].notes.push(delNote);
-        }
-      } else { // 废纸篓中已经存在对应项目
-        const ti = state.trashHash[parentsId];
-        const { name, description, labels } = project;
-        state.trashProjects[ti] = assign({}, state.trashProjects[ti], {
-          name,
-          description,
-          labels,
-          status: 0,
-        });
-        const tNotes = state.trashProjects[ti].notes;
-        const tnLength = tNotes.length;
-        let overwrite = false;
-        let index = 0;
-        let removeUuid = '';
-        for (let i = 0; i < tnLength; i++) {
-          if (noteName === tNotes[i].name) {
-            overwrite = true;
-            index = i;
-            removeUuid = tNotes[i].uuid;
-            dbRemoveNote({
-              uuid: removeUuid,
-              status: 0,
-            });
-          }
-        }
-        if (overwrite) {
-          tNotes[index] = assign({}, delNote);
-          state.trashProjects[ti].notes = tNotes;
-        } else {
-          state.trashProjects[ti].notes.push(delNote);
-        }
-      }
+      state.notes = [...state.notes];
       return assign({}, state);
     }
-    case UPDATE_NOTE_DESCRIPTION: { // 更新笔记描述
-      const { parentsId, uuid, desc } = action;
+    case UPDATE_FILE_DESCRIPTION: { // 更新笔记描述
+      const { uuid, desc } = action;
       const param = {
         description: desc,
       };
-      updateNoteInfo(uuid, param);
-      state.projects[state.hash[parentsId]].notes = state.projects[state.hash[parentsId]].notes.map((item) => {
-        if (item.uuid === uuid) {
-          item.description = desc;
-        }
-        return item;
-      });
-      return assign({}, state);
+      updateFileInfo(uuid, param);
+      const target = state.notes.find(item => item.uuid === uuid);
+      target.description = desc;
+      target.customDesc = true;
+      state.notes = [...state.notes];
+      return state;
     }
     case SEARCH_NOTES: {
       const { keyword } = action;
@@ -809,31 +579,29 @@ function projectReducer(state = {
       }
       return assign({}, state);
     }
-    case SAVE_NOTE_ON_KEYDOWN: {
-      const { parentsId, uuid } = action;
-      const note = getNote(uuid);
+    case SAVE_FILE_ON_KEYDOWN: {
+      const { uuid, content, desc } = action;
+      const { notes, projects, pos } = state;
+      const target = notes.find(item => item.uuid === uuid);
       let needUpdateCloudStatus = false;
-      if (note && note.oneDriver !== 0) {
+      if (target && target.oneDriver !== 0) {
         needUpdateCloudStatus = true;
       }
-      const date = (new Date()).toString();
-      const notes = state.projects[state.hash[parentsId]].notes.map((item) => {
-        if (item.uuid === uuid) {
-          item.latestDate = date;
-          if (needUpdateCloudStatus) {
-            item.oneDriver = 1;
-          }
-        }
-        return item;
-      });
-      state.projects[state.hash[parentsId]].notes = notes;
-      const param = {
-        latestDate: date,
-      };
+      const date = (new Date()).valueOf();
+      target.latestDate = date;
       if (needUpdateCloudStatus) {
-        param.oneDriver = 1;
+        target.oneDriver = 1;
       }
-      updateNoteInfo(uuid, param);
+      if (!target.customDesc) {
+        target.description = desc;
+      }
+      state.notes = [...state.notes];
+      updateFileInfo(uuid, target);
+      const head = getFolderByPos(projects, pos);
+      ipcRenderer.send('NOTES:auto-save-content-to-file', {
+        file: `${head.path}/${target.name}.md`,
+        content,
+      });
       return assign({}, state);
     }
     case UPLOAD_NOTE_ONEDRIVE: {
@@ -951,6 +719,39 @@ function projectReducer(state = {
         fileName: name,
       });
       return assign({}, state);
+    }
+    case SWITCH_PROJECT: {
+      const { uuid, pos } = action;
+      return assign({}, state, {
+        projectUuid: uuid,
+        pos,
+      });
+    }
+    case SWITCH_FILE:
+      return assign({}, state, {
+        fileUuid: action.uuid,
+      });
+    case CLEAR_NOTE:
+      return assign({}, state, {
+        fileUuid: '-1',
+      });
+    case CLEAR_NOTE_WORKSCAPE:
+      return assign({}, {
+        projectUuid: '-1',
+        fileUuid: '-1',
+        pos: '',
+      });
+    case UPDATE_NOTE_PROJECTNAME: {
+      const { name } = action;
+      return assign({}, state, {
+        projectName: name,
+      });
+    }
+    case UPDATE_NOTE_FILENAME: {
+      const { name } = action;
+      return assign({}, state, {
+        fileName: name,
+      });
     }
     default:
       return state;

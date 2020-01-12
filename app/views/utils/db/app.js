@@ -355,7 +355,7 @@ export function renameProject(uuid, name) {
  * @param {any} uuid 项目uuid
  * @param {any} name 项目新名称
  */
-export function renameNote(uuid, name) {
+export function renameFile(uuid, name) {
   db.get(FILES)
     .find({ uuid })
     .assign({
@@ -382,7 +382,7 @@ export function deleteNote(uuid) {
  * @param {String} uuid 笔记uuid
  * @param {Object} param 信息
  */
-export function updateNoteInfo(uuid, param) {
+export function updateFileInfo(uuid, param) {
   db.get(FILES)
     .find({ uuid })
     .assign(param)

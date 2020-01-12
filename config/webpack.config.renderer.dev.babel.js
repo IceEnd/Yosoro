@@ -28,6 +28,9 @@ export default merge.smart(baseConfig, {
       {
         test: /\.(js|jsx)$/,
         use: [
+          // {
+          //   loader: 'react-hot-loader/webpack',
+          // },
           {
             loader: 'babel-loader',
             options: {

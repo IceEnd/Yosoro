@@ -1,6 +1,5 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 import { ipcRenderer } from 'electron';
-import { message } from 'antd';
 import {
   DRIVE_FETCHING_PROJECTS,
   DRIVE_FETCHING_PROJECRS_FAILED,
@@ -78,10 +77,9 @@ function* fetchProject(action) {
       list,
     });
   } catch (ex) {
-    message.error(ex.message || 'Failed to fetch.');
-    console.warn(ex);
     yield put({
       type: DRIVE_FETCHING_PROJECRS_FAILED,
+      error: ex,
     });
   }
 }
@@ -106,10 +104,9 @@ function* fetchNotes(action) {
       list,
     });
   } catch (ex) {
-    message.error(ex.message || 'Failed to fetch.');
-    console.warn(ex);
     yield put({
       type: DRIVE_FETCHING_NOTES_FAILED,
+      error: ex,
     });
   }
 }
@@ -148,10 +145,9 @@ function* downloadNote(action) {
       });
     }
   } catch (ex) {
-    message.error(ex.message || 'Failed to Download.');
-    console.warn(ex);
     yield put({
       type: DRIVE_DOWNLOAD_NOTE_FAILED,
+      error: ex,
     });
   }
 }
@@ -188,9 +184,10 @@ function* deleteItem(action) {
       jsonItemId,
     });
   } catch (ex) {
-    message.error('delete failed');
+
     yield put({
       type: DRIVE_DELETE_ITEM_FAILED,
+      error: ex,
     });
   }
 }

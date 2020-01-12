@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { Tree, Icon, Input, Modal, Checkbox, message } from 'antd';
+import React, { Component } from 'react';
+import { Tree, Icon, Input, message } from 'antd';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import { connect } from 'react-redux';
@@ -9,31 +9,25 @@ import {
   renameProject,
   toggleExpanededKeys,
   deleteProject,
-  trashBack,
   updateNoteUploadStatus,
+  switchProject,
 } from 'Actions/projects';
-import { beforeSwitchSave, clearMarkdown } from 'Actions/markdown';
-import { switchProject, switchFile, clearWorkspace, updateNoteProjectName } from 'Actions/note';
-import { pushStateToStorage, mergeStateFromStorage, checkSpecial } from 'Utils/utils';
+import { clearMarkdown } from 'Actions/markdown';
+import { checkSpecial } from 'Utils/utils';
 import { getNote } from 'Utils/db/app';
-// import Layer from './Layer';
 
 const { TreeNode, DirectoryTree } = Tree;
 
 function mapStateToProps(state, ownProps) {
-  const { projects, app, markdown, note } = state;
+  const { projects, app, markdown } = state;
   const { editor, sortBy, editorMode } = app.settings;
-  const { fileUuid: currentFileUuid, projectUuid: currentUuid, projectName } = note;
   return {
     ...projects,
     ...ownProps,
     editor,
     editorMode,
     sortBy,
-    currentUuid,
-    currentFileUuid,
     hasEdit: markdown.hasEdit,
-    projectName,
   };
 }
 
@@ -42,6 +36,8 @@ function mapDispatchToProps(dispatch) {
     dispatch,
     createFolder: (...args) => dispatch(createProject(...args)),
     renameFolder: (...args) => dispatch(renameProject(...args)),
+    deleteFolder: (...args) => dispatch(deleteProject(...args)),
+    switchFolder: (...args) => dispatch(switchProject(...args)),
     toggleExpanededKeys: (...args) => dispatch(toggleExpanededKeys(...args)),
   };
 }
@@ -59,17 +55,18 @@ export default class Folder extends Component {
       status: PropTypes.number.isRequired,
       children: PropTypes.array,
     })).isRequired,
-    currentUuid: PropTypes.string.isRequired,
-    currentFileUuid: PropTypes.string.isRequired,
-    editorMode: PropTypes.string.isRequired,
+    projectUuid: PropTypes.string.isRequired,
+    fileUuid: PropTypes.string.isRequired,
+    // editorMode: PropTypes.string.isRequired,
     searchStatus: PropTypes.number.isRequired,
-    projectName: PropTypes.string.isRequired,
     hasEdit: PropTypes.bool.isRequired,
     expandedKeys: PropTypes.array.isRequired,
     // actions func
     toggleExpanededKeys: PropTypes.func.isRequired,
     createFolder: PropTypes.func.isRequired,
     renameFolder: PropTypes.func.isRequired,
+    deleteFolder: PropTypes.func.isRequired,
+    switchFolder: PropTypes.func.isRequired,
   };
 
   state = {
@@ -84,16 +81,16 @@ export default class Folder extends Component {
   };
 
   componentDidMount() {
-    ipcRenderer.on('new-folder', () => this.setStatus('new', 'newIpt'));
+    ipcRenderer.on('new-folder', () => this.setStatus('new', 'newIpt', true));
     ipcRenderer.on('rename-folder', () => this.setStatus('rename', 'renameIpt'));
-    ipcRenderer.on('delete-project', () => this.deleteConfrim());
+    ipcRenderer.on('delete-folder', this.handleDelete);
   }
 
   componentWillUnmount() {
     [
       'new-folder',
       'rename-folder',
-      'delete-project',
+      'delete-folder',
     ].forEach(item => ipcRenderer.removeAllListeners(item));
   }
 
@@ -110,66 +107,33 @@ export default class Folder extends Component {
     });
   }
 
-  deleteConfrim() {
-    const {
-      contextTitle,
-      deleteWarn,
-      moveFileToTrash,
-    } = this.state;
-    const content = (
-      <Fragment>
-        <p>This operation cannot be restored.</p>
-        <div>
-          <Checkbox
-            checked={moveFileToTrash}
-            onChange={e => this.handleCheckbox(e, 'moveFileToTrash')}
-          >Move the file to the Trash</Checkbox>
-        </div>
-        <div>
-          <Checkbox
-            checked={deleteWarn}
-            onChange={e => this.handleCheckbox(e, 'deleteWarn')}
-          >Do not ask me again</Checkbox>
-        </div>
-      </Fragment>
-    );
-    Modal.confirm({
-      title: `Are you sure you want to delete '${contextTitle}' and its contents?`,
-      content,
-      centered: true,
-      maskClosable: true,
-      okText: 'Delete',
-    });
-  }
-
   handleCheckbox = (e, name) => {
     this.setState({
       [name]: e.target.checked,
     });
   }
 
-  handleSelect = (keys) => {
-    const { dispatch, projectName, currentUuid, currentFileUuid, hasEdit } = this.props;
+  handleSelect = (keys, e) => {
+    const pos = e.selectedNodes[0].props.pos;
+    const { dispatch, projectUuid, fileUuid, hasEdit } = this.props;
     const uuid = keys.shift();
-    if (uuid === currentUuid) {
+    if (uuid === projectUuid) {
       return false;
     }
     if (hasEdit) {
       let needUpdateCloudStatus = false;
-      if (currentFileUuid && currentFileUuid !== '-1') {
-        const note = getNote(currentFileUuid);
+      if (fileUuid && fileUuid !== '-1') {
+        const note = getNote(fileUuid);
         if (note && note.oneDriver !== 0) {
           needUpdateCloudStatus = true;
         }
       }
-      dispatch(beforeSwitchSave(projectName, needUpdateCloudStatus));
       if (needUpdateCloudStatus) {
-        dispatch(updateNoteUploadStatus(currentUuid, currentFileUuid, 1));
+        dispatch(updateNoteUploadStatus(projectUuid, fileUuid, 1));
       }
     }
-    dispatch(switchProject(uuid, name));
+    this.props.switchFolder(uuid, pos);
     dispatch(clearMarkdown());
-    dispatch(switchFile('-1', '')); // clear current file
   }
 
   handleExpand = (expandedKeys) => {
@@ -214,6 +178,8 @@ export default class Folder extends Component {
     if (keyCode === 27) {
       // esc
       this.setState({
+        value: '',
+        rename: '',
         status: 'normal',
       });
       return;
@@ -231,6 +197,11 @@ export default class Folder extends Component {
   handleIptClick = (e) => {
     e.stopPropagation();
     e.preventDefault();
+  }
+
+  handleDelete = () => {
+    const { contextPos, contextUuid } = this.state;
+    this.props.deleteFolder(contextUuid, contextPos);
   }
 
   checkValue(name) {
@@ -255,6 +226,7 @@ export default class Folder extends Component {
     }
     this.setState({
       status: 'normal',
+      value: '',
     }, () => {
       const { contextUuid, contextPos } = this.state;
       this.props.createFolder(contextUuid, contextPos, name);
@@ -270,13 +242,14 @@ export default class Folder extends Component {
     this.props.renameFolder(contextUuid, contextPos, name);
     this.setState({
       status: 'normal',
+      rename: '',
     });
   }
 
   walkNode = projects =>
     projects.map((item) => {
       const { children, uuid, status, name } = item;
-      if (status === 0) {
+      if (status === -1) {
         return null;
       }
       return (
@@ -336,7 +309,7 @@ export default class Folder extends Component {
   }
 
   render() {
-    const { expandedKeys, projects, currentUuid } = this.props;
+    const { expandedKeys, projects, projectUuid } = this.props;
     return (
       <div className="folder-tree">
         <DirectoryTree
@@ -346,13 +319,13 @@ export default class Folder extends Component {
           onSelect={this.handleSelect}
           onRightClick={this.handleItemMenu}
           onExpand={this.handleExpand}
-          selectedKeys={[currentUuid]}
+          selectedKeys={[projectUuid]}
         >
           <TreeNode
-            title={(<h3>Folder</h3>)}
+            title="Folder"
             key="root"
             className="folder-root"
-            icon={null}
+            icon={<Icon type="book" />}
           >
             {this.renderCreateFolder('root')}
             {this.walkNode(projects)}

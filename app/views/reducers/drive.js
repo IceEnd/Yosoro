@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import {
   DRIVE_FETCHING_PROJECTS,
   DRIVE_FETCHING_PROJECRS_FAILED,
@@ -34,10 +35,13 @@ function updateDriver(state = {
       state.status = 1;
       return assign({}, state);
     }
-    case DRIVE_FETCHING_PROJECRS_FAILED:
+    case DRIVE_FETCHING_PROJECRS_FAILED: {
+      message.error(action.error.message || 'Failed to fetch.');
+      console.warn(action.error);
       return assign({}, state, {
         status: 2,
       });
+    }
     case DRIVE_FETCHING_NOTES:
       return assign({}, state, {
         status: 0,
@@ -49,10 +53,13 @@ function updateDriver(state = {
       state.status = 1;
       return assign({}, state);
     }
-    case DRIVE_FETCHING_NOTES_FAILED:
+    case DRIVE_FETCHING_NOTES_FAILED: {
+      message.error(action.error.message || 'Failed to fetch.');
+      console.warn(action.error);
       return assign({}, state, {
         status: 2,
       });
+    }
     case DRIVE_BACK_ROOT:
       return assign({}, state, {
         currentProjectName: '',
@@ -64,10 +71,16 @@ function updateDriver(state = {
         status: 0,
       });
     case DRIVE_DOWNLOAD_NOTE_SUCCESS:
-    case DRIVE_DOWNLOAD_NOTE_FAILED:
       return assign({}, state, {
         status: 1,
       });
+    case DRIVE_DOWNLOAD_NOTE_FAILED: {
+      message.error(action.error.message || 'Failed to Download.');
+      console.warn(action.error);
+      return assign({}, state, {
+        status: 1,
+      });
+    }
     case DRIVE_DELETE_ITEM:
       return assign({}, state, {
         status: 0,
@@ -84,10 +97,12 @@ function updateDriver(state = {
       state.status = 1;
       return assign({}, state);
     }
-    case DRIVE_DELETE_ITEM_FAILED:
+    case DRIVE_DELETE_ITEM_FAILED: {
+      message.error('Delete Failed.');
       return assign({}, state, {
         status: 1,
       });
+    }
     default:
       return state;
   }
