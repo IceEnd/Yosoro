@@ -187,6 +187,7 @@ export default class Files extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.parentsId !== prevProps.parentsId) {
       this.props.switchFile('-1');
+      this.resetStatus();
     }
   }
 
@@ -249,6 +250,12 @@ export default class Files extends Component {
   getFileById(uuid) {
     const files = this.props.notes.filter(item => item.uuid === uuid);
     return files;
+  }
+
+  resetStatus() {
+    this.setState({
+      newFile: false,
+    });
   }
 
   newItemFocus = () => {
@@ -366,6 +373,15 @@ export default class Files extends Component {
       } else if (type === 'desc') {
         this.updateDesc();
       }
+    } else if (e.keyCode === 27) {
+      // cancel
+      this.setState({
+        newFile: false,
+        newFileTitle: 'New Note',
+        contextStatus: '',
+        rename: '',
+        reDesc: '',
+      });
     }
   }
 
@@ -631,12 +647,10 @@ export default class Files extends Component {
     return (
       <Fragment key={uuid}>
         <h3 className="folder-name">{name}</h3>
-        {files.length > 0 ? (
-          <ul className="file-list">
-            {newFile && !pos ? this.renderNewFile() : (null) }
-            {files.map(note => this.renderFile(note, pos))}
-          </ul>
-        ) : null}
+        <ul className="file-list">
+          {newFile && !pos ? this.renderNewFile() : (null) }
+          {files.map(note => this.renderFile(note, pos))}
+        </ul>
         {children.map((item, index) => {
           const folderPos = pos ? `${pos}-${index}` : index.toString();
           return this.renderNotes(item, folderPos);
@@ -658,7 +672,7 @@ export default class Files extends Component {
     if (pos) {
       head = getFolderByPos(projects, pos).head;
     } else {
-      head = getFolderByUuid(projects, parentsId);
+      head = getFolderByUuid(projects, parentsId).head;
     }
     return (
       <div className={`file-explorer fade-in ${rootClass}`} onContextMenu={this.handleContextMenu}>

@@ -30,7 +30,6 @@
 @mixin text-ellipsis($line: 1) {
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	text-align: justify;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	-webkit-line-clamp: $line;

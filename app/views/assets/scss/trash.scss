@@ -29,7 +29,7 @@
 		}
 
 		.list-item {
-			flex: 0 0 14rem;
+			flex: 0 0 8rem;
 			padding: 1rem 2rem;
 			cursor: pointer;
 			border: 2px solid transparent;
@@ -38,12 +38,11 @@
 
 			&:hover {
 				background-color: rgba(146, 136, 173, 0.2);
-				border-color: #92a3ad;
 			}
 		}
 
 		.list-item__img {
-			padding: 0.5rem 1rem;
+			padding: 0 1rem;
 		}
 		.list-item__option {
 			padding: 0.25em 1rem;
@@ -74,7 +73,8 @@
 			text-align: center;
 			@include text-ellipsis;
 			text-align: center;
-			width: 10rem;
+			width: 6rem;
+			font-size: .9rem;
 		}
 	}
 }

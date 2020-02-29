@@ -6,7 +6,7 @@ import SVGIcon from '../SVGIcon';
 export default class NoteItem extends PureComponent {
   static displayName = 'NoteItem';
   static propTypes = {
-    type: PropTypes.oneOf(['notebook', 'note']).isRequired,
+    type: PropTypes.oneOf(['folder', 'document']).isRequired,
     className: PropTypes.string.isRequired,
     item: PropTypes.object.isRequired,
     isCloud: PropTypes.bool.isRequired, // 是否来自Cloud
@@ -50,7 +50,7 @@ export default class NoteItem extends PureComponent {
       return (
         <span
           className="list-item__options__item"
-          onClick={e => restoreFn(e, item.uuid, item.name)}
+          onClick={e => restoreFn(e, item)}
         >
           <Tooltip placement="bottom" title={`restore ${type}`}>
             <Icon type="export" />

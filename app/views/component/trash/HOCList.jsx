@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Modal, message } from 'antd';
 import { ipcRenderer } from 'electron';
 import autobind from 'autobind-decorator';
-import { permantRemoveNote, restoreNote, permantRemoveNotebook, chooseTrashProject, restoreNotebook } from '../../actions/projects';
+import { permantRemoveNote, restoreFile, permantRemoveNotebook, pushTrashFolder, restoreNotebook } from '../../actions/projects';
 
 const confirm = Modal.confirm;
 
@@ -42,7 +42,7 @@ export default function HOCListFactory(listType) {
 
       @autobind
       handleGoIn(uuid, name) {
-        this.props.dispatch(chooseTrashProject(uuid, name));
+        this.props.dispatch(pushTrashFolder(uuid, name));
       }
 
       // 还原项目
@@ -58,7 +58,7 @@ export default function HOCListFactory(listType) {
       }
 
       // 还原笔记
-      restoreNote(uuid, name) {
+      restoreFile(uuid, name) {
         const { trash: { projectUuid, projectName }, dispatch } = this.props;
         const data = ipcRenderer.sendSync('NOTES:restore-note', {
           projectName,
@@ -68,7 +68,7 @@ export default function HOCListFactory(listType) {
           message.error(`Restore "${name}" failed`);
           return false;
         }
-        dispatch(restoreNote(projectUuid, uuid));
+        dispatch(restoreFile(projectUuid, uuid));
       }
 
       // 打开还原项目弹框
@@ -86,7 +86,7 @@ export default function HOCListFactory(listType) {
             if (listType === 'projects') {
               this.restoreProject(uuid, name);
             } else {
-              this.restoreNote(uuid, name);
+              this.restoreFile(uuid, name);
             }
           },
         });
@@ -94,7 +94,7 @@ export default function HOCListFactory(listType) {
 
       // 永久删除笔记本
       removeNotebook(uuid, name) {
-        const data = ipcRenderer.sendSync('NOTES:permanent-remove-notebook', {
+        const data = ipcRenderer.sendSync('NOTES:permanent-remove-filebook', {
           name,
         });
         if (!data.success) {
@@ -110,7 +110,7 @@ export default function HOCListFactory(listType) {
       // 永久删除笔记
       removeNote(uuid, name) {
         const { trash: { projectUuid, projectName }, dispatch } = this.props;
-        const data = ipcRenderer.sendSync('NOTES:permanent-remove-note', {
+        const data = ipcRenderer.sendSync('NOTES:permanent-remove-file', {
           projectName,
           name,
         });

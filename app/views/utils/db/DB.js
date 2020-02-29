@@ -17,7 +17,15 @@ export default class DB {
 
   // 设置项目
   set = (name, data) => {
-    window.localStorage.setItem(name, JSON.stringify(data));
+    window.localStorage.setItem(
+      name,
+      JSON.stringify(data, (k, v) => {
+        if (k === 'return') {
+          return null;
+        }
+        return v;
+      })
+    );
     return this;
   }
 

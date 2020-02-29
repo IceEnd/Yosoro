@@ -3,7 +3,6 @@ import { Tree, Icon, Input, message } from 'antd';
 import PropTypes from 'prop-types';
 import { ipcRenderer } from 'electron';
 import { connect } from 'react-redux';
-
 import {
   createProject,
   renameProject,

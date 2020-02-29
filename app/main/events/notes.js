@@ -28,9 +28,9 @@ export default class Notes extends Event {
     'auto-save-content-to-file',
     'save-content-to-trash-file',
     'move-file-to-trash',
-    'permanent-remove-note',
-    'permanent-remove-notebook',
-    'restore-note',
+    'permanent-remove-file',
+    'permanent-remove-filebook',
+    'restore-file',
     'restore-notebook',
     'save-upload-info-data',
     'export-note',
@@ -253,9 +253,9 @@ export default class Notes extends Event {
     });
 
     // remove note permanent
-    this.listener('permanent-remove-note', (event, args) => {
-      const { projectName, name } = args;
-      const filePath = `${getTrashPath()}/${projectName}/${name}.md`;
+    this.listener('permanent-remove-file', (event, uuid) => {
+      const { TRASH_FILE_PATH } = global.RUNTIME.paths;
+      const filePath = `${TRASH_FILE_PATH}/${uuid}`;
       try {
         if (!fs.existsSync(filePath)) {
           event.returnValue = {
@@ -269,6 +269,32 @@ export default class Notes extends Event {
             code: 0,
           };
         }
+      } catch (ex) {
+        event.returnValue = {
+          success: false,
+          error: ex,
+        };
+      }
+    });
+
+    // restore file
+    this.listener('restore-file', (event, { uuid, name, folder }) => {
+      const { TRASH_FILE_PATH, PROJECTS_PATH } = global.RUNTIME.paths;
+      const f = `${PROJECTS_PATH}/${folder}`;
+      const oldFile = `${TRASH_FILE_PATH}/${uuid}`;
+      const newFile = `${f}/${name}.md`;
+      try {
+        // 如果源文件夹不存在则认为文件夹被删除
+        // 此种状态下无法恢复
+        if (!fs.existsSync(f)) {
+          event.returnValue = {
+            success: false,
+          };
+        }
+        fse.moveSync(oldFile, newFile, { overwrite: true });
+        event.returnValue = {
+          success: true,
+        };
       } catch (ex) {
         event.returnValue = {
           success: false,
@@ -293,28 +319,6 @@ export default class Notes extends Event {
             success: true,
           };
         }
-      } catch (ex) {
-        event.returnValue = {
-          success: false,
-          error: ex,
-        };
-      }
-    });
-
-    // restore file
-    this.listener('restore-note', (event, args) => {
-      const { projectName, name } = args;
-      const folder = `${getProjectsPath()}/${projectName}`;
-      const oldFile = `${getTrashPath()}/${projectName}/${name}.md`;
-      const newFile = `${getProjectsPath()}/${projectName}/${name}.md`;
-      try {
-        if (!fs.existsSync(folder)) {
-          fs.mkdirSync(folder);
-        }
-        fse.moveSync(oldFile, newFile, { overwrite: true });
-        event.returnValue = {
-          success: true,
-        };
       } catch (ex) {
         event.returnValue = {
           success: false,

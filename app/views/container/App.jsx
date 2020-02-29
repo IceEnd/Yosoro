@@ -129,7 +129,10 @@ export default class App extends Component {
       parentsId: PropTypes.string.isRequired,
       uuid: PropTypes.string.isRequired,
       createDate: PropTypes.string.isRequired,
-      latestDate: PropTypes.string.isRequired,
+      latestDate: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]),
       name: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,
       status: PropTypes.number.isRequired,
@@ -392,12 +395,7 @@ export default class App extends Component {
                 {/* 回收站 */}
                 <Route
                   path="/trash"
-                  render={() => (
-                    <Trash
-                      projects={trashProjects}
-                      trash={trash}
-                    />
-                  )}
+                  component={Trash}
                 />
                 <Route
                   path="/images"

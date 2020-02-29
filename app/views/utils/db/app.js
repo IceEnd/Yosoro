@@ -175,56 +175,34 @@ export function checkProjects() {
   return db.has(PROJECTS).value();
 }
 
+// 所有的删除文件夹平铺
+function getTrashList(data) {
+  return data.reduce((accumulator, item) => {
+    const { children, status } = item;
+    if (status === -1) {
+      accumulator.push(item);
+    }
+    if (Array.isArray(children)) {
+      // eslint-disable-next-line no-param-reassign
+      accumulator = accumulator.concat(getTrashList(children));
+    }
+    return accumulator;
+  }, []);
+}
+
 /*
  * get note list
  */
 export function getProjectList() {
   const notes = db.get(FILES).value() || [];
   const data = db.get(PROJECTS).value() || [];
-  // const trashProjects = [];
-  // const projects = [];
-  // const dLength = data.length;
-  // const nLength = notes.length;
-  // const hash = {};
-  // const trashHash = {};
-
-  // for (let i = 0; i < dLength; i++) { // 利用hash存储
-  //   data[i].notes = [];
-  //   if (data[i].status === 1) {
-  //     hash[data[i].uuid] = projects.length;
-  //     projects.push(data[i]);
-  //   } else {
-  //     trashHash[data[i].uuid] = trashProjects.length;
-  //     trashProjects.push(data[i]);
-  //   }
-  // }
-  // to trash uuid
-  // for (let i = 0; i < nLength; i++) {
-  //   const { parentsId } = notes[i];
-  //   if (notes[i].status === 1) {
-  //     projects[hash[parentsId]].notes.unshift(notes[i]);
-  //   } else {
-  //     if (typeof trashHash[parentsId] === 'undefined') {
-  //       trashHash[parentsId] = trashProjects.length;
-  //       const p = Object.assign({}, projects[hash[parentsId]]);
-  //       p.notes = [];
-  //       trashProjects.push(p);
-  //     }
-  //     trashProjects[trashHash[parentsId]].notes.unshift(notes[i]);
-  //   }
-  // }
-  // 回收站有点鸡肋，而且同时维护相同的文件结构比较繁琐，
+  const trashProjects = getTrashList(data);
   /**
-   * 文件夹整个删除 无法复原
-   * 回收站有点鸡肋，而且同时维护相同的文件结构比较繁琐
-   * 于是回收站只有一层目录，文件用uuid命名，
-   * 被删除的文件带上一个原路径的 path，以便于恢复
+   * 删除的文件夹都平铺，类似系统的回收站
   */
   return {
     projects: data,
-    // trashProjects,
-    // hash,
-    // trashHash,
+    trashProjects,
     notes,
   };
 }
@@ -435,7 +413,7 @@ export function dbRemoveNote(param) {
  * @description 还原被删除笔记
  * @param {String} uuid 笔记uuid
  */
-export function dbRestoreNote(uuid) {
+export function dbRestoreFile(uuid) {
   db.get(FILES)
     .find({
       uuid,

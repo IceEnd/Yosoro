@@ -288,19 +288,20 @@ export function getFolderByPos(folder, pos) {
   };
 }
 
-export function getFolderByUuid(folder, target) {
-  let res = null;
+export function getFolderByUuid(folder, target, path = '') {
   for (const item of folder) {
-    const { children, uuid } = item;
+    const { children, uuid, name } = item;
     if (target === uuid) {
-      return item;
+      return {
+        head: item,
+        path: `${path}/${name}`,
+      };
     }
     if (children && Array.isArray(children)) {
-      res = getFolderByUuid(children, target);
+      const res = getFolderByUuid(children, target, `${path}/${name}`);
       if (res) {
         return res;
       }
     }
   }
-  return res;
 }

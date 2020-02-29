@@ -12,12 +12,12 @@ export const DELETE_FILE = `${TOKEN}:DELETE_FILE`;
 export const UPDATE_FILE_DESCRIPTION = `${TOKEN}:UPDATE_NODE_DESCRIPTION`;
 export const SEARCH_NOTES = `${TOKEN}:SEARCH_NOTES`;
 export const CLEAR_SEARCH_NOTES = `${TOKEN}:CLEAR_SEARCH_NOTES`;
-export const REMOVE_NOTE_PERMANENTLY = `${TOKEN}:${TOKEN}:REMOVE_NOTE_PERMANENTLY`;
+export const REMOVE_FILE_PERMANENTLY = `${TOKEN}:${TOKEN}:REMOVE_FILE_PERMANENTLY`;
 export const REMOVE_NOTEBOOK_PERMANENTLY = `${TOKEN}:REMOVE_NOTEBOOK_PERMANENTLY`;
-export const RESTORE_NOTE = `${TOKEN}:RESTORE_NOTE`;
+export const RESTORE_FILE = `${TOKEN}:RESTORE_FILE`;
 export const RESTORE_NOTEBOOK = `${TOKEN}:RESTORE_NOTEBOOK`;
-export const TRASH_CHOOSE_PROJECT = `${TOKEN}:TRASH_CHOOSE_PROJECT`;
-export const TRASH_BACK_ROOT = `${TOKEN}:TRASH_BACK_ROOT`;
+export const TRASH_PUSH = `${TOKEN}:TRASH_PUSH`;
+export const TRASH_BACK = `${TOKEN}:TRASH_BACK`;
 export const SAVE_FILE_ON_KEYDOWN = `${TOKEN}:SAVE_FILE_ON_KEYDOWN`;
 export const UPLOAD_NOTE_ONEDRIVE = `${TOKEN}:UPLOAD_NOTE_ONEDRIVE`;
 export const UPLOAD_NOTE_ONEDRIVE_SUCCESS = `${TOKEN}:UPLOAD_NOTE_ONEDRIVE_SUCCESS`;
@@ -127,13 +127,11 @@ export function clearSearchNotes() {
 
 /**
  * @description 永久删除笔记
- * @param {String} parentsUuid 项目uuid
  * @param {String} uuid 笔记uuid
  */
-export function permantRemoveNote(parentsUuid, uuid) {
+export function permantRemoveFile(uuid) {
   return {
-    type: REMOVE_NOTE_PERMANENTLY,
-    parentsUuid,
+    type: REMOVE_FILE_PERMANENTLY,
     uuid,
   };
 }
@@ -149,10 +147,9 @@ export function permantRemoveNotebook(uuid) {
   };
 }
 
-export function restoreNote(parentsId, uuid) {
+export function restoreFile(uuid) {
   return {
-    type: RESTORE_NOTE,
-    parentsId,
+    type: RESTORE_FILE,
     uuid,
   };
 }
@@ -164,17 +161,18 @@ export function restoreNotebook(uuid) {
   };
 }
 
-export function chooseTrashProject(uuid, name) {
+export function pushTrashFolder(uuid, name) {
   return {
-    type: TRASH_CHOOSE_PROJECT,
+    type: TRASH_PUSH,
     uuid,
     name,
   };
 }
 
-export function trashBack() {
+export function trashBack(depth = 1) {
   return {
-    type: TRASH_BACK_ROOT,
+    type: TRASH_BACK,
+    depth,
   };
 }
 

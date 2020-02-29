@@ -254,7 +254,7 @@
 
 	.file-explorer {
 		position: relative;
-		flex: 0 0 15rem;
+		flex: 0 0 18rem;
 		overflow: auto;
 		border-right: 1px solid rgb(217, 217, 217);
 		transition: margin-left ease 0.5s;
@@ -265,16 +265,15 @@
 		}
 
 		.folder-name {
-			font-weight: 500;
+			font-weight: normal;
 			font-size: 1.1rem;
 			padding: 0.5rem;
 			margin: 0;
 			border-bottom: 1px solid $lightBorderBg;
 
 			&:first-child {
-				font-size: 1.6rem;
+				font-size: 1.4rem;
 				padding-top: 0;
-				border-top: none;
 			}
 		}
 
@@ -284,13 +283,12 @@
 			overflow: auto;
 			padding: 0;
 			margin: 0;
-			border-bottom: 1px solid $lightBorderBg;
 		}
 
 		.file-list__item {
-			height: 7rem;
+			height: 8rem;
 			position: relative;
-			padding: 0 .8rem;
+			padding: 0 1.2rem;
 			transition: background-color linear 0.2s;
 
 			.clouds {
@@ -368,25 +366,6 @@
 				}
 			}
 
-			&:hover {
-				background-color: $noteLiHoverBg;
-				.clouds {
-					.clouds-item {
-						background-color: #f7f8f9;
-						&.need-upload {
-							&:after {
-								background-color: #83cc0e;
-							}
-						}
-					}
-				}
-				.file-list__item__name {
-					.ant-input {
-						color: #fff;
-						border-color: #fff;
-					}
-				}
-			}
 			&.cur {
 				background-color: $noteLiActiveBg;
 				.ant-input {
@@ -436,8 +415,8 @@
 				padding-top: .4rem;
 				line-height: 2rem;
 				h3 {
-					font-size: 1.1rem;
-					font-weight: bolder;
+					font-size: 1rem;
+					font-weight: bold;
 					color: rgba(0, 0, 0, 0.8);
 					cursor: pointer;
 					margin-bottom: 0;
@@ -470,7 +449,7 @@
 			&::after {
 				content: " ";
 				position: absolute;
-				width: 90%;
+				width: 86%;
 				height: 1px;
 				background: #d9d9d9;
 				bottom: 0;
@@ -478,7 +457,8 @@
 
 			&:last-child {
 				&::after {
-					background: transparent;
+					width: 100%;
+					left: 0;
 				}
 			}
 		}

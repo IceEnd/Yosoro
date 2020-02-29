@@ -44,8 +44,6 @@ export default class Tool extends Component {
     markdown: PropTypes.shape({
       parentsId: PropTypes.string.isRequired,
       uuid: PropTypes.string.isRequired,
-      createDate: PropTypes.string.isRequired,
-      latestDate: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       content: PropTypes.string.isRequired,
       status: PropTypes.number.isRequired,
