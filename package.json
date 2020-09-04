@@ -142,7 +142,7 @@
     "less-loader": "^4.1.0",
     "merge-stream": "^1.0.1",
     "mini-css-extract-plugin": "^0.5.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.13.1",
     "pre-commit": "1.2.2",
     "raw-loader": "^3.1.0",
     "react-hot-loader": "^4.7.2",
