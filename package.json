@@ -51,7 +51,7 @@
     "classnames": "^2.2.5",
     "codemirror": "^5.36.0",
     "deep-eql": "^3.0.1",
-    "dompurify": "^1.0.11",
+    "dompurify": "^2.0.7",
     "element-resize-detector": "^1.1.15",
     "file-icons-js": "^1.0.3",
     "flowchart.js": "^1.12.0",
