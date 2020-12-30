@@ -87,7 +87,7 @@
     "turndown-plugin-gfm": "^1.0.2",
     "underscore": "^1.9.1",
     "uuid": "^3.1.0",
-    "vega": "^5.4.0",
+    "vega": "^5.17.3",
     "vega-embed": "^4.2.0",
     "vega-lite": "^3.3.0",
     "view-image": "^0.0.1",
