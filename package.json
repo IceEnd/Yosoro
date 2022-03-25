@@ -118,7 +118,7 @@
     "css-loader": "^2.1.0",
     "del": "^3.0.0",
     "devtron": "^1.4.0",
-    "electron": "^5.0.1",
+    "electron": "^13.6.6",
     "electron-installer-debian": "^1.1.1",
     "electron-installer-dmg": "^3.0.0",
     "electron-packager": "^14.0.0",
