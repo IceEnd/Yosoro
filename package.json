@@ -61,7 +61,7 @@
     "history": "^4.7.2",
     "html-tags": "^3.0.0",
     "katex": "^0.10.0-rc.1",
-    "mermaid": "^8.0.0",
+    "mermaid": "^9.1.2",
     "nedb": "^1.8.0",
     "node-schedule": "^1.3.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
